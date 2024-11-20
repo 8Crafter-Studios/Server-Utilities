@@ -50,23 +50,6 @@ spawnprot;
 mcMath;
 export const ui_format_version = "1.17.0";
 //${se}console.warn(JSON.stringify(evaluateParameters(["presetText", "string", "json", "number", "boolean", "string", "presetText", "presetText"], "test test [{\"test\": \"test\"}, [\"test\", \"test\"] , \"test\", \"test\"] 1 true \"test \\\"test\" test test"))); 
-/**
- * Forces a form to show even if the player has another form or menu open.
- * If the player has another form or menu open then it will wait until they close it.
- * @param {ModalFormData|ActionFormData|MessageFormData} form The form to show
- * @param {Player} player The player to show the form to
- * @param {number} timeout The number of ticks before the function will give up and throw an error, it defaults to 9999
- * @returns {ModalFormResponse|ActionFormResponse|MessageFormResponse|undefined} The response of the form
- */
-export async function forceShow(form, player, timeout) {
-    const timeoutTicks = system.currentTick + (timeout ?? 9999);
-    while (system.currentTick <= timeoutTicks) {
-        const r = await form.show(player);
-        if (r.cancelationReason != "UserBusy" || r.canceled == false) {
-            return r;
-        }
-    }
-}
 export const customFormDataTypes = [ModalFormData, ActionFormData, MessageFormData];
 export const customFormDataTypeIds = ["ModalFormData", "ActionFormData", "MessageFormData"];
 export const customElementTypes = [

@@ -21,7 +21,7 @@
           "language": "javascript",
           "uuid": "df6d1955-6175-46b0-be8b-fa11fde32b13",
           "version": "1.26.0-rc.3+BUILD.1",
-          "entry": "scripts/Main.js"
+          "entry": "scripts/index.js"
         }
     ],
     "dependencies": [

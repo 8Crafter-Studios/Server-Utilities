@@ -51,7 +51,6 @@ cmdutils
 utils
 errors
 mcMath
-export function getArrayElementProperty(array: any[], property: string){array.forEach((v, i, a)=>{array[i]=eval(`v.${property}`)}); return array}
 export function combineObjects(obj1: object, obj2: object){return Object.fromEntries(Object.entries(obj1).concat(Object.entries(obj2)))}
 export function generateCUID(classid?: string){let CUID = Number(world.getDynamicProperty("cuidCounter:"+(classid??"default"))??0) + 1; world.setDynamicProperty("cuidCounter:"+(classid??"default"), CUID); return CUID}
 export function getCUIDClasses(){return world.getDynamicPropertyIds().filter(s=>s.startsWith("cuidCounter:"))}

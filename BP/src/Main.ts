@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-import { system } from "@minecraft/server";
+import { system, type BlockFillOptions } from "@minecraft/server";
 globalThis.beforeScriptStartTick=system.currentTick;
 export const format_version = "1.26.0-rc.3+BUILD.1";
 export const supported_minecraft_version = "1.21.4x";
@@ -83,14 +83,7 @@ import { commands_format_version, chatCommands, evaluateParameters, evaluatePara
 import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer, type savedPlayerData, type savedItem } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
-import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, PlayerNotifications } from "Main/ui.js";
-import * as GameTest from "@minecraft/server-gametest";
-import * as mcServer from "@minecraft/server";
-import * as mcServerUi from "@minecraft/server-ui";/*
-import * as mcServerAdmin from "@minecraft/server-admin";*//*
-import * as mcDebugUtilities from "@minecraft/debug-utilities";*//*
-import * as mcCommon from "@minecraft/common";*//*
-import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, PlayerNotifications } from "Main/ui.js";
 import *  as main from "Main";
 globalThis.modules.main=main
 import *  as coords from "Main/coordinates";
@@ -114,7 +107,7 @@ globalThis.modules.cmdslist=cmdslist
 import *  as cmdsdocs from "Main/commands_documentation";
 globalThis.modules.cmdsdocs=cmdsdocs
 import *  as utils from "Main/utilities";
-globalThis.modules.utils=utils
+globalThis.modules.utils=utils as any
 import *  as shopmain from "ExtraFeatures/shop_main";
 import *  as servershop from "ExtraFeatures/server_shop";
 import *  as playershop from "ExtraFeatures/player_shop";
@@ -130,12 +123,13 @@ import { chatMessage, patternColors, patternColorsMap, patternFunctionList, eval
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
 import { customModulo } from "Main/utilities";
 import { TimeoutError } from "Main/errors.js";
-mcServer
-mcServerUi/*
+import { forceShow } from "modules/ui/functions/forceShow.function";
+const mcServer = modules.mcServer
+const mcServerUi = modules.mcServerUi/*
 mcServerAdmin*//*
 mcDebugUtilities*//*
 mcCommon*/
-GameTest/*
+const GameTest = modules.GameTest/*
 mcVanillaData*/
 main
 transformrecipes
@@ -145,71 +139,11 @@ bans
 uis
 playersave
 spawnprot
+mcServer
 SimulatedPlayer
 Test
 mcMath
 globalThis.scriptStartTick=system.currentTick
-export const modules = {
-    mcServer,
-    mcServerUi,
-    GameTest,/*
-    mcServerAdmin,
-    mcDebugUtilities,
-    mcCommon,
-    mcVanillaData,*/
-    main,
-    /**
-     * This is an alias of {@link modules.assets.constants.transformrecipes}
-     */
-    transformrecipes,
-    coords,
-    cmds,
-    bans,
-    uis,
-    playersave,
-    spawnprot,
-    mcMath,
-    colorCore,
-    Decimal,
-    semver,
-    ["@minecraft/server"]: mcServer,
-    ["@minecraft/server-ui"]: mcServerUi,
-    ["@minecraft/server-gametest"]: GameTest,/*
-    ["@minecraft/common"]: mcCommon,
-    ["@minecraft/server-admin"]: mcServerAdmin,
-    ["@minecraft/server-net"]: mcServerNet 
-    ["@minecraft/debug-utilities"]: mcDebugUtilities 
-    ["@minecraft/vanilla-data"]: mcVanillaData,*/
-    ["@minecraft/math"]: mcMath,
-    chat,
-    cmdutils,
-    cmdslist,
-    cmdsdocs,
-    utils,
-    errors,
-    shopmain,
-    servershop,
-    playershop,
-    moneysystem,
-    assets: {
-        classes: {
-            JSONB,
-        },
-        constants: {
-            charMaps: await import("Assets/constants/charMaps"),
-            structuremappings,
-            transformrecipes,
-        }
-    }
-}
-globalThis.modules=modules
-declare global {
-    namespace globalThis {
-        var modules: typeof main.modules
-        var tempSavedVariables: any[]
-        var crashEnabled: boolean
-    }
-}
 globalThis.crashEnabled = false
 globalThis.tempSavedVariables = []
 export async function checkIfCompatibleEntityScaleIsActive(init: boolean = false, maxWaitTicks: number = 20){
@@ -960,11 +894,11 @@ export function clearAllContainerBlocks(blocks: Block[]){blocks.forEach(v=>clear
 /**
  * @deprecated
  */
-export function fillBlocks(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: mcServer.BlockFillOptions){let mainArray = [] as BlockVolume[]; let subArray = [] as Vector3[]; Array.from(new BlockVolume(from, to).getBlockLocationIterator()).forEach(v=>{if(subArray.length<=new BlockVolume(from, to).getSpan().x){subArray.push(v)}else{mainArray.push(new BlockVolume({x: subArray.sort((a, b)=>a.x-b.x)[0].x, y: subArray.sort((a, b)=>a.y-b.y)[0].y, z: subArray.sort((a, b)=>a.z-b.z)[0].z}, {x: subArray.sort((a, b)=>b.x-a.x)[0].x, y: subArray.sort((a, b)=>b.y-a.y)[0].y, z: subArray.sort((a, b)=>b.z-a.z)[0].z}))}}); let counter = 0; mainArray.forEach(v=>counter+=dimension.fillBlocks(new BlockVolume(v.from, v.to), block, options).getCapacity()); return counter}; 
+export function fillBlocks(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: BlockFillOptions){let mainArray = [] as BlockVolume[]; let subArray = [] as Vector3[]; Array.from(new BlockVolume(from, to).getBlockLocationIterator()).forEach(v=>{if(subArray.length<=new BlockVolume(from, to).getSpan().x){subArray.push(v)}else{mainArray.push(new BlockVolume({x: subArray.sort((a, b)=>a.x-b.x)[0].x, y: subArray.sort((a, b)=>a.y-b.y)[0].y, z: subArray.sort((a, b)=>a.z-b.z)[0].z}, {x: subArray.sort((a, b)=>b.x-a.x)[0].x, y: subArray.sort((a, b)=>b.y-a.y)[0].y, z: subArray.sort((a, b)=>b.z-a.z)[0].z}))}}); let counter = 0; mainArray.forEach(v=>counter+=dimension.fillBlocks(new BlockVolume(v.from, v.to), block, options).getCapacity()); return counter}; 
 /**
  * @deprecated
  */
-export function fillBlocksB(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: mcServer.BlockFillOptions){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>counter+=dimension.fillBlocks(new BlockVolume(v.from, v.to), block, options).getCapacity()); return counter}; 
+export function fillBlocksB(from: Vector3, to: Vector3, dimension: Dimension, block: string | BlockPermutation | BlockType, options?: BlockFillOptions){let mainArray = [] as BlockVolume[]; let subArray = [] as BlockVolume[]; Array.from(new BlockVolume(from, {x: from.x, y: from.y, z: to.z}).getBlockLocationIterator()).forEach(v=>{subArray.push(new BlockVolume(v, {x: to.x, y: v.y, z: v.z}))}); subArray.forEach(v=>{Array.from(v.getBlockLocationIterator()).forEach(va=>mainArray.push(new BlockVolume(va, {x: va.x, y: to.y, z: va.z})))}); let counter = 0; mainArray.forEach(v=>counter+=dimension.fillBlocks(new BlockVolume(v.from, v.to), block, options).getCapacity()); return counter}; 
 /**
  * @deprecated
  */

@@ -82,13 +82,6 @@ import { ban, ban_format_version } from "Main/ban";
 import { player_save_format_version, savedPlayer } from "Main/player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "Main/spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, PlayerNotifications } from "Main/ui.js";
-import * as GameTest from "@minecraft/server-gametest";
-import * as mcServer from "@minecraft/server";
-import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
-import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
-import * as mcCommon from "@minecraft/common";*/ /*
-import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
 globalThis.modules.main = main;
 import * as coords from "Main/coordinates";
@@ -147,51 +140,6 @@ SimulatedPlayer;
 Test;
 mcMath;
 globalThis.scriptStartTick = system.currentTick;
-export const modules = {
-    mcServer,
-    mcServerUi,
-    GameTest,
-    main,
-    /**
-     * This is an alias of {@link modules.assets.constants.transformrecipes}
-     */
-    transformrecipes,
-    coords,
-    cmds,
-    bans,
-    uis,
-    playersave,
-    spawnprot,
-    mcMath,
-    colorCore,
-    Decimal,
-    semver,
-    ["@minecraft/server"]: mcServer,
-    ["@minecraft/server-ui"]: mcServerUi,
-    ["@minecraft/server-gametest"]: GameTest,
-    ["@minecraft/math"]: mcMath,
-    chat,
-    cmdutils,
-    cmdslist,
-    cmdsdocs,
-    utils,
-    errors,
-    shopmain,
-    servershop,
-    playershop,
-    moneysystem,
-    assets: {
-        classes: {
-            JSONB,
-        },
-        constants: {
-            charMaps: await import("Assets/constants/charMaps"),
-            structuremappings,
-            transformrecipes,
-        }
-    }
-};
-globalThis.modules = modules;
 globalThis.crashEnabled = false;
 globalThis.tempSavedVariables = [];
 export async function checkIfCompatibleEntityScaleIsActive(init = false, maxWaitTicks = 20) {

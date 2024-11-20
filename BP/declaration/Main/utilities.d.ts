@@ -1,9 +1,7 @@
 import { Player, Entity, type DimensionLocation, type Vector3, type Vector2, type RawMessage, EntityType, EntityProjectileComponent, type RGBA, type RGB } from "@minecraft/server";
 import * as mcServer from "@minecraft/server";
-import * as mcServerUi from "@minecraft/server-ui";
 import colorCore from "color-core";
 export declare const utilsmetaimport: ImportMeta;
-export declare function getArrayElementProperty(array: any[], property: string): any[];
 export declare function combineObjects(obj1: object, obj2: object): {
     [k: string]: any;
 };
@@ -88,8 +86,8 @@ export declare function shootEntityB(entityType: string | EntityType, location: 
 export declare function splitUpStringData(data: string, chunkSize?: number | bigint): string[];
 export declare function saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
 export declare function getStringFromDynamicProperties(propertyName: string): string;
-export declare function showMessage(player: Player, title?: RawMessage | string, body?: string, button1?: string, button2?: string): Promise<mcServerUi.MessageFormResponse>;
-export declare function showActions(player: Player, title?: RawMessage | string, body?: string, ...buttons: [string, string?][]): Promise<mcServerUi.ActionFormResponse>;
+export declare function showMessage(player: Player, title?: RawMessage | string, body?: string, button1?: string, button2?: string): Promise<any>;
+export declare function showActions(player: Player, title?: RawMessage | string, body?: string, ...buttons: [string, string?][]): Promise<any>;
 export declare function getSuperUniqueID(): string;
 export declare function getSuperUniqueID2(depth?: number): string;
 export declare function RGBToHSL(r: number, g: number, b: number): number[];
