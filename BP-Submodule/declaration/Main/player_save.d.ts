@@ -1,0 +1,206 @@
+import { EquipmentSlot, type Enchantment, type Vector3, Dimension, type Vector2, type DimensionLocation, GameMode, Player, MemoryTier, PlatformType, ItemStack, PlayerInputPermissions } from "@minecraft/server";
+import { ban } from "./ban";
+import * as playersave from "Main/player_save";
+export declare const player_save_format_version = "1.5.0";
+export interface savedItem {
+    id?: string;
+    count: number;
+    slot?: number | EquipmentSlot | string;
+    name?: string;
+    lore?: string[];
+    enchants?: Enchantment[];
+    properties?: [id: string, value: string | number | Boolean | Vector3 | undefined][];
+}
+export interface savedPlayerData {
+    name: string;
+    id: string;
+    nameTag?: string;
+    tags?: string[];
+    items?: {
+        inventory: savedItem[] | undefined;
+        equipment: savedItem[] | undefined;
+        ender_chest: savedItem[] | undefined;
+    };
+    properties?: [id: string | undefined, value: string | number | Boolean | Vector3 | undefined][];
+    lastOnline: number;
+    firstJoined?: number;
+    location?: Vector3;
+    dimension?: Dimension | string;
+    rotation?: Vector2;
+    isOp?: boolean;
+    spawnPoint?: DimensionLocation;
+    gameMode?: GameMode | string;
+    selectedSlotIndex?: number;
+    format_version?: string;
+    player_save_format_version?: string;
+    saveId?: string;
+    memoryTier?: MemoryTier;
+    maxRenderDistance?: number;
+    platformType?: PlatformType;
+    inputPermissions?: PlayerInputPermissions;
+}
+export declare class savedPlayer {
+    name: string;
+    id: string;
+    nameTag?: string;
+    tags?: string[];
+    items?: {
+        inventory: savedItem[] | undefined;
+        equipment: savedItem[] | undefined;
+        ender_chest: savedItem[] | undefined;
+    };
+    properties?: [
+        id: string | undefined,
+        value: string | number | Boolean | Vector3 | undefined
+    ][];
+    lastOnline: number;
+    firstJoined: number;
+    location?: Vector3;
+    dimension?: Dimension | string;
+    rotation?: Vector2;
+    isOp?: boolean;
+    spawnPoint?: DimensionLocation;
+    gameMode?: GameMode | string;
+    selectedSlotIndex?: number;
+    scoreboardIdentity?: number;
+    format_version: string;
+    player_save_format_version: string;
+    saveId: string;
+    memoryTier?: MemoryTier;
+    maxRenderDistance?: number;
+    platformType?: PlatformType;
+    inputPermissions?: PlayerInputPermissions;
+    constructor(data: savedPlayerData);
+    save(): void;
+    remove(): void;
+    getItems(sourceLoc: DimensionLocation): {
+        Head?: ItemStack;
+        Chest?: ItemStack;
+        Legs?: ItemStack;
+        Feet?: ItemStack;
+        Mainhand?: ItemStack;
+        Offhand?: ItemStack;
+        Cursor?: ItemStack;
+        0?: ItemStack;
+        1?: ItemStack;
+        2?: ItemStack;
+        3?: ItemStack;
+        4?: ItemStack;
+        5?: ItemStack;
+        6?: ItemStack;
+        7?: ItemStack;
+        8?: ItemStack;
+        9?: ItemStack;
+        10?: ItemStack;
+        11?: ItemStack;
+        12?: ItemStack;
+        13?: ItemStack;
+        14?: ItemStack;
+        15?: ItemStack;
+        16?: ItemStack;
+        17?: ItemStack;
+        18?: ItemStack;
+        19?: ItemStack;
+        20?: ItemStack;
+        21?: ItemStack;
+        22?: ItemStack;
+        23?: ItemStack;
+        24?: ItemStack;
+        25?: ItemStack;
+        26?: ItemStack;
+        27?: ItemStack;
+        28?: ItemStack;
+        29?: ItemStack;
+        30?: ItemStack;
+        31?: ItemStack;
+        32?: ItemStack;
+        33?: ItemStack;
+        34?: ItemStack;
+        35?: ItemStack;
+    };
+    get isOnline(): boolean;
+    get isBanned(): boolean;
+    get isNameBanned(): boolean;
+    get isIdBanned(): boolean;
+    get bans(): {
+        all: ban[];
+        valid: ban[];
+        expired: ban[];
+    };
+    get nameBans(): {
+        all: ban[];
+        valid: ban[];
+        expired: ban[];
+    };
+    get idBans(): {
+        all: ban[];
+        valid: ban[];
+        expired: ban[];
+    };
+    static getSavedPlayerIds(): string[];
+    static savePlayerData(savedPlayerData: savedPlayerData): string;
+    static saveInventoryAsync(player: Player, options?: {
+        rethrowErrorInFinally?: boolean;
+        bypassParameterTypeChecks?: boolean;
+    }): Promise<void>;
+    static saveInventory(player: Player, options?: {
+        rethrowErrorInFinally?: boolean;
+        bypassParameterTypeChecks?: boolean;
+    }): void;
+    static getSavedInventory(playerId: string, sourceLoc: DimensionLocation, options?: {
+        rethrowErrorInFinally?: boolean;
+        bypassParameterTypeChecks?: boolean;
+    }): {
+        Head?: ItemStack | undefined;
+        Chest?: ItemStack | undefined;
+        Legs?: ItemStack | undefined;
+        Feet?: ItemStack | undefined;
+        Mainhand?: ItemStack | undefined;
+        Offhand?: ItemStack | undefined;
+        Cursor?: ItemStack | undefined;
+        0?: ItemStack | undefined;
+        1?: ItemStack | undefined;
+        2?: ItemStack | undefined;
+        3?: ItemStack | undefined;
+        4?: ItemStack | undefined;
+        5?: ItemStack | undefined;
+        6?: ItemStack | undefined;
+        7?: ItemStack | undefined;
+        8?: ItemStack | undefined;
+        9?: ItemStack | undefined;
+        10?: ItemStack | undefined;
+        11?: ItemStack | undefined;
+        12?: ItemStack | undefined;
+        13?: ItemStack | undefined;
+        14?: ItemStack | undefined;
+        15?: ItemStack | undefined;
+        16?: ItemStack | undefined;
+        17?: ItemStack | undefined;
+        18?: ItemStack | undefined;
+        19?: ItemStack | undefined;
+        20?: ItemStack | undefined;
+        21?: ItemStack | undefined;
+        22?: ItemStack | undefined;
+        23?: ItemStack | undefined;
+        24?: ItemStack | undefined;
+        25?: ItemStack | undefined;
+        26?: ItemStack | undefined;
+        27?: ItemStack | undefined;
+        28?: ItemStack | undefined;
+        29?: ItemStack | undefined;
+        30?: ItemStack | undefined;
+        31?: ItemStack | undefined;
+        32?: ItemStack | undefined;
+        33?: ItemStack | undefined;
+        34?: ItemStack | undefined;
+        35?: ItemStack | undefined;
+    };
+    static savePlayer(player: Player): string;
+    static savePlayerAsync(player: Player): Promise<string>;
+    static getSavedPlayer(savedPlayerId: string): playersave.savedPlayer;
+    static getSavedPlayers(): playersave.savedPlayer[];
+    static getSavedPlayersAlphabeticalOrder(): playersave.savedPlayer[];
+}
+export declare function startPlayerDataAutoSave(): Promise<void>;
+export declare function playerDataAutoSaveAsync(): Promise<void>;
+export declare function stopPlayerDataAutoSave(): 0 | 1;

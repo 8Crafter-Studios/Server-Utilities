@@ -1,0 +1,32 @@
+{
+    "format_version":"1.17",
+    "minecraft:npc_dialogue":{
+        "scenes":[
+            {
+                "scene_tag":"ducky_intro2",
+                "npc_name":"Ducky2",
+                "text":"Hello, new friend!",
+                "on_open_commands":[
+                    "/clear @p"
+                ],
+                "on_close_commands":[
+                    "/say Farewell! "
+                ],
+                "buttons":[
+                    {
+                        "name":"query.debug_output",
+                        "commands":[
+                            "/give @initiator gold_ingot"
+                        ]
+                    },
+                    {  
+                        "name":"Wish Luck",
+                        "commands":[
+                            "/say Good luck!"
+                        ] 
+                    }
+                ]
+            }
+        ]
+    }
+}

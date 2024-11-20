@@ -1,0 +1,113 @@
+{
+    "format_version": 2,
+    "header": {
+        "description": "v.1.26.0-rc.3+BUILD.1 8Crafter's Debug Sticks BP by 8Crafter.\n§bhttps://sites.google.com/view/8craftermods/home\n§chttps://youtube.com/@8crafter",
+        "name": "v.1.26.0-rc.3+BUILD.1 8Crafter's Debug Sticks BP by 8Crafter.",
+        "uuid": "53170125-3e79-4659-9bba-e49eb90b6ded",
+        "version": "1.26.0-rc.3+BUILD.1",
+        "min_engine_version": [ 1, 20, 40 ]
+    },
+    "capabilities": [ "script_eval" ],
+    "modules": [
+        {
+            "description": "v.1.26.0-rc.3+BUILD.1 8Crafter's Debug Sticks BP by 8Crafter.",
+            "type": "data",
+            "uuid": "715e0f88-d0a1-4304-8c96-49bbd2b98257",
+            "version": "1.26.0-rc.3+BUILD.1"
+        },
+        {
+          "description": "System scripts && Vanilla gameplay tests 4 (0.4.0-alpha)",
+          "type": "script",
+          "language": "javascript",
+          "uuid": "df6d1955-6175-46b0-be8b-fa11fde32b13",
+          "version": "1.26.0-rc.3+BUILD.1",
+          "entry": "scripts/index.js"
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "5869846f-2019-4442-8e81-d3a75c5e003f",
+            "version": "1.26.0-rc.3+BUILD.1"
+        },
+        {
+          "module_name": "@minecraft/server",
+          "version": "1.16.0-beta"
+        },
+        {
+          "module_name": "@minecraft/server-gametest",
+          "version": "1.0.0-beta"
+        },
+        {
+          "module_name": "@minecraft/server-ui",
+          "version": "1.4.0-beta"
+        }/*,
+        {
+            "module_name": "@minecraft/common",
+            "version": "1.2.0-beta"
+        },*//*
+        {
+            "module_name": "@minecraft/debug-utilities",
+            "version": "1.0.0-beta"
+        },*//*
+        {
+            "module_name": "@minecraft/server-admin",
+            "version": "1.0.0-beta"
+        }*//*,
+        {
+            "module_name": "@minecraft/server-net",
+            "version": "1.0.0-beta"
+        }*//*,
+        {
+            "module_name": "@minecraft/server-editor",
+            "version": "0.1.0-beta"
+        }*/
+    ],/*
+    "subpacks": [
+        {
+            "folder_name": "1",
+            "name": "§cNo Items, Blocks, Or Custom Entities§r",
+            "memory_tier": 1
+        },
+        {
+            "folder_name": "3",
+            "name": "§sItems + §eBlocks§r",
+            "memory_tier": 1
+        },
+        {
+            "folder_name": "4",
+            "name": "§sItems + §aCustom Entities§r",
+            "memory_tier": 1
+        },
+        {
+            "folder_name": "5",
+            "name": "§eBlocks + §aCustom Entities§r",
+            "memory_tier": 1
+        },
+        {
+            "folder_name": "6",
+            "name": "§sItems §cOnly§r",
+            "memory_tier": 1
+        },
+        {
+            "folder_name": "7",
+            "name": "§eBlocks §cOnly§r",
+            "memory_tier": 1
+        },
+        {
+            "folder_name": "8",
+            "name": "§aCustom Entities §cOnly§r",
+            "memory_tier": 1
+        },
+        {
+            "folder_name": "2",
+            "name": "§sItems + §eBlocks + §aCustom Entities §r(§aReccommended§r)§r",
+            "memory_tier": 1
+        }
+    ],*/
+    "metadata": {
+        "authors": ["Andexter8", "Andersen Zahn", "8Crafter", "StormStqr (Helped with writing some of the documentation)"],
+        "url": "https://sites.google.com/view/8craftermods/home",
+        "product_type": "addon",
+        "license": "Check LICENSE.txt"
+    }
+}
