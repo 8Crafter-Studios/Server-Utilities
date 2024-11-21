@@ -1,12 +1,13 @@
 [submodule "BP"]
 	path = BP
-	url = https://github.com/Andexter8/8Crafter-s-Debug-Sticks-BP-Development.git
+	url = https://github.com/8Crafter-Studios/8Crafter-s-Debug-Sticks-BP-Development.git
 [submodule "RP"]
 	path = RP
 	url = https://github.com/Andexter8/8Crafter-s-Debug-Sticks-RP-Development.git
 [submodule "BP Preview"]
 	path = BP Preview
 	url = https://github.com/Andexter8/8Crafter-s-Debug-Sticks-BP-Preview-Development.git
+	branch = BP Preview
 [submodule "RP Preview"]
 	path = RP Preview
 	url = https://github.com/Andexter8/8Crafter-s-Debug-Sticks-RP-Preview-Development.git
