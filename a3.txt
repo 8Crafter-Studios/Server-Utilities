@@ -104,3 +104,24 @@ Find(RegEx):
 "minecraft:light_emission": (\d\d?)(\n)
 Replace:
 "minecraft:light_emission": $1,$2          "minecraft:material_instances": {$2            "*": {$2              "texture": "redstone_lamp_$1",$2              "render_method": "blend",$2              "face_dimming": false,$2              "ambient_occlusion": false$2            }$2          }$2
+
+
+
+# Node.js terminal scripts
+node -e "const fs=require('fs');
+
+function getFiles (dir, files_){
+    files_ = files_ || [];
+    var files = fs.readdirSync(dir);
+    for (var i in files){
+        var name = dir + '/' + files[i];
+        if (fs.statSync(name).isDirectory()){
+            getFiles(name, files_);
+        } else {
+            files_.push(name);
+        }
+    }
+    return files_;
+}
+
+console.log(getFiles('BP/src/modules/ui').filter(da=>da!='BP/src/modules/ui/index.ts').map(db=>'export * from \x22./'+db.slice('BP/src/modules/ui/'.length, -3)+'\x22').join('\n'))"
