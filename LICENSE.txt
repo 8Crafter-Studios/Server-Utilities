@@ -1,0 +1,12 @@
+You are NOT ALLOWED to:
+	Provide direct download links to my add-on, you may only share my work.ink link.
+	Provide your own links to my add-on.
+	Redistribute the source code of my add-on. 
+	Use any part of my code in your own add-on.
+	Claim any of my code as your own.
+	Upload this add-on to different sites without my permission.
+	Make videos about my add-on without properly crediting me and linking to the following page: https://modbay.org/mods/1240-8crafters-debug-sticks.html
+You are FREE to:
+	Make videos about my add-on if you properly credit me and link to the following page: https://modbay.org/mods/1240-8crafters-debug-sticks.html
+	Make private modifications to my addon, but do not redistribute those modified versions of my add-on.
+	Use my add-on on your Minecraft worlds, realms, and servers. 
