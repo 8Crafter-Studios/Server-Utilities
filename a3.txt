@@ -10,6 +10,39 @@ Find/Replace to update minecraft:icon item components to the new 1.21.30 format 
 
 
 
+Find/Replace to update the old gametests block locations:
+    Find(RegEx): new BlockLocationIterator\(([^,\]\)]+), ([^,\]\)]+), ([^,\]\)]+)\)
+    Replace: { x: $1, y: $2, z: $3 }
+Find/Replace to update the old gametests locations:
+    Find(RegEx): new Location\(([^,\]\)]+), ([^,\]\)]+), ([^,\]\)]+)\)
+    Replace: { x: $1, y: $2, z: $3 }
+Find/Replace to update the old gametests item types:
+    Find(RegEx): MinecraftItemTypes\.([a-zA-Z0-9_]+)
+    Replace: "$1"
+Find/Replace to update the old gametests effect types:
+    Find(RegEx): MinecraftEffectTypes\.([a-zA-Z0-9_]+)
+    Replace: "$1"
+Find/Replace to update the old gametests block types:
+    Find(RegEx): MinecraftBlockTypes\.([a-zA-Z0-9_]+)
+    Replace: "$1"
+
+    new ItemStack\(("[^"]*"), (\d+), \d+\)
+    new ItemStack($1, $2)
+
+    test\.(\w*)BlockLocationIterator
+    test.$1BlockLocation
+
+    (\w+).equals\((\w+)\)
+    Vector.equals($1, $2)
+
+    (\w+)\.isNear\((\w+), (\d+\.?\d*)\)
+    Vector.distance($1, $2) <= $3
+
+    afterEvents\.before(\w*)\.
+    beforeEvents.$1.
+
+
+
 (async()=>{const colorCore = await import("color-core"); console.log(Object.keys(colorCore.default).map(v=>`exports.${v} as ${v}`).join(", "))})()
 
 
