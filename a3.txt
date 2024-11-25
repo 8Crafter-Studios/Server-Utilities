@@ -204,3 +204,32 @@ function getFiles (dir, files_){
 const path = 'BP/src/init'
 
 console.log(getFiles(path).filter(da=>da!=path+'/index.ts').filter(v=>v.endsWith('.ts')||v.endsWith('.js')).map(db=>'import \x22./'+db.slice((path+'/').length, -3)+'\x22').join('\n'))"
+
+
+
+
+
+
+
+
+
+Directory Tree:
+node -e "const fs=require('fs');
+
+function getFiles (dir, files_){
+    files_ = files_ || [];
+    var files = fs.readdirSync(dir);
+    for (var i in files){
+        var name = dir + '/' + files[i];
+        if (fs.statSync(name).isDirectory()){
+            getFiles(name, files_);
+        } else {
+            files_.push(name);
+        }
+    }
+    return files_;
+}
+
+const out = 'export const src = ' + JSON.stringify(getFiles('BP/src'), undefined, 4) + '\nexport const scripts = ' + JSON.stringify(getFiles('BP/scripts'), undefined, 4) + '\nexport const declaration = ' + JSON.stringify(getFiles('BP/declaration'), undefined, 4);
+require('copy-paste').global();
+copy(out);"
