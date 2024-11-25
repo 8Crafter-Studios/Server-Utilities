@@ -54,11 +54,11 @@
 			}, 
 			"minecraft:dyeable": {},
 			"minecraft:use_animation": "none", 
-                    	"minecraft:allow_off_hand": true,
-                    	"minecraft:enchantable": {
-		                "slot": "all", // Can be any of the enchant slot listed below
-		                "value": 10
-	                }
+			"minecraft:allow_off_hand": true,
+			"minecraft:enchantable": {
+				"slot": "all", // Can be any of the enchant slot listed below
+				"value": 10
+			}
 		}
 	}
 }

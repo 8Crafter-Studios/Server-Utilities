@@ -5,8 +5,8 @@ import { ban, ban_format_version } from "./ban";
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings, PlayerNotifications, extraFeaturesSettings, worldBorderSettings } from "./ui.js";
-import { listoftransformrecipes } from "transformrecipes";
-import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld, RGBToHSL, HSLToRGB, mcRGBAToColorCoreRGB } from "./utilities";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
+import { arrayify, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, arrayModifier, arrayModifierOld, RGBToHSL, HSLToRGB, mcRGBAToColorCoreRGB } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { clearContainer, cmdutilsmetaimport, containerToContainerSlotArray, containerToItemStackArray, entityToContainerSlotArray, fillContainer, fillmodetypeenum, getPlayerHeldItemSlot, getPlayerselectedSlotIndex, getSlotFromParsedSlot, IllegalItemTypes, inventorySwap, inventorySwapB, inventorySwapC, itemJSONPropertiesEval, itemJSONPropertiesEvalCT, JunkItemTypes, OpItemTypes, parseSlot, rangeToIntArray, targetSelector, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListD, targetSelectorAllListE, targetSelectorB, EquipmentSlots, OtherEquipmentSlots, blockToContainerSlotArray, blockToContainerSlotListObject, blockToItemStackArray, componentTypeEnum, durabilityComponentTypeEnum, enchantableComponentTypeEnum, entityToContainerSlotArrayB, entityToContainerSlotListObject, entityToItemStackArray, equippableToContainerSlotArray, equippableToItemStackArray, getEntityHeldItemSlot, getEquipment, getInventory, propertyTypeEnum } from "./command_utilities";
 import * as GameTest from "@minecraft/server-gametest";
@@ -17,7 +17,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "../Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "./coordinates";
 import * as cmds from "./commands";
 import * as bans from "./ban";
@@ -598,10 +598,29 @@ let tfsb = ((b) => (([][(![] + [])[+[]] + (![] + [])[!+[] + !+[]] + (![] + [])[+
         // @ts-expect-error
         [])[+!+[]] + (!![] + [])[+[]]])[!+[] + !+[] + [+[]]])(b))));
 export class command {
+    type;
+    commandName;
+    currentCommandName;
+    parameters;
+    escregexp;
+    currentescregexp;
+    selectedalias;
+    command_version;
+    formats;
+    description;
+    format_version = format_version;
+    commands_format_version = commands_format_version;
+    customCommandId;
+    commandSettingsId;
+    formatting_code = "§r§f";
+    customCommandType;
+    customCommandPrefix;
+    customCommandParametersEnabled;
+    customCommandCodeLines;
+    customCommandParametersList;
+    category;
+    categories;
     constructor(command) {
-        this.format_version = format_version;
-        this.commands_format_version = commands_format_version;
-        this.formatting_code = "§r§f";
         this.type = command.type ?? "unknown";
         let commandtest = undefined;
         try {
@@ -794,6 +813,12 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
 }
 export const command_settings_format_version = "2.0.0-beta.1";
 export class commandSettings {
+    type;
+    commandName;
+    customCommandId;
+    commandSettingsId;
+    command;
+    defaultSettings;
     constructor(commandSettingsId, command) {
         this.type = commandSettingsId.startsWith("built-inCommandSettings:") ? "built-in" : commandSettingsId.startsWith("customCommandSettings:") ? "custom" : "unknown";
         this.commandName = commandSettingsId.startsWith("built-inCommandSettings:") ? commandSettingsId.slice(24) : commandSettingsId.startsWith("customCommandSettings:") ? commandSettingsId.slice(22) : commandSettingsId;
@@ -820,6 +845,20 @@ export class commandSettings {
     remove() { world.setDynamicProperty(this.commandSettingsId); }
 }
 export class executeCommandPlayerW {
+    player;
+    sendErrorsTo;
+    modifiedlocation;
+    modifieddimension;
+    rotation;
+    block;
+    fromPlayer;
+    fromEntity;
+    isFromWorldPosition;
+    fromPlayerWorldPosition;
+    fromEntityWorldPosition;
+    fromBlockWorldPosition;
+    rawWorldPosition;
+    raw;
     constructor(player, sendErrorsTo) {
         if (player instanceof WorldPosition) {
             this.modifiedlocation = player.location;
@@ -998,6 +1037,8 @@ export class executeCommandPlayerW {
     get z() { return this.modifiedlocation?.z ?? this.player?.location?.z; }
     get rotx() { return this.rotation?.x ?? this.player?.getRotation?.()?.x; }
     get roty() { return this.rotation?.y ?? this.player?.getRotation?.()?.y; }
+    get timeZone() { return (this.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? config.system.timeZone).toString().toNumber(); }
+    set timeZone(timezone) { this.setDynamicProperty("andexdbPersonalSettings:timeZone", !!timezone ? timezone.toString() : undefined); }
     get camera() { return this.player?.camera; }
     get isEmoting() { return this.player?.isEmoting; }
     get isFlying() { return this.player?.isFlying; }
@@ -1097,6 +1138,7 @@ export class executeCommandPlayer extends executeCommandPlayerW {
 }
 export class HomeSystem {
     constructor() { }
+    static home_format_version = "0.7.0-beta.72";
     static getHomes(homeIds) { let homes = []; homeIds.forEach(c => homes.push(Home.get(c))); return homes; }
     static getAllHomes() { let homes = []; this.getHomeIds().forEach(c => homes.push(Home.get(c))); return homes; }
     static getHomeIds() { return world.getDynamicPropertyIds().filter(v => v.startsWith("home:")); }
@@ -1106,8 +1148,14 @@ export class HomeSystem {
     static get maxHomesPerPlayer() { return gwdp("homeSystemSettings:maxHomesPerPlayer") == -1 ? Infinity : Number(gwdp("homeSystemSettings:maxHomesPerPlayer") ?? Infinity); }
     static set maxHomesPerPlayer(maxHomes) { swdp("homeSystemSettings:maxHomesPerPlayer", maxHomes == Infinity ? -1 : maxHomes); }
 }
-HomeSystem.home_format_version = "0.7.0-beta.72";
 export class Home {
+    location;
+    name;
+    ownerId;
+    ownerName;
+    saveId;
+    format_version;
+    home_format_version;
     constructor(home) {
         this.location = home.location;
         this.name = home.name;
@@ -1132,6 +1180,7 @@ export class LandClaimSystem {
     constructor() { }
     get warnAboutDeniedPermissions() { return Boolean(world.getDynamicProperty("landClaimSystemSettings:warnAboutDeniedPermissions") ?? false); }
     set warnAboutDeniedPermissions(warn) { world.setDynamicProperty("landClaimSystemSettings:warnAboutDeniedPermissions", warn); }
+    static land_claim_format_version = "0.0.1-indev.1";
     static getClaims(claimIds) { let claims = []; claimIds.forEach(c => claims.push(LandClaim.get(c))); return claims; }
     static getAllClaims() { let claims = []; this.getClaimIds().forEach(c => claims.push(LandClaim.get(c))); return claims; }
     static getClaimIds() { return world.getDynamicPropertyIds().filter(v => v.startsWith("landClaim:")); }
@@ -1140,13 +1189,18 @@ export class LandClaimSystem {
     static testIfPlayerCanDoActionInArea(action, player, location) { }
     static testIfClaimAreaIsAlreadyClaimed(area) { return this.getAllClaims().map(c => tryget(() => c.area)).filter(c => !!c).every(c => !doBoundingBoxesIntersect(area, c)); }
 }
-LandClaimSystem.land_claim_format_version = "0.0.1-indev.1";
 export class LandClaim {
+    area;
+    dimension;
+    name;
+    ownerId;
+    ownerName;
+    saveId;
+    format_version = format_version;
+    land_claim_format_version = LandClaimSystem.land_claim_format_version;
+    defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
+    customPermissions = {};
     constructor(claim) {
-        this.format_version = format_version;
-        this.land_claim_format_version = LandClaimSystem.land_claim_format_version;
-        this.defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
-        this.customPermissions = {};
         this.area = claim.area;
         this.dimension = typeof claim.dimension == "string" ? world.getDimension(claim.dimension) : claim.dimension;
         this.name = claim.name;
@@ -1170,11 +1224,17 @@ export class LandClaim {
     static delete(claimId) { world.setDynamicProperty(claimId); }
 }
 export class chunkLandClaim {
+    chunks;
+    dimension;
+    name;
+    ownerId;
+    ownerName;
+    saveId;
+    format_version = format_version;
+    land_claim_format_version = LandClaimSystem.land_claim_format_version;
+    defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
+    customPermissions = {};
     constructor(claim) {
-        this.format_version = format_version;
-        this.land_claim_format_version = LandClaimSystem.land_claim_format_version;
-        this.defaultPermissions = { breakBlocks: false, placeBlocks: false, interactWithBlocks: false, enterArea: true };
-        this.customPermissions = {};
         this.chunks = claim.chunks;
         this.dimension = typeof claim.dimension == "string" ? world.getDimension(claim.dimension) : claim.dimension;
         this.name = claim.name;
@@ -1337,11 +1397,9 @@ function extractCustomPatternType(str) {
     return Object.assign(patternTypes, { mode: mode });
 }
 export class BlockPattern {
-    constructor(blocks = [], type = "random") {
-        this.blocks = [];
-        this.type = "random";
-        this.blocks = blocks.map(v => ({ type: v.type, states: v.states, weight: v.weight, get raw() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}`; } })), this.type = type;
-    }
+    blocks = [];
+    type = "random";
+    constructor(blocks = [], type = "random") { this.blocks = blocks.map(v => ({ type: v.type, states: v.states, weight: v.weight, get raw() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}`; } })), this.type = type; }
     generateBlock(generateIndex = 0, forceMode) { return (((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[Number(BigInt(generateIndex) % BigInt(this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length))]); }
     generateBlockP(generateIndex = 0, forceMode) { const p = ((!!!forceMode && this.type == "random") || forceMode == "random") ? selectWeightedElement(this.blocks) : this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat()[Number(BigInt(generateIndex) % BigInt(this.blocks.map(b => !!b.weight ? new Array(b.weight).fill(b) : [b]).flat().length))]; return BlockPermutation.resolve(p.type, p.states); }
     push(...blocks) { return this.blocks.push(...blocks.map(v => ({ type: v.type, states: v.states, weight: v.weight, get raw() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}${!!this.weight ? `%${this.weight}` : ""}`; } }))); }
@@ -1354,17 +1412,15 @@ export class BlockPattern {
     static extractAllWRaw(str, mode) { return { raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g), parsed: extractCustomPatternTypes(str).map(v => new BlockPattern(v, mode ?? v.mode)) }; }
 }
 export class BlockMask {
+    blocksList = [];
+    hasStates;
+    blockTypeIds;
     get blocks() { return this.blocksList; }
     set blocks(blocks) { this.blocksList = blocks.map(v => ({ type: v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } })); this.hasStates = !!blocks.find(v => !!v.states); [...new Set(this.blockTypeIds = blocks.map(v => v.type))]; }
     get includesStates() { return this.hasStates; }
     get blockTypes() { return this.blockTypeIds; }
     evaluateIds() { this.blocksList = cullEmpty(this.blocksList.map(v => (v.type == "none" ? undefined : v.type == "any" ? undefined : { type: v.type == "keep" ? "minecraft:air" : tryget(() => BlockTypes.get(v.type).id) ?? v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } }))); }
-    constructor(blocks = []) {
-        this.blocksList = [];
-        this.blocksList = blocks.map(v => ({ type: v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } }));
-        this.hasStates = !!blocks.find(v => !!v.states);
-        [...new Set(this.blockTypeIds = blocks.map(v => v.type))];
-    }
+    constructor(blocks = []) { this.blocksList = blocks.map(v => ({ type: v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } })); this.hasStates = !!blocks.find(v => !!v.states); [...new Set(this.blockTypeIds = blocks.map(v => v.type))]; }
     push(...blocks) { this.hasStates = this.hasStates || !!blocks.find(v => !!v.states); [...new Set(this.blockTypeIds = [...this.blocksList, ...blocks].map(v => v.type))]; return this.blocksList.push(...blocks.map(v => ({ type: v.type, states: v.states, get raw() { return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`; }, get rawns() { return `${this.type}`; } }))); }
     static parse() { }
     static extractRaw(str) { return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0]; }
@@ -1631,7 +1687,6 @@ export function selectWeightedElement(items, weightProp = "weight") {
         }
     }
 }
-export function testForObjectExtension(a, b) { return Object.entries(b).every(v => Object.keys(a).includes(v[0]) ? Object.entries(a).find(c => c[0] == v[0])[1] == v[1] : false); }
 export function arryTV3(v3Array) { return { x: v3Array[0], y: v3Array[1], z: v3Array[2] }; }
 export function parseNBTFile(nbt) {
     let outputObject = [];
@@ -2444,6 +2499,36 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 let inventoryblockc6 = world.getDimension(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[0]).getBlock({x: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[1]), y: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[2]), z: Number(String(player.getDynamicProperty("blockTransferPreset1")).split(", ")[3])}).getComponent("inventory") as BlockInventoryComponent
         system.run(()=>{try{for(let i = 0; i < 9; i++){inventoryg6.container.swapItems(i, i+18, inventoryblockc6.container)}; }catch(e){player.sendError("§c" + e + e.stack, true)}})
             break; */
+            case !!switchTest.match(/^debugstickdyingmode$/) || !!switchTest.match(/^debugsticksdyingmode$/) || !!switchTest.match(/^dsdm$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "neboolean"]).args;
+                    srun(() => !!args[1] ? args[1] ? player.addTag("debugStickDyingMode") : player.removeTag("debugStickDyingMode") : player.hasTag("debugStickDyingMode") ? player.removeTag("debugStickDyingMode") : player.addTag("debugStickDyingMode"));
+                }
+                break;
+            case !!switchTest.match(/^enchantmentbarrels$/) || !!switchTest.match(/^eb$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "number"]).args;
+                    srun(() => {
+                        let structure = "andexdb:-2-294_steb";
+                        if (!!args[1]) {
+                            const object = modules.assets.constants.structuremappings.steb.find(o => args[1] >= o.range[0] && args[1] <= o.range[1]);
+                            if (!!object) {
+                                structure = object.structure;
+                            }
+                            else {
+                                player.sendError(`§cUnable to find a structure that contained the specified enchantment level (${args[1]}).`);
+                                return;
+                            }
+                            ;
+                        }
+                        ;
+                        world.structureManager.place(structure, player.dimension, player.location);
+                        player.sendMessageB(`§aSpawned the structure: ${JSON.stringify(structure)}.`);
+                    });
+                }
+                break;
             case !!switchTest.match(/^invsee$$/):
                 eventData.cancel = true;
                 system.run(() => {
@@ -2901,28 +2986,89 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^offlineinvsee$$/):
                 eventData.cancel = true;
                 try {
-                    let slotsArray = [];
-                    let players = savedPlayer.getSavedPlayers().filter((p) => (p.name == switchTestB.split(" ").slice(1).join(" ")));
-                    if (players.length == 0) {
-                        player.sendMessageB("§cError: no players with that name were found");
-                    }
-                    else {
-                        if (players.length > 1) {
-                            player.sendMessageB("§cError: multiple saved players with that name were found, with the following uuids: " + [players[0]?.id, players[1]?.id, players[2]?.id, players[3]?.id]);
+                    (async () => {
+                        let slotsArray = [];
+                        let players = savedPlayer
+                            .getSavedPlayers()
+                            .filter((p) => p.name == switchTestB.split(" ").slice(1).join(" "));
+                        if (players.length == 0) {
+                            player.sendMessageB("§cError: no players with that name were found");
                         }
                         else {
-                            let player = players[0];
-                            let items = player.items.inventory.concat(player.items.equipment);
-                            items.forEach((item) => { if (item.count != 0) {
-                                slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) + "§r§f, enchantments: " + JSONStringify(item.enchants ?? "N/A", true)));
+                            if (players.length > 1) {
+                                player.sendMessageB("§cError: multiple saved players with that name were found, with the following uuids: " +
+                                    [
+                                        players[0]?.id,
+                                        players[1]?.id,
+                                        players[2]?.id,
+                                        players[3]?.id,
+                                    ]);
                             }
                             else {
-                                slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
-                            } });
-                            ;
-                            eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online)" : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Items: \n" + slotsArray.join("§r§f\n")));
+                                let playerb = players[0];
+                                if (semver.satisfies(playerb.player_save_format_version ?? "0.0.0", ">=1.5.0")) {
+                                    await waitTick();
+                                    const items = playerb.getItems(player);
+                                    Object.entries(items).forEachB((item) => {
+                                        if (!!item[1]) {
+                                            slotsArray = slotsArray.concat(String("slot: " +
+                                                item[0] +
+                                                "§r§f, item: " +
+                                                item[1].typeId +
+                                                "§r§f, amount: " +
+                                                item[1].amount +
+                                                "§r§f, nameTag: " +
+                                                item[1].nameTag +
+                                                "§r§f, lore: " +
+                                                JSONStringify(item[1].getLore() ?? [], true) +
+                                                "§r§f, enchantments: " +
+                                                JSONStringify(tryget(() => item[1].getComponent("enchantable").getEnchantments()) ?? "N/A", true)));
+                                        }
+                                        else {
+                                            slotsArray = slotsArray.concat("slot: " + item[0] + ", item: minecraft:air");
+                                        }
+                                    });
+                                }
+                                else {
+                                    let items = playerb.items.inventory.concat(playerb.items.equipment);
+                                    items.forEach((item) => {
+                                        if (item.count != 0) {
+                                            slotsArray = slotsArray.concat(String("slot: " +
+                                                item.slot +
+                                                "§r§f, item: " +
+                                                item.id +
+                                                "§r§f, amount: " +
+                                                item.count +
+                                                "§r§f, nameTag: " +
+                                                item.name +
+                                                "§r§f, lore: " +
+                                                JSONStringify(item.lore ?? [], true) +
+                                                "§r§f, enchantments: " +
+                                                JSONStringify(item.enchants ?? "N/A", true)));
+                                        }
+                                        else {
+                                            slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
+                                        }
+                                    });
+                                }
+                                eventData.sender.sendMessage(String("(format_version: " +
+                                    playerb.format_version +
+                                    ") " +
+                                    player.name +
+                                    (world
+                                        .getAllPlayers()
+                                        .find((p) => p.id == player.id) != undefined
+                                        ? " (Online)"
+                                        : " (last seen: " +
+                                            new Date(Number(playerb.lastOnline) +
+                                                Number((player.sendErrorsTo instanceof Player ? player.sendErrorsTo : player).getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) *
+                                                    3600000).toLocaleString() +
+                                            ")") +
+                                    " Items: \n" +
+                                    slotsArray.join("§r§f\n")));
+                            }
                         }
-                    }
+                    })();
                 }
                 catch (e) {
                     player.sendError("§c" + e + e.stack, true);
@@ -2931,23 +3077,78 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^offlineuuidinvsee$$/):
                 eventData.cancel = true;
                 try {
-                    let slotsArray = [];
-                    let players = savedPlayer.getSavedPlayers().filter((p) => (p.id == switchTestB.split(" ").slice(1).join(" ")));
-                    if (players.length == 0) {
-                        player.sendMessageB("§cError: no players with that uuid were found");
-                    }
-                    else {
-                        let player = players[0];
-                        let items = player.items.inventory.concat(player.items.equipment);
-                        items.forEach((item) => { if (item.count != 0) {
-                            slotsArray = slotsArray.concat(String("slot: " + item.slot + "§r§f, item: " + item.id + "§r§f, amount: " + item.count + "§r§f, nameTag: " + item.name + "§r§f, lore: " + JSONStringify(item.lore ?? [], true) + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? "N/A")));
+                    (async () => {
+                        let slotsArray = [];
+                        let players = savedPlayer
+                            .getSavedPlayers()
+                            .filter((p) => p.id == switchTestB.split(" ").slice(1).join(" "));
+                        if (players.length == 0) {
+                            player.sendMessageB("§cError: no players with that uuid were found");
                         }
                         else {
-                            slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
-                        } });
-                        ;
-                        eventData.sender.sendMessage(String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online) " : " (last seen: " + new Date(Number(player.lastOnline) + (Number(event.sender.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Items: \n" + slotsArray.join("§r§f\n")));
-                    }
+                            let playerb = players[0];
+                            if (semver.satisfies(playerb.player_save_format_version ?? "0.0.0", ">=1.5.0")) {
+                                await waitTick();
+                                const items = playerb.getItems(player);
+                                Object.entries(items).forEachB((item) => {
+                                    if (!!item[1]) {
+                                        slotsArray = slotsArray.concat(String("slot: " +
+                                            item[0] +
+                                            "§r§f, item: " +
+                                            item[1].typeId +
+                                            "§r§f, amount: " +
+                                            item[1].amount +
+                                            "§r§f, nameTag: " +
+                                            item[1].nameTag +
+                                            "§r§f, lore: " +
+                                            JSONStringify(item[1].getLore() ?? [], true) +
+                                            "§r§f, enchantments: " +
+                                            JSONStringify(tryget(() => item[1].getComponent("enchantable").getEnchantments()) ?? "N/A", true)));
+                                    }
+                                    else {
+                                        slotsArray = slotsArray.concat("slot: " + item[0] + ", item: minecraft:air");
+                                    }
+                                });
+                            }
+                            else {
+                                let items = playerb.items.inventory.concat(playerb.items.equipment);
+                                items.forEach((item) => {
+                                    if (item.count != 0) {
+                                        slotsArray = slotsArray.concat(String("slot: " +
+                                            item.slot +
+                                            "§r§f, item: " +
+                                            item.id +
+                                            "§r§f, amount: " +
+                                            item.count +
+                                            "§r§f, nameTag: " +
+                                            item.name +
+                                            "§r§f, lore: " +
+                                            JSONStringify(item.lore ?? [], true) +
+                                            "§r§f, enchantments: " +
+                                            JSON.stringify(item.enchants ?? "N/A")));
+                                    }
+                                    else {
+                                        slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
+                                    }
+                                });
+                            }
+                            eventData.sender.sendMessage(String("(format_version: " +
+                                playerb.format_version +
+                                ") " +
+                                playerb.name +
+                                (world
+                                    .getAllPlayers()
+                                    .find((p) => p.id == playerb.id) != undefined
+                                    ? " (Online) "
+                                    : " (last seen: " +
+                                        new Date(Number(playerb.lastOnline) +
+                                            Number((player.sendErrorsTo instanceof Player ? player.sendErrorsTo : player).getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) *
+                                                3600000).toLocaleString() +
+                                        ")") +
+                                " Items: \n" +
+                                slotsArray.join("§r§f\n")));
+                        }
+                    })();
                 }
                 catch (e) {
                     player.sendError("§c" + e + e.stack, true);
@@ -6007,12 +6208,78 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^top$/):
                 eventData.cancel = true;
                 try {
-                    system.run(() => { let block = getTopSolidBlock(player.dimension.getBlock({ x: player.location.x, y: Math.min(player.location.y, player.dimension.heightRange.max), z: player.location.z }), player.dimension); if (block != undefined) {
-                        player.teleport({ x: player.location.x, y: block.y + 1, z: player.location.z }, {});
-                    }
-                    else {
-                        eventData.sender.sendMessage("§4No block could be found. ");
-                    } ; eventData.sender.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x + " " + player.location.y + " " + player.location.z).forEach((entity) => { entity.sendMessage("Teleported to highest block at coordinates: " + player.location.x + ", " + player.location.y + ", " + player.location.z); }); });
+                    const flags = evaluateParameters(switchTestB, ["presetText", "f-lp"]).args[1];
+                    system.run(() => {
+                        let block = player.dimension.getBlockBelow({ x: player.x, y: player.dimension.heightRange.max, z: player.z }, { includeLiquidBlocks: flags.l, includePassableBlocks: flags.p });
+                        if (block != undefined) {
+                            player.teleport({
+                                x: player.location.x,
+                                y: block.y + 1,
+                                z: player.location.z,
+                            }, {});
+                        }
+                        else {
+                            eventData.sender.sendMessage("§4No block could be found. ");
+                        }
+                        eventData.sender.sendMessage("Teleported to highest block at coordinates: " +
+                            player.location.x +
+                            ", " +
+                            player.location.y +
+                            ", " +
+                            player.location.z);
+                        targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
+                            " " +
+                            player.location.y +
+                            " " +
+                            player.location.z).forEach((entity) => {
+                            entity.sendMessage("Teleported to highest block at coordinates: " +
+                                player.location.x +
+                                ", " +
+                                player.location.y +
+                                ", " +
+                                player.location.z);
+                        });
+                    });
+                }
+                catch (e) {
+                    player.sendError("§c" + e + e.stack, true);
+                }
+                break;
+            case !!switchTest.match(/^ground$/):
+                eventData.cancel = true;
+                try {
+                    const flags = evaluateParameters(switchTestB, ["presetText", "f-lp"]).args[1];
+                    system.run(() => {
+                        let block = player.dimension.getBlockBelow(player, { includeLiquidBlocks: flags.l, includePassableBlocks: flags.p });
+                        if (block != undefined) {
+                            player.teleport({
+                                x: player.location.x,
+                                y: block.y + 1,
+                                z: player.location.z,
+                            }, {});
+                        }
+                        else {
+                            eventData.sender.sendMessage("§4No block could be found. ");
+                        }
+                        eventData.sender.sendMessage("Teleported to highest block at coordinates: " +
+                            player.location.x +
+                            ", " +
+                            player.location.y +
+                            ", " +
+                            player.location.z);
+                        targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
+                            " " +
+                            player.location.y +
+                            " " +
+                            player.location.z).forEach((entity) => {
+                            entity.sendMessage("Teleported to highest block at coordinates: " +
+                                player.location.x +
+                                ", " +
+                                player.location.y +
+                                ", " +
+                                player.location.z);
+                        });
+                    });
                 }
                 catch (e) {
                     player.sendError("§c" + e + e.stack, true);
@@ -6042,6 +6309,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^thru$/):
                 {
                     eventData.cancel = true;
+                    // player.dimension.getBlockFromRay(player.location, player.getViewDirection(), {includeTypes: ["minecraft:air", "air"]})
                     let la = player.getBlockFromViewDirection();
                     if (!!!la) {
                         player.sendMessageB("§cError: No obstruction found to go through. ");
@@ -6049,20 +6317,75 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     else {
                         let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98));
                         let rot = player.getRotation();
-                        for (let i = 0; i < 100 && !(tryget(() => player.dimension.getBlock(l).isAir) && (tryget(() => player.dimension.getBlock(l).above().isAir) || tryget(() => player.dimension.getBlock(l).below().isAir))) && l.y >= (player.dimension.heightRange.min - 1); i++) {
+                        for (let i = 0; i < 100 &&
+                            !(tryget(() => player.dimension.getBlock(l).isAir) &&
+                                (tryget(() => player.dimension.getBlock(l).above().isAir) ||
+                                    tryget(() => player.dimension.getBlock(l).below().isAir))) &&
+                            l.y >= player.dimension.heightRange.min - 1; i++) {
                             l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot);
                         }
-                        l.y <= (player.dimension.heightRange.min + 2) ? player.sendMessageB("§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. ") : (player.dimension.getBlock(l).isAir && player.dimension.getBlock(l).below().isAir) ? tryrun(() => { try {
-                            srun(() => { player.teleport(roundVector3ToMiddleOfBlockFloorY(player.dimension.getBlock(l).below().location)); });
+                        l.y <= player.dimension.heightRange.min + 2
+                            ? player.sendMessageB("§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. ")
+                            : player.dimension.getBlock(l).isAir &&
+                                player.dimension.getBlock(l).below().isAir
+                                ? tryrun(() => {
+                                    try {
+                                        srun(() => {
+                                            player.teleport(roundVector3ToMiddleOfBlockFloorY(player.dimension.getBlock(l).below()
+                                                .location));
+                                        });
+                                    }
+                                    catch (e) {
+                                        player.sendError("§c" + e + e.stack, true);
+                                    }
+                                })
+                                : player.dimension.getBlock(l).isAir &&
+                                    player.dimension.getBlock(l).above().isAir
+                                    ? tryrun(() => {
+                                        try {
+                                            srun(() => {
+                                                player.teleport(roundVector3ToMiddleOfBlock(player.dimension.getBlock(l).location));
+                                            });
+                                        }
+                                        catch (e) {
+                                            player.sendError("§c" + e + e.stack, true);
+                                        }
+                                    })
+                                    : player.sendMessageB("§cError: Unable to find other side of obstruction. ");
+                    }
+                }
+                break;
+            case !!switchTest.match(/^pthru$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, ["presetText", "f-lsp"]).args;
+                    // player.dimension.getBlockFromRay(player.location, player.getViewDirection(), {includeTypes: ["minecraft:air", "air"]})
+                    let la = player.getBlockFromViewDirection();
+                    if (!!!la) {
+                        player.sendMessageB("§cError: No obstruction found to go through. ");
+                    }
+                    else {
+                        let l = mcMath.Vector3Utils.add(mcMath.Vector3Utils.add(la.block, mcMath.Vector3Utils.scale(mcMath.VECTOR3_ONE, 0.01)), mcMath.Vector3Utils.scale(la.faceLocation, 0.98));
+                        let rot = player.getRotation();
+                        for (let i = 0; i < 100 &&
+                            !(tryget(() => ((b) => b.isAir || (b.isSolid && args.s) || (!b.isSolid && args.p && !b.isAir) || (b.isLiquid && args.l))(player.dimension.getBlock(l)))) &&
+                            l.y >= player.dimension.heightRange.min - 1; i++) {
+                            l = caretNotationC(l, mcMath.VECTOR3_FORWARD, rot);
                         }
-                        catch (e) {
-                            player.sendError("§c" + e + e.stack, true);
-                        } }) : (player.dimension.getBlock(l).isAir && player.dimension.getBlock(l).above().isAir) ? tryrun(() => { try {
-                            srun(() => { player.teleport(roundVector3ToMiddleOfBlock(player.dimension.getBlock(l).location)); });
-                        }
-                        catch (e) {
-                            player.sendError("§c" + e + e.stack, true);
-                        } }) : player.sendMessageB("§cError: Unable to find other side of obstruction. ");
+                        l.y <= player.dimension.heightRange.min + 2
+                            ? player.sendMessageB("§cError: The other side of this obstruction is void, if you want to be able to go to the other side even if it is in the void then just use \\vthru. ")
+                            : ((b) => b.isAir || (b.isSolid && args.s) || (!b.isSolid && args.p) || (b.isLiquid && args.l))(player.dimension.getBlock(l))
+                                ? tryrun(() => {
+                                    try {
+                                        srun(() => {
+                                            player.teleport(roundVector3ToMiddleOfBlockFloorY(player.dimension.getBlock(l).location));
+                                        });
+                                    }
+                                    catch (e) {
+                                        player.sendError("§c" + e + e.stack, true);
+                                    }
+                                })
+                                : player.sendMessageB("§cError: Unable to find other side of obstruction. ");
                     }
                 }
                 break;
@@ -6591,7 +6914,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 {
                     eventData.cancel = true;
                     system.run(() => {
-                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "number"]).args;
+                        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector" /*, "number"*/]).args;
                         if (switchTestB.split(/\s+/g)[1]?.trim() == "~") {
                             args[1] = player.name;
                         }
@@ -6652,25 +6975,31 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^listbans$/) || !!switchTest.match(/^getbans$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessageB(ban.getBans().allBans.map(b => `${b.type == "id" ? "ID Ban: " : "Name Ban: "}${b.type == "id" ? b.playerId : b.playerName}, ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
+                    player.sendMessageB(ban.getBans().allBans.map(b => `${b.type == "id" ? "ID Ban: " : "Name Ban: "}${b.type == "id" ? b.playerId : b.playerName}, ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
                 }
                 break;
             case !!switchTest.match(/^listidbans$/) || !!switchTest.match(/^getidbans$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessageB(ban.getBans().idBans.map(b => `${b.playerId}, Banned On: ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
+                    player.sendMessageB(ban.getBans().idBans.map(b => `${b.playerId}, Banned On: ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
                 }
                 break;
             case !!switchTest.match(/^listnamebans$/) || !!switchTest.match(/^getnamebans$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessageB(ban.getBans().nameBans.map(b => `${b.playerName}, Banned On: ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
+                    player.sendMessageB(ban.getBans().nameBans.map(b => `${b.playerName}, Banned On: ${new Date(Number(b.banDate) + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}, Time Remaining: ${b.timeRemaining.days}d, ${b.timeRemaining.hours}h ${b.timeRemaining.minutes}m ${b.timeRemaining.seconds}s ${b.timeRemaining.milliseconds}ms`).join("§r§f\n"));
                 }
                 break;
             case !!switchTest.match(/^version$/) || !!switchTest.match(/^ver$/):
                 {
                     eventData.cancel = true;
                     player.sendMessageB(format_version);
+                }
+                break;
+            case !!switchTest.match(/^entityscaleversion$/) || !!switchTest.match(/^esver$/):
+                {
+                    eventData.cancel = true;
+                    player.sendMessageB((entity_scale_format_version != null ? entity_scale_format_version : !!tryget(() => new ItemStack("andexsa:furnace_minecart")) ? "Unknown Version" : "Entity Scale Not Detected") + (multipleEntityScaleVersionsDetected ? "<MULTIPLE VERSIONS WERE DETECTED!>" : ""));
                 }
                 break;
             case !!switchTest.match(/^despawn$/):
@@ -7086,6 +7415,24 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     });
                 }
                 break;
+            case !!switchTest.match(/^stopalldbintervals$/):
+                eventData.cancel = true;
+                try {
+                    Object.values(repeatingIntervals).forEach(v => tryrun(() => system.clearRun(v)));
+                }
+                catch (e) {
+                    player.sendError("§c" + e + e.stack, true);
+                }
+                break;
+            case !!switchTest.match(/^stopallsaintervals$/):
+                eventData.cancel = true;
+                try {
+                    player.runCommandAsync("/scriptevent andexsa:clearRepeatingIntervals");
+                }
+                catch (e) {
+                    player.sendError("§c" + e + e.stack, true);
+                }
+                break;
             case !!switchTest.match(/^datapickblock$/) || !!switchTest.match(/^dpb$/):
                 eventData.cancel = true;
                 try {
@@ -7168,18 +7515,18 @@ ${command.dp}ifill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Blo
 ${command.dp}ifill <from: x y z> <to: x y z> <tileName: Block> [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> clear [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> drain
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
@@ -7192,12 +7539,12 @@ ${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Bl
 ${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -7800,18 +8147,18 @@ ${command.dp}itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Bl
 ${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> clear [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> drain
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
@@ -7824,12 +8171,12 @@ ${command.dp}itfill <center: x y z> <radius: float> <length: float> <tileName: B
 ${command.dp}itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -8696,18 +9043,18 @@ ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: 
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> clear [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> drain
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
@@ -8720,12 +9067,12 @@ ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length:
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -12046,15 +12393,15 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         system.run(() => {
                             try {
                                 if (undoClipboard.ids.length == 0) {
-                                    player.sendMessageB("§cNothing to undo. ");
+                                    player.sendMessageB("§cNothing to undo.");
                                 }
                                 else if (!(args[1]?.t ?? false)) {
                                     try {
                                         if (undoClipboard.undo(undefined, undefined, !(args[1]?.k ?? false)) == 0) {
-                                            player.sendMessageB("§cNothing to undo. ");
+                                            player.sendMessageB("§cNothing to undo.");
                                         }
                                         else {
-                                            player.sendMessageB("Successfully reverted the area. ");
+                                            player.sendMessageB("Successfully reverted the area.");
                                         }
                                     }
                                     catch (e) {
@@ -12189,18 +12536,18 @@ ${command.dp}\\itfill <skygridSize: float> <tileName: Block> <mode: skygrid|inve
 ${command.dp}\\itfill <tileName: Block> [clearContainers: boolean]
 ${command.dp}\\itfill clear [clearContainers: boolean]
 ${command.dp}\\itfill drain
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
-${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}\\itfill <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\itfill <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
+${command.dp}\\itfill <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\itfill <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
 ${command.dp}\\itfill <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\itfill <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
@@ -12213,12 +12560,12 @@ ${command.dp}\\itfill <length: float> <tileName: Block> <blockStates: block stat
 ${command.dp}\\itfill <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\itfill <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -12620,16 +12967,16 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 } });
                                 break;
                             case "tunnel":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "floor":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "ceilling":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "diamond":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "hollowovoid":
                                 system.run(() => { let ta; try {
@@ -13032,7 +13379,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 } });
                                 break;
                             case "hourglass":
-                                player.sendMessageB("§eComing Soon! ");
+                                player.sendMessageB("§eComing Soon!");
                                 break;
                             case "cube":
                                 system.run(() => { let ta; try {
@@ -13087,18 +13434,18 @@ ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block>
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> clear [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> drain
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> <replaceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: circlex|circley|circlez|circlexy|circleyz|circlexyz|sphere|semisphere> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> <mode: hollowsphere|dome> [clearContainers: boolean]
@@ -13111,12 +13458,12 @@ ${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <blo
 ${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -14496,7 +14843,7 @@ ${command.dp}snapshot list`);
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args;
                     !args[1].includes(":") ? args[1] = "minecraft:" + args[1] : undefined;
-                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
+                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `Data value for enchantment transfer smithing template is ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2])))}.`);
                 }
                 break;
             case !!switchTest.match(/^gettransformst$/):
@@ -14504,8 +14851,8 @@ ${command.dp}snapshot list`);
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, ["presetText", "string", "number"]).args;
                     !args[1].includes(":") ? args[1] = "minecraft:" + args[1] : undefined;
-                    player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}`);
-                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v.data && !!!args[2]) || (v.data == args[2])))}.`);
+                    player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2])))}`);
+                    player.sendMessageB(listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2]))) == -1 ? "§cError: Could not find a suitable data value for enchantment transfer smithing template to create the specified item with the specified data value." : `You have been given an enchantment transfer smithing template with the data value ${listoftransformrecipes.findIndex(v => v.id == args[1] && ((!!!v["data"] && !!!args[2]) || (v["data"] == args[2])))}.`);
                 }
                 break;
             case !!switchTest.match(/^transformresultatdvindex$/):
@@ -15233,6 +15580,16 @@ export function evaluateParameters(commandstring, parameters) {
         switch (true) {
             case paramEval.trim() == "":
                 {
+                    if (!!p.type.match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                        argumentsa.push("");
+                    }
+                    else if (!!p.type.match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                        argumentsa.push(Object.fromEntries(p.type.slice(2).split("").map(v => [v, false])));
+                    }
+                    else {
+                        argumentsa.push(null);
+                    }
+                    ;
                     return;
                 }
                 break;
@@ -15279,6 +15636,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
+                            argumentsa.push(null);
                         }
                         ;
                     }
@@ -15301,6 +15659,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
+                            argumentsa.push(null);
                         }
                         ;
                     }
@@ -15357,6 +15716,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15374,6 +15734,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
+                            argumentsa.push(null);
                         }
                         ;
                     }
@@ -15385,6 +15746,7 @@ export function evaluateParameters(commandstring, parameters) {
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
+                            argumentsa.push(null);
                         }
                         ;
                     }
@@ -15399,6 +15761,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15412,6 +15775,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15425,6 +15789,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15441,6 +15806,7 @@ export function evaluateParameters(commandstring, parameters) {
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
+                                argumentsa.push(null);
                             }
                             ;
                         }
@@ -15458,6 +15824,7 @@ export function evaluateParameters(commandstring, parameters) {
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
+                                argumentsa.push(null);
                             }
                             ;
                         }
@@ -15469,6 +15836,7 @@ export function evaluateParameters(commandstring, parameters) {
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
+                                argumentsa.push(null);
                             }
                             ;
                         }
@@ -15487,6 +15855,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15503,6 +15872,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15519,6 +15889,7 @@ export function evaluateParameters(commandstring, parameters) {
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
+                        argumentsa.push(null);
                     }
                     ;
                 }
@@ -15543,7 +15914,17 @@ export function evaluateParametersOldB(commandstring, parameters) {
     if(typeof parameters[0] == "string"){parametersb = parameters.map(v=>({type: v}))}else{parametersb = parameters}*/
     parameters.map(v => (typeof v == "string" ? (v == "Vectors" ? { type: v, vectorCount: 3, maxLength: undefined } : { type: v, vectorCount: undefined, maxLength: undefined }) : v?.type == "Vectors" ? v : v)).forEach((p, i) => {
         if (paramEval.trim() == "") {
-            return;
+            if (!!p.type.match(/^-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                argumentsa.push("");
+            }
+            else if (!!p.type.match(/^f-[a-zA-Z0-9!@#$%^&*<>,.~]+$/)) {
+                argumentsa.push(Object.fromEntries(p.type.slice(2).split("").map(v => [v, false])));
+            }
+            else {
+                argumentsa.push(null);
+                return;
+            }
+            ;
         }
         else {
             if (p.type == "presetText") {
@@ -15580,6 +15961,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                     }
                                     catch (e) {
                                         ea.push([e, e.stack]);
+                                        argumentsa.push(null);
                                     }
                                     ;
                                 }
@@ -15601,6 +15983,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                         }
                                         catch (e) {
                                             ea.push([e, e.stack]);
+                                            argumentsa.push(null);
                                         }
                                         ;
                                     }
@@ -15654,6 +16037,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                 }
                                                 catch (e) {
                                                     ea.push([e, e.stack]);
+                                                    argumentsa.push(null);
                                                 }
                                                 ;
                                             }
@@ -15670,6 +16054,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
                                                         }
                                                         ;
                                                     }
@@ -15681,6 +16066,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
                                                         }
                                                         ;
                                                     }
@@ -15694,6 +16080,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                         }
                                                         catch (e) {
                                                             ea.push([e, e.stack]);
+                                                            argumentsa.push(null);
                                                         }
                                                         ;
                                                     }
@@ -15725,6 +16112,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                                 }
                                                                 catch (e) {
                                                                     ea.push([e, e.stack]);
+                                                                    argumentsa.push(null);
                                                                 }
                                                                 ;
                                                             }
@@ -15741,6 +16129,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                                 }
                                                                 catch (e) {
                                                                     ea.push([e, e.stack]);
+                                                                    argumentsa.push(null);
                                                                 }
                                                                 ;
                                                             }
@@ -15756,6 +16145,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                                     }
                                                                     catch (e) {
                                                                         ea.push([e, e.stack]);
+                                                                        argumentsa.push(null);
                                                                     }
                                                                     ;
                                                                 }
@@ -15771,6 +16161,7 @@ export function evaluateParametersOldB(commandstring, parameters) {
                                                                         }
                                                                         catch (e) {
                                                                             ea.push([e, e.stack]);
+                                                                            argumentsa.push(null);
                                                                         }
                                                                         ;
                                                                     }

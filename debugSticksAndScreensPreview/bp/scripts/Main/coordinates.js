@@ -1,6 +1,6 @@
 import { Block, Dimension, DimensionType, Player, world, Entity, system, BlockVolume, CompoundBlockVolume, BoundingBoxUtils, Direction, StructureSaveMode, Structure, BlockPermutation } from "@minecraft/server";
 import { format_version, config, dimensionsb, dimensionsc } from "../Main";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -9,7 +9,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "../Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
@@ -42,48 +42,54 @@ spawnprot;
 mcMath;
 export const coordinates_format_version = "7.0.0";
 export class Vector extends mcMath.Vector3Builder {
-    constructor() {
-        super(...arguments);
-        this.zero = mcMath.VECTOR3_ZERO;
-        this.one = mcMath.VECTOR3_ONE;
-        this.up = mcMath.VECTOR3_UP;
-        this.down = mcMath.VECTOR3_DOWN;
-        this.north = mcMath.VECTOR3_NORTH;
-        this.south = mcMath.VECTOR3_SOUTH;
-        this.east = mcMath.VECTOR3_EAST;
-        this.west = mcMath.VECTOR3_WEST;
-        this.right = mcMath.VECTOR3_RIGHT;
-        this.left = mcMath.VECTOR3_LEFT;
-        this.back = mcMath.VECTOR3_BACK;
-        this.forward = mcMath.VECTOR3_FORWARD;
-    }
+    zero = mcMath.VECTOR3_ZERO;
+    one = mcMath.VECTOR3_ONE;
+    up = mcMath.VECTOR3_UP;
+    down = mcMath.VECTOR3_DOWN;
+    north = mcMath.VECTOR3_NORTH;
+    south = mcMath.VECTOR3_SOUTH;
+    east = mcMath.VECTOR3_EAST;
+    west = mcMath.VECTOR3_WEST;
+    right = mcMath.VECTOR3_RIGHT;
+    left = mcMath.VECTOR3_LEFT;
+    back = mcMath.VECTOR3_BACK;
+    forward = mcMath.VECTOR3_FORWARD;
+    static zero = mcMath.VECTOR3_ZERO;
+    static one = mcMath.VECTOR3_ONE;
+    static up = mcMath.VECTOR3_UP;
+    static down = mcMath.VECTOR3_DOWN;
+    static north = mcMath.VECTOR3_NORTH;
+    static south = mcMath.VECTOR3_SOUTH;
+    static east = mcMath.VECTOR3_EAST;
+    static west = mcMath.VECTOR3_WEST;
+    static right = mcMath.VECTOR3_RIGHT;
+    static left = mcMath.VECTOR3_LEFT;
+    static back = mcMath.VECTOR3_BACK;
+    static forward = mcMath.VECTOR3_FORWARD;
+    static add = mcMath.Vector3Utils.add;
+    static clamp = mcMath.Vector3Utils.clamp;
+    static cross = mcMath.Vector3Utils.cross;
+    static distance = mcMath.Vector3Utils.distance;
+    static dot = mcMath.Vector3Utils.dot;
+    static equals = mcMath.Vector3Utils.equals;
+    static floor = mcMath.Vector3Utils.floor;
+    static lerp = mcMath.Vector3Utils.lerp;
+    static magnitude = mcMath.Vector3Utils.magnitude;
+    static normalize = mcMath.Vector3Utils.normalize;
+    static scale = mcMath.Vector3Utils.scale;
+    static slerp = mcMath.Vector3Utils.slerp;
+    static subtract = mcMath.Vector3Utils.subtract;
 }
-Vector.zero = mcMath.VECTOR3_ZERO;
-Vector.one = mcMath.VECTOR3_ONE;
-Vector.up = mcMath.VECTOR3_UP;
-Vector.down = mcMath.VECTOR3_DOWN;
-Vector.north = mcMath.VECTOR3_NORTH;
-Vector.south = mcMath.VECTOR3_SOUTH;
-Vector.east = mcMath.VECTOR3_EAST;
-Vector.west = mcMath.VECTOR3_WEST;
-Vector.right = mcMath.VECTOR3_RIGHT;
-Vector.left = mcMath.VECTOR3_LEFT;
-Vector.back = mcMath.VECTOR3_BACK;
-Vector.forward = mcMath.VECTOR3_FORWARD;
-Vector.add = mcMath.Vector3Utils.add;
-Vector.clamp = mcMath.Vector3Utils.clamp;
-Vector.cross = mcMath.Vector3Utils.cross;
-Vector.distance = mcMath.Vector3Utils.distance;
-Vector.dot = mcMath.Vector3Utils.dot;
-Vector.equals = mcMath.Vector3Utils.equals;
-Vector.floor = mcMath.Vector3Utils.floor;
-Vector.lerp = mcMath.Vector3Utils.lerp;
-Vector.magnitude = mcMath.Vector3Utils.magnitude;
-Vector.normalize = mcMath.Vector3Utils.normalize;
-Vector.scale = mcMath.Vector3Utils.scale;
-Vector.slerp = mcMath.Vector3Utils.slerp;
-Vector.subtract = mcMath.Vector3Utils.subtract;
 export class WorldPosition {
+    x;
+    y;
+    z;
+    rotx;
+    roty;
+    dimension;
+    entity;
+    block;
+    sendErrorsTo;
     constructor(location, rotation, dimension, entity, block, sendErrorsTo) {
         this.location = location;
         this.rotation = rotation;
@@ -702,7 +708,9 @@ export class undoClipboard {
             return 0;
         }
         ;
-        this.saveIds(saveTime).map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => world.structureManager.place(v.id, dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))] ?? dimensionsb["minecraft:overworld"], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`)), options));
+        this.saveIds(saveTime).map(v => ({ id: v, x: Number(v.split(",")[1] ?? 0) * sizes.x, y: Number(v.split(",")[2] ?? 0) * sizes.y, z: Number(v.split(",")[3] ?? 0) * sizes.z })).forEach(v => {
+            world.structureManager.place(v.id, dimensionsb[String(world.getDynamicProperty(`andexdb:undoclipboardd;${saveTime}`))] ?? dimensionsb["minecraft:overworld"], Vector.add(v, world.getDynamicProperty(`andexdb:undoclipboard;${saveTime}`)), options);
+        });
         if (clearSave) {
             this.saveIds(saveTime).forEach(v => { this.clearTime(saveTime); });
         }
@@ -726,6 +734,7 @@ export class AreaBackups {
     static createAreaBackup(id, dimension, area) { world.setDynamicProperty("areabackup:" + id.replaceAll(";", "").replaceAll(",", ""), JSON.stringify({ from: area.from, to: area.to, dimension: dimension.id })); return new AreaBackup(id); }
 }
 export class AreaBackup {
+    id;
     constructor(id) {
         this.id = id;
     }

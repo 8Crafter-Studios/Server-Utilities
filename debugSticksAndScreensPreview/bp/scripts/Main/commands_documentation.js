@@ -22,14 +22,16 @@ export var commanddescriptions;
     commanddescriptions["copyitem"] = "Copies the item in your hand to the specified slot of the specified player's inventory. ";
     commanddescriptions["createexplosion"] = "Creates an explosion. ";
     commanddescriptions["datapickblock"] = "Pick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. ";
+    commanddescriptions["debugstickdyingmode"] = "Turns debug stick dying mode on or off, which allows you to dye debug sticks in a cauldron.";
     commanddescriptions["defaulthealth"] = "Sets the health of entities to their default health values. ";
     commanddescriptions["drain"] = "Drains liquids in the specified radius. ";
     commanddescriptions["dupeitem"] = "Duplicates teh item in your hand. ";
     commanddescriptions["einvsee"] = "Displays the contents of the specified entity's inventory. ";
-    commanddescriptions["einvseeb"] = "The original version of the \\einvsee command that does not scan equipment slots. ";
-    commanddescriptions["ecinvsee"] = "Scans a player's ender chest and displays the contents of it. ";
-    commanddescriptions["ecinvseec"] = "Scans a player's ender chest and displays the contents of it. ";
-    commanddescriptions["enderchest"] = "Spawns an ender chest where you are standing. ";
+    commanddescriptions["einvseeb"] = "The original version of the \\einvsee command that does not scan equipment slots.";
+    commanddescriptions["ecinvsee"] = "Scans a player's ender chest and displays the contents of it.";
+    commanddescriptions["ecinvseec"] = "Scans a player's ender chest and displays the contents of it.";
+    commanddescriptions["enchantmentbarrels"] = "Places a structure containing Smithing Table Enchanted Books with every enchantment of the specified level.";
+    commanddescriptions["enderchest"] = "Spawns an ender chest where you are standing.";
     // special a that causes text to use noto sans instead of mojangles: а
     commanddescriptions["eval"] = "Runs the specified JavaScript / Script API code. This can be very useful for doing things such as running more advanced commands with JavaScript variables and conditions, or running commands with JavaScript escape codes(for example to put multiple lines of text in the name of an entity or use special unicode characters in commands without needing to copy and paste them into your game). (Note: The names of the server modules are mcServer for the minecraft/Server module, mcServerUI for the minecraft/ServerUI module, and GameTest for the minecraft/GameTest module). Here are some examples:\n\nSend a tellraw command message:\n\\eval world.sendMessage(\"Example message\\nNew Line\\nSender's Name: \" + player.name + \"\\nToken Emoji: \\uE105\")\n\nGive all players health boost with the level equal to their XP level:\n\\eval world.getAllPlayers().forEach((p)=>{p.addEffect(\"health_boost\", 200, {amplifier: player.level, showParticles: false}); })";
     commanddescriptions["execute"] = "Executes a command on behalf of one or more entities. ";
@@ -53,6 +55,7 @@ export var commanddescriptions;
     commanddescriptions["gmr"] = "Sets your gamemode to a random gamemode. ";
     commanddescriptions["gms"] = "Sets your gamemode to survival. ";
     commanddescriptions["gohome"] = "Warps to a home. ";
+    commanddescriptions["ground"] = "Teleports you down to the closest block below your feet.";
     commanddescriptions["h"] = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ";
     commanddescriptions["h#"] = "Swaps your hotbar with the specified hotbar preset, optionally specifying a row of the container block to swap your hotbar with. ";
     commanddescriptions["heal"] = "Heals entities. ";
@@ -147,8 +150,9 @@ export var commanddescriptions;
     //"tempban" = "Temporarily bans a player. ",
     commanddescriptions["terminal"] = "Opens up the command runner/terminal menu. ";
     commanddescriptions["timezone"] = "Sets your timezone to the specific UTC offset in hours. ";
-    commanddescriptions["thru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at. ";
-    commanddescriptions["vthru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void. ";
+    commanddescriptions["thru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at.";
+    commanddescriptions["pthru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at. Even if it is only a one block tall gap at the other end.";
+    commanddescriptions["vthru"] = "Teleports to the other side of the wall/floor/ceilling that you are looking at, even if it would put you into the void.";
     commanddescriptions["top"] = "Teleports on top of the highest solid block at your x and z coordinates. ";
     commanddescriptions["tpa"] = "Requests to teleport to the specified player. ";
     commanddescriptions["tpaccept"] = "Accepts a player's teleport request. ";
@@ -280,12 +284,24 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>`,
     "copyitemfrom": `${command.dp}copyitemfrom <fromSlot: int|{head}|{chest}|{legs}|{feet}|{mainhand}|{offhand}> [toSlot: (int|{head}|{chest}|{legs}|{feet}|{mainhand}|{offhand})[?=~]] [fromPlayer: (playerName|~)[?=~]] [toPlayer: (playerName|~)[?=~]]`,
     "createexplosion": `${command.dp}createexplosion <location: x y z> [dimension: string] [radius: float] [allowUnderwater: bool] [breaksBlocks: bool] [causesFire: bool] [source: target]`,
     "datapickblock": `${command.dp}datapickblock`,
+    "debugstickdyingmode": `${command.dp}debugstickdyingmode [enabled: bool[?=toggle]]`,
+    "debugsticksdyingmode": `${command.dp}debugsticksdyingmode [enabled: bool[?=toggle]]`,
+    "dsdm": `${command.dp}dsdm [enabled: bool[?=toggle]]`,
+    "defaulthealth": `${command.dp}defaulthealth [target: target[?=@s,allowMultiple=true]]`,
+    "dfthlth": `${command.dp}dfthlth [target: target[?=@s,allowMultiple=true]]`,
+    "dfthealth": `${command.dp}dfthealth [target: target[?=@s,allowMultiple=true]]`,
+    "dflthealth": `${command.dp}dflthealth [target: target[?=@s,allowMultiple=true]]`,
     "drain": `${command.dp}drain [radius: number]`,
     "dupeitem": `${command.dp}dupeitem [slot: int|head|chest|legs|feet|mainhand|offhand|~]`,
-    "einvsee": `${command.dp}einvsee <targetSelector: target>`,
+    "eb": `${command.dp}eb [level: number[?=0]]`,
+    "ec": `${command.dp}ec`,
     "ecinvsee": `ecinvsee [target: string|~]`,
     "ecinvseec": `ecinvseec [target: string|~]`,
+    "einvsee": `${command.dp}einvsee <targetSelector: target>`,
+    "enchantmentbarrels": `${command.dp}enchantmentbarrels [level: number[?=0]]`,
     "enderchest": `${command.dp}enderchest`,
+    "entityscaleversion": `${command.dp}entityscaleversion`,
+    "esver": `${command.dp}esver`,
     "eval": `${command.dp}eval <ScriptAPICode: JavaScript>`,
     "execute": `${command.dp}execute [-fsqbc] ...
 ${command.dp}... align <axes: string> ...
@@ -388,6 +404,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "gmr": `${command.dp}gmr`,
     "gms": `${command.dp}gms`,
     "gohome": `${command.dp}gohome <homeName: text>`,
+    "ground": `${command.dp}ground [-lp]`,
     "h": `${command.dp}h <presetId: float> [containerRow: float[?=0]]`,
     "h#": `${command.dp}h<presetId: float> [containerRow: float[?=0]]`,
     "heal": `${command.dp}heal [targets: target[allowMultiple=true]]`,
@@ -435,12 +452,12 @@ ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <skygridSize: 
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> <tileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> clear [clearContainers: boolean]
 ${command.dp}idtfill <from: x y z> <to: x y z> <integrity: float> drain
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
@@ -459,12 +476,12 @@ ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length:
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}idtfill <center: x y z> <integrity: float> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity: float> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -480,11 +497,11 @@ ${command.dp}ifill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Blo
 ${command.dp}ifill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Block> {blockStates: block states} <mode: {skygrid}|{inverseskygrid}> [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> clear [clearContainers: boolean]
 ${command.dp}ifill <from: x y z> <to: x y z> drain
-${command.dp}ifill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> {blockStates: block states} circle {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> {blockStates: block states} circle {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: float> <tileName: Block> {blockStates: block states} <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: float> <thickness: float> <tileName: Block> {blockStates: block states} <mode: hollowsphere|dome> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: float> <length: float> <tileName: Block> {blockStates: block states} <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
-${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> {blockStates: block states} <mode: tunnel|cylinder> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
+${command.dp}ifill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> {blockStates: block states} <mode: tunnel|cylinder> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
 ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> {blockStates: block states} hollowovoid {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]`,
     "ifillb": `${command.dp}ifillb <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
     "ifillc": `${command.dp}ifillc <from: x y z> <to: x y z> <tileName: Block> {blockStates: block states} [replaceTileName: Block] [replaceBlockStates: block states]`,
@@ -566,12 +583,12 @@ ${command.dp}itfill <from: x y z> <to: x y z> <skygridSize: float> <tileName: Bl
 ${command.dp}itfill <from: x y z> <to: x y z> <tileName: Block> [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> clear [clearContainers: boolean]
 ${command.dp}itfill <from: x y z> <to: x y z> drain
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
@@ -590,12 +607,12 @@ ${command.dp}itfill <center: x y z> <radius: float> <length: float> <tileName: B
 ${command.dp}itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}itfill <center: x y z> <radius: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -726,6 +743,8 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
     "terminal": `${command.dp}terminal`,
     "transferitem": `${command.dp}transferitem <transferItemToPlayer: target>`,
     "thru": `${command.dp}thru`,
+    "pthru": `${command.dp}pthru`,
+    "vthru": `${command.dp}vthru`,
     "timezone": `${command.dp}timezone [UTCOffsetInHours: float]`,
     "top": `${command.dp}top`,
     "tpa": `${command.dp}tpa <player: target|playerName|string>`,
@@ -781,7 +800,7 @@ ${command.dp}snapshot listareas
 ${command.dp}snapshot list`,
     "\\\\cut": `${command.dp}\\cut [-meb]`,
     "\\\\copy": `${command.dp}\\copy [-meb]`,
-    "\\\\paste": `${command.dp}\\paste [-webxz] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
+    "\\\\paste": `${command.dp}\\paste [-webxzh] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
     "\\\\undo": `${command.dp}\\undo [-kt]`,
     "\\\\protectarea": `${command.dp}\\protectarea <areaType: string> <name: string> [mode: 0|1(default=0)] [icon_path: string]`,
     "\\\\backuparea": `${command.dp}\\backuparea <id: string>`,
@@ -815,14 +834,8 @@ ${command.dp}snapshot list`,
     "\\\\stack": `${command.dp}\\stack [stackCount: int]`,
     "\\\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
     "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [mask: mask]`,
-    "\\\\idtfill": `${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <blockStates: block states> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block|random> <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> <reaplceTileName: Block> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block|random> [ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <tileName: Block|random> [clearContainers: boolean]
+    "\\\\idtfill": `${command.dp}\\idtfill <integrity: float> <tileName: Block> {blockStates: block states} <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <tileName: Block|random> {blockStates: block states} [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: {skygrid}|{inverseskygrid}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: {skygrid}|{inverseskygrid}> <reaplceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: {skygrid}|{inverseskygrid}> [clearContainers: boolean]
@@ -833,12 +846,12 @@ ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block>
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> clear [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> drain
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
@@ -857,12 +870,12 @@ ${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <blo
 ${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\idtfill <integrity: float> <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\idtfill <integrity: float> <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\idtfill <offset: x y z> <integrity: float> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -887,12 +900,12 @@ ${command.dp}\\itfill <skygridSize: float> <tileName: Block> <mode: {skygrid}|{i
 ${command.dp}\\itfill <tileName: Block> [clearContainers: boolean]
 ${command.dp}\\itfill clear [clearContainers: boolean]
 ${command.dp}\\itfill drain
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> circle [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> circle [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> circle [clearContainers: boolean]
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\itfill <tileName: Block> <blockStates: block states> <mode: {circlex}|{circley}|{circlez}|{circlexy}|{circleyz}|{circlexyz}|{sphere}|{semisphere}> [clearContainers: boolean]
@@ -911,12 +924,12 @@ ${command.dp}\\itfill <length: float> <tileName: Block> <blockStates: block stat
 ${command.dp}\\itfill <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> <replaceTileName: Block> [clearContainers: boolean]
 ${command.dp}\\itfill <length: float> <tileName: Block> <mode: cylinderx|cylindery|cylinderz|cylinderxy|cylinderyz|cylinderxz|cylinderxyz> [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
-${command.dp}\\itfill <length: float> <axis: x|y|z|xy|yz|xz|xyz> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <blockStates: block states> <mode: tunnel|cylinder> [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [replaceTileName: Block] [clearContainers: boolean]
+${command.dp}\\itfill <length: float> <axis: {x}|{y}|{z}|{xy}|{yz}|{xz}|{xyz}> <tileName: Block> <mode: tunnel|cylinder> [clearContainers: boolean]
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [replaceBlockStates: block states] [clearContainers: boolean]
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [replaceTileName: Block] [clearContainers: boolean]
 ${command.dp}\\itfill <offset: x y z> <thickness: float> <tileName: Block> <blockStates: block states> hollowovoid [clearContainers: boolean]
@@ -972,15 +985,19 @@ b: don't include blocks`,
 e: don't include entities
 b: don't include blocks
 x: mirror structure x axis
-z: mirror structure z axis`,
-    "\\\\undo": `k: don't remove the undo save point after finishing the undo
-t: spawn in a ticking area before running the undo command
+z: mirror structure z axis
 h: makes the copied structure be pasted at your current location instead of the selected location`,
+    "\\\\undo": `k: don't remove the undo save point after finishing the undo
+t: spawn in a ticking area before running the undo command`,
     "execute": `f: sends the feedback of the commands to the source of the execute command instead of the targeted entity
 s: silences all command feedback
 q: runs the commands in silent mode so that each entity does not send a notification in the chat to players with the getAllChatCommands tag
 b: specifies that the command that will be run by the execute command is a built-in command, specifying this may reduce the lag caused by the command, if you are using this to run a built-in command in a repeating command block then this should be used
-c: specifies that the command that will be run by the execute command is a custom command, specifying this may reduce the lag caused by the command, if you are using this to run a custom command in a repeating command block then this should be used`
+c: specifies that the command that will be run by the execute command is a custom command, specifying this may reduce the lag caused by the command, if you are using this to run a custom command in a repeating command block then this should be used`,
+    "ground": `l: include liquid blocks in the list of blocks that count as ground blocks
+p: include passable blocks in the list of blocks that count as ground blocks`,
+    "top": `l: include liquid blocks in the list of blocks that count as ground blocks
+p: include passable blocks in the list of blocks that count as ground blocks`
 };
 export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .align - §oCenters you on the x and z axis on the block you are currently at. §r
@@ -1003,11 +1020,14 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .copyitem - §oCopies the item in your hand to the specified slot of the specified player's inventory. §r
 .createexplosion - §oCreates an explosion. §r
 .datapickblock - §oPick Blocks the block that your are looking at while copying the nbt data of the block as well, just like using the pick block button while holding CTRL on your keyboard. §r
+.debugstickdyingmode - §oTurns debug stick dying mode on or off, which allows you to dye debug sticks in a cauldron.§r
 .defaulthealth - §oSets the health of entities to their default health values. §r
 .drain - §oDrains liquids in the specified radius. §r
 .dupeitem - §oDuplicates teh item in your hand. §r
 .einvsee - §oDisplays the contents of the specified entity's inventory. §r
 .ecinvsee - §oScans a player's ender chest and displays the contents of it. §r
+.enchantmentbarrels - §oPlaces a structure containing Smithing Table Enchanted Books with every enchantment of the specified level.§r
+.enderchest - §oSpawns an ender chest where you are standing.§r
 .eval - §oRuns the specified JavaScript Script/ScriptAPI Code. §r
 .execute - §oExecutes a command on behalf of one or more entities. §r
 .extinguish - §oExtinguishes fire in the specified radius. §r
@@ -1029,6 +1049,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .gmr - §oSets your gamemode to a random gamemode. §r
 .gms - §oSets your gamemode to survival. §r
 .gohome - §oWarps to a home.§r
+.ground - §oTeleports you down to the closest block below your feet.§r
 .h# - §oSwaps your hotbar with the specified hotbar preset.§r
 .heal - §oHeals entities.§r
 .health - §oModifies the health of entities.§r
@@ -1073,6 +1094,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .offlineuuidinvsee - §oDisplays the saved contents of the inventory of the player with the specified UUID. §r
 .playershopsystemsettings - §oOpens up the player shop system settings menu. §r
 .printlayers - §oDisplays a list of all the blocks at your specified x and z coordinates. §r
+.pthru - §rTeleports to the other side of the wall/floor/ceilling that you are looking at. Even if it is only a one block tall gap at the other end.§r
 .rank - §oManages ranks stored in players. §r
 .remexp - §oRemoves explosive blocks in the specified radius. §r
 .remotheritemenchants - §oRemoves all enchantment types from an item except for the item types specified. §r
@@ -1095,12 +1117,11 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .structure - §oManages structures. §r
 .summon - §oSummons entities. §r
 .swapinventories - §oSwaps the inventories of 2 players. §r
-.swapinventoriesb - §oSwaps the inventories of 2 players. §r
 .swapitems - §oSwaps an item in a slot of one player's inventory with another slot of another player's inventory. §r
 .takeitem - §oSteals an item from another player's inventory and puts it into yoru inventory. §r
 .terminal - §oOpens up the command runner/terminal menu. §r
 .timezone - §oSets your timezone to the specific UTC offset in hours. §r
-.thru - §oTeleports on top of the highest solid block at your x and z coordinates. §r
+.thru - §oTeleports to the other side of the wall/floor/ceilling that you are looking at. §r
 .top - §oTeleports on top of the highest solid block at your x and z coordinates. §r
 .tpa - §oRequests to teleport to the specified player. §r
 .tpaccept - §oAccepts a player's teleport request. §r
@@ -1110,7 +1131,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .up - §oTeleports up the specified number of blocks and places glass below you if placeGlass is not set to false. 
 .ver - §oDisplays the format version of the add-on. §r
 .version - §oDisplays the format version of the add-on. §r
-.vthru - §oTeleports to teh other side of the wall/floor/ceilling that you are looking at. §r
+.vthru - §oTeleports to the other side of the wall/floor/ceilling that you are looking at, and allows for teleporting into the void. §r
 .viewplayershops - §oOpens up the list of public player shops. §r
 .viewservershops - §oOpens up the list of public server shops. §r
 .warp - §oWarps to the specified global warp. §r
@@ -1188,8 +1209,9 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .iogfill - §oFills all or parts of a reigon with a specific block, with no limits, uses a generator function so it never will produce a script hang error but it is extremely slow, can use any block type including NBT Editor only ones. §r§8
 .itfillc - §oFills all or parts of a reigon with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, can use any block type including NBT Editor only ones. §r§8
 .scanenderchestc - §oScans a player's ender chest and displays the contents of it. §r§8
-.scnendchstc - §oScans a player's ender chest and displays the contents of it. §r§8`;
-export const helpUpcomingCommandChatCommandsList = `§2Chat Commands List§r
+.scnendchstc - §oScans a player's ender chest and displays the contents of it. §r§8
+.swapinventoriesb - §oSwaps the inventories of 2 players. §r`;
+export const helpUpcomingCommandChatCommandsList = `§1Upcoming Chat Commands List§r
 .\\generatejs - §oGenerates a 3d shape according to the outputs of a JavaScript function in the selected area. §r
 .\\generatecallback - §oExecutes the specified callback JavaScript function for each block in the selected area. §r
 .\\generate2d - §oGenerates a 2d shape according to a formula in the selected area. §r
@@ -1218,7 +1240,7 @@ export function getCommandHelpPage(commandName, player) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version && !cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
-        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName] ?? cmd.description}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? tryget(() => cmd.formats?.["map"](v => !!v?.format ? v.format : v).join(" ")) ?? (typeof cmd.formats == "string" ? cmd.formats : undefined) ?? "missing")
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName] ?? cmd.description}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? tryget(() => cmd.formats?.["map"](v => !!v?.format ? v.format : v).join(" ")) ?? (typeof cmd.formats == "string" ? cmd.formats : undefined) ?? "missing")
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""
@@ -1240,7 +1262,7 @@ export function getCommandHelpPageExtra(commandName, player) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version) || cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
-        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName] ?? cmd.settings.defaultSettings?.description ?? "Missing"}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? tryget(() => cmd.settings.defaultSettings.formats["map"](v => !!v?.format ? v.format : v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing")
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName] ?? cmd.settings.defaultSettings?.description ?? "Missing"}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? tryget(() => cmd.settings.defaultSettings.formats["map"](v => !!v?.format ? v.format : v).join(" ")) ?? (typeof cmd.settings.defaultSettings.formats == "string" ? cmd.settings.defaultSettings.formats : undefined) ?? "missing")
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""
@@ -1272,7 +1294,7 @@ export function getCommandHelpPageDebug(commandName, player, spacing = 0) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return (!!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version) || cmd.isHidden
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
-        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""
@@ -1310,7 +1332,7 @@ export function getCommandHelpPageDebugPlus(commandName, player, spacing = 0) {
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "built-in");
     return !!!commanddescriptions[cmd.commandName] && !!!commandsyntaxes[cmd.commandName] && !!!commandflags[cmd.commandName] && !!!cmd.command_version
         ? `§cError: Unknown command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it, if you specified an alias of a command try using the full name of the command instead.`
-        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""
@@ -1353,7 +1375,7 @@ export function getCommandHelpPageCustomDebug(commandName, player, spacing = 0) 
     let cmd = command.get(((commandName.slice(0, command.dp.length) == command.dp) && (commandName.slice(command.dp.length, command.dp.length + 1) != "\\")) ? commandName.slice(1) : commandName, "custom");
     return !cmd.settings.isSaved
         ? `§cError: Unknown custom command "${cmd.commandName}§r§c", check that the command exists, if it does then there is just no help info for it.`
-        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? `(also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
+        : `§e${cmd.commandName}${(cmd.aliases?.length ?? 0) != 0 ? ` (also ${cmd.aliases.map((v) => v.commandName).join(", ")})` : ""}:\n${commanddescriptions[cmd.commandName]}§r\nUsage:\n- ${(commandsyntaxes[cmd.currentCommandName] ?? "missing")
             .split("\n")
             .join("§r\n- ")}${!!!commandflags[cmd.currentCommandName]
             ? ""

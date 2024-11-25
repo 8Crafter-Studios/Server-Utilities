@@ -1,8 +1,17 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import { system } from "@minecraft/server";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const format_version = "1.25.2";
-import "JSONB";
+export const format_version = "1.26.0";
+export const supported_minecraft_version = "1.21.4x";
+globalThis.entity_scale_format_version = null;
+globalThis.multipleEntityScaleVersionsDetected = false;
+globalThis.modules = {
+    assets: {
+        classes: {},
+        constants: {},
+    },
+};
+import "Assets/classes/JSONB";
 import "Global";
 /*
 import "AllayTests.js";
@@ -57,10 +66,13 @@ import "Main/commands_list.js";
 import "Main/errors.js";
 import "Main/utilities.js";
 import "@minecraft/math.js";
+import "GlobalDecorators";
 export const mainmetaimport = import.meta;
-export const subscribedEvents = {};
-globalThis.tempVariables = {};
 export const editorStickMenuOpeningAsyncCancelActionNumbers = {};
+import * as transformrecipes from "Assets/constants/transformrecipes";
+globalThis.modules.assets.constants.transformrecipes = transformrecipes;
+import * as errors from "Main/errors";
+globalThis.modules.errors = errors;
 import { Block, BlockEvent, BlockPermutation, BlockStateType, BlockType /*, MinecraftBlockTypes*/ /*, Camera*/, Dimension, Entity, EntityInventoryComponent, EntityScaleComponent, ItemDurabilityComponent, ItemLockMode, ItemStack, Player, PlayerIterator, ScriptEventCommandMessageAfterEventSignal, ScriptEventSource, WeatherType, world, BlockInventoryComponent /*, EntityEquipmentInventoryComponent*/, EntityComponent, /*PropertyRegistry, DynamicPropertiesDefinition, */ EntityType, EntityTypes /*, MinecraftEntityTypes*/, EquipmentSlot, Container, EntityEquippableComponent, BlockTypes, MolangVariableMap, Scoreboard, ScoreboardObjective, DimensionType, DimensionTypes, MinecraftDimensionTypes, EnchantmentType, EnchantmentTypes, BlockStates, BlockVolume, CompoundBlockVolume /*, BlockVolumeUtils*/ /*, BlockVolumeBaseZ*/, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, EntityMarkVariantComponent, EntityPushThroughComponent, EntitySkinIdComponent, EntityTameableComponent, SignSide, ItemEnchantableComponent, DyeColor, GameMode, ContainerSlot, EntityProjectileComponent, BlockVolumeBase, System, CompoundBlockVolumeAction, EntityDamageCause, LocationInUnloadedChunkError, UnloadedChunksError, StructureSaveMode, LocationOutOfWorldBoundariesError } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, FormCancelationReason, MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { SimulatedPlayer, Test } from "@minecraft/server-gametest";
@@ -78,32 +90,44 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
-import * as transformrecipes from "transformrecipes";
+globalThis.modules.main = main;
 import * as coords from "Main/coordinates";
+globalThis.modules.coords = coords;
 import * as cmds from "Main/commands";
+globalThis.modules.cmds = cmds;
 import * as bans from "Main/ban";
+globalThis.modules.bans = bans;
 import * as uis from "Main/ui";
+globalThis.modules.uis = uis;
 import * as playersave from "Main/player_save";
+globalThis.modules.playersave = playersave;
 import * as spawnprot from "Main/spawn_protection";
+globalThis.modules.spawnprot = spawnprot;
 import * as chat from "Main/chat";
+globalThis.modules.chat = chat;
 import * as cmdutils from "Main/command_utilities";
+globalThis.modules.cmdutils = cmdutils;
 import * as cmdslist from "Main/commands_list";
+globalThis.modules.cmdslist = cmdslist;
 import * as cmdsdocs from "Main/commands_documentation";
+globalThis.modules.cmdsdocs = cmdsdocs;
 import * as utils from "Main/utilities";
-import * as errors from "Main/errors";
+globalThis.modules.utils = utils;
 import * as shopmain from "ExtraFeatures/shop_main";
 import * as servershop from "ExtraFeatures/server_shop";
 import * as playershop from "ExtraFeatures/player_shop";
 import * as moneysystem from "ExtraFeatures/money";
+import * as structuremappings from "Assets/constants/structure_mappings";
 import mcMath from "@minecraft/math.js";
 import colorCore, { Color } from "color-core";
 import Decimal from "decimal.js";
 import * as semver from "semver"; /*
 import { disableWatchdog } from "@minecraft/debug-utilities";*/
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import { chatMessage, patternColors, patternColorsMap, patternFunctionList, evaluateChatColorType, chatSend } from "Main/chat";
 import { targetSelectorAllListE, targetSelectorB, targetSelectorAllListC, clearContainer } from "Main/command_utilities";
 import { customModulo } from "Main/utilities";
+import { TimeoutError } from "Main/errors.js";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -128,6 +152,9 @@ export const modules = {
     mcServerUi,
     GameTest,
     main,
+    /**
+     * This is an alias of {@link modules.assets.constants.transformrecipes}
+     */
     transformrecipes,
     coords,
     cmds,
@@ -152,33 +179,61 @@ export const modules = {
     shopmain,
     servershop,
     playershop,
-    moneysystem
+    moneysystem,
+    assets: {
+        classes: {
+            JSONB,
+        },
+        constants: {
+            charMaps: await import("Assets/constants/charMaps"),
+            structuremappings,
+            transformrecipes,
+        }
+    }
 };
 globalThis.modules = modules;
 globalThis.crashEnabled = false;
 globalThis.tempSavedVariables = [];
+export async function checkIfCompatibleEntityScaleIsActive(init = false, maxWaitTicks = 20) {
+    const promise1Result = await new Promise((resolve, reject) => {
+        overworld.runCommand(`/scriptevent andexsa:debugSticks${init ? "Init" : "Test"}Signal ${format_version}`);
+        const rId1 = system.afterEvents.scriptEventReceive.subscribe(event => {
+            if (event.id == `andexdb:debugSticks${init ? "Init" : "Test"}SignalReceivedByEntityScale`) {
+                system.afterEvents.scriptEventReceive.unsubscribe(rId1);
+                resolve(event.message);
+            }
+            ;
+        });
+        if (maxWaitTicks != Infinity) {
+            system.waitTicks(maxWaitTicks).then(v => reject(new TimeoutError(`The request to see if a compatible version of entity scale is active timed out. It took longer than ${maxWaitTicks} ticks.`)));
+        }
+    }).then(v => v, v => { return false; });
+    return promise1Result;
+}
+;
+// const a = ((a: `${bigint}.${bigint}.${bigint}${`-${string}`|""}${`+${string}`|""}`)=>{})("1.1.1-preview.20+BUILD.1");
 export function mainEval(x) { return eval(x); }
 export function indirectMainEval(x) { return eval?.(x); }
 export function mainRun(x, ...args) { return x(...args); }
 export function spawnBlockSurroundingParticleForPlayer(player, location, textures) {
-    player.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.001, z: 0.5 }));
-    player.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.001 }));
-    player.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.001, y: 0.5, z: 0.5 }));
-    player.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.001, z: 0.5 }));
-    player.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.001 }));
-    player.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.001, y: 0.5, z: 0.5 }));
+    player.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.005, z: 0.5 }));
+    player.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.005 }));
+    player.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.005, y: 0.5, z: 0.5 }));
+    player.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.005, z: 0.5 }));
+    player.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.005 }));
+    player.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.005, y: 0.5, z: 0.5 }));
 }
 export function spawnBlockSurroundingParticle(dimension, location, textures) {
-    dimension.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.001, z: 0.5 }));
-    dimension.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.001 }));
-    dimension.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.001, y: 0.5, z: 0.5 }));
-    dimension.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.001, z: 0.5 }));
-    dimension.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.001 }));
-    dimension.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.001, y: 0.5, z: 0.5 }));
+    dimension.spawnParticle(textures.up ?? textures.default, Vector.add(location, { x: 0.5, y: 1.005, z: 0.5 }));
+    dimension.spawnParticle(textures.north ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: -0.005 }));
+    dimension.spawnParticle(textures.east ?? textures.default, Vector.add(location, { x: -0.005, y: 0.5, z: 0.5 }));
+    dimension.spawnParticle(textures.down ?? textures.default, Vector.add(location, { x: 0.5, y: -0.005, z: 0.5 }));
+    dimension.spawnParticle(textures.south ?? textures.default, Vector.add(location, { x: 0.5, y: 0.5, z: 1.005 }));
+    dimension.spawnParticle(textures.west ?? textures.default, Vector.add(location, { x: 1.005, y: 0.5, z: 0.5 }));
 }
 export const timeZones = [["BIT", "IDLW", "NUT", "SST", "CKT", "HST", "SDT", "TAHT", "MART", "MIT", "AKST", "GAMT", "GIT", "HDT", "AKDT", "CIST", "PST", "MST", "PDT", "CST", "EAST", "GALT", "MDT", "ACT", "CDT", "COT", "CST"], [-12, -12, -11, -11, -10, -10, -10, -10, -9.5, -9.5, -9, -9, -9, -9, -8, -8, -8, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5]]; /*
 disableWatchdog(Boolean(world.getDynamicProperty("andexdbSettings:disableWatchdog")??(!((world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash")??false))??false)??true)??true);  */
-system.beforeEvents.watchdogTerminate.subscribe(e => {
+subscribedEvents.beforeWatchdogTerminate = system.beforeEvents.watchdogTerminate.subscribe(e => {
     try {
         if (crashEnabled == true) {
             return;
@@ -189,9 +244,9 @@ system.beforeEvents.watchdogTerminate.subscribe(e => {
             }
             else {
                 e.cancel = true;
-                console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+                console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}'`);
                 try {
-                    world.getAllPlayers().filter(p => p.hasTag("getWatchdogTerminationCancelWarnings")).forEach(p => p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`));
+                    world.getAllPlayers().filter(p => p.hasTag("getWatchdogTerminationCancelWarnings")).forEach(p => p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}'`));
                 }
                 catch { }
                 ;
@@ -200,9 +255,9 @@ system.beforeEvents.watchdogTerminate.subscribe(e => {
     }
     catch {
         e.cancel = true;
-        console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`);
+        console.warn(`[Watchdog] Canceled critical exception of type '${e.terminateReason}'`);
         try {
-            world.getAllPlayers().filter(p => p.hasTag("getWatchdogTerminationCancelWarnings")).forEach(p => p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}`));
+            world.getAllPlayers().filter(p => p.hasTag("getWatchdogTerminationCancelWarnings")).forEach(p => p.sendMessage(`[Watchdog] Canceled critical exception of type '${e.terminateReason}'`));
         }
         catch { }
         ;
@@ -489,7 +544,43 @@ export class config {
             get chatDisplayTimeStamp() { return Boolean(world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false); },
             set chatDisplayTimeStamp(chatDisplayTimeStampEnabled) { world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStampEnabled ?? false); },
             get showRanksOnPlayerNameTags() { return Boolean(world.getDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags") ?? false); },
-            set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); }
+            set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false); },
+            get rankMode() { return String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple"); },
+            set rankMode(rankMode) { world.setDynamicProperty("andexdbSettings:rankMode", rankMode ?? "custom_simple"); },
+            get rankDisplayPrefix() { return String(world.getDynamicProperty("andexdbSettings:rankDisplayPrefix") ?? "["); },
+            set rankDisplayPrefix(rankDisplayPrefix) { world.setDynamicProperty("andexdbSettings:rankDisplayPrefix", rankDisplayPrefix ?? "["); },
+            get rankDisplaySuffix() { return String(world.getDynamicProperty("andexdbSettings:rankDisplaySuffix") ?? "§r]"); },
+            set rankDisplaySuffix(rankDisplaySuffix) { world.setDynamicProperty("andexdbSettings:rankDisplaySuffix", rankDisplaySuffix ?? "§r]"); },
+            get nameDisplayPrefix() { return String(world.getDynamicProperty("andexdbSettings:nameDisplayPrefix") ?? "["); },
+            set nameDisplayPrefix(nameDisplayPrefix) { world.setDynamicProperty("andexdbSettings:nameDisplayPrefix", nameDisplayPrefix ?? "<"); },
+            get nameDisplaySuffix() { return String(world.getDynamicProperty("andexdbSettings:nameDisplaySuffix") ?? "§r]"); },
+            set nameDisplaySuffix(nameDisplaySuffix) { world.setDynamicProperty("andexdbSettings:nameDisplaySuffix", nameDisplaySuffix ?? "§r>"); },
+            get chatNameAndMessageSeparator() { return String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "); },
+            set chatNameAndMessageSeparator(chatNameAndMessageSeparator) { world.setDynamicProperty("andexdbSettings:chatNameAndMessageSeparator", chatNameAndMessageSeparator ?? " "); },
+            get rankDisplaySeparator() { return String(world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "); },
+            set rankDisplaySeparator(rankDisplaySeparator) { world.setDynamicProperty("andexdbSettings:rankDisplaySeparator", rankDisplaySeparator ?? " "); },
+            get rankTemplateString() { return String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r]"); },
+            set rankTemplateString(rankTemplateString) { world.setDynamicProperty("andexdbSettings:rankTemplateString", rankTemplateString ?? "[${rank}§r]"); },
+            get messageTemplateString() { return String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r${(ranks!=\"\")?\" \":\"\"}<${name}§r> ${message}"); },
+            set messageTemplateString(messageTemplateString) { world.setDynamicProperty("andexdbSettings:messageTemplateString", messageTemplateString ?? "§r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r${(ranks!=\"\")?\" \":\"\"}<${name}§r> ${message}"); },
+            get defaultRankTemplateString() { return String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? ""); },
+            set defaultRankTemplateString(defaultRankTemplateString) { world.setDynamicProperty("andexdbSettings:defaultRankTemplateString", defaultRankTemplateString ?? ""); },
+            get defaultMessageFormatting() { return String(world.getDynamicProperty("andexdbSettings:defaultMessageFormatting") ?? ""); },
+            set defaultMessageFormatting(defaultMessageFormatting) { world.setDynamicProperty("andexdbSettings:defaultMessageFormatting", defaultMessageFormatting ?? ""); },
+            get defaultNameFormatting() { return String(world.getDynamicProperty("andexdbSettings:defaultNameFormatting") ?? ""); },
+            set defaultNameFormatting(defaultNameFormatting) { world.setDynamicProperty("andexdbSettings:defaultNameFormatting", defaultNameFormatting ?? ""); },
+            get defaultSeparatorFormatting() { return String(world.getDynamicProperty("andexdbSettings:defaultSeparatorFormatting") ?? ""); },
+            set defaultSeparatorFormatting(defaultSeparatorFormatting) { world.setDynamicProperty("andexdbSettings:defaultSeparatorFormatting", defaultSeparatorFormatting ?? ""); },
+            get disableCustomChatMessages() { return Boolean(world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false); },
+            set disableCustomChatMessages(disableCustomChatMessages) { world.setDynamicProperty("andexdbSettings:disableCustomChatMessages", disableCustomChatMessages ?? false); },
+            get allowCustomChatMessagesMuting() { return Boolean(world.getDynamicProperty("andexdbSettings:allowCustomChatMessagesMuting") ?? false); },
+            set allowCustomChatMessagesMuting(allowCustomChatMessagesMuting) { world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", allowCustomChatMessagesMuting ?? false); },
+            get autoEscapeChatMessages() { return Boolean(world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ?? false); },
+            set autoEscapeChatMessages(autoEscapeChatMessages) { world.setDynamicProperty("andexdbSettings:autoEscapeChatMessages", autoEscapeChatMessages ?? false); },
+            get autoURIEscapeChatMessages() { return Boolean(world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ?? false); },
+            set autoURIEscapeChatMessages(autoURIEscapeChatMessages) { world.setDynamicProperty("andexdbSettings:autoURIEscapeChatMessages", autoURIEscapeChatMessages ?? false); },
+            get allowChatEscapeCodes() { return Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? false); },
+            set allowChatEscapeCodes(allowChatEscapeCodes) { world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes ?? false); },
         };
     }
     static get antiSpamSystem() {
@@ -544,24 +635,68 @@ export class config {
             set artificialLagMS(artificialLagMS) { world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0); },
             get timeZone() { return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone"))) ? 0 : Number(world.getDynamicProperty("andexdbSettings:timeZone") ?? 0); },
             set timeZone(timeZone) { world.setDynamicProperty("andexdbSettings:timeZone", timeZone ?? 0); },
-            get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 5); },
-            set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 5)))); },
-            get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 20); },
-            set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 20 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 20)))); },
+            get playerDataRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 20); },
+            set playerDataRefreshRate(playerDataRefreshRate) { world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 20)))); },
+            get protectedAreasRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 200); },
+            set protectedAreasRefreshRate(protectedAreasRefreshRate) { world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 200 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 200)))); },
+            get bannedPlayersRefreshRate() { return Number(world.getDynamicProperty("andexdbSettings:bannedPlayersRefreshRate") ?? 20); },
+            set bannedPlayersRefreshRate(bannedPlayersRefreshRate) { world.setDynamicProperty("andexdbSettings:bannedPlayersRefreshRate", Number.isNaN(Number(bannedPlayersRefreshRate)) ? 20 : Math.min(1000, Math.max(1, Number(bannedPlayersRefreshRate ?? 20)))); },
             get debugMode() { return Boolean(world.getDynamicProperty("andexdbSettings:debugMode") ?? false); },
             set debugMode(debugMode) { world.setDynamicProperty("andexdbSettings:debugMode", debugMode ?? false); },
             /**
              * It is reccommended to leave this set to false.
              */
             get allowWatchdogTerminationCrash() { return Boolean(world.getDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash") ?? false); },
-            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash) { world.setDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash", allowWatchdogTerminationCrash ?? false); }
+            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash) { world.setDynamicProperty("andexdbSettings:allowWatchdogTerminationCrash", allowWatchdogTerminationCrash ?? false); },
+            /**
+             * It is reccommended to leave this set to false.
+             */
+            get hideWatchdogTerminationCrashEnabledWarningsOnStartup() { return Boolean(world.getDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup") ?? false); },
+            set hideWatchdogTerminationCrashEnabledWarningsOnStartup(hideWatchdogTerminationCrashEnabledWarningsOnStartup) { world.setDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup", hideWatchdogTerminationCrashEnabledWarningsOnStartup ?? false); },
+            /**
+             * It is reccommended to leave this set to false.
+             * @default false
+             * @decorator
+             * also
+             * false
+             */
+            get useLegacyPlayerInventoryDataSaveSystem() { return Boolean(world.getDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem") ?? false); },
+            set useLegacyPlayerInventoryDataSaveSystem(useLegacyPlayerInventoryDataSaveSystem) { world.setDynamicProperty("andexdbSettings:useLegacyPlayerInventoryDataSaveSystem", useLegacyPlayerInventoryDataSaveSystem ?? false); },
+            get playerInventoryDataSaveSystemEnabled() { return Boolean(world.getDynamicProperty("andexdbSettings:playerInventoryDataSaveSystemEnabled") ?? true); },
+            set playerInventoryDataSaveSystemEnabled(playerInventoryDataSaveSystemEnabled) { world.setDynamicProperty("andexdbSettings:playerInventoryDataSaveSystemEnabled", playerInventoryDataSaveSystemEnabled ?? true); },
+            get spreadPlayerInventoryDataSavesOverMultipleTicks() { return Boolean(world.getDynamicProperty("andexdbSettings:spreadPlayerInventoryDataSavesOverMultipleTicks") ?? true); },
+            set spreadPlayerInventoryDataSavesOverMultipleTicks(spreadPlayerInventoryDataSavesOverMultipleTicks) { world.setDynamicProperty("andexdbSettings:spreadPlayerInventoryDataSavesOverMultipleTicks", spreadPlayerInventoryDataSavesOverMultipleTicks ?? true); },
+            get showEntityScaleNotFoundConsoleLog() { return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleNotFoundConsoleLog") ?? true); },
+            set showEntityScaleNotFoundConsoleLog(showEntityScaleNotFoundConsoleLog) { world.setDynamicProperty("andexdbSettings:showEntityScaleNotFoundConsoleLog", showEntityScaleNotFoundConsoleLog ?? true); },
+            get showEntityScaleFoundConsoleLog() { return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleFoundConsoleLog") ?? true); },
+            set showEntityScaleFoundConsoleLog(showEntityScaleFoundConsoleLog) { world.setDynamicProperty("andexdbSettings:showEntityScaleFoundConsoleLog", showEntityScaleFoundConsoleLog ?? true); },
+            get showEntityScaleNotFoundChatLog() { return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleNotFoundChatLog") ?? false); },
+            set showEntityScaleNotFoundChatLog(showEntityScaleNotFoundChatLog) { world.setDynamicProperty("andexdbSettings:showEntityScaleNotFoundChatLog", showEntityScaleNotFoundChatLog ?? false); },
+            get showEntityScaleFoundChatLog() { return Boolean(world.getDynamicProperty("andexdbSettings:showEntityScaleFoundChatLog") ?? false); },
+            set showEntityScaleFoundChatLog(showEntityScaleFoundChatLog) { world.setDynamicProperty("andexdbSettings:showEntityScaleFoundChatLog", showEntityScaleFoundChatLog ?? false); },
         };
     }
     static reset() {
         // Object.entries(Object.getOwnPropertyDescriptors(this)).filter(v=>v[1].hasOwnProperty("get")).flatMap(v=>v[1].hasOwnProperty("set")?v[1]:v[1]["get"]())
     }
+    static toJSON() {
+        return Object.fromEntries(Object.getOwnPropertyNames(config).filter(n => !["constructor", "toString", "toLocaleString", "valueOf", "hasOwnProperty", "name", "prototype", "reset", "length"].includes(n)).map(n => [n, config[n]]));
+    }
 }
 export class worldPlayers {
+    rotx;
+    roty;
+    dimension;
+    entity;
+    block; /*
+    constructor(location: Vector3, rotation: Vector2, dimension?: DimensionType|Dimension|string, entity?: Entity|Player, block?: Block) {
+        this.location = location;
+        this.rotation = rotation;
+        if(dimension == undefined){}else{this.dimension = world.getDimension((dimension as DimensionType)?.typeId ?? (dimension as Dimension)?.id ?? (dimension as string)); };
+        this.entity = entity as Entity
+        this.block = block*/ /*
+    if(dimension.constructor.name == DimensionType.constructor.name){this.dimension = world.getDimension((dimension as DimensionType)?.typeId)}else{this.dimension = world.getDimension((dimension as Dimension)?.id)}; */ /*
+}*/
     static get savedPlayers() {
         return savedPlayer.getSavedPlayers();
     }
@@ -657,6 +792,12 @@ export class worldPlayers {
  * @since 1.20.0-development.63
  */
 export class SemVerString {
+    major;
+    minor;
+    patch;
+    pre_release_stage_internal;
+    pre_release_version_internal;
+    build;
     constructor(major, minor, patch, pre_release, build /*, SemVerVersion*/) {
         if (!!!pre_release) { }
         else if (typeof pre_release != "string") {
@@ -717,12 +858,12 @@ export class SemVerString {
     toString() { return this.raw; }
     toPrimitive() { return this.raw; }
     toJSON() { return { major: this.major, minor: this.minor, patch: this.patch, pre_release_stage: this.pre_release_stage_internal, pre_release_version: this.pre_release_version_internal, build: this.build, type: "SemVerString" }; }
+    static pre_release_regex = /^(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))$/;
+    static build_regex = /^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/;
+    static semver_regex = /^(?<base>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*))(?:-(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)))?(?:\+(?<build>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
     static fromJSON(json) { return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build); }
     static fromString(string) { const json = string.match(SemVerString.semver_regex).groups; return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build); }
 }
-SemVerString.pre_release_regex = /^(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))$/;
-SemVerString.build_regex = /^([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/;
-SemVerString.semver_regex = /^(?<base>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*))(?:-(?<pre_release>(?<pre_release_stage>0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?<pre_release_version>(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)))?(?:\+(?<build>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
 export function SemVerValidator(string) { return !!string.match(SemVerString.semver_regex); }
 export function SemVerMatcher(string) { return string.match(SemVerString.semver_regex); }
 /*let sourceEntity = Entity.prototype*/ /*
@@ -4533,16 +4674,19 @@ c*/
 /*convertToCompoundBlockVolume(String(world.getDynamicProperty("noPistonExtensionAreas")))*/ /*
 let b = a[Number(world.getAllPlayers()[0].getDynamicProperty("debugStickPropertyIndex"))]*/
 export class interactable_blockb {
-    constructor() {
-        this.id = "";
-        this.delay = 0;
-        this.holdDuration = 0;
-    }
+    id = "";
+    delay = 0;
+    holdDuration = 0;
 }
 ;
 export let interactable_block;
 interactable_block = [];
 export class customFormUIElement {
+    index;
+    type;
+    args;
+    code;
+    typeIndex;
     constructor(index, type, args) { this.index = index; this.type = type; this.args = args; this.code = this.type + "(" + this.args.join(", ") + ")"; this.typeIndex = customElementTypeIds.findIndex((value, index) => (value == this.type)); }
 }
 ;
@@ -4843,8 +4987,18 @@ subscribedEvents.beforeWorldInitialize = world.beforeEvents.worldInitialize.subs
         } });
     }
     globalThis.beforeInitiallizeTick = system.currentTick;
+    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use_on", {
+        onUseOn: event => { }
+    });
+    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use", {
+        onUse: event => { }
+    });
+    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:selection_tool", {
+        onUseOn: event => { console.log(3); },
+        onUse: event => { console.log(4); }
+    });
 });
-subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe((event) => {
+subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscribe(async (event) => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:worldInitialize")));
     }
@@ -4866,7 +5020,36 @@ subscribedEvents.afterWorldInitialize = world.afterEvents.worldInitialize.subscr
         }
     }
     catch (e) { }
-    globalThis.initiallizeTick = system.currentTick; /*
+    globalThis.initiallizeTick = system.currentTick;
+    try {
+        const r = await checkIfCompatibleEntityScaleIsActive(true, 5);
+        if (r != false) {
+            if (entity_scale_format_version != null && r.trim() != entity_scale_format_version) {
+                globalThis.multipleEntityScaleVersionsDetected = true;
+            }
+            entity_scale_format_version = r.trim();
+        }
+        if (r == false && config.system.showEntityScaleNotFoundConsoleLog) {
+            system.waitTicks(100).then(() => { if (entity_scale_format_version == null)
+                console.log(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`); });
+        }
+        else if (r != false && config.system.showEntityScaleFoundConsoleLog) {
+            console.log(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+        }
+        ;
+        if (r == false && config.system.showEntityScaleNotFoundChatLog) {
+            system.waitTicks(100).then(() => { if (entity_scale_format_version == null)
+                world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`); });
+        }
+        else if (r != false && config.system.showEntityScaleFoundChatLog) {
+            world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+        }
+        ;
+    }
+    catch (e) {
+        console.error(e, e.stack);
+    }
+    ; /*
     try{DimensionTypes.getAll().forEach((dimensionType)=>{if (world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}) !== undefined){world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}).forEach((scoreboardEntity)=>{scoreboardEntity.runCommand("/scoreboard players @s set andexdbDebug 0")})}})}catch(e){}
     try{DimensionTypes.getAll().forEach((dimensionType)=>{world.getDimension(dimensionType.typeId).getEntities().forEach((scoreboardEntity)=>{if(world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", minScore: -99999999, maxScore: 99999999}]}).find((testEntity)=>(scoreboardEntity == testEntity)) == undefined){console.warn(scoreboardEntity.id)}})})}catch(e){}*/ /*
     const propertiesDefinition = new DynamicPropertiesDefinition();
@@ -5346,7 +5529,7 @@ subscribedEvents.beforePlayerInteractWithEntity = world.beforeEvents.playerInter
                 : ""));
     }
 });
-world.beforeEvents.playerLeave.subscribe(event => {
+subscribedEvents.beforePlayerLeave = world.beforeEvents.playerLeave.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerLeave")));
     }
@@ -5357,7 +5540,7 @@ world.beforeEvents.playerLeave.subscribe(event => {
         } });
     }
 });
-world.afterEvents.blockExplode.subscribe(event => {
+subscribedEvents.afterBlockExplode = world.afterEvents.blockExplode.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:blockExplode")));
     }
@@ -5374,7 +5557,7 @@ world.afterEvents.blockExplode.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.buttonPush.subscribe(event => {
+subscribedEvents.afterButtonPush = world.afterEvents.buttonPush.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:buttonPush")));
     }
@@ -5395,7 +5578,7 @@ export const outsideBorderTintShownTimes = {};
 export const outsideBorderTintParticleMolangVariableMapObject = new MolangVariableMap();
 outsideBorderTintParticleMolangVariableMapObject.setFloat("variable.max_distance_from_camera", 0.25);
 outsideBorderTintParticleMolangVariableMapObject.setFloat("variable.max_particle_age", 0.5);
-system.runInterval(() => {
+repeatingIntervals.worldBorderSystem = system.runInterval(() => {
     if (config.worldBorder.overworld.enabled) {
         const borderSettings = Object.fromEntries(Object.entries(config.worldBorder.overworld));
         world.getAllPlayers().filter(p => p.dimension.id == "minecraft:overworld").forEach(p => {
@@ -5854,7 +6037,7 @@ system.runInterval(() => {
     }
 }, 1);
 // ${se}srun(()=>{let p = player; let values = facingPoint(p.location, {x: 240.50, y: 75.00, z: 1269.50}); let rot = values.rot; let difference = values.difference; let dv = anglesToDirectionVectorDeg(rot.x, rot.y); bsend([values, dv]); p.applyKnockback(dv.x, dv.z, (1-Math.abs(dv.y))*Vector.magnitude(difference), dv.y*Vector.magnitude(difference)); })
-world.afterEvents.chatSend.subscribe(event => {
+subscribedEvents.afterChatSend = world.afterEvents.chatSend.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:chatSend")));
     }
@@ -5865,7 +6048,7 @@ world.afterEvents.chatSend.subscribe(event => {
         } });
     }
 });
-world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
+subscribedEvents.afterDataDrivenEntityTrigger = world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:dataDrivenEntityTrigger")));
     }
@@ -5885,7 +6068,7 @@ world.afterEvents.dataDrivenEntityTrigger.subscribe(event => {
         } });
     }
 });
-world.afterEvents.effectAdd.subscribe(event => {
+subscribedEvents.afterEffectAdd = world.afterEvents.effectAdd.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:effectAdd")));
     }
@@ -5902,7 +6085,7 @@ world.afterEvents.effectAdd.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entityDie.subscribe(event => {
+subscribedEvents.afterEntityDie = world.afterEvents.entityDie.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityDie")));
     }
@@ -5913,7 +6096,7 @@ world.afterEvents.entityDie.subscribe(event => {
         } });
     }
 });
-world.afterEvents.entityHealthChanged.subscribe(event => {
+subscribedEvents.afterEntityHealthChanged = world.afterEvents.entityHealthChanged.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHealthChanged")));
     }
@@ -5924,7 +6107,7 @@ world.afterEvents.entityHealthChanged.subscribe(event => {
         } });
     }
 });
-world.afterEvents.entityHitBlock.subscribe(event => {
+subscribedEvents.afterEntityHitBlock = world.afterEvents.entityHitBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHitBlock")));
     }
@@ -5935,7 +6118,7 @@ world.afterEvents.entityHitBlock.subscribe(event => {
         } });
     }
 });
-world.afterEvents.entityHitEntity.subscribe(event => {
+subscribedEvents.afterEntityHitEntity = world.afterEvents.entityHitEntity.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHitEntity")));
     }
@@ -5954,7 +6137,7 @@ world.afterEvents.entityHitEntity.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entityHurt.subscribe(event => {
+subscribedEvents.afterEntityHurt = world.afterEvents.entityHurt.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHurt")));
     }
@@ -5971,7 +6154,7 @@ world.afterEvents.entityHurt.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entityLoad.subscribe(event => {
+subscribedEvents.afterEntityLoad = world.afterEvents.entityLoad.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityLoad")));
     }
@@ -5988,7 +6171,7 @@ world.afterEvents.entityLoad.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entityRemove.subscribe(event => {
+subscribedEvents.afterEntityRemove = world.afterEvents.entityRemove.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityRemove")));
     }
@@ -6005,7 +6188,7 @@ world.afterEvents.entityRemove.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.entitySpawn.subscribe(event => {
+subscribedEvents.afterEntitySpawn = world.afterEvents.entitySpawn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entitySpawn")));
     }
@@ -6016,13 +6199,13 @@ world.afterEvents.entitySpawn.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity.dimension.id]} at ${event.entity.location} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, { pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume })); });
+        getPlayersWithAnyOfTags(["getEntitySpawnNotifications", "getEntitySpawnNotificationsForType:" + event.entity.typeId, "getEntitySpawnNotificationsForId:" + event.entity.id, "getEntitySpawnNotificationsWithCause:" + event.cause]).filter(v => (event.entity.typeId == "andexdb:player_inventory_save_storage" ? v.hasTag("getNotifiedOfPlayerInventorySaveStorageEntitySpawns") : true)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§eentitySpawn§r] Entity of type ${event.entity.typeId} with the id ${event.entity.id} was spawned in ${dimensionTypeDisplayFormatting[event.entity?.dimension?.id]} at ${JSON.stringify(event.entity?.location)} with the cause "${event.cause}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getEntitySpawnNotificationsNotificationSound.soundId, { pitch: pn.getEntitySpawnNotificationsNotificationSound.pitch, volume: pn.getEntitySpawnNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.explosion.subscribe(event => {
+subscribedEvents.afterExplosion = world.afterEvents.explosion.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:explosion")));
     }
@@ -6040,7 +6223,7 @@ world.afterEvents.explosion.subscribe(event => {
     }
     //console.warn(JSONStringify(event.getImpactedBlocks(), true))
 });
-world.afterEvents.itemCompleteUse.subscribe(event => {
+subscribedEvents.afterItemCompleteUse = world.afterEvents.itemCompleteUse.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("itemCompleteUseCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("itemCompleteUseCode")));
@@ -6062,7 +6245,7 @@ world.afterEvents.itemCompleteUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.gameRuleChange.subscribe(event => {
+subscribedEvents.afterGameRuleChange = world.afterEvents.gameRuleChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:gameRuleChange")));
     }
@@ -6079,7 +6262,7 @@ world.afterEvents.gameRuleChange.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.playerGameModeChange.subscribe(event => {
+subscribedEvents.afterPlayerGameModeChange = world.afterEvents.playerGameModeChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerGameModeChange")));
     }
@@ -6096,7 +6279,7 @@ world.afterEvents.playerGameModeChange.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.weatherChange.subscribe(event => {
+subscribedEvents.afterWeatherChange = world.afterEvents.weatherChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")));
     }
@@ -6115,19 +6298,12 @@ world.afterEvents.weatherChange.subscribe(event => {
 }); /*
 world.afterEvents.itemDefinitionEvent.subscribe(event => {
 try{eval(String(world.getDynamicProperty("evalAfterEvents:itemDefinitionEvent")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemDefinitionEventAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+});*/ /*
+subscribedEvents.afterItemReleaseUse = world.afterEvents.itemReleaseUse.subscribe(event => {
+try{eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
+// world.sendMessage("itemReleaseUse: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, useDuration: event.useDuration}))
 });*/
-world.afterEvents.itemReleaseUse.subscribe(event => {
-    try {
-        eval(String(world.getDynamicProperty("evalAfterEvents:itemReleaseUse")));
-    }
-    catch (e) {
-        console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("itemReleaseUseAfterEventDebugErrors")) {
-            currentplayer.sendMessage(e + e.stack);
-        } });
-    }
-});
-world.afterEvents.itemStartUse.subscribe(event => {
+subscribedEvents.afterItemStartUse = world.afterEvents.itemStartUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUse")));
     }
@@ -6137,8 +6313,36 @@ world.afterEvents.itemStartUse.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        try {
+            const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
+            const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
+            if (!!!loc) {
+                event.source.sendMessage("§cError: You must be facing a block.");
+            }
+            else {
+                const posV = mcMath.Vector3Utils.floor(loc);
+                event.source.setDynamicProperty(mode ? "pos2" : "pos1", posV);
+                event.source.setDynamicProperty("posD", event.source.dimension.id);
+                event.source.sendMessage(`Set ${mode ? "pos2" : "pos1"} to ${vTStr(posV)}.`);
+                event.source.setDynamicProperty("posM", !mode);
+                srun(() => {
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2" : "andexdb:xz_axis_particle_pos1", Vector.add(loc, { x: 0.5, y: 1.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_north" : "andexdb:xz_axis_particle_pos1_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_east" : "andexdb:xz_axis_particle_pos1_east", Vector.add(loc, { x: -0.005, y: 0.5, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_down" : "andexdb:xz_axis_particle_pos1_down", Vector.add(loc, { x: 0.5, y: -0.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_south" : "andexdb:xz_axis_particle_pos1_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_west" : "andexdb:xz_axis_particle_pos1_west", Vector.add(loc, { x: 1.005, y: 0.5, z: 0.5 }));
+                });
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    // world.sendMessage("itemStartUse: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, useDuration: event.useDuration}))
 });
-world.afterEvents.itemStartUseOn.subscribe(event => {
+subscribedEvents.afterItemStartUseOn = world.afterEvents.itemStartUseOn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStartUseOn")));
     }
@@ -6148,8 +6352,36 @@ world.afterEvents.itemStartUseOn.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        try {
+            const mode = Boolean(event.source.getDynamicProperty("posM") ?? false);
+            const loc = event.source.getBlockFromViewDirection({ includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"), includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable") })?.block?.location;
+            if (!!!loc) {
+                event.source.sendMessage("§cError: You must be facing a block.");
+            }
+            else {
+                const posV = mcMath.Vector3Utils.floor(loc);
+                event.source.setDynamicProperty(mode ? "pos2" : "pos1", posV);
+                event.source.setDynamicProperty("posD", event.source.dimension.id);
+                event.source.sendMessage(`Set ${mode ? "pos2" : "pos1"} to ${vTStr(posV)}.`);
+                event.source.setDynamicProperty("posM", !mode);
+                srun(() => {
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2" : "andexdb:xz_axis_particle_pos1", Vector.add(loc, { x: 0.5, y: 1.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_north" : "andexdb:xz_axis_particle_pos1_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_east" : "andexdb:xz_axis_particle_pos1_east", Vector.add(loc, { x: -0.005, y: 0.5, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_down" : "andexdb:xz_axis_particle_pos1_down", Vector.add(loc, { x: 0.5, y: -0.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_south" : "andexdb:xz_axis_particle_pos1_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_west" : "andexdb:xz_axis_particle_pos1_west", Vector.add(loc, { x: 1.005, y: 0.5, z: 0.5 }));
+                });
+            }
+        }
+        catch (e) {
+            console.error(e, e.stack);
+        }
+    }
+    // world.sendMessage("itemStartUseOn: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, block: event.block, blockFace: event.blockFace}))
 });
-world.afterEvents.itemStopUse.subscribe(event => {
+subscribedEvents.afterItemStopUse = world.afterEvents.itemStopUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUse")));
     }
@@ -6159,8 +6391,9 @@ world.afterEvents.itemStopUse.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    // world.sendMessage("itemStopUse: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, useDuration: event.useDuration}))
 });
-world.afterEvents.itemStopUseOn.subscribe(event => {
+subscribedEvents.afterItemStopUseOn = world.afterEvents.itemStopUseOn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemStopUseOn")));
     }
@@ -6170,8 +6403,9 @@ world.afterEvents.itemStopUseOn.subscribe(event => {
             currentplayer.sendMessage(e + e.stack);
         } });
     }
+    // world.sendMessage("itemStopUseOn: "+JSON.stringify({ItemStack: event.itemStack.typeId, source: event.source.name, block: event.block}))
 });
-world.afterEvents.itemUse.subscribe(event => {
+subscribedEvents.afterItemUse = world.afterEvents.itemUse.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemUse")));
     }
@@ -6182,7 +6416,7 @@ world.afterEvents.itemUse.subscribe(event => {
         } });
     }
 });
-world.afterEvents.itemUseOn.subscribe(event => {
+subscribedEvents.afterItemUseOn = world.afterEvents.itemUseOn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:itemUseOn")));
     }
@@ -6193,7 +6427,7 @@ world.afterEvents.itemUseOn.subscribe(event => {
         } });
     }
 });
-world.afterEvents.leverAction.subscribe(event => {
+subscribedEvents.afterLeverAction = world.afterEvents.leverAction.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:leverAction")));
     }
@@ -6210,7 +6444,7 @@ world.afterEvents.leverAction.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.messageReceive.subscribe(event => {
+subscribedEvents.afterMessageReceive = world.afterEvents.messageReceive.subscribe(event => {
     //console.warn(event.id, event.message, event.player?.name, event.player?.id)
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:messageReceive")));
@@ -6222,13 +6456,13 @@ world.afterEvents.messageReceive.subscribe(event => {
         } });
     }
     try {
-        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message recieved with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, { pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume })); });
+        getPlayersWithTags("getMessageReceiveNotifications").filter(p => !p.hasTag("excludeMessageReceiveNotificationsWithId:" + event.id) && !p.hasTag("excludeMessageReceiveNotificationsWithMessage:" + event.message) && !p.hasTag("excludeMessageReceiveNotificationsBy:" + event.player.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§emessageReceive§r][${event.player.name}] Message received with ID ${event.id} and value "${event.message}". `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getMessageRecieveNotificationsNotificationSound.soundId, { pitch: pn.getMessageRecieveNotificationsNotificationSound.pitch, volume: pn.getMessageRecieveNotificationsNotificationSound.volume })); });
     }
     catch (e) {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.pistonActivate.subscribe(event => {
+subscribedEvents.afterPistonActivate = world.afterEvents.pistonActivate.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:pistonActivate")));
     }
@@ -6239,7 +6473,7 @@ world.afterEvents.pistonActivate.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerBreakBlock.subscribe(event => {
+subscribedEvents.afterPlayerBreakBlock = world.afterEvents.playerBreakBlock.subscribe(event => {
     if (!!event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")) {
         try {
             eval(String(event?.itemStackBeforeBreak?.getDynamicProperty("afterPlayerBreakBlockCode")));
@@ -6261,7 +6495,7 @@ world.afterEvents.playerBreakBlock.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerDimensionChange.subscribe(event => {
+subscribedEvents.afterPlayerDimensionChange = world.afterEvents.playerDimensionChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerDimensionChange")));
     }
@@ -6278,7 +6512,7 @@ world.afterEvents.playerDimensionChange.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.playerInteractWithBlock.subscribe(event => {
+subscribedEvents.afterPlayerInteractWithBlock = world.afterEvents.playerInteractWithBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithBlock")));
     }
@@ -6297,7 +6531,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.playerInteractWithEntity.subscribe(event => {
+subscribedEvents.afterPlayerInteractWithEntity = world.afterEvents.playerInteractWithEntity.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerInteractWithEntity")));
     }
@@ -6316,7 +6550,7 @@ world.afterEvents.playerInteractWithEntity.subscribe(event => {
         console.error(e, e.stack);
     }
 });
-world.afterEvents.playerJoin.subscribe(event => {
+subscribedEvents.afterPlayerJoin = world.afterEvents.playerJoin.subscribe(event => {
     try {
         console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> joined the game.`);
     }
@@ -6355,7 +6589,7 @@ world.afterEvents.playerJoin.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerLeave.subscribe(event => {
+subscribedEvents.afterPlayerLeave = world.afterEvents.playerLeave.subscribe(event => {
     try {
         console.warn(`Player ${JSON.stringify(event.playerName)}<${event.playerId}> left the game.`);
     }
@@ -6375,7 +6609,7 @@ world.afterEvents.playerLeave.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerPlaceBlock.subscribe(event => {
+subscribedEvents.afterPlayerPlaceBlock = world.afterEvents.playerPlaceBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerPlaceBlock")));
     }
@@ -6386,7 +6620,7 @@ world.afterEvents.playerPlaceBlock.subscribe(event => {
         } });
     }
 });
-world.afterEvents.playerSpawn.subscribe(event => {
+subscribedEvents.afterPlayerSpawn = world.afterEvents.playerSpawn.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:playerSpawn")));
     }
@@ -6397,7 +6631,7 @@ world.afterEvents.playerSpawn.subscribe(event => {
         } });
     }
 });
-world.afterEvents.pressurePlatePop.subscribe(event => {
+subscribedEvents.afterPressurePlatePop = world.afterEvents.pressurePlatePop.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePop")));
     }
@@ -6408,7 +6642,7 @@ world.afterEvents.pressurePlatePop.subscribe(event => {
         } });
     }
 });
-world.afterEvents.pressurePlatePush.subscribe(event => {
+subscribedEvents.afterPressurePlatePush = world.afterEvents.pressurePlatePush.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:pressurePlatePush")));
     }
@@ -6419,7 +6653,7 @@ world.afterEvents.pressurePlatePush.subscribe(event => {
         } });
     }
 });
-world.afterEvents.projectileHitBlock.subscribe(event => {
+subscribedEvents.afterProjectileHitBlock = world.afterEvents.projectileHitBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitBlock")));
     }
@@ -6430,7 +6664,7 @@ world.afterEvents.projectileHitBlock.subscribe(event => {
         } });
     }
 });
-world.afterEvents.projectileHitEntity.subscribe(event => {
+subscribedEvents.afterProjectileHitEntity = world.afterEvents.projectileHitEntity.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:projectileHitEntity")));
     }
@@ -6441,7 +6675,7 @@ world.afterEvents.projectileHitEntity.subscribe(event => {
         } });
     }
 });
-world.afterEvents.targetBlockHit.subscribe(event => {
+subscribedEvents.afterTargetBlockHit = world.afterEvents.targetBlockHit.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:targetBlockHit")));
     }
@@ -6452,7 +6686,7 @@ world.afterEvents.targetBlockHit.subscribe(event => {
         } });
     }
 });
-world.afterEvents.tripWireTrip.subscribe(event => {
+subscribedEvents.afterTripWireTrip = world.afterEvents.tripWireTrip.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:tripWireTrip")));
     }
@@ -6463,7 +6697,7 @@ world.afterEvents.tripWireTrip.subscribe(event => {
         } });
     }
 });
-world.afterEvents.weatherChange.subscribe(event => {
+subscribedEvents.afterWeatherChange = world.afterEvents.weatherChange.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:weatherChange")));
     }
@@ -6474,7 +6708,7 @@ world.afterEvents.weatherChange.subscribe(event => {
         } });
     }
 });
-world.beforeEvents.explosion.subscribe(event => {
+subscribedEvents.beforeExplosion = world.beforeEvents.explosion.subscribe(event => {
     if (disconnectingPlayers.includes(event.source?.id)) {
         event.cancel = true;
         return;
@@ -6509,7 +6743,7 @@ world.beforeEvents.explosion.subscribe(event => {
     }
     //console.warn("after set: "+JSONStringify(event.getImpactedBlocks(), true))
 });
-world.afterEvents.itemReleaseUse.subscribe(event => {
+subscribedEvents.afterItemReleaseUseB = world.afterEvents.itemReleaseUse.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("itemReleaseUseCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("itemReleaseUseCode")));
@@ -6534,8 +6768,41 @@ world.afterEvents.itemReleaseUse.subscribe(event => {
         event.source.setDynamicProperty("interactable_block", 0);
     }
     ;
-});
-world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+}); /*
+world.afterEvents.entitySpawn.subscribe(event=>{
+    if(event.entity.typeId!=="minecraft:fishing_hook"){
+        return;
+    };
+    const sourceEntity = event.entity.dimension.getEntities({families: ["family_of_the_custom_mob_that_uses_the_fishing_rod_to_attack_the_player"], closest: 1, maxDistance: 5})[0];
+    if(!!!sourceEntity){
+        event.entity.setDynamicProperty("hasIdentifiedSourceCustomMob", false);
+        return;
+    };
+    event.entity.setDynamicProperty("hasIdentifiedSourceCustomMob", true);
+    event.entity.setDynamicProperty("uuidOfCustomMob", sourceEntity.id);
+});*/
+subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerInteractWithBlock.subscribe(event => {
+    if (event.player.hasTag("debugStickDyingMode") && event.block.typeId == "minecraft:cauldron") {
+        event.cancel = false;
+        srun(async () => {
+            const arr = cmdutils.rangeToIntArray([0, 100]);
+            for await (let i of arr) {
+                if (!event.player.hasTag("debugStickDyingMode")) {
+                    return;
+                }
+                ;
+                event.player.onScreenDisplay.setActionBar("§aYou currently have Debug Stick Dying Mode enabled,\nwhich disables the use of the debug sticks, editor sticks,\nand pick block sticks on cauldrons, to allow them to\nbe dyed by the cauldron. To switch out of this mode\njust remove the debugStickDyingMode tag from yourself.");
+                await waitTick();
+            }
+            ;
+        });
+        return;
+    }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        event.cancel = true;
+        // console.log(1);
+        return;
+    }
     if (!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")));
@@ -6558,8 +6825,13 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
     }
     if (event.itemStack?.typeId === "andexdb:debug_stick" || event.itemStack?.typeId === "andexdb:liquid_clipped_debug_stick") {
         event.cancel = true;
+        let initialDelay = 4;
         let delay = 4;
         let holdDuration = 10;
+        if (event.player.getDynamicProperty("debugStickInitialUseCooldown") != undefined) {
+            initialDelay = Number(event.player.getDynamicProperty("debugStickInitialUseCooldown"));
+        }
+        ;
         if (event.player.getDynamicProperty("debugStickUseCooldown") != undefined) {
             delay = Number(event.player.getDynamicProperty("debugStickUseCooldown"));
         }
@@ -6572,7 +6844,12 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
             interactable_block.push({ id: event.player.id, delay: 0 });
         }
         ;
-        if ((interactable_block.find((playerId) => (playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))) {
+        if (event.isFirstEvent) {
+            interactable_block.find((playerId) => (playerId.id == event.player.id)).delay = initialDelay;
+            interactable_block.find((playerId) => (playerId.id == event.player.id)).holdDuration = holdDuration;
+            debugAction(event.block, event.player, 0, Number(event.player.isSneaking));
+        }
+        else if ((interactable_block.find((playerId) => (playerId.id == event.player.id)).delay == 0) || (String(Object.values(event.player.getDynamicProperty("debugStickBlockLocation"))) != String(Object.values(event.block.location)))) {
             interactable_block.find((playerId) => (playerId.id == event.player.id)).delay = delay;
             interactable_block.find((playerId) => (playerId.id == event.player.id)).holdDuration = holdDuration;
             debugAction(event.block, event.player, 0, Number(event.player.isSneaking));
@@ -6590,7 +6867,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
             event.player.setDynamicProperty("posM", !mode)
         }catch(e){console.error(e, e.stack)}
     };*/
-    world.getAllPlayers().filter((player) => (player.hasTag("getPlayerBlockInteractionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.playerInteractWithBlock]Location: [ " + event.block.location.x + ", " + event.block.location.y + ", " + event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "") + ", Player: " + event.player.name); });
+    world.getAllPlayers().filter((player) => (player.hasTag("getPlayerBlockInteractionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.playerInteractWithBlock]Location: [ " + event.block.location.x + ", " + event.block.location.y + ", " + event.block.location.z + " ], Dimension: " + event.block.dimension.id + ", Block Type: " + (event.block?.typeId ?? "") + ", Item Type: " + (event.itemStack?.typeId ?? "") + ", Is First Event: " + event.isFirstEvent + ", Player: " + event.player.name); });
     if ((event.player.getDynamicProperty("canBypassProtectedAreas") != true && event.player.hasTag("canBypassProtectedAreas") != true) && ((((testIsWithinRanges(noBlockInteractAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noBlockInteractAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false)) || (((testIsWithinRanges(noInteractAreas.positive.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true) && ((testIsWithinRanges(noInteractAreas.negative.filter(v => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false)))) {
         event.cancel = true;
     }
@@ -6636,9 +6913,42 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
             ;
         }
         ;
+        if (["andexdb:pick_block_stick", "andexdb:liquid_clipped_pick_block_stick"].includes(event.itemStack?.typeId)) {
+            event.cancel = true;
+            try {
+                srun(() => event.player.inventory.container.addItem(event.block.getItemStack() ?? tryget(() => new ItemStack(event.block.typeId))));
+                return;
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            ;
+        }
+        ;
+        if (["andexdb:data_pick_block_stick", "andexdb:liquid_clipped_data_pick_block_stick"].includes(event.itemStack?.typeId)) {
+            event.cancel = true;
+            try {
+                srun(() => event.player.inventory.container.addItem(event.block.getItemStack(undefined, true) ?? tryget(() => new ItemStack(event.block.typeId))));
+                return;
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
+            ;
+        }
+        ;
     }
 });
-world.beforeEvents.itemUseOn.subscribe(event => {
+subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe(event => {
+    if (event.source.hasTag("debugStickDyingMode") && event.block.typeId == "minecraft:cauldron") {
+        event.cancel = false;
+        return;
+    }
+    if (event.itemStack?.typeId === "andexdb:selection_tool") {
+        event.cancel = true;
+        // console.log(2);
+        return;
+    }
     if (!!event?.itemStack?.getDynamicProperty("itemUseOnCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")));
@@ -6685,15 +6995,20 @@ world.beforeEvents.itemUseOn.subscribe(event => {
             if ((!event.source.hasTag("canBypassWorldBorderInteractionLimits")) && (event.block.x >= borderSettings.to.x || event.block.z >= borderSettings.to.z || event.block.x < borderSettings.from.x || event.block.z < borderSettings.from.z)) {
                 event.cancel = true;
             }
+            ;
         }
+        ;
     }
+    ;
     if (event.isFirstEvent) {
-        if (["andexdb:editor_stick", "andexdb:editor_stick_b", "andexdb:editor_stick_c"].includes(event.itemStack?.typeId)) {
+        if (["andexdb:editor_stick", "andexdb:editor_stick_b", "andexdb:editor_stick_c", "andexdb:pick_block_stick", "andexdb:liquid_clipped_pick_block_stick", "andexdb:data_pick_block_stick", "andexdb:liquid_clipped_data_pick_block_stick"].includes(event.itemStack?.typeId)) {
             event.cancel = true;
         }
+        ;
     }
+    ;
 });
-world.beforeEvents.playerBreakBlock.subscribe(event => {
+subscribedEvents.beforePlayerBreakBlock = world.beforeEvents.playerBreakBlock.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("playerBreakBlockCode")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("playerBreakBlockCode")));
@@ -6731,7 +7046,7 @@ world.beforeEvents.playerBreakBlock.subscribe(event => {
         }
     }
 });
-world.beforeEvents.playerPlaceBlock.subscribe(event => {
+subscribedEvents.beforePlayerPlaceBlock = world.beforeEvents.playerPlaceBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalBeforeEvents:playerPlaceBlock")));
     }
@@ -6759,7 +7074,7 @@ world.beforeEvents.playerPlaceBlock.subscribe(event => {
 });
 /*${scripteval}world.getAllPlayers().filter((p)=>(p.getDynamicProperty("canBypassProtectedAreas") == undefined)).forEach((p)=>{p.setDynamicProperty("canBypassProtectedAreas", false)})*/
 /*${scripteval}world.getAllPlayers().find((p)=>(p.name == "Andexter8")).setDynamicProperty("canBypassProtectedAreas", true)*/
-world.afterEvents.entityHitBlock.subscribe(event => {
+subscribedEvents.afterEntityHitBlock = world.afterEvents.entityHitBlock.subscribe(event => {
     try {
         eval(String(world.getDynamicProperty("evalAfterEvents:entityHitBlock")));
     }
@@ -6779,7 +7094,7 @@ world.afterEvents.entityHitBlock.subscribe(event => {
     ;
     world.getAllPlayers().filter((player) => (player.hasTag("getEntityHitBlockEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("[beforeEvents.entityHitBlock]Location: " + event.hitBlock.location + ", Dimension: " + event.hitBlock.dimension + ", Block Type: " + (event.hitBlock?.typeId ?? "") + ", Player: " + event.damagingEntity.name); });
 });
-system.runInterval(() => {
+repeatingIntervals.debugSticksCooldownCounter = system.runInterval(() => {
     world.getAllPlayers().forEach((player) => {
         if (interactable_block.find((playerId) => (playerId.id == player.id)) == undefined) {
             interactable_block.push({ id: player.id, delay: 0, holdDuration: 0 });
@@ -6792,11 +7107,11 @@ system.runInterval(() => {
             player.onScreenDisplay.setActionBar(`§l§eTags: §r§a${player.getBlockFromViewDirection().block.getTags().join(", ")}\n§l§eBlock States: §r§a${Object.entries(player.getBlockFromViewDirection().block.permutation.getAllStates()).join("\n")}`)}; */
     });
 }, 1);
-system.runInterval(() => { try {
+repeatingIntervals.everyTickAutoEval = system.runInterval(() => { try {
     eval(String(world.getDynamicProperty("autoEval:everyTick")));
 }
 catch { } ; }, 1); //fixed and this one is also nows new
-world.beforeEvents.itemUse.subscribe(event => {
+subscribedEvents.beforeItemUse = world.beforeEvents.itemUse.subscribe(event => {
     if (!!event?.itemStack?.getDynamicProperty("code")) {
         try {
             eval(String(event?.itemStack?.getDynamicProperty("code")));
@@ -7666,12 +7981,12 @@ console.error(e, e.stack);
                 event.source.sendMessage(`Set ${mode ? "pos2" : "pos1"} to ${vTStr(posV)}.`);
                 event.source.setDynamicProperty("posM", !mode);
                 srun(() => {
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2" : "andexdb:xz_axis_particle_pos1", Vector.add(loc, { x: 0.5, y: 1.001, z: 0.5 }))
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_north" : "andexdb:xz_axis_particle_pos1_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.001 }))
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_east" : "andexdb:xz_axis_particle_pos1_east", Vector.add(loc, { x: -0.001, y: 0.5, z: 0.5 }))
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_down" : "andexdb:xz_axis_particle_pos1_down", Vector.add(loc, { x: 0.5, y: -0.001, z: 0.5 }))
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_south" : "andexdb:xz_axis_particle_pos1_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.001 }))
-                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_west" : "andexdb:xz_axis_particle_pos1_west", Vector.add(loc, { x: 1.001, y: 0.5, z: 0.5 }))
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2" : "andexdb:xz_axis_particle_pos1", Vector.add(loc, { x: 0.5, y: 1.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_north" : "andexdb:xz_axis_particle_pos1_north", Vector.add(loc, { x: 0.5, y: 0.5, z: 1.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_east" : "andexdb:xz_axis_particle_pos1_east", Vector.add(loc, { x: -0.005, y: 0.5, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_down" : "andexdb:xz_axis_particle_pos1_down", Vector.add(loc, { x: 0.5, y: -0.005, z: 0.5 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_south" : "andexdb:xz_axis_particle_pos1_south", Vector.add(loc, { x: 0.5, y: 0.5, z: -0.005 }));
+                    event.source.spawnParticle(mode ? "andexdb:xz_axis_particle_pos2_west" : "andexdb:xz_axis_particle_pos1_west", Vector.add(loc, { x: 1.005, y: 0.5, z: 0.5 }));
                 });
             }
         }
@@ -7681,7 +7996,7 @@ console.error(e, e.stack);
     }
     ;
 });
-world.beforeEvents.chatSend.subscribe((eventData) => {
+subscribedEvents.beforeChatSend = world.beforeEvents.chatSend.subscribe((eventData) => {
     try {
         getPlayersWithAnyOfTags(["getBeforeChatSendNotifications", "includeBeforeChatSendNotificationsBy:" + eventData.sender.name, "includeBeforeChatSendNotificationsById:" + eventData.sender.name]).filter(p => !p.hasTag("excludeBeforeChatSendNotificationsById:" + eventData.sender.id) && !p.hasTag("excludeBeforeChatSendNotificationsBy:" + eventData.sender.name)).forEach(p => { psend(p, `§r§f[§l§dServer§r§f]${(world.getDynamicProperty("serverNotificationSpacer") ?? "")}[§ebeforeChatSend§r][${eventData.sender.name}] Chat message sent${!!eventData.targets ? " with targets " + eventData.targets.map(p => p.name).join() : ""} with the message ${JSONStringify(eventData.message)}. `); let pn = new PlayerNotifications(p); srun(() => p.playSound(pn.getBeforeChatSendNotificationsNotificationSound.soundId, { pitch: pn.getBeforeChatSendNotificationsNotificationSound.pitch, volume: pn.getBeforeChatSendNotificationsNotificationSound.volume })); });
     }
@@ -7691,13 +8006,13 @@ world.beforeEvents.chatSend.subscribe((eventData) => {
     chatMessage(eventData);
 });
 try {
-    system.runInterval(() => {
+    repeatingIntervals.rankNameTags_editorStickActionbar_artificialLagMS = system.runInterval(() => {
         try {
             let playerList2 = world.getPlayers();
             try {
                 for (let index in playerList2) {
                     try {
-                        if ((playerList2[index].isSneaking && ((playerList2[index].getComponent("minecraft:inventory").container?.getItem(playerList2[index].selectedSlotIndex))?.typeId == "andexdb:editor_stick"))) {
+                        if (playerList2[index].hasTag("showBlockActionBarDebugInfo") || (playerList2[index].isSneaking && playerList2[index].heldItem?.typeId == "andexdb:editor_stick")) {
                             let block = playerList2[index].getBlockFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true }).block;
                             let blockStates = Object.entries(block.permutation.getAllStates());
                             let blockStatesB;
@@ -7706,7 +8021,7 @@ try {
                                 blockStatesB[i] = `${s[0]}: §c${s[1]}`;
                             }
                             catch { } });
-                            playerList2[index].onScreenDisplay.setActionBar(`§b${block.typeId}
+                            const newActionBarText = `§b${block.typeId}
 §l§eTags: §r§a${block.getTags().join(", ")}
 §l§eBlock States: §r§a${blockStatesB.join("\n§a")}
 §l§eIs Waterlogged: §r${((b) => (b ? "§2" : "§4") + String(b))(block.isWaterlogged)}
@@ -7718,140 +8033,143 @@ try {
 §l§eminecraft:piston: §r§9{§eIs Moving: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("piston").isMoving)}§a, §eState: §r§u${block.getComponent("piston").state}§a, §eAttatched Block Count: §r§c${block.getComponent("piston").getAttachedBlocks().length}§9}` : ""}${!!block.getComponent("record_player") ? `
 §l§eminecraft:recordPlayer: §r§9{§eIs Playing: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("record_player").isPlaying())}§9}` : ""}${!!block.getComponent("sign") ? `
 §l§eminecraft:sign: §r§9{§eIs Waxed: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("sign").isWaxed)}§a, §eF Dye: §r§u${block.getComponent("sign").getTextDyeColor(SignSide.Front) ?? "null"}§a, §eB Dye: §r§u${block.getComponent("sign").getTextDyeColor(SignSide.Back) ?? "null"}§a, §eF Text Length: §r§c${block.getComponent("sign").getText(SignSide.Front).length}§a, §eB Text Length: §r§c${block.getComponent("sign").getText(SignSide.Back).length}§a, §eF Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign").getRawText(SignSide.Front)))}§a, §eB Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign").getRawText(SignSide.Back)))}§9}` : ""}${!!block.getComponent("fluidContainer") ? `
-§l§eminecraft:fluidContainer: §r§9{§eFill Level: §r§c${block.getComponent("fluidContainer").fillLevel}§a, §eFluid Type: §r§c§a${block.getComponent("fluidContainer").getFluidType()}, §eCustom Color: §r§c${JSON.stringify(block.getComponent("fluidContainer").fluidColor)}§9}` : ""}`);
+§l§eminecraft:fluidContainer: §r§9{§eFill Level: §r§c${block.getComponent("fluidContainer").fillLevel}§a, §eFluid Type: §r§c§a${block.getComponent("fluidContainer").getFluidType()}, §eCustom Color: §r§c${JSON.stringify(block.getComponent("fluidContainer").fluidColor)}§9}` : ""}`;
+                            playerList2[index].onScreenDisplay.setActionBar(newActionBarText + "\n".repeat(Math.max(0, newActionBarText.split("\n").length - 12)));
                         }
                         ;
                     }
                     catch (e) { }
-                    if (config.chatRanks.showRanksOnPlayerNameTags && !playerList2[index].hasTag("doNotSetNameTag")) {
-                        let nameFormatting = "";
-                        let nameGradientMode = undefined;
-                        let showDimension = false;
-                        let showHealth = false;
-                        if (playerList2[index].hasTag('nameFormatting:r')) {
-                            nameFormatting += "§r";
-                        }
-                        ;
-                        if (playerList2[index].hasTag('nameFormatting:o')) {
-                            nameFormatting += "§o";
-                        }
-                        ;
-                        if (playerList2[index].hasTag('nameFormatting:l')) {
-                            nameFormatting += "§l";
-                        }
-                        ;
-                        if (playerList2[index].hasTag('nameFormatting:k')) {
-                            nameFormatting += "§k";
-                        }
-                        ;
-                        if (playerList2[index].hasTag('nameColor:0')) {
-                            nameFormatting += "§0";
-                        }
-                        else {
-                            if (playerList2[index].hasTag('nameColor:1')) {
-                                nameFormatting += "§1";
+                    if (config.chatRanks.showRanksOnPlayerNameTags) {
+                        if (!playerList2[index].hasTag("doNotSetNameTag")) {
+                            let nameFormatting = "";
+                            let nameGradientMode = undefined;
+                            let showDimension = false;
+                            let showHealth = false;
+                            if (playerList2[index].hasTag('nameFormatting:r')) {
+                                nameFormatting += "§r";
+                            }
+                            ;
+                            if (playerList2[index].hasTag('nameFormatting:o')) {
+                                nameFormatting += "§o";
+                            }
+                            ;
+                            if (playerList2[index].hasTag('nameFormatting:l')) {
+                                nameFormatting += "§l";
+                            }
+                            ;
+                            if (playerList2[index].hasTag('nameFormatting:k')) {
+                                nameFormatting += "§k";
+                            }
+                            ;
+                            if (playerList2[index].hasTag('nameColor:0')) {
+                                nameFormatting += "§0";
                             }
                             else {
-                                if (playerList2[index].hasTag('nameColor:2')) {
-                                    nameFormatting += "§2";
+                                if (playerList2[index].hasTag('nameColor:1')) {
+                                    nameFormatting += "§1";
                                 }
                                 else {
-                                    if (playerList2[index].hasTag('nameColor:3')) {
-                                        nameFormatting += "§3";
+                                    if (playerList2[index].hasTag('nameColor:2')) {
+                                        nameFormatting += "§2";
                                     }
                                     else {
-                                        if (playerList2[index].hasTag('nameColor:4')) {
-                                            nameFormatting += "§4";
+                                        if (playerList2[index].hasTag('nameColor:3')) {
+                                            nameFormatting += "§3";
                                         }
                                         else {
-                                            if (playerList2[index].hasTag('nameColor:5')) {
-                                                nameFormatting += "§5";
+                                            if (playerList2[index].hasTag('nameColor:4')) {
+                                                nameFormatting += "§4";
                                             }
                                             else {
-                                                if (playerList2[index].hasTag('nameColor:6')) {
-                                                    nameFormatting += "§6";
+                                                if (playerList2[index].hasTag('nameColor:5')) {
+                                                    nameFormatting += "§5";
                                                 }
                                                 else {
-                                                    if (playerList2[index].hasTag('nameColor:7')) {
-                                                        nameFormatting += "§7";
+                                                    if (playerList2[index].hasTag('nameColor:6')) {
+                                                        nameFormatting += "§6";
                                                     }
                                                     else {
-                                                        if (playerList2[index].hasTag('nameColor:8')) {
-                                                            nameFormatting += "§8";
+                                                        if (playerList2[index].hasTag('nameColor:7')) {
+                                                            nameFormatting += "§7";
                                                         }
                                                         else {
-                                                            if (playerList2[index].hasTag('nameColor:9')) {
-                                                                nameFormatting += "§9";
+                                                            if (playerList2[index].hasTag('nameColor:8')) {
+                                                                nameFormatting += "§8";
                                                             }
                                                             else {
-                                                                if (playerList2[index].hasTag('nameColor:a')) {
-                                                                    nameFormatting += "§a";
+                                                                if (playerList2[index].hasTag('nameColor:9')) {
+                                                                    nameFormatting += "§9";
                                                                 }
                                                                 else {
-                                                                    if (playerList2[index].hasTag('nameColor:b')) {
-                                                                        nameFormatting += "§b";
+                                                                    if (playerList2[index].hasTag('nameColor:a')) {
+                                                                        nameFormatting += "§a";
                                                                     }
                                                                     else {
-                                                                        if (playerList2[index].hasTag('nameColor:c')) {
-                                                                            nameFormatting += "§c";
+                                                                        if (playerList2[index].hasTag('nameColor:b')) {
+                                                                            nameFormatting += "§b";
                                                                         }
                                                                         else {
-                                                                            if (playerList2[index].hasTag('nameColor:d')) {
-                                                                                nameFormatting += "§d";
+                                                                            if (playerList2[index].hasTag('nameColor:c')) {
+                                                                                nameFormatting += "§c";
                                                                             }
                                                                             else {
-                                                                                if (playerList2[index].hasTag('nameColor:e')) {
-                                                                                    nameFormatting += "§e";
+                                                                                if (playerList2[index].hasTag('nameColor:d')) {
+                                                                                    nameFormatting += "§d";
                                                                                 }
                                                                                 else {
-                                                                                    if (playerList2[index].hasTag('nameColor:f')) {
-                                                                                        nameFormatting += "§f";
+                                                                                    if (playerList2[index].hasTag('nameColor:e')) {
+                                                                                        nameFormatting += "§e";
                                                                                     }
                                                                                     else {
-                                                                                        if (playerList2[index].hasTag('nameColor:g')) {
-                                                                                            nameFormatting += "§g";
+                                                                                        if (playerList2[index].hasTag('nameColor:f')) {
+                                                                                            nameFormatting += "§f";
                                                                                         }
                                                                                         else {
-                                                                                            if (playerList2[index].hasTag('nameColor:h')) {
-                                                                                                nameFormatting += "§h";
+                                                                                            if (playerList2[index].hasTag('nameColor:g')) {
+                                                                                                nameFormatting += "§g";
                                                                                             }
                                                                                             else {
-                                                                                                if (playerList2[index].hasTag('nameColor:i')) {
-                                                                                                    nameFormatting += "§i";
+                                                                                                if (playerList2[index].hasTag('nameColor:h')) {
+                                                                                                    nameFormatting += "§h";
                                                                                                 }
                                                                                                 else {
-                                                                                                    if (playerList2[index].hasTag('nameColor:j')) {
-                                                                                                        nameFormatting += "§j";
+                                                                                                    if (playerList2[index].hasTag('nameColor:i')) {
+                                                                                                        nameFormatting += "§i";
                                                                                                     }
                                                                                                     else {
-                                                                                                        if (playerList2[index].hasTag('nameColor:m')) {
-                                                                                                            nameFormatting += "§m";
+                                                                                                        if (playerList2[index].hasTag('nameColor:j')) {
+                                                                                                            nameFormatting += "§j";
                                                                                                         }
                                                                                                         else {
-                                                                                                            if (playerList2[index].hasTag('nameColor:n')) {
-                                                                                                                nameFormatting += "§n";
+                                                                                                            if (playerList2[index].hasTag('nameColor:m')) {
+                                                                                                                nameFormatting += "§m";
                                                                                                             }
                                                                                                             else {
-                                                                                                                if (playerList2[index].hasTag('nameColor:p')) {
-                                                                                                                    nameFormatting += "§p";
+                                                                                                                if (playerList2[index].hasTag('nameColor:n')) {
+                                                                                                                    nameFormatting += "§n";
                                                                                                                 }
                                                                                                                 else {
-                                                                                                                    if (playerList2[index].hasTag('nameColor:q')) {
-                                                                                                                        nameFormatting += "§q";
+                                                                                                                    if (playerList2[index].hasTag('nameColor:p')) {
+                                                                                                                        nameFormatting += "§p";
                                                                                                                     }
                                                                                                                     else {
-                                                                                                                        if (playerList2[index].hasTag('nameColor:s')) {
-                                                                                                                            nameFormatting += "§s";
+                                                                                                                        if (playerList2[index].hasTag('nameColor:q')) {
+                                                                                                                            nameFormatting += "§q";
                                                                                                                         }
                                                                                                                         else {
-                                                                                                                            if (playerList2[index].hasTag('nameColor:t')) {
-                                                                                                                                nameFormatting += "§t";
+                                                                                                                            if (playerList2[index].hasTag('nameColor:s')) {
+                                                                                                                                nameFormatting += "§s";
                                                                                                                             }
                                                                                                                             else {
-                                                                                                                                if (playerList2[index].hasTag('nameColor:u')) {
-                                                                                                                                    nameFormatting += "§u";
+                                                                                                                                if (playerList2[index].hasTag('nameColor:t')) {
+                                                                                                                                    nameFormatting += "§t";
                                                                                                                                 }
-                                                                                                                                ;
+                                                                                                                                else {
+                                                                                                                                    if (playerList2[index].hasTag('nameColor:u')) {
+                                                                                                                                        nameFormatting += "§u";
+                                                                                                                                    }
+                                                                                                                                    ;
+                                                                                                                                }
                                                                                                                             }
                                                                                                                         }
                                                                                                                     }
@@ -7877,59 +8195,59 @@ try {
                                     }
                                 }
                             }
+                            playerList2[index].getTags().filter(v => v.startsWith("nameColor:")).forEach(v => {
+                                if (patternColors.includes(v.slice(10).toLowerCase())) {
+                                    nameFormatting += patternColorsMap[v.slice(10).toLowerCase()];
+                                }
+                                else if (Object.keys(patternFunctionList).includes(v.slice(10).toLowerCase())) {
+                                    nameGradientMode = v.slice(10).toLowerCase();
+                                }
+                                else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'm', 'n', 'p', 'q', 's', 't', 'u'].includes(v.slice(13).toLowerCase())) {
+                                    undefined;
+                                }
+                            });
+                            playerList2[index].getTags().filter(v => v.startsWith("nameFormatting:")).forEach(v => {
+                                if (['r', 'o', 'l', 'k'].includes(v.slice(15).toLowerCase())) {
+                                    undefined;
+                                }
+                                else {
+                                    nameFormatting += v.slice(15).toLowerCase();
+                                }
+                            });
+                            if (playerList2[index].hasTag('config:health')) {
+                                showHealth = true;
+                            }
+                            ;
+                            if (playerList2[index].hasTag('config:dimension')) {
+                                showDimension = true;
+                            }
+                            ;
+                            let nameb = playerList2[index].hasTag("nameTagUseSudo") ?
+                                (!!nameGradientMode ?
+                                    evaluateChatColorType(playerList2[index].getTags().find(t => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                                        .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode) :
+                                    playerList2[index].getTags().find(t => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                                        .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)) :
+                                !!playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")) ? (!!nameGradientMode ?
+                                    evaluateChatColorType(tryget(() => playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")).slice(12)), nameGradientMode) :
+                                    tryget(() => playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")).slice(12))) : (playerList2[index].hasTag("chatHideNameTag") ? "" :
+                                    playerList2[index].hasTag("chatUseNameTag") ? (!!nameGradientMode ? evaluateChatColorType(playerList2[index].nameTag, nameGradientMode) : playerList2[index].nameTag) :
+                                        (!!nameGradientMode ? evaluateChatColorType(playerList2[index].name, nameGradientMode) : playerList2[index].name));
+                            let indexb = index;
+                            let rank = playerList2[indexb].getTags().filter(t => t.startsWith(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
+                                .map((t, index, array) => { let rank = t.slice(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length); let tags = playerList2[indexb].getTags(); return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}\``); }).join(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
+                            if (rank == "") {
+                                let tags = playerList2[indexb].getTags();
+                                rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
+                            }
+                            let dimension = dimensionTypeDisplayFormattingE[playerList2[index].dimension.id];
+                            playerList2[indexb].nameTag = (showDimension ? "[" + dimension + "§r§f] " : "") + rank + " " + nameb + (showHealth ? "§r§f[" + playerList2[indexb].getComponent("health").currentValue + "/" + playerList2[indexb].getComponent("health").effectiveMax + "] " : ""); /*(
+                                playerList2[index].hasTag("nameTagUseSudo")?
+                                playerList2[index].getTags().find(t=>t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+                                .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length):
+                                tryget(()=>playerList2[index].getTags().find(t=>t.startsWith("nameTagSudo:")).slice(12))??playerList2[index].name
+                            )*/
                         }
-                        playerList2[index].getTags().filter(v => v.startsWith("nameColor:")).forEach(v => {
-                            if (patternColors.includes(v.slice(10).toLowerCase())) {
-                                nameFormatting += patternColorsMap[v.slice(10).toLowerCase()];
-                            }
-                            else if (Object.keys(patternFunctionList).includes(v.slice(10).toLowerCase())) {
-                                nameGradientMode = v.slice(10).toLowerCase();
-                            }
-                            else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'm', 'n', 'p', 'q', 's', 't', 'u'].includes(v.slice(13).toLowerCase())) {
-                                undefined;
-                            }
-                        });
-                        playerList2[index].getTags().filter(v => v.startsWith("nameFormatting:")).forEach(v => {
-                            if (['r', 'o', 'l', 'k'].includes(v.slice(15).toLowerCase())) {
-                                undefined;
-                            }
-                            else {
-                                nameFormatting += v.slice(15).toLowerCase();
-                            }
-                        });
-                        if (playerList2[index].hasTag('config:health')) {
-                            showHealth = true;
-                        }
-                        ;
-                        if (playerList2[index].hasTag('config:dimension')) {
-                            showDimension = true;
-                        }
-                        ;
-                        let nameb = playerList2[index].hasTag("nameTagUseSudo") ?
-                            (!!nameGradientMode ?
-                                evaluateChatColorType(playerList2[index].getTags().find(t => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-                                    .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length), nameGradientMode) :
-                                playerList2[index].getTags().find(t => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-                                    .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length)) :
-                            !!playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")) ? (!!nameGradientMode ?
-                                evaluateChatColorType(tryget(() => playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")).slice(12)), nameGradientMode) :
-                                tryget(() => playerList2[index].getTags().find(t => t.startsWith("nameTagSudo:")).slice(12))) : (playerList2[index].hasTag("chatHideNameTag") ? "" :
-                                playerList2[index].hasTag("chatUseNameTag") ? (!!nameGradientMode ? evaluateChatColorType(playerList2[index].nameTag, nameGradientMode) : playerList2[index].nameTag) :
-                                    (!!nameGradientMode ? evaluateChatColorType(playerList2[index].name, nameGradientMode) : playerList2[index].name));
-                        let indexb = index;
-                        let rank = playerList2[indexb].getTags().filter(t => t.startsWith(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:")))
-                            .map((t, index, array) => { let rank = t.slice(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ?? world.getDynamicProperty("andexdbSettings:chatRankPrefix") ?? "rank:").length); let tags = playerList2[indexb].getTags(); return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}\``); }).join(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatNameAndMessageSeparator") ?? world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
-                        if (rank == "") {
-                            let tags = playerList2[indexb].getTags();
-                            rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
-                        }
-                        let dimension = dimensionTypeDisplayFormattingE[playerList2[index].dimension.id];
-                        playerList2[indexb].nameTag = (showDimension ? "[" + dimension + "§r§f] " : "") + rank + " " + nameb + (showHealth ? "§r§f[" + playerList2[indexb].getComponent("health").currentValue + "/" + playerList2[indexb].getComponent("health").effectiveMax + "] " : ""); /*(
-                            playerList2[index].hasTag("nameTagUseSudo")?
-                            playerList2[index].getTags().find(t=>t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-                            .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length):
-                            tryget(()=>playerList2[index].getTags().find(t=>t.startsWith("nameTagSudo:")).slice(12))??playerList2[index].name
-                        )*/
                     }
                     try {
                         if (playerList2[index].hasTag("isSneaking")) {
@@ -7979,7 +8297,7 @@ try{noBlockBreakAreas = convertToCompoundBlockVolume(String(world.getDynamicProp
 try{protectedAreas = convertToCompoundBlockVolume(String(world.getDynamicProperty("protectedAreas") ?? "0, 0, 0, 0, 0, 0"))} catch(e){console.error(e, e.stack);}
 try{noBlockPlaceAreas = convertToCompoundBlockVolume(String(world.getDynamicProperty("noBlockPlaceAreas") ?? "0, 0, 0, 0, 0, 0"))} catch(e){console.error(e, e.stack);}
 }, 1)} catch(e){console.error(e, e.stack);}*/
-system.afterEvents.scriptEventReceive.subscribe((event) => {
+subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive.subscribe((event) => {
     const { id, // returns string (wiki:test)
     initiator, // returns Entity
     message, // returns string (Hello World)
@@ -7995,6 +8313,25 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("scriptEventRecieveAfterEventDebugErrors")) {
             currentplayer.sendMessage(e + e.stack);
         } });
+    }
+    if (id.startsWith("andexsa:")) {
+        return;
+    }
+    if (id == "andexdb:entityScaleInitSignal") {
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleInitSignalReceivedByDebugSticks ${format_version}`);
+        if (entity_scale_format_version != null && message.trim() != entity_scale_format_version) {
+            globalThis.multipleEntityScaleVersionsDetected = true;
+        }
+        entity_scale_format_version = message.trim();
+        return;
+    }
+    else if (id == "andexdb:entityScaleTestSignal") {
+        world.getDimension("overworld").runCommand(`/scriptevent andexsa:entityScaleTestSignalReceivedByDebugSticks ${format_version}`);
+        if (entity_scale_format_version != null && message.trim() != entity_scale_format_version) {
+            globalThis.multipleEntityScaleVersionsDetected = true;
+        }
+        entity_scale_format_version = message.trim();
+        return;
     }
     if (id == "andexdb:scriptevent") {
         const diamondAwesomeSword = new ItemStack("minecraft:diamond_sword", 1);

@@ -1,0 +1,13 @@
+{
+"format_version": "1.17",
+"minecraft:recipe_smithing_transform": {
+    "description": {
+        "identifier": "andexdb:632minecraft:enchanted_golden_apple"
+    },
+    "tags": ["smithing_table"],
+    "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 632},
+    "base": "andexdb:smithing_table_enchanted_book",
+        "addition": "minecraft:netherite_ingot",
+        "result": {"item": "minecraft:enchanted_golden_apple"}
+    }
+}

@@ -4,8 +4,8 @@ import { LocalTeleportFunctions, coordinates, coordinatesB, evaluateCoordinates,
 import { player_save_format_version, savedPlayer } from "./player_save.js";
 import { editAreas, noPistonExtensionAreas, noBlockBreakAreas, noBlockInteractAreas, noBlockPlaceAreas, noExplosionAreas, noInteractAreas, protectedAreas, testIsWithinRanges, getAreas, spawnProtectionTypeList, spawn_protection_format_version, convertToCompoundBlockVolume, getType, editAreasMainMenu } from "./spawn_protection.js";
 import { customElementTypeIds, customFormListSelectionMenu, editCustomFormUI, forceShow, showCustomFormUI, addNewCustomFormUI, customElementTypes, customFormDataTypeIds, customFormDataTypes, customFormUIEditor, customFormUIEditorCode, ui_format_version, settings, personalSettings, editorStickB, editorStickMenuB, mainMenu, globalSettings, evalAutoScriptSettings, editorStickMenuC, inventoryController, editorStickC, playerController, entityController, scriptEvalRunWindow, editorStick, managePlayers, terminal, manageCommands, chatMessageNoCensor, chatCommandRunner, chatSendNoCensor, notificationsSettings } from "./ui.js";
-import { listoftransformrecipes } from "transformrecipes";
-import { arrayify, clamp24HoursTo12Hours, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, formatDateTime, formatTime, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, twoWayModulo, arrayModifier, arrayModifierOld } from "./utilities";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
+import { arrayify, utilsmetaimport, combineObjects, customModulo, escapeRegExp, extractJSONStrings, fixedPositionNumberObject, fromBaseToBase, generateAIID, generateCUID, generateTUID, getAIIDClasses, getArrayElementProperty, getCUIDClasses, getParametersFromExtractedJSON, getParametersFromString, jsonFromString, objectify, roundPlaceNumberObject, shootEntity, shootEntityB, shootProjectile, shootProjectileB, shuffle, splitTextByMaxProperyLength, stringify, toBase, arrayModifier, arrayModifierOld } from "./utilities";
 import { chatMessage, chatSend, chatmetaimport, currentlyRequestedChatInput, evaluateChatColorType, patternColors, patternColorsMap, patternFunctionList, patternList, requestChatInput, requestConditionalChatInput } from "./chat";
 import { cmdutilsmetaimport, targetSelector, targetSelectorAllListB, targetSelectorAllListC, targetSelectorAllListD, targetSelectorAllListE, targetSelectorB } from "./command_utilities";
 import * as GameTest from "@minecraft/server-gametest";
@@ -16,7 +16,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "./coordinates";
 import * as cmds from "./commands";
 import * as bans from "./ban";
@@ -45,9 +45,21 @@ spawnprot;
 mcMath;
 export const ban_format_version = "1.2.0";
 export class ban {
+    type;
+    playerName;
+    originalPlayerId;
+    playerId;
+    originalPlayerName;
+    removeAfterBanExpires;
+    unbanDate;
+    banDate;
+    bannedById;
+    bannedByName;
+    reason;
+    format_version = format_version;
+    ban_format_version = ban_format_version;
+    banId;
     constructor(ban) {
-        this.format_version = format_version;
-        this.ban_format_version = ban_format_version;
         this.type = ban.type ?? (ban.playerName != undefined ? "name" : "id");
         this.unbanDate = ban.unbanDate;
         this.banDate = ban.banDate;
@@ -119,12 +131,28 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         feedback.push(e);
     } }); return feedback; }
 }
-system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:banEnabled") ?? true == true) {
-    ban.executeOnBannedPlayers((p) => { let success = false; let b = (savedPlayer?.getSavedPlayer("player:" + p.id)?.idBans?.valid?.sort((a, b) => 1 - (2 * Number(a?.banDate > b?.banDate)))[0] ?? savedPlayer?.getSavedPlayer("player:" + p.id)?.nameBans?.valid?.sort((a, b) => 1 - (2 * Number(a?.banDate > b?.banDate)))[0] ?? savedPlayer?.getSavedPlayer("player:" + p.id)?.bans?.valid?.sort((a, b) => 1 - (2 * Number(a?.banDate > b?.banDate)))[0] ?? savedPlayer?.getSavedPlayer("player:" + p.id)?.bans?.all?.sort((a, b) => 1 - (2 * Number(a?.banDate > b?.banDate)))[0]); let reason = b?.reason; try {
-        reason = String(eval(b?.reason?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toLocaleString() + " GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toLocaleString() + " GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))));
+export async function startCheckingForBannedPlayers() {
+    (await import("Main")).config;
+    repeatingIntervals.bannedPlayersChecker = system.runInterval(() => { if (world.getDynamicProperty("andexdbSettings:banEnabled") ?? true == true) {
+        ban.executeOnBannedPlayers((p) => { let success = false; let b = (savedPlayer?.getSavedPlayer("player:" + p.id)?.idBans?.valid?.sort((a, b) => 1 - (2 * Number(a?.banDate > b?.banDate)))[0] ?? savedPlayer?.getSavedPlayer("player:" + p.id)?.nameBans?.valid?.sort((a, b) => 1 - (2 * Number(a?.banDate > b?.banDate)))[0] ?? savedPlayer?.getSavedPlayer("player:" + p.id)?.bans?.valid?.sort((a, b) => 1 - (2 * Number(a?.banDate > b?.banDate)))[0] ?? savedPlayer?.getSavedPlayer("player:" + p.id)?.bans?.all?.sort((a, b) => 1 - (2 * Number(a?.banDate > b?.banDate)))[0]); let reason = b?.reason; try {
+            reason = String(eval(b?.reason?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toLocaleString() + " GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toLocaleString() + " GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))));
+        }
+        catch (e) {
+            reason = b?.reason?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedByName}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toLocaleString() + " GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toLocaleString() + " GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))?.escapeCharactersB(true)?.v;
+        } ; p.runCommand(`/kick ${JSON.stringify(p.name)} ${reason}`); return success; });
+    } }, config.system.bannedPlayersRefreshRate ?? 5);
+}
+;
+export async function stopCheckingForBannedPlayers() {
+    try {
+        system.clearRun(repeatingIntervals.bannedPlayersChecker);
+        repeatingIntervals.bannedPlayersChecker = null;
+        return 1;
     }
-    catch (e) {
-        reason = b?.reason?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))?.replaceAll("{timeRemainingMinutes}", String(b?.timeRemaining.minutes))?.replaceAll("{timeRemainingSeconds}", String(b?.timeRemaining.seconds))?.replaceAll("{timeRemainingMilliseconds}", String(b?.timeRemaining.milliseconds))?.replaceAll("{bannedBy}", String(b?.bannedByName))?.replaceAll("{bannedByName}", String(b?.bannedByName))?.replaceAll("{bannedById}", String(b?.bannedById))?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toLocaleString() + " GMT"))?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toLocaleString() + " GMT"))?.replaceAll("{type}", String(b?.type))?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))?.escapeCharactersB(true)?.v;
-    } ; p.runCommand(`/kick ${JSON.stringify(p.name)} ${reason}`); return success; });
-} }, 5);
+    catch {
+        return 0;
+    }
+}
+;
+startCheckingForBannedPlayers();
 //# sourceMappingURL=ban.js.map

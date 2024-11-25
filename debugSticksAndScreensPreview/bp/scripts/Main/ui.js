@@ -4,7 +4,7 @@ import { getUICustomForm, format_version, srun, dimensionTypeDisplayFormatting, 
 import { editAreas, editAreasMainMenu } from "./spawn_protection";
 import { savedPlayer } from "./player_save";
 import { ban, ban_format_version } from "./ban";
-import { listoftransformrecipes } from "transformrecipes";
+import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui"; /*
@@ -13,7 +13,7 @@ import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
 import * as mcCommon from "@minecraft/common";*/ /*
 import * as mcVanillaData from "@minecraft/vanilla-data";*/
 import * as main from "Main";
-import * as transformrecipes from "transformrecipes";
+import * as transformrecipes from "Assets/constants/transformrecipes";
 import * as coords from "Main/coordinates";
 import * as cmds from "Main/commands";
 import * as bans from "Main/ban";
@@ -31,7 +31,8 @@ import { targetSelectorAllListC } from "./command_utilities";
 import { commands } from "./commands_list";
 import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
 import { MoneySystem } from "ExtraFeatures/money";
-import { showMessage } from "./utilities";
+import { showActions, showMessage } from "./utilities";
+import { Vector } from "Main/coordinates";
 mcServer;
 mcServerUi; /*
 mcServerAdmin*/ /*
@@ -68,7 +69,18 @@ export async function forceShow(form, player, timeout) {
 }
 export const customFormDataTypes = [ModalFormData, ActionFormData, MessageFormData];
 export const customFormDataTypeIds = ["ModalFormData", "ActionFormData", "MessageFormData"];
-export const customElementTypes = [ModalFormData.prototype.title, ModalFormData.prototype.textField, ModalFormData.prototype.dropdown, ModalFormData.prototype.toggle, ModalFormData.prototype.slider, ActionFormData.prototype.body, ActionFormData.prototype.button, MessageFormData.prototype.button1, MessageFormData.prototype.button2, ModalFormData.prototype.submitButton];
+export const customElementTypes = [
+    ModalFormData.prototype.title,
+    ModalFormData.prototype.textField,
+    ModalFormData.prototype.dropdown,
+    ModalFormData.prototype.toggle,
+    ModalFormData.prototype.slider,
+    ActionFormData.prototype.body,
+    ActionFormData.prototype.button,
+    MessageFormData.prototype.button1,
+    MessageFormData.prototype.button2,
+    ModalFormData.prototype.submitButton,
+];
 export const customElementTypeIds = ["title", "textField", "dropdown", "toggle", "slider", "body", "button", "button1", "button2", "submitButton"];
 export function editCustomFormUI(UIId) {
     let customUI = getUICustomForm("customUIElement:" + UIId, "customUICode:" + UIId);
@@ -381,7 +393,7 @@ export function infiniteUIv4(player, interval = 1, title = "Infinite Form", body
             .forceShow(player, interval);
     }, interval);
 }
-export function mainMenu(sourceEntitya) {
+export async function mainMenu(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
     let players = world.getPlayers();
@@ -415,183 +427,189 @@ export function mainMenu(sourceEntitya) {
     form.button("§eItem Editor §f[§cAlpha§f]", "textures/ui/icon_recipe_item");
     form.button("§eMap Art Generator §f[§cAlpha§f]", "textures/items/map_locked");
     form.button("§eJava NBT Structure Loader §f[§cAlpha§f]", "textures/ui/xyz_axis");
-    forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(ra => {
+    form.button("Close", "textures/ui/crossout");
+    return await forceShow(form, players[players.findIndex((x) => x == sourceEntity)]).then(async (ra) => {
         let r = ra;
         // This will stop the code when the player closes the form
         if (r.canceled)
-            return;
+            return 1;
         let response = r.selection;
         switch (response) {
             case 0:
                 editorStick(sourceEntity);
+                return 0;
                 break;
             case 1:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:debugStickMenuB saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 2:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:debugStickMenuC saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 3:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:debugScreen saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 4:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:itemLoreInventoryModifier hisw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 5:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:playerDebug saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 6:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:entityDebug saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break; /*
-
-        case 4:
-            try { (sourceEntity).runCommand(String("/scriptevent andexdb:entityDebuger saqw")); }
-            // Do something
-        catch(e) {
-            console.error(e, e.stack);
-        };
-            // Do something when button 2 is pressed
-            break;*/
+            case 4:
+                try { (sourceEntity).runCommand(String("/scriptevent andexdb:entityDebuger saqw")); }
+                // Do something
+            catch(e) {
+                console.error(e, e.stack);
+            };
+                // Do something when button 2 is pressed
+                break;*/
             case 7:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:playerController saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 8:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:entityController saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 9:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:worldOptions saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 10:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:dimensionOptions saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 11:
                 createExplosion(sourceEntity);
+                return 0;
                 break;
             case 12:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:fillBlocks saqw"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 15:
                 try {
                     (sourceEntity).runCommand(String("/scriptevent andexdb:inventoryTransfer saih"));
                 }
-                // Do something
                 catch (e) {
                     console.error(e, e.stack);
                 }
                 ;
-                // Do something when button 2 is pressed
+                return 0;
                 break;
             case 16:
                 terminal(sourceEntity);
+                return 0;
                 break;
             case 17:
                 scriptEvalRunWindow(sourceEntity);
+                return 0;
                 break;
             case 18:
                 editAreasMainMenu(sourceEntity);
+                return 0;
                 break;
             case 19:
                 customFormListSelectionMenu(sourceEntity);
+                return 0;
                 break;
             case 20:
                 moderationSettings(sourceEntity);
+                return 0;
                 break;
             case 21:
-                settings(sourceEntity);
+                if ((await settings(sourceEntity)) == 1) {
+                    return await mainMenu(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
                 break;
             case 22:
-                managePlayers(sourceEntity);
+                if ((await managePlayers(sourceEntity)) == 1) {
+                    return await mainMenu(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
                 break;
             case 23:
                 manageCommands(sourceEntity);
+                return 0;
                 break;
             case 24:
                 try {
@@ -603,17 +621,145 @@ export function mainMenu(sourceEntitya) {
                 break;
             case 25:
                 mapArtGenerator(sourceEntity);
+                return 0;
                 break;
             case 26:
                 nbtStructureLoader(sourceEntity);
+                return 0;
                 break;
+            case 27:
+                return 0;
             default:
+                return 1;
         }
     }).catch(e => {
         console.error(e, e.stack);
+        return 0;
     });
 }
-export function settings(sourceEntitya) {
+export async function addonDebugUI(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form = new ActionFormData();
+    let players = world.getPlayers();
+    form.title("Debug");
+    form.button("Debug Info", "textures/ui/ui_debug_glyph_color");
+    form.button("Raw Config", "textures/ui/debug_glyph_color");
+    form.button("Start Plyer Data Auto Save", "textures/ui/recap_glyph_color_2x");
+    form.button("Stop Plyer Data Auto Save", "textures/ui/close_button_default_light");
+    form.button("Start Checking For Banned Players", "textures/ui/recap_glyph_color_2x");
+    form.button("Stop Checking For Banned Players", "textures/ui/close_button_default_light");
+    form.button("Start Protected Areas Refresher", "textures/ui/recap_glyph_color_2x");
+    form.button("Stop Protected Areas Refresher", "textures/ui/close_button_default_light");
+    form.button("Stop All Built-In Intervals", "textures/ui/close_button_default_light");
+    form.button(entity_scale_format_version != null ? "Stop All Entity Scale Built-In Intervals" : "§cStop All Entity Scale Built-In Intervals\n§cNo compatible version of entity scale was detected.", "textures/ui/close_button_default_light"); /*
+    form.button("Start Plyer Data Auto Save", "textures/ui/icon_trailer");
+    form.button("Stop Plyer Data Auto Save", "textures/ui/realms_red_x");
+    form.button("Start Checking For Banned Players", "textures/ui/store_play_button");
+    form.button("Stop Checking For Banned Players", "textures/ui/minus");
+    form.button("Start Protected Areas Refresher", "textures/ui/recap_glyph_color_2x");
+    form.button("Stop Protected Areas Refresher", "textures/ui/close_button_default_light");
+    form.button("Stop All Built-In Intervals", "textures/ui/cancel");
+    form.button(entity_scale_format_version!=null?"Stop All Entity Scale Built-In Intervals":"§cStop All Entity Scale Built-In Intervals\n§cNo compatible version of entity scale was detected.", "textures/ui/recap_glyph_desaturated");*/
+    form.button("Back", "textures/ui/arrow_left");
+    form.button("Close", "textures/ui/crossout");
+    return await forceShow(form, sourceEntity).then(async (ra) => {
+        let r = ra;
+        // This will stop the code when the player closes the form
+        if (r.canceled)
+            return 1;
+        let response = r.selection;
+        switch (response) {
+            case 0:
+                const DPTBC = new (Decimal.clone({ precision: 50 }))(world.getDynamicPropertyTotalByteCount());
+                await showActions(sourceEntity, "Debug Info", `Dynamic Property Total Byte Count: ${DPTBC} Bytes/${DPTBC.div(1000).toDecimalPlaces(2)} KB/${DPTBC.div(1024).toDecimalPlaces(2)} KiB/${DPTBC.div(1000000).toDecimalPlaces(2)} MB/${DPTBC.div(1048576).toDecimalPlaces(2)} MiB
+Dynamic Property ID Count: ${world.getDynamicPropertyIds().length}
+Structure ID Count: ${world.structureManager.getWorldStructureIds().length}
+Server Memory Tier: ${system.serverSystemInfo.memoryTier}
+Current Tick: ${system.currentTick}
+Absolute Time: ${world.getAbsoluteTime()}
+Time Of Day: ${world.getTimeOfDay()}
+Day: ${world.getDay()}
+Moon Phase: ${world.getMoonPhase()}
+Default Spawn Location: ${JSONB.stringify(world.getDefaultSpawnLocation())}`, ["Done"]);
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 1:
+                await showActions(sourceEntity, "Raw Config", colorizeJSONString(JSONB.stringify(Object.fromEntries(Object.getOwnPropertyNames(config)
+                    .filter(n => !["constructor", "toString", "toLocaleString", "valueOf", "hasOwnProperty", "name", "prototype", "reset", "length"]
+                    .includes(n)).map(n => [n, config[n]])) /*{
+                    antiSpamSystem: config.antiSpamSystem,
+                    chatCommandPrefix: config.chatCommandPrefix,
+                    chatCommandsEnabled: config.chatCommandsEnabled,
+                    chatRanks: config.chatRanks,
+                    homeSystem: config.homeSystem,
+                    invalidChatCommandAction: config.invalidChatCommandAction,
+                    shopSystem: config.shopSystem,
+                    spawnCommandLocation: config.spawnCommandLocation,
+                    system: config.system,
+                    tpaSystem: config.tpaSystem,
+                    ui: config.ui,
+                    undoClipboardMode: config.undoClipboardMode,
+                    validChatCommandPrefixes: config.validChatCommandPrefixes,
+                    worldBorder: config.worldBorder,
+                } as typeof config*/, undefined, 2).replaceAll("§", "\uF019")), ["Done"]);
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 2:
+                playersave.startPlayerDataAutoSave();
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 3:
+                playersave.stopPlayerDataAutoSave();
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 4:
+                bans.startCheckingForBannedPlayers();
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 5:
+                bans.stopCheckingForBannedPlayers();
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 6:
+                spawnprot.startProtectedAreasRefresher();
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 7:
+                spawnprot.stopProtectedAreasRefresher();
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 8:
+                Object.values(repeatingIntervals).forEach(v => tryrun(() => system.clearRun(v)));
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 9:
+                if (entity_scale_format_version != null) {
+                    overworld.runCommand("/scriptevent andexsa:clearRepeatingIntervals");
+                }
+                else {
+                    if ((await showMessage(sourceEntity, "Entity Scale Not Detected", "No compatible version of entity scale was detected, as a result this may not do anything, you need entity scale version 1.14.0 or newer to do this.", "Proceed", "Back")).selection == 0) {
+                        overworld.runCommand("/scriptevent andexsa:clearRepeatingIntervals");
+                    }
+                    ;
+                }
+                ;
+                return await addonDebugUI(sourceEntity);
+                break;
+            case 10:
+                return 1;
+                break;
+            case 11:
+                return 0;
+                break;
+            default:
+                return 1;
+        }
+    }).catch(e => {
+        console.error(e, e.stack);
+        return 0;
+    });
+}
+export async function settings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData();
     let players = world.getPlayers();
@@ -630,55 +776,116 @@ export function settings(sourceEntitya) {
     form.button("TPA System Settings [§cExperimental§r]", "textures/items/ender_pearl");
     form.button("Manage Game Rules", "textures/ui/controller_glyph_color");
     form.button("Extra Features", "textures/ui/color_plus");
-    form.button("Back", "textures/ui/arrow_left"); /*
+    form.button("Advanced", "textures/ui/creator_glyph_color");
+    form.button("Back", "textures/ui/arrow_left");
+    form.button("Close", "textures/ui/crossout"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
-    forceShow(form, sourceEntity).then(ra => {
+    return await forceShow(form, sourceEntity).then(async (ra) => {
         let r = ra;
         // This will stop the code when the player closes the form
         if (r.canceled)
-            return;
+            return 1;
         let response = r.selection;
         switch (response) {
             case 0:
                 globalSettings(sourceEntity);
+                return 0;
                 break;
             case 1:
                 chatRanksSettings(sourceEntity);
+                return 0;
                 break;
             case 2:
                 scriptSettings(sourceEntity);
+                return 0;
                 break;
             case 3:
                 uiSettings(sourceEntity);
+                return 0;
                 break;
             case 4:
                 evalAutoScriptSettings(sourceEntity);
+                return 0;
                 break;
             case 5:
                 personalSettings(sourceEntity);
+                return 0;
                 break;
             case 6:
                 notificationsSettings(sourceEntity);
+                return 0;
                 break;
             case 7:
                 homeSystemSettings(sourceEntity);
+                return 0;
                 break;
             case 8:
                 tpaSettings(sourceEntity);
+                return 0;
                 break;
             case 9:
                 manageGameRulesUI(sourceEntity);
+                return 0;
                 break;
             case 10:
                 extraFeaturesSettings(sourceEntity);
+                return 0;
                 break;
             case 11:
-                mainMenu(sourceEntity);
+                if ((await advancedSettings(sourceEntity)) == 1) {
+                    return await settings(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
+                ;
                 break;
+            case 12:
+                return 1;
+            case 13:
+                return 0;
             default:
+                return 1;
         }
     }).catch(e => {
         console.error(e, e.stack);
+        return 0;
+    });
+}
+export async function advancedSettings(sourceEntitya) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    let form = new ActionFormData();
+    form.title("Advanced Settings");
+    form.button("Debug", "textures/ui/icon_setting");
+    form.button("Back", "textures/ui/arrow_left");
+    form.button("Close", "textures/ui/crossout"); /*
+    form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
+    return await forceShow(form, sourceEntity).then(async (ra) => {
+        let r = ra;
+        // This will stop the code when the player closes the form
+        if (r.canceled)
+            return 1;
+        let response = r.selection;
+        switch (response) {
+            case 0:
+                if ((await addonDebugUI(sourceEntity)) == 1) {
+                    return await advancedSettings(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
+                ;
+                break;
+            case 1:
+                return 1;
+            case 2:
+                return 0;
+            default:
+                return 1;
+        }
+    }).catch(e => {
+        console.error(e, e.stack);
+        return 0;
     });
 }
 export function moderationSettings(sourceEntitya) {
@@ -789,7 +996,7 @@ export function manageBans(sourceEntitya, backMenuFunction = mainMenu) {
                 form4.title(`Manage Ban`);
                 let ba = banList[g.selection];
                 let timeRemaining = ba.timeRemaining;
-                form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id" ? "originalPlayerName" : "playerName"}: §6${ba.type == "id" ? ba.originalPlayerName : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${ /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`);
+                form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id" ? "originalPlayerName" : "playerName"}: §6${ba.type == "id" ? ba.originalPlayerName : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${ /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`);
                 form4.button("Unban");
                 form4.button("Back");
                 forceShow(form4, sourceEntity).then(ha => {
@@ -839,6 +1046,8 @@ export function globalSettings(sourceEntitya) {
     form2.toggle("§l§fallowChatEscapeCodes§r§f\nSets whether or not to allow for escape codes in chat, default is true", Boolean(world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") ?? true));
     form2.toggle("§l§fchatDisplayTimeStamp§r§f\nSets whether or not to put a timestamp before every chat message, default is false", config.chatRanks.chatDisplayTimeStamp);*/
     form2.toggle("§l§fautoSavePlayerData§r§f\nSets whether or not to automatically save player data, default is true", Boolean(world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ?? true));
+    form2.toggle("§l§fplayerInventoryDataSaveSystemEnabled§r\nWhether or not to save the player's inventory data when saving player data, disabling this will result in being unable to check the inventories of offline players, this only applies when §bautoSavePlayerData§r is enabled, the default is true", config.system.playerInventoryDataSaveSystemEnabled);
+    form2.toggle("§l§fuseLegacyPlayerInventoryDataSaveSystem§r\nWhether or not to use the pre-1.26 player inventory data save system, enabling this will result in only being able to see general details about the items that were in an offline player's inventory, as well as increasing lag, this only applies when §bautoSavePlayerData§r and §bplayerInventoryDataSaveSystemEnabled§r are enabled, the default is false", config.system.useLegacyPlayerInventoryDataSaveSystem);
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
         let t = to;
@@ -849,7 +1058,7 @@ export function globalSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix /*, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator*/, gametestStructureDefaultSpawnLocation, spawnCommandLocation, spawnCommandDimension, invalidChatCommandAction, chatCommandsEnbaled /*, disableCustomChatMessages, allowCustomChatMessagesMuting*/ /*, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes*/ /*, chatDisplayTimeStamp*/, autoSavePlayerData, bepl, beppb, aebe, aepl] = t.formValues;
+        let [chatCommandPrefix, validChatCommandPrefixes, chatRankPrefix, chatSudoPrefix /*, rankDisplayPrefix, rankDisplaySuffix, rankDisplaySeparator, nameDisplayPrefix, nameDisplaySuffix, chatNameAndMessageSeparator*/, gametestStructureDefaultSpawnLocation, spawnCommandLocation, spawnCommandDimension, invalidChatCommandAction, chatCommandsEnbaled /*, disableCustomChatMessages, allowCustomChatMessagesMuting*/ /*, autoEscapeChatMessages, autoURIEscapeChatMessages, allowChatEscapeCodes*/ /*, chatDisplayTimeStamp*/, autoSavePlayerData, playerInventoryDataSaveSystemEnabled, useLegacyPlayerInventoryDataSaveSystem, bepl, beppb, aebe, aepl] = t.formValues;
         world.setDynamicProperty("andexdbSettings:chatCommandPrefix", chatCommandPrefix);
         world.setDynamicProperty("andexdbSettings:validChatCommandPrefixes", validChatCommandPrefixes);
         world.setDynamicProperty("andexdbSettings:chatRankPrefix", chatRankPrefix);
@@ -873,6 +1082,8 @@ export function globalSettings(sourceEntitya) {
         world.setDynamicProperty("andexdbSettings:allowChatEscapeCodes", allowChatEscapeCodes)
         world.setDynamicProperty("andexdbSettings:chatDisplayTimeStamp", chatDisplayTimeStamp)*/
         world.setDynamicProperty("andexdbSettings:autoSavePlayerData", autoSavePlayerData);
+        config.system.playerInventoryDataSaveSystemEnabled = playerInventoryDataSaveSystemEnabled;
+        config.system.useLegacyPlayerInventoryDataSaveSystem = useLegacyPlayerInventoryDataSaveSystem;
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -894,7 +1105,7 @@ export function chatRanksSettings(sourceEntitya) {
     form2.textField("§l§fchatNameAndMessageSeparator§r§f\n§r§o§sOnly applies to Custom(Simple) mode.\n§r§fSeparator that appears between player's names and player's chat messages, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:chatNameAndMessageSeparator") ?? " "));
     form2.textField("§l§frankDisplaySeparator§r§f\n§r§o§qOnly applies to Custom(Simple) and Custom(Advanced) mode.\n§r§fSeparator that appears between ranks, default is \" \"", "string", String(world.getDynamicProperty("andexdbSettings:rankDisplaySeparator") ?? " "));
     form2.textField("§l§fRank Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat ranks, it is a javascript template string, for example \"[${rank}\uF019r]\", default is \"[${rank}\uF019r]\"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]"));
-    form2.textField("§l§fMessage Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat message, it is a javascript template string, for example \"\uF019r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r> \", default is \"\uF019r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r> \"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r§f${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r§f${(ranks!=\"\")?\" \":\"\"}<${name}§r§f> ${message}"));
+    form2.textField("§l§fMessage Template String§r§f\n§r§o§2Only applies to Custom(Advanced) mode.\n§r§fThe format for the chat message, it is a javascript template string, for example \"\uF019r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r> \", default is \"\uF019r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}\uF019r${(ranks!=\"\")?\" \":\"\"}<${name}\uF019r> \"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ?? "§r${timestampenabled?`[${timestamp}]`:\"\"}${ranks}§r${(ranks!=\"\")?\" \":\"\"}<${name}§r> ${message}"));
     form2.textField("§l§fDefault Rank Template String For Players With No Rank§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default chat rank for players who do not have any chat ranks, it is a javascript template string, for example \"[\uF019bMember\uF019r]\", default is \"\"", "javascript template string", String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? ""));
     form2.textField("§l§fDefault Message Formatting§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default format for the message portion of the chat message to use when the player does not have any messageFormatting: or messageColor: tags, it is just a string of format codes, such as \"\uF019r\uF019l\uF019b\", leaving this empty will make the message use the default message formatting of the selected rank style/mode, default is \"\"", "string", String(world.getDynamicProperty("andexdbSettings:defaultMessageFormatting") ?? ""));
     form2.textField("§l§fDefault Name Formatting§r§f\n§r§o§5Applies to all rank modes/styles.\n§r§fThe default format for the name of the player sending the chat message to use when the player does not have any nameFormatting: or nameColor: tags, it is just a string of format codes, such as \"\uF019r\uF019l\uF019b\", leaving this empty will make the message use the default name formatting of the selected rank style/mode, default is \"\"", "string", String(world.getDynamicProperty("andexdbSettings:defaultNameFormatting") ?? ""));
@@ -946,12 +1157,20 @@ export function scriptSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form2 = new ModalFormData();
     form2.title("Script Settings");
-    form2.textField("§l§fplayerDataRefreshRate§r§f\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 5", "integer from 1-1000", String(config.system.playerDataRefreshRate));
-    form2.textField("§l§fprotectedAreasRefreshRate§r§f\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.system.protectedAreasRefreshRate));
-    form2.dropdown("§l§fundoClipboardMode§r§f\nWhether to save undo history in memory or to the world files, memory will cause undo history to be cleared upon restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
-    form2.toggle("§l§fdebugMode§r§f\nWhether debug mode is enabled or not, the default is false", config.system.debugMode);
+    form2.textField("§l§fplayerDataRefreshRate§r\nThe interval at which to update the saved playerdata of all online players, decreasing this number may increase lag, the default is 20", "integer from 1-1000", String(config.system.playerDataRefreshRate));
+    form2.textField("§l§fprotectedAreasRefreshRate§r\nThe interval at which to update list the saved protected areas, decreasing this number may increase lag, the default is 200", "integer from 1-1000000", String(config.system.protectedAreasRefreshRate));
+    form2.textField("§l§fbannedPlayersRefreshRate§r\nThe interval at which to check for banned players, decreasing this number may increase lag, the default is 20", "integer from 1-1000000", String(config.system.bannedPlayersRefreshRate));
+    form2.dropdown("§l§fundoClipboardMode§r\nWhether to save undo history in memory or to the world files, memory will cause undo history to be cleared upon restarting the world/realm/server, the default is Memory", ["Memory", "World"], ["Memory", "World"].indexOf(String(config.undoClipboardMode)));
+    form2.toggle("§l§fshowEntityScaleNotFoundConsoleLog§r\nWhether or not to log to the console when the add-on fails to find a compatible version of entity scale active on startup, the default is true", config.system.showEntityScaleNotFoundConsoleLog);
+    form2.toggle("§l§fshowEntityScaleFoundConsoleLog§r\nWhether or not to log to the console when the add-on sucessfully finds a compatible version of entity scale active on startup, the default is true", config.system.showEntityScaleFoundConsoleLog);
+    form2.toggle("§l§fshowEntityScaleNotFoundChatLog§r\nWhether or not to log to the chat when the add-on fails to find a compatible version of entity scale active on startup, the default is false", config.system.showEntityScaleNotFoundChatLog);
+    form2.toggle("§l§fshowEntityScaleFoundChatLog§r\nWhether or not to log to the chat when the add-on sucessfully finds a compatible version of entity scale active on startup, the default is false", config.system.showEntityScaleFoundChatLog);
+    form2.toggle("§l§fdebugMode§r\nWhether debug mode is enabled or not, the default is false", config.system.debugMode);
     if (config.system.debugMode) {
         form2.textField("§l§cartificialLagMS§r§c\nThe number of milliseconds of artificial lag to cause each tick. §eWARNING!: THIS IS VERY DANGEROUS AND COULD RESULT IN YOUR WORLD BEING SOFT-LOCKED IF SET TO AN EXTREMELY HIGH VALUE, BECAUSE OF THIS, THIS INPUT WILL ONLY ALLOW VALUES UP TO 10000 MILLISECONDS, TO SET IT HIGHER YOU MUST USE THE SCRIPT EVAL TO SET THE §bconfig.system.artificialLagMS§e PROPERTY TO THE DESIRED VALUE", "int", String(config.system.artificialLagMS));
+        form2.toggle("§l§callowWatchdogTerminationCrash§r§c\nWhether or not to allow script spikes and error to crash this world/realm/server. §eWARNING!: THIS IS VERY DANGEROUS AND MAY RESULT IN YOUR WORLD/REALM/SERVER CRASHING A LOT!§r\nThe default is false", config.system.allowWatchdogTerminationCrash);
+        form2.toggle("§l§chideWatchdogTerminationCrashEnabledWarningsOnStartup§r§c\nWhether or not to hide the warning that appears on startup when allowWatchdogTerminationCrash is enabled. §eWARNING!: ENABLING THIS IS HIGHLY DISCOURAGED!§r\nThe default is false", config.system.hideWatchdogTerminationCrashEnabledWarningsOnStartup);
+        form2.toggle("§l§fspreadPlayerInventoryDataSavesOverMultipleTicks§r\nWhether or not to spread player inventory data saving over multiple ticks to reduce lag, this only applies when §bGlobal Settings>useLegacyPlayerInventoryDataSaveSystem§r is disabled, the default is true", config.system.spreadPlayerInventoryDataSavesOverMultipleTicks);
     }
     form2.submitButton("Save");
     forceShow(form2, sourceEntity).then(to => {
@@ -963,14 +1182,22 @@ export function scriptSettings(sourceEntitya) {
         ; /*
         GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [playerDataRefreshRate, protectedAreasRefreshRate, undoClipboardMode, debugMode, artificialLagMS] = t.formValues;
+        let [playerDataRefreshRate, protectedAreasRefreshRate, bannedPlayersRefreshRate, undoClipboardMode, showEntityScaleNotFoundConsoleLog, showEntityScaleFoundConsoleLog, showEntityScaleNotFoundChatLog, showEntityScaleFoundChatLog, debugMode, artificialLagMS, allowWatchdogTerminationCrash, hideWatchdogTerminationCrashEnabledWarningsOnStartup, spreadPlayerInventoryDataSavesOverMultipleTicks] = t.formValues;
         config.system.playerDataRefreshRate = playerDataRefreshRate.toNumber();
         config.system.protectedAreasRefreshRate = protectedAreasRefreshRate.toNumber();
+        config.system.bannedPlayersRefreshRate = bannedPlayersRefreshRate.toNumber();
         config.undoClipboardMode = (["Memory", "World"][undoClipboardMode] ?? "Memory");
         if (config.system.debugMode && !(config.system.artificialLagMS == artificialLagMS.toNumber())) {
             config.system.artificialLagMS = Math.min(artificialLagMS.toNumber(), 10000);
+            config.system.allowWatchdogTerminationCrash = allowWatchdogTerminationCrash;
+            config.system.hideWatchdogTerminationCrashEnabledWarningsOnStartup = hideWatchdogTerminationCrashEnabledWarningsOnStartup;
+            config.system.spreadPlayerInventoryDataSavesOverMultipleTicks = spreadPlayerInventoryDataSavesOverMultipleTicks;
         }
         config.system.debugMode = debugMode;
+        config.system.showEntityScaleNotFoundConsoleLog = showEntityScaleNotFoundConsoleLog;
+        config.system.showEntityScaleFoundConsoleLog = showEntityScaleFoundConsoleLog;
+        config.system.showEntityScaleNotFoundChatLog = showEntityScaleNotFoundChatLog;
+        config.system.showEntityScaleFoundChatLog = showEntityScaleFoundChatLog;
         settings(sourceEntity);
     }).catch(e => {
         console.error(e, e.stack);
@@ -1054,6 +1281,7 @@ export function tpaSettings(sourceEntitya) {
     });
 }
 export class PlayerNotifications {
+    player;
     constructor(player) { this.player = player; }
     get getAllChatCommands() { return this.player.hasTag("getAllChatCommands"); }
     set getAllChatCommands(value) { value ? this.player.addTag("getAllChatCommands") : this.player.removeTag("getAllChatCommands"); }
@@ -1497,7 +1725,7 @@ export function worldBorderSettingsDimensionSelector(sourceEntitya) {
     form2.button("Back");
     forceShow(form2, sourceEntity).then(t => {
         if (t.canceled || t.selection == 3) {
-            settings(sourceEntity);
+            extraFeaturesSettings(sourceEntity);
             return;
         }
         ;
@@ -3963,37 +4191,98 @@ export function editorStickC(sourceEntitya, includeLiquidBlocks = false, include
     });
 } /*
 export function evalAutoScriptSettings(sourceEntity: Entity|Player){}*/
-export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = config.ui.pages.maxPlayersPerManagePlayersPage ?? 10) {
+export async function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = config.ui.pages.maxPlayersPerManagePlayersPage ?? 10, search) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;
     const page = Math.max(0, pagen);
-    const numsavedplayers = savedPlayer.getSavedPlayers().length;
-    const numonlinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => _.isOnline).length;
-    const numofflinesavedplayers = savedPlayer.getSavedPlayers().filter(_ => !_.isOnline).length;
-    form.title(`Manage Players ${Math.min(numsavedplayers, (page * maxplayersperpage) + 1)}-${Math.min(numsavedplayers, (page + 1) * maxplayersperpage)} of ${numsavedplayers}`);
+    const savedPlayers = savedPlayer.getSavedPlayers().filter((p) => !!search
+        ? search.caseSensitive == true
+            ? `${(search.searchNames ?? true) ? p.name + "\n" : ""}${(search.searchIds ?? true) ? p.id + "\n" : ""}${p.isOnline
+                ? ""
+                : ((search.searchLastOnlineDates ?? false) || (search.searchLastOnlineTimes ?? false))
+                    ? new Date(p.lastOnline).toTimezone(sourceEntity.timeZone)[search.searchLastOnlineDates && search.searchLastOnlineTimes ? "toTimezoneDateTime" : search.searchLastOnlineDates ? "toTimezoneDate" : search.searchLastOnlineTimes ? "toTimezoneTime" : "toTimezoneDateTime"]()
+                    : ""}`.includes(search.value)
+            : `${(search.searchNames ?? true) ? p.name + "\n" : ""}${(search.searchIds ?? true) ? p.id + "\n" : ""}${p.isOnline
+                ? ""
+                : ((search.searchLastOnlineDates ?? false) || (search.searchLastOnlineTimes ?? false))
+                    ? new Date(p.lastOnline).toTimezone(sourceEntity.timeZone)[search.searchLastOnlineDates && search.searchLastOnlineTimes ? "toTimezoneDateTime" : search.searchLastOnlineDates ? "toTimezoneDate" : search.searchLastOnlineTimes ? "toTimezoneTime" : "toTimezoneDateTime"]()
+                    : ""}`.toLowerCase().includes(search.value.toLowerCase())
+        : true);
+    const numsavedplayers = savedPlayers.length;
+    const numonlinesavedplayers = savedPlayers.filter(_ => _.isOnline).length;
+    const numofflinesavedplayers = savedPlayers.filter(_ => !_.isOnline).length;
+    form.title(`${!!search ? "Search Results" : "Manage Players"} ${Math.min(numsavedplayers, (page * maxplayersperpage) + 1)}-${Math.min(numsavedplayers, (page + 1) * maxplayersperpage)} of ${numsavedplayers}`);
     const numpages = Math.ceil(numsavedplayers / maxplayersperpage);
+    if (!!search) {
+        form.body(`Searching for: ${JSON.stringify(search.value)}\nCase Sensitive: ${JSON.stringify(search.caseSensitive ?? false)}`);
+    }
+    form.button("Search", "textures/ui/spyglass_flat");
     form.button(((page != 0) ? "§0" : "§8") + "Previous Page", "textures/ui/arrow_left");
     form.button(((page < (numpages - 1)) ? "§0" : "§8") + "Next Page", "textures/ui/arrow_right");
-    let displayPlayers = [...savedPlayer.getSavedPlayersAlphabeticalOrder().filter(_ => _.isOnline), ...savedPlayer.getSavedPlayers().filter(_ => (!_.isOnline) && (_.isBanned)).sort((a, b) => (b.lastOnline - a.lastOnline)), ...savedPlayer.getSavedPlayers().filter(_ => (!_.isOnline) && (!_.isBanned)).sort((a, b) => (b.lastOnline - a.lastOnline))].slice(page * maxplayersperpage, (page + 1) * maxplayersperpage);
-    displayPlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : p.isOnline ? "Online" : "Online: " + new Date(Number(p.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}`, p.isOnline ? "textures/ui/online" : p.isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline"); });
+    let displayPlayers = [
+        ...savedPlayer
+            .getSavedPlayersAlphabeticalOrder()
+            .filter((_) => _.isOnline),
+        ...savedPlayer
+            .getSavedPlayers()
+            .filter((_) => !_.isOnline && _.isBanned)
+            .sort((a, b) => b.lastOnline - a.lastOnline),
+        ...savedPlayer
+            .getSavedPlayers()
+            .filter((_) => !_.isOnline && !_.isBanned)
+            .sort((a, b) => b.lastOnline - a.lastOnline),
+    ]
+        .filter((p) => !!search
+        ? search.caseSensitive == true
+            ? `${(search.searchNames ?? true) ? p.name + "\n" : ""}${(search.searchIds ?? true) ? p.id + "\n" : ""}${p.isOnline
+                ? ""
+                : ((search.searchLastOnlineDates ?? false) || (search.searchLastOnlineTimes ?? false))
+                    ? new Date(p.lastOnline).toTimezone(sourceEntity.timeZone)[search.searchLastOnlineDates && search.searchLastOnlineTimes ? "toTimezoneDateTime" : search.searchLastOnlineDates ? "toTimezoneDate" : search.searchLastOnlineTimes ? "toTimezoneTime" : "toTimezoneDateTime"]()
+                    : ""}`.includes(search.value)
+            : `${(search.searchNames ?? true) ? p.name + "\n" : ""}${(search.searchIds ?? true) ? p.id + "\n" : ""}${p.isOnline
+                ? ""
+                : ((search.searchLastOnlineDates ?? false) || (search.searchLastOnlineTimes ?? false))
+                    ? new Date(p.lastOnline).toTimezone(sourceEntity.timeZone)[search.searchLastOnlineDates && search.searchLastOnlineTimes ? "toTimezoneDateTime" : search.searchLastOnlineDates ? "toTimezoneDate" : search.searchLastOnlineTimes ? "toTimezoneTime" : "toTimezoneDateTime"]()
+                    : ""}`.toLowerCase().includes(search.value.toLowerCase())
+        : true)
+        .slice(page * maxplayersperpage, (page + 1) * maxplayersperpage);
+    displayPlayers.forEach((p) => { form.button(`${p.name}\n${ban.testForBannedPlayer(p) ? "Banned" : p.isOnline ? "Online" : new Date(p.lastOnline).formatDateTime(sourceEntity.timeZone)}`, p.isOnline ? "textures/ui/online" : p.isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline"); });
     const numplayersonpage = displayPlayers.length;
     let players = displayPlayers;
     form.button("Manage Bans");
-    form.button("Back");
-    forceShow(form, sourceEntity).then(ra => {
+    form.button("Back", "textures/ui/arrow_left");
+    form.button("Close", "textures/ui/crossout");
+    return await forceShow(form, sourceEntity).then(async (ra) => {
         let r = ra;
         if (r.canceled) {
-            return;
+            return 1;
         }
         ;
         switch (r.selection) {
             case 0:
-                managePlayers(sourceEntity, Math.max(0, page - 1));
+                {
+                    const rb = await tryget(async () => await new ModalFormData().title("Search").textField("", "Search", search?.value ?? "").toggle("Case Sensitive", search?.caseSensitive ?? false).toggle("Search Player Names", search?.searchNames ?? true).toggle("Search Player IDs", search?.searchIds ?? true).toggle("Search Last Online Dates", search?.searchLastOnlineDates ?? false).toggle("Search Last Online Times", search?.searchLastOnlineTimes ?? false).submitButton("Search").forceShow(sourceEntity));
+                    if (!!!rb || rb?.canceled == true) {
+                        return await managePlayers(sourceEntity, page, maxplayersperpage, search);
+                    }
+                    ;
+                    return await managePlayers(sourceEntity, undefined, maxplayersperpage, { value: rb.formValues[0], caseSensitive: rb.formValues[1], searchNames: rb.formValues[2], searchIds: rb.formValues[3], searchLastOnlineDates: rb.formValues[4], searchLastOnlineTimes: rb.formValues[5] }); /*
+                    return await showMessage(sourceEntity as Player, undefined, "§cSorry, the search feature has not been implemented yet.", "Back", "Close").then(async r=>{
+                        if(r.selection==0){
+                            return await managePlayers(sourceEntity, page, maxplayersperpage, search);
+                        }else{
+                            return 0;
+                        }
+                    })*/
+                }
                 break;
             case 1:
-                managePlayers(sourceEntity, Math.min(numpages - 1, page + 1));
+                return await managePlayers(sourceEntity, Math.max(0, page - 1));
                 break;
-            case numplayersonpage + 2:
+            case 2:
+                return await managePlayers(sourceEntity, Math.min(numpages - 1, page + 1));
+                break;
+            case numplayersonpage + 3:
                 let form6 = new ActionFormData;
                 form6.title("Manage Bans");
                 ban.getValidBans().idBans.forEach((p) => { form6.button(`${p.playerId}\nValid`, "textures/ui/online"); });
@@ -4004,10 +4293,10 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                 form6.button("Add ID Ban");
                 form6.button("Add Name Ban");
                 form6.button("Back");
-                forceShow(form6, sourceEntity).then(ga => {
+                return await forceShow(form6, sourceEntity).then(async (ga) => {
                     let g = ga;
                     if (g.canceled) {
-                        return;
+                        return 1;
                     }
                     ;
                     switch (g.selection) {
@@ -4018,15 +4307,15 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                             form5.textField("Ban Time (In Minutes)", "Decimal");
                             form5.textField("Reason", "JavaScript Object ex. `\nDate: ${new Date(D\nate\n.now()).toLo\ncaleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
                             form5.submitButton("Ban");
-                            forceShow(form5, sourceEntity).then(ha => {
+                            return await forceShow(form5, sourceEntity).then(async (ha) => {
                                 let h = ha;
                                 if (h.canceled) {
                                     return;
                                 }
                                 ;
                                 ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: String(h.formValues[0]), originalPlayerName: undefined, type: "id", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "banId:" + Date.now() + ":" + String(h.formValues[0]), unbanDate: Number(h.formValues[1]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[2]) });
-                                managePlayers(sourceEntity, page);
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                return await managePlayers(sourceEntity, page, maxplayersperpage, search);
+                            }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
                             break;
                         case banList.length + 1:
                             let form6 = new ModalFormData;
@@ -4035,34 +4324,34 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                             form6.textField("Ban Time (In Minutes)", "Decimal");
                             form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
                             form6.submitButton("Ban");
-                            forceShow(form6, sourceEntity).then(ha => {
+                            return await forceShow(form6, sourceEntity).then(async (ha) => {
                                 let h = ha;
                                 if (h.canceled) {
                                     return;
                                 }
                                 ;
                                 ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: undefined, playerName: String(h.formValues[0]), type: "name", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "ban:" + Date.now() + ":" + String(h.formValues[0]), unbanDate: Number(h.formValues[1]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[2]) });
-                                managePlayers(sourceEntity, page);
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                                return await managePlayers(sourceEntity, page, maxplayersperpage, search);
+                            }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
                             break;
                         case banList.length + 2:
-                            managePlayers(sourceEntity, page);
+                            return await managePlayers(sourceEntity, page, maxplayersperpage, search);
                             break; /*
                             case banList.length+3:
-                            managePlayers(sourceEntity, page)
+                            managePlayers(sourceEntity, page, maxplayersperpage, search)
                             break
                             case banList.length+4:
-                            managePlayers(sourceEntity, page)*/
+                            managePlayers(sourceEntity, page, maxplayersperpage, search)*/
                             break;
                         default:
                             let form4 = new ActionFormData;
                             form4.title(`Manage Ban`);
                             let ba = banList[g.selection];
                             let timeRemaining = ba.timeRemaining;
-                            form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id" ? "originalPlayerName" : "playerName"}: §6${ba.type == "id" ? ba.originalPlayerName : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${ /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`);
+                            form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0)}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id" ? "originalPlayerName" : "playerName"}: §6${ba.type == "id" ? ba.originalPlayerName : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${ /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`);
                             form4.button("Unban");
                             form4.button("Back");
-                            forceShow(form4, sourceEntity).then(ha => {
+                            return await forceShow(form4, sourceEntity).then(ha => {
                                 let h = ha;
                                 if (h.canceled) {
                                     return;
@@ -4070,223 +4359,400 @@ export function managePlayers(sourceEntitya, pagen = 0, maxplayersperpage = conf
                                 ;
                                 if (h.selection == 0) {
                                     banList[g.selection].remove();
-                                    managePlayers(sourceEntity, page);
+                                    managePlayers(sourceEntity, page, maxplayersperpage, search);
                                 }
                                 ;
                                 if (h.selection == 1) {
-                                    managePlayers(sourceEntity, page);
+                                    managePlayers(sourceEntity, page, maxplayersperpage, search);
                                 }
                                 ;
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                            }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
                     }
                     ;
-                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+                return 1;
                 break;
-            case numplayersonpage + 3:
-                mainMenu(sourceEntity);
+            case numplayersonpage + 4:
+                return 1;
+                break;
+            case numplayersonpage + 5:
+                return 0;
                 break;
             default:
-                let player = players[r.selection - 2];
-                let form2 = new ActionFormData;
-                form2.title(player.name);
-                form2.body(`UUID: ${player.id}\n${player.isOnline ? "Online" : "Last Online: " + new Date(Number(player.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player) ? "ID BANNED" : ban.testForIdBannedPlayer(player) ? "NAME BANNED" : ""}`);
-                form2.button("Clear Data");
-                form2.button("Show Data");
-                form2.button("Check Inventory");
-                form2.button("Manage Bans");
-                form2.button("Edit Money");
-                form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)");
-                form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)");
-                form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)");
-                form2.button("§4Manage Homes§f(§cCOMING SOON!§f)");
-                form2.button("Back");
-                forceShow(form2, sourceEntity).then(ga => {
-                    let g = ga;
-                    if (g.canceled) {
-                        return;
+                if ((await managePlayers_managePlayer(sourceEntity, players[r.selection - 3])) == 1) {
+                    return await managePlayers(sourceEntity, page, maxplayersperpage, search);
+                }
+                else {
+                    return 0;
+                }
+        }
+    }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+}
+/**
+ *
+ * @todo Split each of the cases in the switch function into separate functions.
+ * @param sourceEntity
+ * @param player
+ * @returns
+ */
+export async function managePlayers_managePlayer(sourceEntity, player) {
+    let form2 = new ActionFormData;
+    form2.title(player.name);
+    form2.body(`UUID: ${player.id}\n${player.isOnline ? "Online" : "Last Online: " + new Date(player.lastOnline).formatDateTime(sourceEntity.timeZone, false, true)}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player) ? "ID BANNED" : ban.testForIdBannedPlayer(player) ? "NAME BANNED" : ""}`);
+    form2.button("Clear Data");
+    form2.button("Show Data");
+    form2.button("Check Inventory");
+    if (semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0")) {
+        form2.button("Copy Inventory To Chest");
+    }
+    form2.button("Manage Bans");
+    form2.button("Edit Money");
+    form2.button("§4Manage Permissions§f(§cCOMING SOON!§f)");
+    form2.button("§4Manage Hotbar Presets§f(§cCOMING SOON!§f)");
+    form2.button("§4Manage Private Warps§f(§cCOMING SOON!§f)");
+    form2.button("Manage Homes");
+    form2.button("Back", "textures/ui/arrow_left");
+    form2.button("Close", "textures/ui/crossout");
+    return await forceShow(form2, sourceEntity).then(async (ga) => {
+        let g = ga;
+        if (g.canceled) {
+            return 1;
+        }
+        ;
+        switch (g.selection) {
+            case 0:
+                let form3 = new MessageFormData;
+                form3.title("Confirm Player Data Clear");
+                form3.body(`Are you sure you want to clear all of ${player.name}'s saved player data?\nThis action cannot be undone.`);
+                form3.button2("Clear All Data");
+                form3.button1("Cancel");
+                return await forceShow(form3, sourceEntity).then(ha => {
+                    let h = ha;
+                    if (h.canceled || h.selection == 0) {
+                        return 1;
                     }
                     ;
-                    switch (g.selection) {
-                        case 0:
-                            let form3 = new MessageFormData;
-                            form3.title("Confirm Player Data Clear");
-                            form3.body(`Are you sure you want to clear all of ${player.name}'s saved player data?\nThis action cannot be undone.`);
-                            form3.button2("Clear All Data");
-                            form3.button1("Cancel");
-                            forceShow(form3, sourceEntity).then(ha => {
-                                let h = ha;
-                                if (h.canceled) {
-                                    return;
-                                }
-                                ;
-                                if (h.selection == 0) {
-                                    managePlayers(sourceEntity, page);
-                                }
-                                ;
-                                if (h.selection == 1) {
-                                    player.remove();
-                                    managePlayers(sourceEntity, page);
-                                }
-                                ;
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                            break;
-                        case 1:
-                            let form4 = new ActionFormData;
-                            form4.title(`${player.name}'s Saved Player Data`);
-                            form4.body(`${ /*arrayModifier(*/JSON.stringify(player).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"") /*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`);
-                            form4.button("Done");
-                            forceShow(form4, sourceEntity).then(ha => {
-                                let h = ha;
-                                if (h.canceled) {
-                                    return;
-                                }
-                                ;
-                                managePlayers(sourceEntity, page);
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                            break;
-                        case 2:
-                            let slotsArray = [];
-                            let text = "";
-                            let items = player.items.inventory.concat(player.items.equipment);
-                            items.forEach((item) => { if (item.count != 0) {
-                                slotsArray = slotsArray.concat(String("slot: " + item.slot + ", item: " + item.id + "§r§f, amount: " + item.count + ", nameTag: " + item.name + "§r§f, lore: " + item.lore + "§r§f, enchantments: " + JSON.stringify(item.enchants ?? [])));
+                    if (h.selection == 1) {
+                        player.remove();
+                        return 1;
+                    }
+                    ;
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+                break;
+            case 1:
+                let form4 = new ActionFormData;
+                form4.title(`${player.name}'s Saved Player Data`);
+                form4.body(`${ /*arrayModifier(*/JSON.stringify(player).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"") /*.split(""), (v, i)=>(Number(String((i/30).toFixed(4)))==Math.round(i/30)?"\n"+v:v))*/}`);
+                form4.button("Done");
+                return await forceShow(form4, sourceEntity).then(() => 1).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+                break;
+            case 2:
+                let slotsArray = [];
+                let text = "";
+                if (semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0")) {
+                    const items = player.getItems(sourceEntity);
+                    Object.entries(items).forEachB((item) => {
+                        if (!!item[1]) {
+                            slotsArray = slotsArray.concat(String("slot: " +
+                                item[0] +
+                                "§r§f, item: " +
+                                item[1].typeId +
+                                "§r§f, amount: " +
+                                item[1].amount +
+                                "§r§f, nameTag: " +
+                                item[1].nameTag +
+                                "§r§f, lore: " +
+                                JSONStringify(item[1].getLore() ?? [], true) +
+                                "§r§f, enchantments: " +
+                                JSONStringify(tryget(() => item[1].getComponent("enchantable").getEnchantments()) ?? "N/A", true)));
+                        }
+                        else {
+                            slotsArray = slotsArray.concat("slot: " + item[0] + ", item: minecraft:air");
+                        }
+                    });
+                }
+                else {
+                    let items = player.items.inventory.concat(player.items.equipment);
+                    items.forEach((item) => {
+                        if (item.count != 0) {
+                            slotsArray = slotsArray.concat(String("slot: " +
+                                item.slot +
+                                ", item: " +
+                                item.id +
+                                "§r§f, amount: " +
+                                item.count +
+                                ", nameTag: " +
+                                item.name +
+                                "§r§f, lore: " +
+                                JSONStringify(item.lore ?? [], true) +
+                                "§r§f, enchantments: " +
+                                JSON.stringify(item.enchants ?? "N/A")));
+                        }
+                        else {
+                            slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
+                        }
+                    });
+                }
+                text = String("(format_version: " +
+                    player.format_version +
+                    ") " +
+                    player.name +
+                    (world
+                        .getAllPlayers()
+                        .find((p) => p.id == player.id) != undefined
+                        ? " (Online)"
+                        : " (last seen: " +
+                            new Date(player.lastOnline).formatDateTime(sourceEntity.timeZone) +
+                            ")") +
+                    " Items: \n" +
+                    slotsArray.join("§r§f\n"));
+                let form5 = new ActionFormData;
+                form5.title(`${player.name}'s Saved Inventory Data`);
+                form5.body(`${text}`);
+                form5.button("Done");
+                return await forceShow(form5, sourceEntity).then(ha => {
+                    return 1;
+                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                break;
+            case semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") ? 3 : -3:
+                {
+                    const items = player.getItems(sourceEntity);
+                    const block2 = sourceEntity.dimension.getBlock(sourceEntity.location);
+                    const block = sourceEntity.dimension.getBlock(Vector.add(sourceEntity.location, Vector.up));
+                    if (!!!block.getComponent("inventory")) {
+                        block.setType("barrel");
+                    }
+                    ;
+                    if (!!!block2.getComponent("inventory")) {
+                        block2.setType("barrel");
+                    }
+                    ;
+                    const bc = block.getComponent("inventory").container;
+                    const bc2 = block2.getComponent("inventory").container;
+                    for (let i = 0; i < 27; i++) {
+                        bc.setItem(i, items[i]);
+                    }
+                    ;
+                    for (let i = 27; i < 36; i++) {
+                        bc2.setItem(i - 27, items[i]);
+                    }
+                    ;
+                    for (let i = 0; i < 6; i++) {
+                        bc2.setItem(i + 9, items[cmdutils.EquipmentSlots[i]]);
+                    }
+                    ;
+                    bc2.setItem(15, items.Cursor);
+                    return await managePlayers_managePlayer(sourceEntity, player);
+                }
+                break;
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 3:
+                if ((await managePlayers_managePlayer_manageBans(sourceEntity, player)) == 1) {
+                    return await managePlayers_managePlayer(sourceEntity, player);
+                }
+                else {
+                    return 0;
+                }
+                ;
+                break;
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 4:
+                {
+                    try {
+                        return await new ModalFormData().textField("Money", "int", MoneySystem.get(player.id).money.toString()).forceShow(sourceEntity).then(async (r) => {
+                            if (!!r.formValues[0].toBigInt()) {
+                                MoneySystem.get(player.id).setMoney(r.formValues[0].toBigInt());
                             }
                             else {
-                                slotsArray = slotsArray.concat("slot: " + item.slot + ", item: minecraft:air");
-                            } });
-                            text = String("(format_version: " + player.format_version + ") " + player.name + (world.getAllPlayers().find((p) => (p.id == player.id)) != undefined ? " (Online)" : " (last seen: " + new Date(Number(player.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + ")") + " Items: \n" + slotsArray.join("§r§f\n"));
-                            let form5 = new ActionFormData;
-                            form5.title(`${player.name}'s Saved Inventory Data`);
-                            form5.body(`${text}`);
-                            form5.button("Done");
-                            forceShow(form5, sourceEntity).then(ha => {
-                                let h = ha;
-                                if (h.canceled) {
-                                    return;
-                                }
-                                ;
-                                managePlayers(sourceEntity, page);
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                            break;
-                        case 3:
-                            let form6 = new ActionFormData;
-                            form6.title(player.name);
-                            player.idBans.valid.forEach((p) => { form6.button(`${p.playerId}\nValid`, "textures/ui/online"); });
-                            player.idBans.expired.forEach((p) => { form6.button(`${p.playerId}\nExpired`, "textures/ui/Ping_Offline_Red"); });
-                            player.nameBans.valid.forEach((p) => { form6.button(`${p.playerName}\nValid`, "textures/ui/online"); });
-                            player.nameBans.expired.forEach((p) => { form6.button(`${p.playerName}\nExpired`, "textures/ui/Ping_Offline_Red"); });
-                            let banList = player.idBans.valid.concat(player.idBans.expired).concat(player.nameBans.valid).concat(player.nameBans.expired);
-                            form6.body(`UUID: ${player.id}\n${player.isOnline ? "Online" : "Last Online: " + new Date(Number(player.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player) ? "\n\nID BANNED" : ban.testForIdBannedPlayer(player) ? "\n\nNAME BANNED" : ""}`);
-                            form6.button("Add ID Ban");
-                            form6.button("Add Name Ban");
-                            form6.button("Back");
-                            forceShow(form6, sourceEntity).then(ga => {
-                                let g = ga;
-                                if (g.canceled) {
-                                    return;
-                                }
-                                ;
-                                switch (g.selection) {
-                                    case banList.length:
-                                        let form5 = new ModalFormData;
-                                        form5.title(`Add ID Ban`);
-                                        form5.textField("Ban Time (In Minutes)", "Decimal");
-                                        form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
-                                        form5.submitButton("Ban");
-                                        forceShow(form5, sourceEntity).then(ha => {
-                                            let h = ha;
-                                            if (h.canceled) {
-                                                return;
-                                            }
-                                            ;
-                                            ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: player.id, originalPlayerName: player.name, type: "id", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "banId:" + Date.now() + ":" + player.id, unbanDate: Number(h.formValues[0]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[1]) });
-                                            managePlayers(sourceEntity, page);
-                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                                        break;
-                                    case banList.length + 1:
-                                        let form6 = new ModalFormData;
-                                        form6.title(`Add Name Ban`);
-                                        form6.textField("Ban Time (In Minutes)", "Decimal");
-                                        form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
-                                        form6.submitButton("Ban");
-                                        forceShow(form6, sourceEntity).then(ha => {
-                                            let h = ha;
-                                            if (h.canceled) {
-                                                return;
-                                            }
-                                            ;
-                                            ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: player.id, playerName: player.name, type: "name", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "ban:" + Date.now() + ":" + player.name, unbanDate: Number(h.formValues[0]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[1]) });
-                                            managePlayers(sourceEntity, page);
-                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                                        break;
-                                    case banList.length + 2:
-                                        managePlayers(sourceEntity);
-                                        break; /*
-                                        case banList.length+3:
-                                        managePlayers(sourceEntity)
-                                        break
-                                        case banList.length+4:
-                                        managePlayers(sourceEntity)*/
-                                        break;
-                                    default:
-                                        let form4 = new ActionFormData;
-                                        form4.title(`Manage Bans`);
-                                        let ba = banList[g.selection];
-                                        let timeRemaining = ba.timeRemaining;
-                                        form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(Number(ba.banDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§bunbanDate: §q${new Date(Number(ba.unbanDate) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) * 3600000)).toLocaleString() + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0) < 0 ? " GMT" : " GMT+") + Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? 0)}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id" ? "originalPlayerName" : "playerName"}: §6${ba.type == "id" ? ba.originalPlayerName : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${ /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`);
-                                        form4.button("Unban");
-                                        form4.button("Back");
-                                        forceShow(form4, sourceEntity).then(ha => {
-                                            let h = ha;
-                                            if (h.canceled) {
-                                                return;
-                                            }
-                                            ;
-                                            if (h.selection == 0) {
-                                                banList[g.selection].remove();
-                                                managePlayers(sourceEntity, page);
-                                            }
-                                            ;
-                                            if (h.selection == 1) {
-                                                managePlayers(sourceEntity, page);
-                                            }
-                                            ;
-                                        }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                                }
-                                ;
-                            }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
-                            break;
-                        case 4:
-                            {
-                                try {
-                                    new ModalFormData().textField("Money", "int", MoneySystem.get(player.id).money.toString()).forceShow(sourceEntity).then(async (r) => {
-                                        if (!!r.formValues[0].toBigInt()) {
-                                            MoneySystem.get(player.id).setMoney(r.formValues[0].toBigInt());
-                                        }
-                                        else {
-                                            await showMessage(sourceEntity, "Invalid Input", "The value you have inputted is not a valid amount of money.", "Okay", "Cancel");
-                                        }
-                                        managePlayers(sourceEntity, page);
-                                    });
-                                }
-                                catch (e) {
-                                    console.error(e, e?.stack);
-                                }
+                                await showMessage(sourceEntity, "Invalid Input", "The value you have inputted is not a valid amount of money.", "Okay", "Cancel");
                             }
-                            break;
-                        case 8:
-                            managePlayers(sourceEntity, page);
-                            break;
-                        default:
+                            return 1;
+                        });
+                    }
+                    catch (e) {
+                        console.error(e, e?.stack);
+                        return 1;
+                    }
+                }
+                break;
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 8:
+                if ((await managePlayers_managePlayer_manageHomes(sourceEntity, player)) == 1) {
+                    return await managePlayers_managePlayer(sourceEntity, player);
+                }
+                else {
+                    return 0;
+                }
+                ;
+                return 1;
+                break;
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 9:
+                return 1;
+                break;
+            case +semver.satisfies(player.player_save_format_version ?? "0.0.0", ">=1.5.0") + 11:
+                return 0;
+                break;
+            default:
+                return 1;
+        }
+        ;
+    }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+}
+export async function managePlayers_managePlayer_manageBans(sourceEntity, player) {
+    let form6 = new ActionFormData;
+    form6.title(player.name);
+    player.idBans.valid.forEach((p) => { form6.button(`${p.playerId}\nValid`, "textures/ui/online"); });
+    player.idBans.expired.forEach((p) => { form6.button(`${p.playerId}\nExpired`, "textures/ui/Ping_Offline_Red"); });
+    player.nameBans.valid.forEach((p) => { form6.button(`${p.playerName}\nValid`, "textures/ui/online"); });
+    player.nameBans.expired.forEach((p) => { form6.button(`${p.playerName}\nExpired`, "textures/ui/Ping_Offline_Red"); });
+    let banList = player.idBans.valid.concat(player.idBans.expired).concat(player.nameBans.valid).concat(player.nameBans.expired);
+    form6.body(`UUID: ${player.id}\n${player.isOnline ? "Online" : "Last Online: " + new Date(Number(player.lastOnline) + (Number(sourceEntity.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)).toLocaleString()}\nData Format Version: ${player.format_version}${ban.testForIdBannedPlayer(player) ? "\n\nID BANNED" : ban.testForIdBannedPlayer(player) ? "\n\nNAME BANNED" : ""}`);
+    form6.button("Add ID Ban");
+    form6.button("Add Name Ban");
+    form6.button("Back", "textures/ui/arrow_left");
+    form6.button("Close", "textures/ui/crossout");
+    return await forceShow(form6, sourceEntity).then(async (ga) => {
+        let g = ga;
+        if (g.canceled) {
+            return 1;
+        }
+        ;
+        switch (g.selection) {
+            case banList.length:
+                let form5 = new ModalFormData;
+                form5.title(`Add ID Ban`);
+                form5.textField("Ban Time (In Minutes)", "Decimal");
+                form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                form5.submitButton("Ban");
+                return await forceShow(form5, sourceEntity).then(ha => {
+                    let h = ha;
+                    if (h.canceled) {
+                        return 1;
                     }
                     ;
-                }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+                    ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), playerId: player.id, originalPlayerName: player.name, type: "id", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "banId:" + Date.now() + ":" + player.id, unbanDate: Number(h.formValues[0]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[1]) });
+                    return 1;
+                }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+                break;
+            case banList.length + 1:
+                let form6 = new ModalFormData;
+                form6.title(`Add Name Ban`);
+                form6.textField("Ban Time (In Minutes)", "Decimal");
+                form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", "\"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}\"");
+                form6.submitButton("Ban");
+                return await forceShow(form6, sourceEntity).then(ha => {
+                    let h = ha;
+                    if (h.canceled) {
+                        return 1;
+                    }
+                    ;
+                    ban.saveBan({ removeAfterBanExpires: false, ban_format_version: ban_format_version, banDate: Date.now(), originalPlayerId: player.id, playerName: player.name, type: "name", bannedById: sourceEntity.id, bannedByName: sourceEntity?.name ?? sourceEntity?.nameTag, banId: "ban:" + Date.now() + ":" + player.name, unbanDate: Number(h.formValues[0]) * 60000 + Date.now(), format_version: format_version, reason: String(h.formValues[1]) });
+                    return 1;
+                }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+                break;
+            case banList.length + 2:
+                return 1;
+                break;
+            case banList.length + 3:
+                return 0;
+                break; /*
+                case banList.length+3:
+                managePlayers(sourceEntity)
+                break
+                case banList.length+4:
+                managePlayers(sourceEntity)*/
+                break;
+            default:
+                let form4 = new ActionFormData;
+                form4.title(`Manage Bans`);
+                let ba = banList[g.selection];
+                let timeRemaining = ba.timeRemaining;
+                form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(ba.banDate).formatDateTime(sourceEntity.timeZone) + (sourceEntity.timeZone < 0 ? " GMT" : " GMT+") + sourceEntity.timeZone}\n§r§bunbanDate: §q${new Date(ba.unbanDate).formatDateTime(sourceEntity.timeZone) + (sourceEntity.timeZone < 0 ? " GMT" : " GMT+") + sourceEntity.timeZone}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id" ? "originalPlayerName" : "playerName"}: §6${ba.type == "id" ? ba.originalPlayerName : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${ /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/""}`);
+                form4.button("Unban");
+                form4.button("Back");
+                return await forceShow(form4, sourceEntity).then(ha => {
+                    let h = ha;
+                    if (h.canceled) {
+                        return 1;
+                    }
+                    ;
+                    if (h.selection == 0) {
+                        banList[g.selection].remove();
+                        return 1;
+                    }
+                    ;
+                    if (h.selection == 1) {
+                        return 1;
+                    }
+                    ;
+                }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
         }
-    }).catch((e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); forceShow(formError, sourceEntity).then(() => { return e; }); });
+        ;
+    }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+}
+export async function managePlayers_managePlayer_manageHomes(sourceEntity, player) {
+    let form6 = new ActionFormData;
+    form6.title(player.name);
+    const homes = cmds.HomeSystem.getHomesForPlayer(player.id);
+    homes.forEach(h => form6.button(`${h.name}\n${main.dimensionTypeDisplayFormattingE[dimensionse[dimensions.indexOf(h.location.dimension)]]}§r ${cmds.vTStr(Vector.floor(h.location))}`));
+    form6.button("Back", "textures/ui/arrow_left");
+    form6.button("Close", "textures/ui/crossout");
+    return await forceShow(form6, sourceEntity).then(async (ga) => {
+        let g = ga;
+        if (g.canceled) {
+            return 1;
+        }
+        ;
+        switch (g.selection) {
+            case homes.length:
+                return 1;
+                break;
+            case homes.length + 1:
+                return 0;
+                break;
+            default:
+                return await new ActionFormData()
+                    .body(`Home Name: ${homes[g.selection].name}\nLocation: ${main.dimensionTypeDisplayFormattingE[dimensionse[dimensions.indexOf(homes[g.selection].location.dimension)]]}§r ${cmds.vTStr(homes[g.selection].location)}\nFormat Version: ${homes[g.selection].format_version}\nHome Format Version: ${homes[g.selection].home_format_version}`)
+                    .button("Teleport")
+                    .button("§cEdit")
+                    .button("Delete")
+                    .button("Back", "textures/ui/arrow_left")
+                    .button("Close", "textures/ui/crossout")
+                    .forceShow(sourceEntity).then(async (h) => {
+                    if (h.canceled) {
+                        return 1;
+                    }
+                    ;
+                    if (h.selection == 0) {
+                        sourceEntity.teleport(homes[g.selection].location, { dimension: homes[g.selection].location.dimension });
+                        return 1;
+                    }
+                    ;
+                    if (h.selection == 1) {
+                        new ModalFormData().textField;
+                        return 1;
+                    }
+                    ;
+                    if (h.selection == 2) {
+                        if ((await showMessage(sourceEntity, "Are You Sure?", "Are you sure you want to delete this home!?\nThis action cannot be undone!", "Cancel", "Confirm")).selection == 1) {
+                            homes[g.selection].remove();
+                        }
+                        return 1;
+                    }
+                    ;
+                    if (h.selection == 3) {
+                        return 1;
+                    }
+                    ;
+                    if (h.selection == 4) {
+                        return 0;
+                    }
+                    ;
+                }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
+        }
+        ;
+    }).catch(async (e) => { let formError = new MessageFormData; formError.body(e + e.stack); formError.title("Error"); formError.button1("Done"); formError.button2("Close"); return await forceShow(formError, sourceEntity).then(r => { return +(r.selection == 0); }); });
 }
 export function getAllBuiltInCommandsCategories() { let set = new Set(); commands.map(v => v.category).forEach(v => typeof v == "string" ? set.add(v) : v.forEach(v => set.add(v))); return [...set]; }
-export const commandCategories = ["items", "misc", "invsee", "players", "containers/inventories", "entities", "warps", "world", "server", "system", "uis", "shop_system", "dangerous", "Entity Scale Add-On", "built-in", "custom", "all"];
-export const commandCategoriesDisplay = [{ name: "Items", icon: "" }, { name: "Misc" }, { name: "Invsee" }, { name: "Players" }, { name: "Containers/Inventories" }, { name: "Entities" }, { name: "Warps" }, { name: "World" }, { name: "Server" }, { name: "System" }, { name: "UIs" }, { name: "Shop System" }, { name: "§4Dangerous" }, { name: "§6Entity Scale Add-On" }, { name: "All Built-In" }, { name: "Custom" }, { name: "All" }];
+export const commandCategories = ["items", "misc", "invsee", "players", "containers/inventories", "entities", "warps", "world", "server", "system", "uis", "worldedit", "shop_system", "dangerous", "Entity Scale Add-On", "built-in", "custom", "all"];
+export const commandCategoriesDisplay = [{ name: "Items", icon: "" }, { name: "Misc" }, { name: "Invsee" }, { name: "Players" }, { name: "Containers/Inventories" }, { name: "Entities" }, { name: "Warps" }, { name: "World" }, { name: "Server" }, { name: "System" }, { name: "UIs" }, { name: "World Edit" }, { name: "Shop System" }, { name: "§4Dangerous" }, { name: "§6Entity Scale Add-On" }, { name: "All Built-In" }, { name: "Custom" }, { name: "All" }];
 export function manageCommands(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ActionFormData;

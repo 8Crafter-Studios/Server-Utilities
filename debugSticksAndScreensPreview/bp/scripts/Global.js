@@ -3,6 +3,57 @@ import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/serve
 import Decimal from "decimal.js";
 import { MoneySystem } from "ExtraFeatures/money";
 ;
+globalThis.subscribedEvents = {};
+globalThis.repeatingIntervals = {};
+globalThis.tempVariables = {};
+globalThis.colorizeJSONString = function colorizeJSONString(json, options) {
+    if (typeof json !== 'string') {
+        json = JSON.stringify(json, undefined, 2);
+    }
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|,|-?Infinity|NaN|undefined|\b(true|false|null)\b|\{|\}|\[|\]|-?\d+n|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        let cls = options?.number ?? "§6";
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = options?.key ?? "§e";
+            }
+            else {
+                cls = options?.string ?? "§q";
+            }
+        }
+        else if (/true/.test(match)) {
+            cls = options?.true ?? "§a";
+        }
+        else if (/false/.test(match)) {
+            cls = options?.false ?? "§c";
+        }
+        else if (/null/.test(match)) {
+            cls = options?.null ?? "§d";
+        }
+        else if (/-?\d+n/.test(match)) {
+            cls = options?.bigint ?? "§g";
+        }
+        else if (/\{/.test(match)) {
+            cls = options?.leftCurlyBracket ?? "§9";
+        }
+        else if (/\}/.test(match)) {
+            cls = options?.rightCurlyBracket ?? "§9";
+        }
+        else if (/\[/.test(match)) {
+            cls = options?.leftSquareBracket ?? "§5";
+        }
+        else if (/\]/.test(match)) {
+            cls = options?.rightSquareBracket ?? "§5";
+        }
+        else if (/,/.test(match)) {
+            cls = options?.comma ?? "§f";
+        }
+        else if (/undefined/.test(match)) {
+            cls = options?.undefined ?? "§d";
+        }
+        return cls + match;
+    });
+};
+// §ess§gss§6ss§pss§ass§qss§2ss§4ss§5ss§dss§1ss§3ss§7ss§8ss§9ss§0ss§mss§nss§bss§sss§rss§fss§tss§uss§iss§hss§jss
 Object.defineProperty(globalThis, 'stack', { get: function stack() { return new Error().stack; } });
 Object.defineProperty(Array.prototype, 'forEachB', {
     value: function forEachB(callbackfn, thisArg) {
@@ -588,6 +639,99 @@ Object.defineProperties(Boolean.prototype, {
         writable: true
     }
 });
+globalThis.twoWayModulo = function twoWayModulo(number, modulo) { if (number < 0) {
+    return modulo + (number % modulo);
+}
+else {
+    return number % modulo;
+} };
+globalThis.clamp24HoursTo12Hours = function clamp24HoursTo12Hours(hours) { return twoWayModulo(hours - 1, 12) + 1; };
+/**
+ * Formats a date object to a time string formatted as 12:37:01 PM.
+ * @since 1.18.2-development.3
+ * @version 1.1.1
+ */
+globalThis.formatTime = function formatTime(date, timeZoneOffset = 0, includeMs = false) { const dateb = new Date(date.valueOf() + (timeZoneOffset * 3600000)); return `${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")}${includeMs ? `.${dateb.getUTCMilliseconds().toString().padStart(3, "0")}` : ""} ${dateb.getUTCHours() > 11 ? "P" : "A"}M`; };
+/**
+ * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM.
+ * @since 1.18.2-development.10
+ * @version 1.1.1
+ */
+globalThis.formatDateTime = function formatDateTime(date, timeZoneOffset = 0, includeMs = false) { const dateb = new Date(date.valueOf() + (timeZoneOffset * 3600000)); return `${(dateb.getUTCMonth() + 1).toString().padStart(2, "0")}/${dateb.getUTCDate().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")}${includeMs ? `.${dateb.getUTCMilliseconds().toString().padStart(3, "0")}` : ""} ${dateb.getUTCHours() > 11 ? "P" : "A"}M`; };
+/**
+ * Formats a date object to a date string formatted as 07/21/2024.
+ * @since 1.26.0-preview.20+BUILD.2
+ * @version 1.0.0
+ */
+globalThis.formatDate = function formatDate(date, timeZoneOffset = 0) { const dateb = new Date(date.valueOf() + (timeZoneOffset * 3600000)); return `${(dateb.getUTCMonth() + 1).toString().padStart(2, "0")}/${dateb.getUTCDate().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()}`; };
+Object.defineProperties(Date.prototype, {
+    timezone: {
+        value: typeof world.getDynamicProperty("andexdbSettings:timeZone") == "object" ? 0 : (world.getDynamicProperty("andexdbSettings:timeZone") ?? 0).toNumber() ?? 0,
+        configurable: true,
+        enumerable: true,
+        writable: true
+    },
+    toTimezone: {
+        value: function toTimezone(UTCHourOffset) {
+            this.timezone = !!UTCHourOffset ? UTCHourOffset.toNumber() : config.system.timeZone;
+            return this;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    toTimezoneDate: {
+        value: function (UTCHourOffset, includeTimeZoneOffset = false) {
+            return this.formatDate(!!UTCHourOffset ? UTCHourOffset.toNumber() : this.timezone ?? config.system.timeZone, includeTimeZoneOffset);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    toTimezoneDateTime: {
+        value: function (UTCHourOffset, includeMs = false, includeTimeZoneOffset = false) {
+            return this.formatDateTime(!!UTCHourOffset ? UTCHourOffset.toNumber() : this.timezone ?? config.system.timeZone, includeMs, includeTimeZoneOffset);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    toTimezoneTime: {
+        value: function (UTCHourOffset, includeMs = false, includeTimeZoneOffset = false) {
+            return this.formatDateTime(!!UTCHourOffset ? UTCHourOffset.toNumber() : this.timezone ?? config.system.timeZone, includeMs, includeTimeZoneOffset);
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    formatTime: {
+        value: function formatTime(timeZoneOffset = this.timezone ?? config.system.timeZone, includeMs = false, includeTimeZoneOffset = false) {
+            const dateb = new Date(this.valueOf() + (timeZoneOffset * 3600000));
+            return `${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")}${includeMs ? `.${dateb.getUTCMilliseconds().toString().padStart(3, "0")}` : ""} ${dateb.getUTCHours() > 11 ? "P" : "A"}M${includeTimeZoneOffset ? ` UTC${timeZoneOffset < 0 ? "-" : "+"}${Math.abs(timeZoneOffset)}` : ""}`;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    formatDateTime: {
+        value: function formatDateTime(timeZoneOffset = this.timezone ?? config.system.timeZone, includeMs = false, includeTimeZoneOffset = false) {
+            const dateb = new Date(this.valueOf() + (timeZoneOffset * 3600000));
+            return `${(dateb.getUTCMonth() + 1).toString().padStart(2, "0")}/${dateb.getUTCDate().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()} ${clamp24HoursTo12Hours(dateb.getUTCHours()).toString().padStart(2, "0")}:${dateb.getUTCMinutes().toString().padStart(2, "0")}:${dateb.getUTCSeconds().toString().padStart(2, "0")}${includeMs ? `.${dateb.getUTCMilliseconds().toString().padStart(3, "0")}` : ""} ${dateb.getUTCHours() > 11 ? "P" : "A"}M${includeTimeZoneOffset ? ` UTC${timeZoneOffset < 0 ? "-" : "+"}${Math.abs(timeZoneOffset)}` : ""}`;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    },
+    formatDate: {
+        value: function formatDate(timeZoneOffset = this.timezone ?? config.system.timeZone, includeTimeZoneOffset = false) {
+            const dateb = new Date(this.valueOf() + (timeZoneOffset * 3600000));
+            return `${(dateb.getUTCMonth() + 1).toString().padStart(2, "0")}/${dateb.getUTCDate().toString().padStart(2, "0")}/${dateb.getUTCFullYear().toString()}${includeTimeZoneOffset ? ` UTC${timeZoneOffset < 0 ? "-" : "+"}${Math.abs(timeZoneOffset)}` : ""}`;
+        },
+        configurable: true,
+        enumerable: true,
+        writable: false
+    }
+});
 Object.defineProperties(Entity.prototype, {
     inventory: {
         get: function inventory() {
@@ -710,6 +854,12 @@ Object.defineProperties(Entity.prototype, {
     },
     roty: {
         get: function roty() { return this.getRotation().y; },
+        configurable: true,
+        enumerable: true
+    },
+    timeZone: {
+        get: function timeZone() { return (this.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? config.system.timeZone).toString().toNumber(); },
+        set: function timeZone(timezone) { this.setDynamicProperty("andexdbPersonalSettings:timeZone", !!timezone ? timezone.toString() : undefined); },
         configurable: true,
         enumerable: true
     }
@@ -1035,6 +1185,21 @@ globalThis.esend = function esend(value, space) {
 globalThis.fsend = function fsend(value, space) {
     world.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }));
 };
+globalThis.bcsend = function bcsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSONStringify(value, true, space), options));
+};
+globalThis.ccsend = function ccsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSON.stringify(value, undefined, space), options));
+};
+globalThis.dcsend = function dcsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true }), options));
+};
+globalThis.ecsend = function ecsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true }), options));
+};
+globalThis.fcsend = function fcsend(value, space, options) {
+    world.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }), options));
+};
 globalThis.psend = function psend(player, value) {
     player.sendMessage(value);
 };
@@ -1056,8 +1221,26 @@ globalThis.pesend = function pesend(player, value, space) {
 globalThis.pfsend = function pfsend(player, value, space) {
     player.sendMessage(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }));
 };
+globalThis.pbcsend = function pbcsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSONStringify(value, true, space), options));
+};
+globalThis.pccsend = function pccsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSON.stringify(value, undefined, space), options));
+};
+globalThis.pdcsend = function pdcsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true }), options));
+};
+globalThis.pecsend = function pecsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true }), options));
+};
+globalThis.pfcsend = function pfcsend(player, value, space, options) {
+    player.sendMessage(colorizeJSONString(JSONB.stringify(value, undefined, space, { bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false }), options));
+};
 globalThis.perror = function perror(player, error, prefix = "§c") {
     player.sendMessage(prefix + (tryget(() => error.stringify()) ?? (error + " " + error.stack)));
+};
+globalThis.breakpoint = function breakpoint() {
+    undefined; // Has a hit count type breakpoint with a value of 2.
 };
 globalThis.iterateGenerator = function iterateGenerator(extractorGenerator, maxTimePerTick = 1500, whileConditions = true) {
     let lastYieldTime = Date.now(); // Initialize the last yield time
@@ -1123,4 +1306,10 @@ globalThis.completeGeneratorB = async function completeGeneratorB(g, maxTimePerT
 };
 globalThis.waitTick = async function waitTick() { return new Promise(resolve => system.run(() => resolve(void null))); };
 globalThis.waitTicks = async function waitTicks(ticks = 1) { return new Promise(resolve => system.runTimeout(() => resolve(void null), ticks)); };
+globalThis.testForObjectExtension = function testForObjectExtension(objectToTest, base) { return Object.entries(base).every(v => Object.keys(objectToTest).includes(v[0]) ? Object.entries(objectToTest).find(c => c[0] == v[0])[1] == v[1] : false); };
+globalThis.testForObjectTypeExtension = function testForObjectTypeExtension(objectToTest, base) {
+    return Object.entries(base).every((v) => Object.keys(objectToTest).includes(v[0])
+        ? v[1].startsWith("[object ") ? Object.entries(objectToTest).find((c) => c[0] == v[0])[1]?.constructor?.name == v[1].slice(8, -1) : typeof Object.entries(objectToTest).find((c) => c[0] == v[0])[1] == v[1]
+        : false);
+};
 //# sourceMappingURL=Global.js.map

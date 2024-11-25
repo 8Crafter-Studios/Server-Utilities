@@ -2011,6 +2011,47 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "debugstickdyingmode",
+        escregexp: {
+            v: "^debugstickdyingmode$"
+        },
+        aliases: [
+            {
+                commandName: "debugsticksdyingmode",
+                escregexp: {
+                    v: "^debugsticksdyingmode$"
+                }
+            },
+            {
+                commandName: "dsdm",
+                escregexp: {
+                    v: "^dsdm$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "debugstickdyingmode [enabled: bool[?=toggle]]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "players",
+            "items"
+        ],
+        commandSettingsId: "built-inCommandSettings:debugstickdyingmode",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "defaulthealth",
         escregexp: {
             v: "^defaulthealth$"
@@ -2043,7 +2084,7 @@ export const commands = [
         ],
         formats: [
             {
-                format: "defaulthealth"
+                format: "defaulthealth [target: target[?=@s,allowMultiple=true]]"
             }
         ],
         command_version: "1.0.0",
@@ -2078,7 +2119,7 @@ export const commands = [
         ],
         formats: [
             {
-                format: "disconnect <players: targetSelector>"
+                format: "disconnect [players: target[?=@s,allowMultiple=true,onlyPlayers=true]]"
             }
         ],
         command_version: "1.0.0",
@@ -2284,10 +2325,54 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "enchantmentbarrels",
+        escregexp: {
+            v: "^enchantmentbarrels$"
+        },
+        aliases: [
+            {
+                commandName: "eb",
+                escregexp: {
+                    v: "^eb$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "enchantmentbarrels [level: number[?=0]]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "items",
+            "blocks",
+            "world"
+        ],
+        commandSettingsId: "built-inCommandSettings:enchantmentbarrels",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "enderchest",
         escregexp: {
             v: "^enderchest$"
         },
+        aliases: [
+            {
+                commandName: "ec",
+                escregexp: {
+                    v: "^ec$"
+                }
+            }
+        ],
         formats: [
             {
                 format: "enderchest"
@@ -2299,6 +2384,42 @@ export const commands = [
             "misc"
         ],
         commandSettingsId: "built-inCommandSettings:enderchest",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "entityscaleversion",
+        escregexp: {
+            v: "^entityscaleversion$"
+        },
+        aliases: [
+            {
+                commandName: "esver",
+                escregexp: {
+                    v: "^esver$"
+                }
+            }
+        ],
+        formats: [
+            {
+                format: "entityscaleversion"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "system",
+            "world",
+            "server"
+        ],
+        commandSettingsId: "built-inCommandSettings:entityscaleversion",
         deprecated: false,
         functional: true,
         hidden: false,
@@ -3037,6 +3158,33 @@ export const commands = [
             "warps"
         ],
         commandSettingsId: "built-inCommandSettings:gohome",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "ground",
+        escregexp: {
+            v: "^ground$"
+        },
+        formats: [
+            {
+                format: "ground [-lp]"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "world",
+            "warps"
+        ],
+        commandSettingsId: "built-inCommandSettings:ground",
         deprecated: false,
         functional: true,
         hidden: false,
@@ -4716,6 +4864,32 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "pthru",
+        escregexp: {
+            v: "^pthru$"
+        },
+        formats: [
+            {
+                format: "pthru"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: [
+            "world"
+        ],
+        commandSettingsId: "built-inCommandSettings:pthru",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "rank",
         escregexp: {
             v: "^rank$"
@@ -5390,6 +5564,59 @@ export const commands = [
             "canUseChatCommands"
         ],
         formatting_code: "§r§f",
+        commandName: "stopalldbintervals",
+        escregexp: {
+            v: "^stopalldbintervals$"
+        },
+        formats: [
+            {
+                format: "stopalldbintervals"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "Stops all known intervals from system.runInterval() for this add-on.",
+        category: [
+            "system"
+        ],
+        commandSettingsId: "built-inCommandSettings:stopalldbintervals",
+        deprecated: true,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
+        commandName: "stopallsaintervals",
+        escregexp: {
+            v: "^stopallsaintervals$"
+        },
+        formats: [
+            {
+                format: "stopallsaintervals"
+            }
+        ],
+        command_version: "1.0.0",
+        description: "Stops all known intervals from system.runInterval() for the entity scale add-on if it is active and is on version 1.14.0 or newer.",
+        category: [
+            "system",
+            "Entity Scale Add-On"
+        ],
+        commandSettingsId: "built-inCommandSettings:stopallsaintervals",
+        deprecated: true,
+        functional: true,
+        hidden: false,
+        enabled: true
+    },
+    {
+        type: "built-in",
+        requiredTags: [
+            "canUseChatCommands"
+        ],
+        formatting_code: "§r§f",
         commandName: "stopgen",
         escregexp: {
             v: "^stopgen$"
@@ -5761,13 +5988,15 @@ export const commands = [
         },
         formats: [
             {
-                format: "top"
+                format: "top [-lp]"
             }
         ],
-        command_version: "1.0.0",
+        command_version: "2.0.0",
         description: "",
         category: [
-            "world"
+            "world",
+            "players",
+            "warps"
         ],
         commandSettingsId: "built-inCommandSettings:top",
         deprecated: false,

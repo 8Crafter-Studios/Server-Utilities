@@ -1,9 +1,9 @@
 {
-	"format_version": "1.21.30",
+	"format_version": "1.21.40",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:ultra_bundle",
-			"menu_category": {"category": "equipment"}
+			"menu_category": {"category": "equipment", "group": "itemGroup.name.bundles"}
 		},
 		"components": {
 			"minecraft:hand_equipped": false,
@@ -12,7 +12,7 @@
 			"minecraft:icon": {
 				"textures": {
 					"default": "bundle",
-					"dyed": "bundle"
+					"dyed": "bundle_white"
 				}
 			},
 			//"minecraft:interact_button": true, 
