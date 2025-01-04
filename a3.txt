@@ -53,6 +53,10 @@ to run in the debugger console:
 
 
 
+esbuild app.jsx --bundle --outfile=out.js
+
+
+
 y=x*(((600-(8*x))/9)**2)
 y=x*(((600-(8*x))/9)^2)
 

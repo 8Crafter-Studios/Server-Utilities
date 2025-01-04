@@ -1,0 +1,1 @@
+testfor @p
