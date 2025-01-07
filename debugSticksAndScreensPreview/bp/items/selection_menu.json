@@ -15,7 +15,7 @@
 					"dyed": "stick_dyed"
 				}
 			},
-			"minecraft:interact_button": "Open Main Menu", 
+			"minecraft:interact_button": "Open Main Menu (Please replace this item with the andexdb:main_menu item)", 
 			"minecraft:rarity": "epic", 
 			"minecraft:glint": true,/*
 			"minecraft:render_offsets": {

@@ -1,0 +1,20 @@
+export declare const patternFunctionList: {
+    rainbow: (ib: number) => string;
+    randomrainbow: (ib: number, offset: number) => string;
+    shuffledrainbow: () => string;
+    bluegradient: (ib: number) => string;
+    randombluegradient: (ib: number, offset: number) => string;
+    shuffledbluegradient: () => string;
+    yellowgradient: (ib: number) => string;
+    randomyellowgradient: (ib: number, offset: number) => string;
+    shuffledyellowgradient: () => string;
+    blackgradient: (ib: number) => string;
+    randomblackgradient: (ib: number, offset: number) => string;
+    shuffledblackgradient: () => string;
+    graygradient: (ib: number) => string;
+    randomgraygradient: (ib: number, offset: number) => string;
+    shuffledgraygradient: () => string;
+    purplegradient: (ib: number) => string;
+    randompurplegradient: (ib: number, offset: number) => string;
+    shuffledpurplegradient: () => string;
+};

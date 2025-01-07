@@ -1,0 +1,2 @@
+import type { EntityType, DimensionLocation, Vector3, EntityProjectileComponent, ProjectileShootOptions } from "@minecraft/server";
+export declare function shootProjectile(entityType: string | EntityType, location: DimensionLocation, velocity: Vector3, shootOptions?: ProjectileShootOptions, setProjectileComponentPropertiesCallbackFn?: (EntityProjectileComponent: EntityProjectileComponent) => any): void;

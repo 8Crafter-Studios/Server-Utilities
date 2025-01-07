@@ -1,0 +1,1 @@
+{"version":3,"file":"NoSelectorMatchesError.js","sourceRoot":"","sources":["../../../../src/modules/errors/classes/NoSelectorMatchesError.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,sBAAuB,SAAQ,KAAK;IAC7C,YAAY,OAAgB;QACxB,kFAAkF;QAClF,KAAK,CAAC,OAAO,CAAC,CAAC;IACnB,CAAC;CACJ"}

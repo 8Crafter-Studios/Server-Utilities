@@ -1,0 +1,1 @@
+{"version":3,"file":"TimeoutError.js","sourceRoot":"","sources":["../../../../src/modules/errors/classes/TimeoutError.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,YAAa,SAAQ,KAAK;IACnC,YAAY,OAAgB;QACxB,kFAAkF;QAClF,KAAK,CAAC,OAAO,CAAC,CAAC;IACnB,CAAC;CACJ"}

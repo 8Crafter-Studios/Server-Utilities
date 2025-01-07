@@ -1,6 +1,27 @@
 import { Player, Entity, ItemLockMode, ItemStack, ItemEnchantableComponent, ItemDurabilityComponent } from "@minecraft/server";
-import { executeCommandPlayerW } from "Main/commands";
-export declare function mainShopSystemSettings(sourceEntitya: Entity | executeCommandPlayerW | Player): void;
+import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
+/**
+ * Main function to handle the shop system settings interface.
+ *
+ * @param sourceEntitya - The entity that initiated the request. Can be an `Entity`, `executeCommandPlayerW`, or `Player`.
+ * @returns A promise that resolves to one of the following values:
+ * - `-2` if an error occurs.
+ * - `0` if the operation is closed.
+ * - `1` if the operation is successful.
+ *
+ * The function displays a menu with options to configure the server shop, player shop, and sign shop settings.
+ * It also checks for permissions if ultra security mode is enabled.
+ *
+ * The menu options are:
+ * - Server Shop: Toggles the server shop system settings.
+ * - Player Shop: Toggles the player shop system settings.
+ * - Sign Shop: Displays a message that the sign shop system does not exist yet.
+ * - Back: Returns to the previous menu.
+ * - Close: Closes the menu.
+ *
+ * If an error occurs during the execution, it logs the error and returns `-2`.
+ */
+export declare function mainShopSystemSettings(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<-2 | 0 | 1>;
 export type ShopElement = SellableShopElement | BuyableShopElement;
 export type PlayerShopElement = PlayerShopPage | PlayerSavedShopItem | PlayerSellableShopItem | PlayerSellableAdvancedShopItem;
 export type PlayerSellableShopElement = PlayerShopPage | PlayerSellableShopItem | PlayerSellableAdvancedShopItem;

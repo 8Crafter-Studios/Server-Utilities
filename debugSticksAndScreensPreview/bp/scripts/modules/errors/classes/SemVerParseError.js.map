@@ -1,0 +1,1 @@
+{"version":3,"file":"SemVerParseError.js","sourceRoot":"","sources":["../../../../src/modules/errors/classes/SemVerParseError.ts"],"names":[],"mappings":"AAAA;;;GAGG;AACH,MAAM,OAAO,gBAAiB,SAAQ,KAAK;IACvC,YAAY,OAAgB;QACxB,KAAK,CAAC,OAAO,CAAC,CAAC;IACnB,CAAC;CACJ"}

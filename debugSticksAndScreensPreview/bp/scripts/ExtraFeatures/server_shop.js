@@ -1,13 +1,20 @@
 import { ItemLockMode, ItemStack, Player, world, Entity, StructureSaveMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, MessageFormData, ModalFormData } from "@minecraft/server-ui";
-import { config, getPathInObject } from "Main";
-import { containerToContainerSlotArray, containerToItemStackArray } from "Main/command_utilities";
-import { command, executeCommandPlayerW } from "Main/commands";
-import { forceShow, itemSelector, settings, worldBorderSettingsDimensionSelector } from "Main/ui";
-import { getStringFromDynamicProperties, getSuperUniqueID, saveStringToDynamicProperties, showActions, showMessage } from "Main/utilities";
-import { mainShopSystemSettings } from "./shop_main";
-import { Vector } from "Main/coordinates";
+import { getPathInObject } from "modules/main/functions/getPathInObject";
+import { config } from "init/classes/config";
+import { containerToContainerSlotArray } from "modules/command_utilities/functions/containerToContainerSlotArray";
+import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
+import { forceShow } from "modules/ui/functions/forceShow";
+import { itemSelector } from "modules/ui/functions/itemSelector";
+import { getSuperUniqueID } from "modules/utilities/functions/getSuperUniqueID";
+import { showActions } from "modules/utilities/functions/showActions";
+import { showMessage } from "modules/utilities/functions/showMessage";
+import { getStringFromDynamicProperties } from "modules/utilities/functions/getStringFromDynamicProperties";
+import { saveStringToDynamicProperties } from "modules/utilities/functions/saveStringToDynamicProperties";
+import {} from "./shop_main";
 import { MoneySystem } from "./money";
+import { PlayerShopManager } from "./player_shop";
+import { securityVariables } from "security/ultraSecurityModeUtils";
 /**
  * @todo Convert the functions to async functions that return Promise<0|1>.
  * @see {@link PlayerShop}
@@ -767,6 +774,17 @@ export class ServerShopManager {
      */
     static async serverShopSystemSettings(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        if (securityVariables.ultraSecurityModeEnabled) {
+            if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessExtraFeaturesSettings") == false) {
+                const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permission to access this menu: andexdb.accessExtraFeaturesSettings", "Go Back", "Close");
+                if (r.canceled || r.selection == 0) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+        }
         let form = new ActionFormData();
         form.title("Server Shop System");
         form.body("The server shop system is " + (config.shopSystem.server.enabled ? "§aEnabled" : "§cDisabled"));

@@ -1,0 +1,21 @@
+export const commandCategories = [
+    "items",
+    "misc",
+    "invsee",
+    "players",
+    "containers/inventories",
+    "entities",
+    "warps",
+    "world",
+    "server",
+    "system",
+    "uis",
+    "worldedit",
+    "shop_system",
+    "dangerous",
+    "Entity Scale Add-On",
+    "built-in",
+    "custom",
+    "all",
+];
+//# sourceMappingURL=commandCategories.js.map

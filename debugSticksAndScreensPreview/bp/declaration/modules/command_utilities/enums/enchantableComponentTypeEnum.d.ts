@@ -1,0 +1,22 @@
+export declare enum enchantableComponentTypeEnum {
+    "add" = "addEnchantment",
+    "minecraft:add" = "addEnchantment",
+    "addEnchantment" = "addEnchantment",
+    "minecraft:addEnchantment" = "addEnchantment",
+    "addList" = "addEnchantments",
+    "minecraft:addList" = "addEnchantments",
+    "addEnchantments" = "addEnchantments",
+    "minecraft:addEnchantments" = "addEnchantments",
+    "remove" = "removeEnchantment",
+    "minecraft:remove" = "removeEnchantment",
+    "removeEnchantments" = "removeEnchantment",
+    "minecraft:removeEnchantments" = "removeEnchantment",
+    "clear" = "removeAllEnchantments",
+    "minecraft:clear" = "removeAllEnchantments",
+    "clearAll" = "removeAllEnchantments",
+    "minecraft:clearAll" = "removeAllEnchantments",
+    "removeAll" = "removeAllEnchantments",
+    "minecraft:removeAll" = "removeAllEnchantments",
+    "removeAllEnchantments" = "removeAllEnchantments",
+    "minecraft:removeAllEnchantments" = "removeAllEnchantments"
+}
