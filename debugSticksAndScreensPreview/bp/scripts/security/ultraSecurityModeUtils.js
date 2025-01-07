@@ -925,8 +925,9 @@ export async function editPermissionForPlayerUI(player, targetPlayerId) {
     }
     let form = new ActionFormData();
     form.title("Edit Permissions For Player");
-    Object.keys(permissionType).forEach((permissionType) => {
-        form.button(permissionType);
+    const perms = Object.entries(permissionType);
+    perms.forEach((permissionType) => {
+        form.button(permissionType[0]);
     });
     form.button("Back");
     form.button("Close");
@@ -940,7 +941,7 @@ export async function editPermissionForPlayerUI(player, targetPlayerId) {
         case Object.keys(permissionType).length + 1:
             return 0;
         default:
-            if ((await editPermissionForPlayerUI_permission(player, targetPlayerId, permissionTypes[r.selection])) == 1) {
+            if ((await editPermissionForPlayerUI_permission(player, targetPlayerId, perms[r.selection][1])) == 1) {
                 return await editPermissionForPlayerUI(player, targetPlayerId);
             }
             else {
@@ -948,6 +949,7 @@ export async function editPermissionForPlayerUI(player, targetPlayerId) {
             }
     }
 }
+// /scriptevent s:e world.getAllPlayers().forEach(function a(player){player.onScreenDisplay.setActionBar({"rawtext":[{"text":"§6" + player.name + "\n\n§bMoney§f: "}, {"score": {"name": "*", "objective": "andexdb:money"}}, {"text":"\n§gWarnings§f: "}, {"score": {"name": "*", "objective": "warnings"}},{"text":" \n§aKills§f: "},{"score":{"name":"*","objective":"Kills"}},{"text":" \n§cDeaths§f: "},{"score":{"name":"*","objective":"Deaths"}}, {"text": `\n§dTime Played§f: ${Math.floor(world.scoreboard.getObjective("playtime").getScore(player)/3600).toFixed(0).padStart(2, 0)}:${(Math.floor(world.scoreboard.getObjective("playtime").getScore(player)/60)%3600).toFixed(0).padStart(2, 0)}:${(world.scoreboard.getObjective("playtime").getScore(player)%60).toFixed(0).padStart(2, 0)}`}]})})
 async function editPermissionForPlayerUI_permission(player, targetPlayerId, permission) {
     const perm = securityVariables.convertPermissionTypeToObject(permission);
     if (!(world.getPlayers({ name: "Andexter8" })[0] == player && player.hasTag("ultraSecurityModeDebugOverride"))) {

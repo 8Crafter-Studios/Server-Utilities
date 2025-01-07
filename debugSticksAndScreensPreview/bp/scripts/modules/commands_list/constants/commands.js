@@ -1170,7 +1170,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -2023,7 +2023,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -2046,7 +2046,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -2817,7 +2817,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -2840,7 +2840,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -2863,7 +2863,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -2944,7 +2944,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -2967,7 +2967,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3013,7 +3013,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3032,7 +3032,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3058,7 +3058,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3084,7 +3084,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3103,7 +3103,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3122,7 +3122,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3148,7 +3148,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3171,7 +3171,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3197,7 +3197,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3220,7 +3220,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3243,7 +3243,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3266,7 +3266,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3292,7 +3292,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3318,7 +3318,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3344,7 +3344,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3419,7 +3419,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3445,7 +3445,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3471,7 +3471,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3497,7 +3497,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3523,7 +3523,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3549,7 +3549,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
@@ -3580,7 +3580,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3603,7 +3603,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3634,7 +3634,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3665,7 +3665,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3696,7 +3696,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -3795,7 +3795,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "headAdmin",
     },
     {
         type: "built-in",
@@ -4003,7 +4003,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4027,7 +4027,7 @@ export const commands = [
         hidden: false,
         enabled: true,
         notes: "§r§cThis command is very laggy.",
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4050,7 +4050,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4073,7 +4073,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4096,7 +4096,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4119,7 +4119,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4143,7 +4143,7 @@ export const commands = [
         hidden: false,
         enabled: true,
         notes: "§r§cThis command is very laggy.",
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4166,7 +4166,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4189,7 +4189,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4212,7 +4212,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4235,7 +4235,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4295,7 +4295,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4318,7 +4318,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4344,7 +4344,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4593,7 +4593,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4630,7 +4630,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "moderator",
     },
     {
         type: "built-in",
@@ -4895,7 +4895,7 @@ export const commands = [
     },
     {
         type: "built-in",
-        requiredTags: ["canUseChatCommands"],
+        requiredTags: [],
         formatting_code: "§r§f",
         commandName: "spawn",
         escregexp: {
@@ -4914,7 +4914,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "everyone",
     },
     {
         type: "built-in",
@@ -4960,7 +4960,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "headAdmin",
     },
     {
         type: "built-in",
@@ -4983,7 +4983,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
-        ultraSecurityModeSecurityLevel: "admin",
+        ultraSecurityModeSecurityLevel: "headAdmin",
     },
     {
         type: "built-in",
