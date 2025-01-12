@@ -4978,7 +4978,7 @@ case !!switchTest.match(/^settings$/):
         break;
     }
 break; */
-            case !!switchTest.match(/^enderchest$/):
+            case !!switchTest.match(/^enderchest$/) || !!switchTest.match(/^ec$/):
                 eventData.cancel = true;
                 try {
                     player.runCommandAsync("/setblock ~~~ ender_chest");
@@ -25282,20 +25282,11 @@ ${command.dp}snapshot list`);
                                             player.sendError(`§cError: No backup area found with the name ${JSON.stringify(args[2])}.`, true);
                                             return;
                                         }
-                                        AreaBackups.get("areabackup:" + args[2]).rollback(AreaBackups.get("areabackup:" + args[2]).backups[args[3] ?? 0]);
-                                        player.sendMessageB(`Restored the area ${JSON.stringify(args[2])} from the backup at ${new Date(AreaBackups.get("areabackup:" + args[2]).backups[args[3] ?? 0] +
-                                            Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ??
-                                                world.getDynamicProperty("andexdbSettings:timeZone") ??
-                                                0) *
-                                                3600000)
-                                            .toLocaleString()
-                                            .replace(/^00:/, "12:")} GMT${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ??
+                                        let backup = AreaBackups.get("areabackup:" + args[2]).backups[args[3] ?? 0];
+                                        AreaBackups.get("areabackup:" + args[2]).rollback(backup);
+                                        player.sendMessageB(`Restored the area ${JSON.stringify(args[2])} from the backup at ${new Date(backup).formatDateTime(Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ??
                                             world.getDynamicProperty("andexdbSettings:timeZone") ??
-                                            0) < 0
-                                            ? ""
-                                            : "+"}${Number(player.getDynamicProperty("andexdbPersonalSettings:timeZone") ??
-                                            world.getDynamicProperty("andexdbSettings:timeZone") ??
-                                            0) % 96}.`);
+                                            0))}.`);
                                     }
                                     break;
                                 case "deletebackup":
@@ -25445,7 +25436,7 @@ ${command.dp}snapshot list`);
                     player.sendMessageB(`Chunk Info: \nDimension: ${dimensionTypeDisplayFormattingD[player.dimension.id]}\nChunk Index x: ${getChunkIndex(player.location).x}\nChunk Index y: ${getChunkIndex(player.location).y}\nChunk Range: ${JSON.stringify(chunkIndexToBoundingBoxB(getChunkIndex(player.location), player.dimension.heightRange))}`);
                 }
                 break;
-            case !!switchTest.match(/^butcher$/):
+            case !!switchTest.match(/^butcher$/) || !!switchTest.match(/^but$/):
                 {
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, [
@@ -25528,7 +25519,7 @@ ${command.dp}snapshot list`);
                     });
                 }
                 break;
-            case !!switchTest.match(/^butcherdespawn$/):
+            case !!switchTest.match(/^butcherdespawn$/) || !!switchTest.match(/^butdes$/):
                 {
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, [

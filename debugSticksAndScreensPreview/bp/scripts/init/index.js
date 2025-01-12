@@ -29,6 +29,7 @@ import "./prototypeExtensions/MessageFormData";
 import "./prototypeExtensions/ModalFormData";
 import "./prototypeExtensions/Player";
 import "./prototypeExtensions/String";
+import "./prototypeExtensions/world";
 import "./globals/globalMCImports";
 import "./classes/config";
 import "./classes/moduleImportsConfig";

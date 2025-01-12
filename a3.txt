@@ -41,6 +41,9 @@ Find/Replace to update the old gametests block types:
     afterEvents\.before(\w*)\.
     beforeEvents.$1.
 
+    (?<=includedInPermissions: \[[0-9a-zA-Z\."\s\n,]*)(?:,\s?)?"andexdb.fullControl"(?=[0-9a-zA-Z\."\s\n,]*\])
+    {EMPTY STRING}
+
 
 
 (async()=>{const colorCore = await import("color-core"); console.log(Object.keys(colorCore.default).map(v=>`exports.${v} as ${v}`).join(", "))})()

@@ -1,4 +1,4 @@
-import { ItemStack, Player, StructureSaveMode, system, world } from "@minecraft/server";
+import { ItemStack, Player, StructureSaveMode, system, world, World } from "@minecraft/server";
 import * as cmdslist from "modules/commands_list/constants/commands";
 import { getStringFromDynamicProperties } from "modules/utilities/functions/getStringFromDynamicProperties";
 // import { Base52 } from "modules/utilities/classes/Base52";
@@ -16,6 +16,8 @@ const deepFreeze = (obj) => {
     return obj;
 };
 const permissionTypesChecker = (et /* { [K in keyof T]: permissionTypesChecker<T> } */) => et;
+// ${se}console.log(JSON.stringify(Object.values(securityVariables.permissionTypes).filter(p=>p.includedInPermissions.includes("andexdb.admin"))))
+// ${se}console.log(JSON.stringify(Object.values(securityVariables.permissionTypes).filter(p=>p.includedInPermissions.includes("andexdb.admin")).map(p=>p.id)))
 const permissionTypes = Object.freeze(permissionTypesChecker({
     /**
      * Allows the player to have full owner-level permissions.
@@ -49,7 +51,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.headAdmin": {
         id: "andexdb.headAdmin",
         default: false,
-        includedInPermissions: ["andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to have full head admin-level permissions.
     §cDANGER!: This permission should only be given to highly trusted staff members. It is DANGEROUS to give this permission to anyone else.`,
         additionalPrompts: [
@@ -67,7 +69,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.admin": {
         id: "andexdb.admin",
         default: false,
-        includedInPermissions: ["andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to have full admin-level permissions.
     §cDANGER!: This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.`,
         additionalPrompts: [
@@ -85,7 +87,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.moderator": {
         id: "andexdb.moderator",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to have full moderator-level permissions.
     §cDANGER!: This permission should only be given to moderators. It is DANGEROUS to give this permission to anyone else.`,
         additionalPrompts: [
@@ -106,7 +108,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.useOwnerLevelCommands": {
         id: "andexdb.useOwnerLevelCommands",
         default: false,
-        includedInPermissions: ["andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use owner-level custom commands.
     §cDANGER!: This permission should only be given to the owner of the server. It is EXTREMELY DANGEROUS to give this permission to anyone else.`,
         additionalPrompts: [
@@ -131,7 +133,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.useAdminLevelCommands": {
         id: "andexdb.useAdminLevelCommands",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl", "andexdb.useOwnerLevelCommands"],
+        includedInPermissions: ["andexdb.useOwnerLevelCommands"],
         description: `Allows the player to use moderator-level custom commands.
     This permission is included in the 'andexdb.admin' permission.
     This permission is included in the 'andexdb.headAdmin' permission.
@@ -154,14 +156,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.useModeratorLevelCommands": {
         id: "andexdb.useModeratorLevelCommands",
         default: false,
-        includedInPermissions: [
-            "andexdb.moderator",
-            "andexdb.admin",
-            "andexdb.headAdmin",
-            "andexdb.fullControl",
-            "andexdb.useAdminLevelCommands",
-            "andexdb.useOwnerLevelCommands",
-        ],
+        includedInPermissions: ["andexdb.useAdminLevelCommands", "andexdb.useOwnerLevelCommands"],
         description: `Allows the player to use moderator-level custom commands.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.
@@ -184,18 +179,14 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.useScriptEvalEscapeSequence": {
         id: "andexdb.useScriptEvalEscapeSequence",
         default: false,
-        includedInPermissions: [
-            "andexdb.admin",
-            "andexdb.headAdmin",
-            "andexdb.fullControl",
-        ],
+        includedInPermissions: [],
         description: `Allows the player to run arbitrary JavaScript code in the chat with the '\${se}' or '\${scripteval}' escape sequence.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.`,
         additionalPrompts: [
             {
                 title: "§l§cWARNING!",
-                prompt: "Are you sure you want to give this player the ability to run arbitrary JavaScript code in the chat with the '\${se}' or '\${scripteval}' escape sequence?",
+                prompt: "Are you sure you want to give this player the ability to run arbitrary JavaScript code in the chat with the '${se}' or '${scripteval}' escape sequence?",
                 default: false,
             },
         ],
@@ -208,18 +199,14 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.useCommandsRunningEscapeSequence": {
         id: "andexdb.useCommandsRunningEscapeSequence",
         default: false,
-        includedInPermissions: [
-            "andexdb.admin",
-            "andexdb.headAdmin",
-            "andexdb.fullControl",
-        ],
+        includedInPermissions: [],
         description: `Allows the player to run any vanilla command in the chat with the '\${r}' or '\${run}' escape sequence.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.`,
         additionalPrompts: [
             {
                 title: "§l§cWARNING!",
-                prompt: "Are you sure you want to give this player the ability to run any vanilla command in the chat with the '\${r}' or '\${run}' escape sequence?",
+                prompt: "Are you sure you want to give this player the ability to run any vanilla command in the chat with the '${r}' or '${run}' escape sequence?",
                 default: false,
             },
         ],
@@ -233,7 +220,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.banPlayers": {
         id: "andexdb.banPlayers",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to have the ability to ban players through the manage bans UI.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.
@@ -249,7 +236,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.unbanPlayers": {
         id: "andexdb.unbanPlayers",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to have the ability to unban players through the manage bans UI.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.
@@ -266,7 +253,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.accessManageBansUI": {
         id: "andexdb.accessManageBansUI",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the manage bans UI.
     Note: The player will not be able to ban or unban anyone through the UI unless you give them the 'andexdb.banPlayers' or 'andexdb.unbanPlayers' permissions respectively.
     This permission is included in the 'andexdb.headAdmin' permission.
@@ -283,7 +270,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.accessManageCommandsUI": {
         id: "andexdb.accessManageCommandsUI",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the manage commands UI.
     This permission is included in the 'andexdb.admin' permission.
     This permission is included in the 'andexdb.headAdmin' permission.
@@ -306,7 +293,7 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
     "andexdb.accessMainMenu": {
         id: "andexdb.accessMainMenu",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the Main Menu.
     Note: The player will not be able to access some of the submenus unless you give them the permissions for those submenus.
     This permission is included in the 'andexdb.headAdmin' permission.
@@ -315,15 +302,15 @@ const permissionTypes = Object.freeze(permissionTypesChecker({
         additionalPrompts: [],
     },
     /**
-     * Allows the player to access the Security submenu of the Main Menu.
+ * Allows the player to access the Security submenu of the Main Menu.
 Note: Unless the player has the 'andexdb.fullControl' permission, the player cannot disable Ultra Security Mode through this menu, only the owner and players with the andexdb.fullControl permission can do that.
-     * This permission is included in the `andexdb.headAdmin` permission.
-     * @danger This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.
-     */
+ * This permission is included in the `andexdb.headAdmin` permission.
+ * @danger This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.
+ */
     "andexdb.accessSecuritySettings": {
         id: "andexdb.accessSecuritySettings",
         default: false,
-        includedInPermissions: ["andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the Security submenu of the Main Menu, and change the security settings in that menu.
     Note: Unless the player has the 'andexdb.fullControl' permission, the player cannot disable Ultra Security Mode through this menu, only the owner and players with the andexdb.fullControl permission can do that.
     This permission is included in the 'andexdb.headAdmin' permission.
@@ -345,7 +332,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.accessPersonalSettings": {
         id: "andexdb.accessPersonalSettings",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the Personal Settings submenu of the Settings Menu.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.
@@ -361,7 +348,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.accessNotificationsSettings": {
         id: "andexdb.accessNotificationsSettings",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the Notifications Settings submenu of the Settings Menu.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.
@@ -376,7 +363,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.accessExtraFeaturesSettings": {
         id: "andexdb.accessExtraFeaturesSettings",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the Extra Features Settings submenu of the Settings Menu.
     This permission is included in the 'andexdb.admin' permission.
     This permission is included in the 'andexdb.headAdmin' permission.`,
@@ -391,7 +378,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.accessAdvancedSettings": {
         id: "andexdb.accessAdvancedSettings",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the Advanced Settings submenu of the Settings Menu.
     This permission is included in the 'andexdb.admin' permission.
     This permission is included in the 'andexdb.headAdmin' permission.`,
@@ -406,7 +393,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.accessSettings": {
         id: "andexdb.accessSettings",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access most of the submenus in the Settings Menu.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.
@@ -423,7 +410,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.accessManagePlayersUI": {
         id: "andexdb.accessManagePlayersUI",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to access the manage players UI.
     Note: This permission SHOULD be given to moderators that you want to be able to ban people, because it is a lot easier to ban players through this UI.
     This permission is included in the 'andexdb.headAdmin' permission.
@@ -441,7 +428,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.UIs.managePlayersUI.deleteSavedPlayerData": {
         id: "andexdb.UIs.managePlayersUI.deleteSavedPlayerData",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to delete saved data for players in the manage players UI.
     Note: This only applies if the player has the andexdb.accessManagePlayersUI permission.
     This permission is included in the 'andexdb.headAdmin' permission.
@@ -465,7 +452,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.UIs.managePlayersUI.manageHomes": {
         id: "andexdb.UIs.managePlayersUI.manageHomes",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to delete saved data for players in the manage players UI.
     Note: This only applies if the player has the andexdb.accessManagePlayersUI permission.
     This permission is included in the 'andexdb.headAdmin' permission.
@@ -488,7 +475,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     "andexdb.canUseDebugStick": {
         id: "andexdb.canUseDebugStick",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use the Debug Stick.
 This permission is included in the 'andexdb.headAdmin' permission.
 This permission is included in the 'andexdb.admin' permission.
@@ -504,7 +491,7 @@ This permission is included in the 'andexdb.moderator' permission.`,
     "andexdb.canUseEditorSticks": {
         id: "andexdb.canUseEditorSticks",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the pl'yer to'use the Editor Sticks, including: Editor Stick, Editor Stick B, and Editor Stick C.
 This permission is included in the 'andexdb.headAdmin' permission.
 This permission is included in the 'andexdb.admin' permission.
@@ -520,7 +507,7 @@ This permission is included in the 'andexdb.moderator' permission.`,
     "andexdb.canUsePickBlockSticks": {
         id: "andexdb.canUsePickBlockSticks",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use the Pick Block Sticks, including: Pick Block Stick, Data Pick Block Stick, Liquid Clipped Pick Block Stick, and Liquid Clipped Data Pick Block Stick.
 This permission is included in the 'andexdb.headAdmin' permission.
 This permission is included in the 'andexdb.admin' permission.
@@ -536,7 +523,7 @@ This permission is included in the 'andexdb.moderator' permission.`,
     "andexdb.canUseCommandRunnerStick": {
         id: "andexdb.canUseCommandRunnerStick",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use the Command Runner Stick.
 This permission is included in the 'andexdb.headAdmin' permission.
 This permission is included in the 'andexdb.admin' permission.
@@ -552,7 +539,7 @@ This permission is included in the 'andexdb.admin' permission.
     "andexdb.canUseScriptRunnerStick": {
         id: "andexdb.canUseScriptRunnerStick",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use the Script Runner Stick.
 This permission is included in the 'andexdb.headAdmin' permission.
 This permission is included in the 'andexdb.admin' permission.
@@ -568,7 +555,7 @@ This permission is included in the 'andexdb.admin' permission.
     "andexdb.canUseInventoryController": {
         id: "andexdb.canUseInventoryController",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use the Inventory Controller.
 This permission is included in the 'andexdb.headAdmin' permission.
 This permission is included in the 'andexdb.admin' permission.
@@ -584,7 +571,7 @@ This permission is included in the 'andexdb.moderator' permission.`,
     "andexdb.canUseEntityControllerItems": {
         id: "andexdb.canUseEntityControllerItems",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use the following items: Entity Controller and Player Controller.
 This permission is included in the 'andexdb.headAdmin' permission.
 This permission is included in the 'andexdb.admin' permission.
@@ -600,7 +587,7 @@ This permission is included in the 'andexdb.moderator' permission.`,
     "andexdb.canUseEntityDebugSticks": {
         id: "andexdb.canUseEntityDebugSticks",
         default: false,
-        includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use the following items: Entity Debug Stick and Player Debug Stick.
 This permission is included in the 'andexdb.headAdmin' permission.
 This permission is included in the 'andexdb.admin' permission.
@@ -615,7 +602,7 @@ This permission is included in the 'andexdb.moderator' permission.`,
     "andexdb.useWorldEdit": {
         id: "andexdb.useWorldEdit",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to use WorldEdit.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.`,
@@ -629,7 +616,7 @@ This permission is included in the 'andexdb.moderator' permission.`,
     "andexdb.bypassProtectedAreas": {
         id: "andexdb.bypassProtectedAreas",
         default: false,
-        includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"],
+        includedInPermissions: [],
         description: `Allows the player to bypass all forms of spawn protection.
     This permission is included in the 'andexdb.headAdmin' permission.
     This permission is included in the 'andexdb.admin' permission.`,
@@ -687,7 +674,102 @@ Object.defineProperty(globalThis, "permissionType", {
 let ultraSecurityModeEnabled = world.getDynamicProperty("ultraSecurityModeEnabled") ?? false;
 let owner = world.getDynamicProperty("owner");
 const securityConfiguratorPackIsActive = !!tryget(() => new ItemStack("andexsc:security_configurator_pack_confirmation_item"));
-const playerPermissions = JSON.parse(getStringFromDynamicProperties("playerPermissions", '{"everyone": []}'));
+const playerPermissionsDefault = Object.freeze({
+    everyone: [],
+    moderator: [
+        "andexdb.useAdminLevelCommands",
+        "andexdb.useModeratorLevelCommands",
+        "andexdb.banPlayers",
+        "andexdb.unbanPlayers",
+        "andexdb.accessManageBansUI",
+        "andexdb.accessMainMenu",
+        "andexdb.accessPersonalSettings",
+        "andexdb.accessNotificationsSettings",
+        "andexdb.accessManagePlayersUI",
+        "andexdb.canUseDebugStick",
+        "andexdb.canUseEditorSticks",
+        "andexdb.canUsePickBlockSticks",
+        "andexdb.canUseScriptRunnerStick",
+        "andexdb.canUseInventoryController",
+        "andexdb.canUseEntityControllerItems",
+        "andexdb.canUseEntityDebugSticks",
+    ],
+    admin: [
+        "andexdb.moderator",
+        "andexdb.useAdminLevelCommands",
+        "andexdb.useModeratorLevelCommands",
+        "andexdb.useScriptEvalEscapeSequence",
+        "andexdb.useCommandsRunningEscapeSequence",
+        "andexdb.banPlayers",
+        "andexdb.unbanPlayers",
+        "andexdb.accessManageBansUI",
+        "andexdb.accessManageCommandsUI",
+        "andexdb.accessMainMenu",
+        "andexdb.accessPersonalSettings",
+        "andexdb.accessNotificationsSettings",
+        "andexdb.accessExtraFeaturesSettings",
+        "andexdb.accessAdvancedSettings",
+        "andexdb.accessSettings",
+        "andexdb.accessManagePlayersUI",
+        "andexdb.UIs.managePlayersUI.deleteSavedPlayerData",
+        "andexdb.UIs.managePlayersUI.manageHomes",
+        "andexdb.canUseDebugStick",
+        "andexdb.canUseEditorSticks",
+        "andexdb.canUsePickBlockSticks",
+        "andexdb.canUseCommandRunnerStick",
+        "andexdb.canUseScriptRunnerStick",
+        "andexdb.canUseInventoryController",
+        "andexdb.canUseEntityControllerItems",
+        "andexdb.canUseEntityDebugSticks",
+        "andexdb.useWorldEdit",
+        "andexdb.bypassProtectedAreas",
+    ],
+    headAdmin: [
+        "andexdb.admin",
+        "andexdb.moderator",
+        "andexdb.useAdminLevelCommands",
+        "andexdb.useModeratorLevelCommands",
+        "andexdb.useScriptEvalEscapeSequence",
+        "andexdb.useCommandsRunningEscapeSequence",
+        "andexdb.banPlayers",
+        "andexdb.unbanPlayers",
+        "andexdb.accessManageBansUI",
+        "andexdb.accessManageCommandsUI",
+        "andexdb.accessMainMenu",
+        "andexdb.accessSecuritySettings",
+        "andexdb.accessPersonalSettings",
+        "andexdb.accessNotificationsSettings",
+        "andexdb.accessExtraFeaturesSettings",
+        "andexdb.accessAdvancedSettings",
+        "andexdb.accessSettings",
+        "andexdb.accessManagePlayersUI",
+        "andexdb.UIs.managePlayersUI.deleteSavedPlayerData",
+        "andexdb.UIs.managePlayersUI.manageHomes",
+        "andexdb.canUseDebugStick",
+        "andexdb.canUseEditorSticks",
+        "andexdb.canUsePickBlockSticks",
+        "andexdb.canUseCommandRunnerStick",
+        "andexdb.canUseScriptRunnerStick",
+        "andexdb.canUseInventoryController",
+        "andexdb.canUseEntityControllerItems",
+        "andexdb.canUseEntityDebugSticks",
+        "andexdb.useWorldEdit",
+        "andexdb.bypassProtectedAreas",
+    ],
+});
+const playerPermissions = JSON.parse(getStringFromDynamicProperties("playerPermissions", JSON.stringify(playerPermissionsDefault)));
+playerPermissions.everyone ??= JSON.parse(JSON.stringify(playerPermissionsDefault.everyone));
+playerPermissions.moderator ??= JSON.parse(JSON.stringify(playerPermissionsDefault.moderator));
+playerPermissions.admin ??= JSON.parse(JSON.stringify(playerPermissionsDefault.admin));
+playerPermissions.headAdmin ??= JSON.parse(JSON.stringify(playerPermissionsDefault.headAdmin));
+function resetPlayerPermissions() {
+    Object.assign(playerPermissions, JSON.parse(JSON.stringify(playerPermissionsDefault)));
+}
+const permissionPresetMap = {
+    "andexdb.moderator": "moderator",
+    "andexdb.admin": "admin",
+    "andexdb.headAdmin": "headAdmin",
+};
 const commandsUltraSecurityModeSecurityLevelOverrides = JSON.parse(getStringFromDynamicProperties("commandsUltraSecurityModeSecurityLevelOverrides", '{"categoryOverrides": {}, "commandOverrides": {}, "customCommandOverrides": {}}'));
 if (ultraSecurityModeEnabled && !securityConfiguratorPackIsActive) {
     ultraSecurityModeEnabled = false;
@@ -767,38 +849,96 @@ export class securityVariables {
     }
     static testPlayerForPermission(player, permission) {
         const perm = this.convertPermissionTypeToObject(permission);
+        // Owner bypasses all permissions unless `ownerUsingDiablePermissionsDebug` is on.
         if (world.getPlayers({ name: owner })[0] == player && !ownerUsingDiablePermissionsDebug) {
             return true;
         }
+        // Andexter8 bypasses all permissions if he has the ultraSecurityModeDebugOverride tag, this is for debugging.
         if (world.getPlayers({ name: "Andexter8" })[0] == player && player.hasTag("ultraSecurityModeDebugOverride")) {
             return true;
         }
+        // Anyone with the `andexdb.fullControl` permision bypasses all permissions.
+        if (playerPermissions[player.id]?.includes("andexdb.fullControl")) {
+            return true;
+        } /*
         if (playerPermissions.everyone.includes(perm.id)) {
             return true;
-        }
-        if (playerPermissions[player.id]?.includes(perm.id)) {
+        } */
+        if (this.testPlayerForPermissionB(player.id, perm)) {
+            return true;
+        } /*
+        if (this.testPlayerForPermissionB(player.id, "andexdb.moderator") && playerPermissions.moderator?.includes(perm.id)) {
             return true;
         }
-        if (!!perm?.includedInPermissions?.find((p) => playerPermissions.everyone.includes(p))) {
+        if (this.testPlayerForPermissionB(player.id, "andexdb.admin") && playerPermissions.admin?.includes(perm.id)) {
             return true;
         }
-        if (!!perm?.includedInPermissions?.find((p) => playerPermissions[player.id]?.includes(p))) {
+        if (this.testPlayerForPermissionB(player.id, "andexdb.headAdmin") && playerPermissions.headAdmin?.includes(perm.id)) {
+            return true;
+        } */
+        if (!!perm?.includedInPermissions?.find((p) => this.testPlayerForPermissionB(player.id, p))) {
             return true;
         }
         return false;
     }
-    static testOfflinePlayerForPermission(playerId, permission) {
+    static testPlayerForPermissionB(playerId, permission) {
+        let hasPermission = false;
         const perm = this.convertPermissionTypeToObject(permission);
+        if (playerPermissions[playerId]?.includes(perm.id) == true) {
+            return true;
+        }
+        if (!!perm?.includedInPermissions?.find((p) => this.testPlayerForPermissionB(playerId, p))) {
+            return true;
+        }
         if (playerPermissions.everyone.includes(perm.id)) {
             return true;
         }
-        if (playerPermissions[playerId]?.includes(perm.id)) {
+        playerPermissions.everyone.forEach((p) => {
+            if (hasPermission)
+                return;
+            if (Object.keys(permissionPresetMap)?.includes(p)) {
+                if (playerPermissions[permissionPresetMap[p]]?.includes(perm.id) == true) {
+                    hasPermission = true;
+                    return;
+                }
+            }
+        });
+        if (playerPermissions[playerId] != undefined) {
+            playerPermissions[playerId].forEach((p) => {
+                if (hasPermission)
+                    return;
+                if (Object.keys(permissionPresetMap)?.includes(p)) {
+                    if (playerPermissions[permissionPresetMap[p]]?.includes(perm.id) == true) {
+                        hasPermission = true;
+                        return;
+                    }
+                }
+            });
+        }
+        return hasPermission;
+    }
+    static testOfflinePlayerForPermission(playerId, permission) {
+        const perm = this.convertPermissionTypeToObject(permission);
+        // Anyone with the `andexdb.fullControl` permision bypasses all permissions.
+        if (playerPermissions[playerId]?.includes("andexdb.fullControl")) {
+            return true;
+        } /*
+        if (playerPermissions.everyone.includes(perm.id)) {
+            return true;
+        } */
+        if (this.testPlayerForPermissionB(playerId, perm)) {
+            return true;
+        } /*
+        if (this.testPlayerForPermissionB(playerId, "andexdb.moderator") && playerPermissions.moderator?.includes(perm.id)) {
             return true;
         }
-        if (!!perm?.includedInPermissions?.find((p) => playerPermissions.everyone.includes(p))) {
+        if (this.testPlayerForPermissionB(playerId, "andexdb.admin") && playerPermissions.admin?.includes(perm.id)) {
             return true;
         }
-        if (!!perm?.includedInPermissions?.find((p) => playerPermissions[playerId]?.includes(p))) {
+        if (this.testPlayerForPermissionB(playerId, "andexdb.headAdmin") && playerPermissions.headAdmin?.includes(perm.id)) {
+            return true;
+        } */
+        if (!!perm?.includedInPermissions?.find((p) => this.testPlayerForPermissionB(playerId, p))) {
             return true;
         }
         return false;
@@ -823,6 +963,16 @@ Object.defineProperty(globalThis, "securityVariables", {
     writable: false,
     configurable: false,
     enumerable: true,
+});
+Object.defineProperties(World.prototype, {
+    getPlayers: {
+        ...Object.getOwnPropertyDescriptor(world, "getPlayers"),
+        configurable: false,
+    },
+    setDynamicProperty: {
+        ...Object.getOwnPropertyDescriptor(world, "setDynamicProperty"),
+        configurable: false,
+    },
 });
 system.afterEvents.scriptEventReceive.subscribe((event) => {
     if (event.id == "andexdb:securityConfiguratorOwnerSet") {
@@ -927,7 +1077,7 @@ export async function editPermissionForPlayerUI(player, targetPlayerId) {
     form.title("Edit Permissions For Player");
     const perms = Object.entries(permissionType);
     perms.forEach((permissionType) => {
-        form.button(permissionType[0]);
+        form.button((playerPermissions[targetPlayerId]?.includes(permissionType[0]) ? "§a" : securityVariables.testOfflinePlayerForPermission(targetPlayerId, permissionType[1]) ? "§e" : "§c") + permissionType[0]);
     });
     form.button("Back");
     form.button("Close");
@@ -1060,6 +1210,12 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
         case 1:
             ultraSecurityModeEnabled = true;
             world.setDynamicProperty("ultraSecurityModeEnabled", true);
+            if (!ultraSecurityModeEnabled) {
+                const rc = await showMessage(player, "Restart Required", 'A restart or reload of this world/realm/server is required to fully enable this option, if this is a world you can just run the /reload command, but if it is a realm/server please click the restart button below. Until you restart, changes to player\'s permissions will not be able to be saved, players will be able to id-spoof, and some security features may be entirely non-functional, so please restart as soon as possible. When you click the restart button below, it will shut down the world/server/realm with an error messages saying that "The server was shut down due to exceeding the scripting memory limit.".', "Restart", "Not Now");
+                if (rc.selection == 0) {
+                    let buffer = new ArrayBuffer(250000000); // Uses all of the currently available scripting memory, forcefully shutting down the world/realm/server.
+                }
+            }
             return;
         case 2:
             return;
@@ -1067,7 +1223,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 }
 export async function commandsUltraSecurityModeSecurityLevelOverridesEditor(player) {
     if (!ultraSecurityModeEnabled) {
-        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security mode to be enabled.");
+        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security Mode to be enabled.");
         return -423;
     }
     if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
@@ -1112,7 +1268,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 }
 export async function commandsUltraSecurityModeSecurityLevelOverridesEditor_categories(player) {
     if (!ultraSecurityModeEnabled) {
-        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security mode to be enabled.");
+        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security Mode to be enabled.");
         return -423;
     }
     if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
@@ -1146,7 +1302,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 }
 export async function selectCommandsUltraSecurityModeSecurityLevelOverrides_category(player, category) {
     if (!ultraSecurityModeEnabled) {
-        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security mode to be enabled.");
+        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security Mode to be enabled.");
         return -423;
     }
     if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
@@ -1203,7 +1359,7 @@ export async function selectCommandsUltraSecurityModeSecurityLevelOverrides_cate
 }
 export async function commandsUltraSecurityModeSecurityLevelOverridesEditor_commands(player) {
     if (!ultraSecurityModeEnabled) {
-        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security mode to be enabled.");
+        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security Mode to be enabled.");
         return -423;
     }
     if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
@@ -1237,7 +1393,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 }
 export async function commandsUltraSecurityModeSecurityLevelOverridesEditor_commands_category(player, category) {
     if (!ultraSecurityModeEnabled) {
-        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security mode to be enabled.");
+        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security Mode to be enabled.");
         return -423;
     }
     if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
@@ -1276,7 +1432,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 }
 export async function selectCommandsUltraSecurityModeSecurityLevelOverrides_command_builtIn(player, command) {
     if (!ultraSecurityModeEnabled) {
-        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security mode to be enabled.");
+        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security Mode to be enabled.");
         return -423;
     }
     if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
@@ -1334,7 +1490,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
 }
 export async function selectCommandsUltraSecurityModeSecurityLevelOverrides_command_custom(player, command) {
     if (!ultraSecurityModeEnabled) {
-        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security mode to be enabled.");
+        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security Mode to be enabled.");
         return -423;
     }
     if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
@@ -1435,6 +1591,72 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
             return;
         case 1:
             return 1;
+    }
+}
+export async function resetPlayerPermissionsUI(player) {
+    if (!ultraSecurityModeEnabled) {
+        const rb = await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu can only be accessed when Ultra Security Mode is enabled.");
+        return -423;
+    }
+    if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
+        if (player.name !== owner) {
+            await showMessage(player, "Access Denied (403)", "You are not the owner of this server, you may not access this menu. If you are the owner, please double check that you typed in your username correctly when generating the security configurator behavior pack.");
+            return -403;
+        }
+        // The world.getPlayers function ins't succeptible to player name property spoofing, so we can trust it.
+        if (player.name == owner && world.getPlayers({ name: owner })[0] != player) {
+            await showMessage(player, "Access Denied (403)", "Nice try spoofing your name property, but that won't work. You are not the owner of this server, you may not access this menu. If you are the owner, please double check that you typed in your username correctly when generating the security configurator behavior pack.");
+            return -403;
+        }
+    }
+    let r = await showMessage(player, "Reset Player Permissions", "Are you sure you want to reset all player permissions and permission level presets? §l§eThis action CANNOT be undone!", "Cancel", "Reset");
+    if (r.canceled || r.selection == 0) {
+        return 1;
+    }
+    r = await showMessage(player, "Reset Player Permissions", "§l§cAre you ABSOLUTELY sure you want to reset all player permissions and permission level presets? §eThis action CANNOT be undone!", "Cancel", "Reset");
+    if (r.canceled || r.selection == 0) {
+        return 1;
+    }
+    resetPlayerPermissions();
+    return 1;
+}
+export async function managePermissionsPresets(player) {
+    if (!ultraSecurityModeEnabled) {
+        await showMessage(player, "Ultra Security Mode Disabled (423)", "This menu requires Ultra Security Mode to be enabled.");
+        return -423;
+    }
+    if (!(playerPermissions[player.id]?.includes("andexdb.fullControl") ?? false)) {
+        if (player.name !== owner) {
+            await showMessage(player, "Access Denied (403)", "You are not the owner of this server, you may not change the security level of commands. If you are the owner, please double check that you typed in your username correctly when generating the security configurator behavior pack.");
+            return -403;
+        }
+        // The world.getPlayers function ins't succeptible to player name property spoofing, so we can trust it.
+        if (player.name == owner && world.getPlayers({ name: owner })[0] != player) {
+            await showMessage(player, "Access Denied (403)", "Nice try spoofing your name property, but that won't work. You are not the owner of this server, you may not change the security level of commands. If you are the owner, please double check that you typed in your username correctly when generating the security configurator behavior pack.");
+            return -403;
+        }
+    }
+    let form = new ActionFormData();
+    form.title("Manage Permissions Presets");
+    Object.values(permissionPresetMap).forEach(p => form.button(p));
+    form.button("Back", "textures/ui/arrow_left");
+    form.button("Close", "textures/ui/crossout");
+    const r = await form.forceShow(player);
+    if (r.canceled) {
+        return 1;
+    }
+    switch (r.selection) {
+        case Object.values(permissionPresetMap).length:
+            return 1;
+        case Object.values(permissionPresetMap).length + 1:
+            return 0;
+        default:
+            if ((await editPermissionForPlayerUI(player, Object.values(permissionPresetMap)[r.selection])) == 1) {
+                return await managePermissionsPresets(player);
+            }
+            else {
+                return 0;
+            }
     }
 }
 //# sourceMappingURL=ultraSecurityModeUtils.js.map

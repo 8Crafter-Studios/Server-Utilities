@@ -2,6 +2,8 @@ import { Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCurs
 import { MoneySystem } from "ExtraFeatures/money";
 import { anglesToDirectionVectorDeg } from "modules/coordinates/functions/anglesToDirectionVectorDeg";
 import { getChunkIndexD } from "modules/coordinates/functions/getChunkIndexD";
+import { saveStringToEntityDynamicProperties } from "modules/utilities/functions/saveStringToEntityDynamicProperties";
+import { getStringFromEntityDynamicProperties } from "modules/utilities/functions/getStringFromEntityDynamicProperties";
 Object.defineProperties(Entity.prototype, {
     inventory: {
         get: function inventory() {
@@ -180,6 +182,18 @@ Object.defineProperties(Entity.prototype, {
         },
         configurable: true,
         enumerable: true,
+    },
+    saveStringToDynamicProperties: {
+        value: function saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) { return saveStringToEntityDynamicProperties(this, string, propertyName, clearOldProperties, chunkSize); },
+        configurable: false,
+        enumerable: true,
+        writable: true,
+    },
+    getStringFromDynamicProperties: {
+        value: function getStringFromDynamicProperties(propertyName, zeroLengthPlaceholder = "") { return getStringFromEntityDynamicProperties(this, propertyName, zeroLengthPlaceholder); },
+        configurable: false,
+        enumerable: true,
+        writable: true,
     },
 });
 export const exports_5603749806156139082470132985463298047098135609812364098 = undefined;

@@ -1,4 +1,4 @@
-import { Player, Dimension, Block, Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, EffectType, GameMode, MolangVariableMap, InputInfo } from "@minecraft/server";
+import { Player, Dimension, Block, Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, EffectType, GameMode, MolangVariableMap, InputInfo, } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -8,6 +8,8 @@ import { chatCommands } from "modules/commands/functions/chatCommands";
 import { WorldPosition } from "modules/coordinates/classes/WorldPosition";
 import { anglesToDirectionVectorDeg } from "modules/coordinates/functions/anglesToDirectionVectorDeg";
 import { getChunkIndexD } from "modules/coordinates/functions/getChunkIndexD";
+import { getStringFromEntityDynamicProperties } from "modules/utilities/functions/getStringFromEntityDynamicProperties";
+import { saveStringToEntityDynamicProperties } from "modules/utilities/functions/saveStringToEntityDynamicProperties";
 export class executeCommandPlayerW {
     player;
     sendErrorsTo;
@@ -33,9 +35,7 @@ export class executeCommandPlayerW {
                 sendErrorsTo === null || Number.isNaN(sendErrorsTo)
                     ? null
                     : sendErrorsTo ??
-                        (player.entity instanceof Player
-                            ? player.entity
-                            : console);
+                        (player.entity instanceof Player ? player.entity : console);
             this.block = player.block;
             this.isFromWorldPosition = true;
             this.fromPlayerWorldPosition = player.entity instanceof Player;
@@ -51,8 +51,7 @@ export class executeCommandPlayerW {
             this.sendErrorsTo =
                 sendErrorsTo === null || Number.isNaN(sendErrorsTo)
                     ? null
-                    : sendErrorsTo ??
-                        (player instanceof Player ? player : console);
+                    : sendErrorsTo ?? (player instanceof Player ? player : console);
             this.modifiedlocation = player.location;
             this.modifieddimension = player.dimension;
             this.rotation = player.getRotation();
@@ -122,9 +121,7 @@ export class executeCommandPlayerW {
                         : "rawtext" in error
                             ? error
                             : typeof error == "object"
-                                ? tryget(() => JSONStringify(error)) ??
-                                    tryget(() => JSON.stringify(error)) ??
-                                    String(error)
+                                ? tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error)
                                 : String(error));
                 }
                 else if (sest instanceof Array) {
@@ -135,9 +132,7 @@ export class executeCommandPlayerW {
                                 : "rawtext" in error
                                     ? error
                                     : typeof error == "object"
-                                        ? tryget(() => JSONStringify(error)) ??
-                                            tryget(() => JSON.stringify(error)) ??
-                                            String(error)
+                                        ? tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error)
                                         : String(error));
                         }
                         else if ("warn" in v) {
@@ -148,9 +143,7 @@ export class executeCommandPlayerW {
                                     : error instanceof Array
                                         ? error
                                         : typeof error == "object"
-                                            ? tryget(() => JSONStringify(error)) ??
-                                                tryget(() => JSON.stringify(error)) ??
-                                                String(error)
+                                            ? tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error)
                                             : String(error));
                         }
                     });
@@ -163,9 +156,7 @@ export class executeCommandPlayerW {
                             : error instanceof Array
                                 ? error
                                 : typeof error == "object"
-                                    ? tryget(() => JSONStringify(error)) ??
-                                        tryget(() => JSON.stringify(error)) ??
-                                        String(error)
+                                    ? tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error)
                                     : String(error));
                 }
                 else if (typeof sest == "function") {
@@ -245,11 +236,7 @@ export class executeCommandPlayerW {
         return this.modifiedlocation ?? this.player?.location;
     }
     get locationstring() {
-        return (this.x +
-            " " +
-            this.y +
-            " " +
-            this.z);
+        return (this.x + " " + this.y + " " + this.z);
     }
     get rotationstring() {
         return (this.rotx + " " + this.roty);
@@ -294,10 +281,7 @@ export class executeCommandPlayerW {
         return this.rotation?.y ?? this.player?.getRotation?.()?.y;
     }
     get timeZone() {
-        return (this.getDynamicProperty("andexdbPersonalSettings:timeZone") ??
-            config.system.timeZone)
-            .toString()
-            .toNumber();
+        return (this.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? config.system.timeZone).toString().toNumber();
     }
     set timeZone(timezone) {
         this.setDynamicProperty("andexdbPersonalSettings:timeZone", !!timezone ? timezone.toString() : undefined);
@@ -395,9 +379,7 @@ export class executeCommandPlayerW {
         return this.rotation ?? this.player?.getRotation();
     }
     getViewDirection() {
-        return !!this.rotation
-            ? anglesToDirectionVectorDeg(this.rotation.x, this.rotation.y)
-            : this.player?.getViewDirection();
+        return !!this.rotation ? anglesToDirectionVectorDeg(this.rotation.x, this.rotation.y) : this.player?.getViewDirection();
     }
     addLevels(amount) {
         return this.player?.addLevels(amount);
@@ -576,6 +558,12 @@ export class executeCommandPlayerW {
     }
     tryTeleport(location, teleportOptions) {
         return this.player?.tryTeleport(location, teleportOptions);
+    }
+    saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) {
+        return saveStringToEntityDynamicProperties(this.player, string, propertyName, clearOldProperties, chunkSize);
+    }
+    getStringFromDynamicProperties(propertyName, zeroLengthPlaceholder = "") {
+        return getStringFromEntityDynamicProperties(this.player, propertyName, zeroLengthPlaceholder);
     }
 }
 //# sourceMappingURL=executeCommandPlayerW.js.map

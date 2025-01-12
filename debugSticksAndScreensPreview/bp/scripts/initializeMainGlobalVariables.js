@@ -1,7 +1,7 @@
 import { system } from "@minecraft/server";
 import "init/functions/breakpoint";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const current_format_version = "1.28.3";
+export const current_format_version = "1.28.4";
 globalThis.format_version = current_format_version;
 export const current_supported_minecraft_version = "1.21.5x";
 globalThis.supported_minecraft_version = current_supported_minecraft_version;
@@ -20,6 +20,13 @@ globalThis.editorStickMenuOpeningAsyncCancelActionNumbers = {};
 globalThis.crashEnabled = false;
 globalThis.tempSavedVariables = [];
 globalThis.scriptStartTick = -1;
+Object.defineProperties(globalThis, {
+    errorLog: {
+        value: {
+            playerDataAutoSave: []
+        },
+    }
+});
 /* Object.defineProperty(console, "error", {
     value: function error(...args: any[]) {
         world.sendMessage(args.join(" "));

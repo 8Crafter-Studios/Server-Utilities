@@ -5,7 +5,7 @@ import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPl
 import { savedPlayer } from "modules/player_save/classes/savedPlayer";
 import { ban } from "modules/ban/classes/ban";
 import { managePlayers_managePlayer } from "./managePlayers_managePlayer";
-import { securityVariables, selectSecurityMode, ultraSecurityModeDebug } from "security/ultraSecurityModeUtils";
+import { editPermissionForPlayerUI, managePermissionsPresets, resetPlayerPermissionsUI, securityVariables, selectSecurityMode, ultraSecurityModeDebug } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
 export async function securitySettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
@@ -27,9 +27,12 @@ export async function securitySettings(sourceEntitya) {
     form.title("Security");
     form.body("Choose menu to open. ");
     form.button("View Players With Permissions", "textures/ui/permissions_op_crown");
+    form.button("Manage Default Permissions", "textures/ui/icon_setting");
+    form.button("Manage Permissions Presets", "textures/ui/icon_setting");
+    form.button("Reset Permissions", "textures/ui/icon_setting");
     form.button("Settings", "textures/ui/icon_setting");
-    form.button("Back", "textures/ui/arrow_left"); /*
-form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
+    form.button("Back", "textures/ui/arrow_left");
+    form.button("Close", "textures/ui/crossout");
     return await forceShow(form, sourceEntity)
         .then(async (ra) => {
         let r = ra;
@@ -46,7 +49,41 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                     return 0;
                 }
                 break;
-            case 1:
+            case 1: {
+                if (!securityVariables.ultraSecurityModeEnabled) {
+                    const rb = await showMessage(sourceEntity, "Disabled (423)", "This menu is disabled when Ultra Security Mode is off.", "Go Back", "Close");
+                    if (rb.canceled || rb.selection == 0) {
+                        return await securitySettings(sourceEntity);
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+                else if ((await editPermissionForPlayerUI(sourceEntity, "everyone")) == 1) {
+                    return await securitySettings(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
+                break;
+            }
+            case 2:
+                if ((await managePermissionsPresets(sourceEntity)) == 1) {
+                    return await securitySettings(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
+                break;
+            case 3:
+                if ((await resetPlayerPermissionsUI(sourceEntity)) == 1) {
+                    return await securitySettings(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
+                break;
+            case 4:
                 if ((await securitySettings_settingsSelection(sourceEntity)) == 1) {
                     return await securitySettings(sourceEntity);
                 }
@@ -54,12 +91,24 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                     return 0;
                 }
                 break;
-            default:
+            case 5:
                 return 1;
+            case 6:
+                return 1;
+            default: {
+                const rb = await showMessage(sourceEntity, "Invalid Option Selected", `The selected button was at an unexpected index (${ra.selection}).`, "Go Back", "Close");
+                if (rb.canceled || rb.selection == 0) {
+                    return await securitySettings(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
+            }
         }
     })
         .catch((e) => {
         console.error(e, e.stack);
+        return -2;
     });
 }
 export async function securitySettings_settingsSelection(sourceEntitya) {
@@ -502,12 +551,12 @@ export async function securitySettings_playersWithPermissions_permission_UltraSe
             }
         }
     }
-    const perm = this.convertPermissionTypeToObject(permission);
+    const perm = securityVariables.convertPermissionTypeToObject(permission);
     let form = new ActionFormData();
     const page = Math.max(0, pagen);
     const savedPlayers = savedPlayer
         .getSavedPlayers()
-        .filter(p => securityVariables.playerPermissions[p.id]?.includes(perm))
+        .filter(p => securityVariables.testOfflinePlayerForPermission(p.id, perm.id))
         .filter((p) => !!search
         ? search.caseSensitive == true
             ? `${(search.searchNames ?? true) ? p.name + "\n" : ""}${(search.searchIds ?? true) ? p.id + "\n" : ""}${p.isOnline
@@ -565,7 +614,7 @@ export async function securitySettings_playersWithPermissions_permission_UltraSe
             .filter((_) => !_.isOnline && !_.isBanned)
             .sort((a, b) => b.lastOnline - a.lastOnline),
     ]
-        .filter(p => securityVariables.playerPermissions[p.id]?.includes(perm))
+        .filter(p => securityVariables.testOfflinePlayerForPermission(p.id, perm.id))
         .filter((p) => !!search
         ? search.caseSensitive == true
             ? `${(search.searchNames ?? true) ? p.name + "\n" : ""}${(search.searchIds ?? true) ? p.id + "\n" : ""}${p.isOnline

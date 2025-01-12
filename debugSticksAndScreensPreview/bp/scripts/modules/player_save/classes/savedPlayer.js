@@ -33,6 +33,11 @@ export class savedPlayer {
      * @since format version 1.6.0
      * @since v1.28.0-preview.20+BUILD.1
      */
+    inputInfo;
+    /**
+     * @since format version 1.6.0
+     * @since v1.28.0-preview.20+BUILD.1
+     */
     playerPermissions;
     /**
      * @since format version 1.6.0
@@ -69,6 +74,7 @@ export class savedPlayer {
         }
         if (semver.satisfies(data.player_save_format_version ?? "0.0.0", ">=1.6.0 <2.0.0", { includePrerelease: true })) {
             this.inputPermissions = data.inputPermissions;
+            this.inputInfo = data.inputInfo;
             this.playerPermissions = data.playerPermissions;
             this.onJoinActions = data.onJoinActions;
         }
