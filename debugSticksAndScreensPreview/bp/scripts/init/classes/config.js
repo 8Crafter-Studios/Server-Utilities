@@ -1,4 +1,4 @@
-import { world, StructureSaveMode, Dimension, } from "@minecraft/server";
+import { world, StructureSaveMode, Dimension } from "@minecraft/server";
 import { gwdp } from "init/functions/gwdp";
 /**
  * A class containing the configuration information for the add-on.
@@ -11,15 +11,13 @@ export class config {
         console.log(`Hello, my name is 1.`);
     }*/
     static get chatCommandsEnabled() {
-        return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") ??
-            true);
+        return Boolean(world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") ?? true);
     }
     static set chatCommandsEnabled(enabled) {
         world.setDynamicProperty("andexdbSettings:chatCommandsEnabled", enabled ?? true);
     }
     static get chatCommandPrefix() {
-        return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ??
-            "\\");
+        return String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\");
     }
     static set chatCommandPrefix(prefix) {
         world.setDynamicProperty("andexdbSettings:chatCommandPrefix", prefix ?? "\\");
@@ -38,9 +36,21 @@ export class config {
     static set invalidChatCommandAction(invalidChatCommandAction) {
         world.setDynamicProperty("andexdbSettings:invalidChatCommandAction", invalidChatCommandAction ?? 3);
     }
+    /**
+     * How long in seconds after getting damaged by another player that the player has to wait before they can teleport with commands such as `\spawn`, `\home`, `\gohome`, `\tpa`, and `\rtp`.
+     *
+     * It defaults to 0.
+     */
+    static get pvpCooldownToTeleport() {
+        return isNaN(Number(world.getDynamicProperty("andexdbSettings:pvpCooldownToTeleport")))
+            ? 0
+            : Number(world.getDynamicProperty("andexdbSettings:pvpCooldownToTeleport") ?? 0);
+    }
+    static set pvpCooldownToTeleport(invalidChatCommandAction) {
+        world.setDynamicProperty("andexdbSettings:pvpCooldownToTeleport", invalidChatCommandAction ?? 0);
+    }
     static get undoClipboardMode() {
-        return String(world.getDynamicProperty("andexdbSettings:undoClipboardMode") ??
-            StructureSaveMode.Memory);
+        return String(world.getDynamicProperty("andexdbSettings:undoClipboardMode") ?? StructureSaveMode.Memory);
     }
     static set undoClipboardMode(undoClipboardMode) {
         world.setDynamicProperty("andexdbSettings:undoClipboardMode", undoClipboardMode ?? StructureSaveMode.Memory);
@@ -52,8 +62,7 @@ export class config {
             y: v.y,
             z: v.z,
             dimension: dimensionsb[String(v.dimension)] ?? overworld,
-        })) ??
-            { x: null, y: null, z: null, dimension: overworld });
+        })) ?? { x: null, y: null, z: null, dimension: overworld });
     }
     static set spawnCommandLocation(spawnCommandLocation) {
         world.setDynamicProperty("andexdbSettings:spawnCommandLocation", JSON.stringify({
@@ -428,9 +437,7 @@ export class config {
                         world.setDynamicProperty("andexdbShopSystemSettings:player.enabled", enabled ?? false);
                     },
                     get maxShopsPerPlayer() {
-                        return (world.getDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer") ?? 5)
-                            .toString()
-                            .toNumber();
+                        return (world.getDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer") ?? 5).toString().toNumber();
                     },
                     set maxShopsPerPlayer(maxShopsPerPlayer) {
                         world.setDynamicProperty("andexdbShopSystemSettings:player.maxShopsPerPlayer", maxShopsPerPlayer ?? 5);
@@ -488,9 +495,7 @@ export class config {
     static get tpaSystem() {
         return {
             get tpaSystemEnabled() {
-                return Boolean(world.getDynamicProperty("tpaSystemSettings:tpaSystemEnabled") ??
-                    world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled") ??
-                    false);
+                return Boolean(world.getDynamicProperty("tpaSystemSettings:tpaSystemEnabled") ?? world.getDynamicProperty("rtpSystemSettings:rtpSystemEnabled") ?? false);
             },
             set tpaSystemEnabled(enabled) {
                 world.setDynamicProperty("tpaSystemSettings:tpaSystemEnabled", enabled ?? false);
@@ -523,8 +528,7 @@ export class config {
                 world.setDynamicProperty("andexdbSettings:showRanksOnPlayerNameTags", showRanksOnPlayerNameTags ?? false);
             },
             get rankMode() {
-                return String(world.getDynamicProperty("andexdbSettings:rankMode") ??
-                    "custom_simple");
+                return String(world.getDynamicProperty("andexdbSettings:rankMode") ?? "custom_simple");
             },
             set rankMode(rankMode) {
                 world.setDynamicProperty("andexdbSettings:rankMode", rankMode ?? "custom_simple");
@@ -576,8 +580,7 @@ export class config {
                     '§r${timestampenabled?`[${timestamp}]`:""}${ranks}§r${(ranks!="")?" ":""}<${name}§r> ${message}');
             },
             set messageTemplateString(messageTemplateString) {
-                world.setDynamicProperty("andexdbSettings:messageTemplateString", messageTemplateString ??
-                    '§r${timestampenabled?`[${timestamp}]`:""}${ranks}§r${(ranks!="")?" ":""}<${name}§r> ${message}');
+                world.setDynamicProperty("andexdbSettings:messageTemplateString", messageTemplateString ?? '§r${timestampenabled?`[${timestamp}]`:""}${ranks}§r${(ranks!="")?" ":""}<${name}§r> ${message}');
             },
             get defaultRankTemplateString() {
                 return String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "");
@@ -647,8 +650,7 @@ export class config {
                 return Boolean(world.getDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute") ?? false);
             },
             set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) {
-                world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute ??
-                    false);
+                world.setDynamicProperty("antispamSettings:restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute", restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute ?? false);
             },
             get waitTimeAfterAntispamActivation() {
                 return isNaN(Number(world.getDynamicProperty("antispamSettings:waitTimeAfterAntispamActivation")))
@@ -744,29 +746,22 @@ export class config {
                 return Number(world.getDynamicProperty("andexdbSettings:playerDataRefreshRate") ?? 20);
             },
             set playerDataRefreshRate(playerDataRefreshRate) {
-                world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate))
-                    ? 5
-                    : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 20))));
+                world.setDynamicProperty("andexdbSettings:playerDataRefreshRate", Number.isNaN(Number(playerDataRefreshRate)) ? 5 : Math.min(1000, Math.max(1, Number(playerDataRefreshRate ?? 20))));
             },
             get protectedAreasRefreshRate() {
                 return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 200);
             },
             set protectedAreasRefreshRate(protectedAreasRefreshRate) {
-                world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate))
-                    ? 200
-                    : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 200))));
+                world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 200 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 200))));
             },
             get bannedPlayersRefreshRate() {
                 return Number(world.getDynamicProperty("andexdbSettings:bannedPlayersRefreshRate") ?? 20);
             },
             set bannedPlayersRefreshRate(bannedPlayersRefreshRate) {
-                world.setDynamicProperty("andexdbSettings:bannedPlayersRefreshRate", Number.isNaN(Number(bannedPlayersRefreshRate))
-                    ? 20
-                    : Math.min(1000, Math.max(1, Number(bannedPlayersRefreshRate ?? 20))));
+                world.setDynamicProperty("andexdbSettings:bannedPlayersRefreshRate", Number.isNaN(Number(bannedPlayersRefreshRate)) ? 20 : Math.min(1000, Math.max(1, Number(bannedPlayersRefreshRate ?? 20))));
             },
             get debugMode() {
-                return Boolean(world.getDynamicProperty("andexdbSettings:debugMode") ??
-                    false);
+                return Boolean(world.getDynamicProperty("andexdbSettings:debugMode") ?? false);
             },
             set debugMode(debugMode) {
                 world.setDynamicProperty("andexdbSettings:debugMode", debugMode ?? false);
@@ -787,8 +782,7 @@ export class config {
                 return Boolean(world.getDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup") ?? false);
             },
             set hideWatchdogTerminationCrashEnabledWarningsOnStartup(hideWatchdogTerminationCrashEnabledWarningsOnStartup) {
-                world.setDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup", hideWatchdogTerminationCrashEnabledWarningsOnStartup ??
-                    false);
+                world.setDynamicProperty("andexdbSettings:hideWatchdogTerminationCrashEnabledWarningsOnStartup", hideWatchdogTerminationCrashEnabledWarningsOnStartup ?? false);
             },
             /**
              * It is reccommended to leave this set to false.
@@ -846,17 +840,7 @@ export class config {
     }
     static toJSON() {
         return Object.fromEntries(Object.getOwnPropertyNames(config)
-            .filter((n) => ![
-            "constructor",
-            "toString",
-            "toLocaleString",
-            "valueOf",
-            "hasOwnProperty",
-            "name",
-            "prototype",
-            "reset",
-            "length",
-        ].includes(n))
+            .filter((n) => !["constructor", "toString", "toLocaleString", "valueOf", "hasOwnProperty", "name", "prototype", "reset", "length"].includes(n))
             .map((n) => [n, config[n]]));
     }
 }

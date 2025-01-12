@@ -7352,7 +7352,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 }
                                 break;
                             case "go":
-                                if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])) {
+                                if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 > Date.now()) {
+                                    player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
+                                }
+                                else if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])) {
                                     srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])
                                         .location, {
                                         dimension: HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2]).location.dimension,
@@ -7364,7 +7367,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 }
                                 break;
                             case "warp":
-                                if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])) {
+                                if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 > Date.now()) {
+                                    player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
+                                }
+                                else if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])) {
                                     srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])
                                         .location, {
                                         dimension: HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2]).location.dimension,
@@ -7376,7 +7382,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 }
                                 break;
                             case "teleport":
-                                if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])) {
+                                if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 > Date.now()) {
+                                    player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
+                                }
+                                else if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])) {
                                     srun(() => player.teleport(HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])
                                         .location, {
                                         dimension: HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2]).location.dimension,
@@ -7411,20 +7420,25 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 {
                     eventData.cancel = true;
                     if (config.homeSystem.homeSystemEnabled) {
-                        let argsa = evaluateParameters(switchTestB, [
-                            "presetText",
-                        ]);
-                        if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == argsa.extra)) {
-                            srun(() => player.teleport(Home.get("home:" + player.id + ":" + argsa.extra).location, {
-                                dimension: Home.get("home:" +
-                                    player.id +
-                                    ":" +
-                                    argsa.extra).location.dimension,
-                            }));
-                            player.sendMessageB(`Successfully teleported to the home "${argsa.extra}§r§f". `);
+                        if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 > Date.now()) {
+                            player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                         }
                         else {
-                            player.sendError(`§cError: Could not find a home with the name "${argsa.extra}§r§c". `, true);
+                            let argsa = evaluateParameters(switchTestB, [
+                                "presetText",
+                            ]);
+                            if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == argsa.extra)) {
+                                srun(() => player.teleport(Home.get("home:" + player.id + ":" + argsa.extra).location, {
+                                    dimension: Home.get("home:" +
+                                        player.id +
+                                        ":" +
+                                        argsa.extra).location.dimension,
+                                }));
+                                player.sendMessageB(`Successfully teleported to the home "${argsa.extra}§r§f". `);
+                            }
+                            else {
+                                player.sendError(`§cError: Could not find a home with the name "${argsa.extra}§r§c". `, true);
+                            }
                         }
                     }
                     else {
@@ -7435,8 +7449,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^spawn$/):
                 {
                     eventData.cancel = true;
-                    if (!!!config.spawnCommandLocation.x) {
+                    if (config.spawnCommandLocation.x == undefined) {
                         player.sendMessageB('§cError: This command cannot be used becuase no spawn teleport location has been set. It can be enabled at "Main Menu>Settings>Global Settings>spawnCommandLocation"');
+                    }
+                    else if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 > Date.now()) {
+                        player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                     }
                     else {
                         srun(() => player.teleport(config.spawnCommandLocation, {
@@ -7450,78 +7467,89 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.cancel = true;
                     // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
                     if (config.tpaSystem.tpaSystemEnabled) {
-                        srun(() => {
-                            let args = evaluateParameters(switchTestB, [
-                                "presetText",
-                                "targetSelector",
-                                "string",
-                            ]).args;
-                            args[1].trim().startsWith("@");
-                            let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter((v) => v.typeId == "minecraft:player")[0];
-                            if (!!target) {
-                                //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs")));
-                                player.sendMessageB(`§aSent a teleport request to "${target.name}".`);
-                                requestConditionalChatInput(target, (player, message) => message.toLowerCase().trim() == "y" ||
-                                    message.toLowerCase().trim() == "n", {
-                                    requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in ${config.tpaSystem.timeoutDuration ==
-                                        60
-                                        ? "1 minute"
-                                        : (config.tpaSystem
-                                            .timeoutDuration / 60).floor() == 1
-                                            ? `1 minute and ${(config.tpaSystem
-                                                .timeoutDuration % 60).floor()} second${(config.tpaSystem
-                                                .timeoutDuration %
-                                                60).floor() != 1
-                                                ? "s"
-                                                : ""}`
+                        if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 > Date.now()) {
+                            player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
+                        }
+                        else {
+                            srun(() => {
+                                let args = evaluateParameters(switchTestB, [
+                                    "presetText",
+                                    "targetSelector",
+                                    "string",
+                                ]).args;
+                                args[1].trim().startsWith("@");
+                                let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter((v) => v.typeId == "minecraft:player")[0];
+                                if (!!target) {
+                                    //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs")));
+                                    player.sendMessageB(`§aSent a teleport request to "${target.name}".`);
+                                    requestConditionalChatInput(target, (player, message) => message.toLowerCase().trim() == "y" ||
+                                        message.toLowerCase().trim() == "n", {
+                                        requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in ${config.tpaSystem.timeoutDuration ==
+                                            60
+                                            ? "1 minute"
                                             : (config.tpaSystem
-                                                .timeoutDuration / 60).floor() == 0
-                                                ? `${(config.tpaSystem
+                                                .timeoutDuration / 60).floor() == 1
+                                                ? `1 minute and ${(config.tpaSystem
                                                     .timeoutDuration % 60).floor()} second${(config.tpaSystem
                                                     .timeoutDuration %
                                                     60).floor() != 1
                                                     ? "s"
                                                     : ""}`
-                                                : `${(config.tpaSystem
-                                                    .timeoutDuration / 60).floor()} minutes and ${(config.tpaSystem
-                                                    .timeoutDuration % 60).floor()} second${(config.tpaSystem
-                                                    .timeoutDuration %
-                                                    60).floor() != 1
-                                                    ? "s"
-                                                    : ""}`}.`,
-                                    expireMs: config.tpaSystem.timeoutDuration *
-                                        1000,
-                                })
-                                    .then((t) => {
-                                    if (t.toLowerCase().trim() == "y") {
-                                        player.teleport(target.location, {
-                                            dimension: target.dimension,
-                                        });
-                                        target.sendMessage(`§aAccepted teleport request from "${player.name}".`);
-                                        player.sendMessageB(`§aSuccessfully teleported to "${target.name}".`);
-                                    }
-                                    else {
-                                        target.sendMessage(`§cDenied "${player.name}"'s teleport request.`);
-                                        player.sendMessageB(`§c"${target.name}" denied your teleport request.`);
-                                    }
-                                })
-                                    .catch((e) => {
-                                    if (e instanceof TimeoutError) {
-                                        psend(target, `§c${player.name}'s teleport request timed out.`);
-                                        psend(player, `§cThe teleport request to ${target.name} timed out.`);
-                                    }
-                                    else if (e instanceof ExpireError) {
-                                        psend(target, `§c${player.name}'s teleport request expired.`);
-                                        psend(player, `§cThe teleport request to ${target.name} expired.`);
-                                    }
-                                    else
-                                        psend(player, "§c" + e + " " + e.stack);
-                                });
-                            }
-                            else {
-                                player.sendError(`§cError: Unable to find player.`, true);
-                            }
-                        });
+                                                : (config.tpaSystem
+                                                    .timeoutDuration / 60).floor() == 0
+                                                    ? `${(config.tpaSystem
+                                                        .timeoutDuration % 60).floor()} second${(config.tpaSystem
+                                                        .timeoutDuration %
+                                                        60).floor() != 1
+                                                        ? "s"
+                                                        : ""}`
+                                                    : `${(config.tpaSystem
+                                                        .timeoutDuration / 60).floor()} minutes and ${(config.tpaSystem
+                                                        .timeoutDuration % 60).floor()} second${(config.tpaSystem
+                                                        .timeoutDuration %
+                                                        60).floor() != 1
+                                                        ? "s"
+                                                        : ""}`}.`,
+                                        expireMs: config.tpaSystem.timeoutDuration *
+                                            1000,
+                                    })
+                                        .then((t) => {
+                                        if (t.toLowerCase().trim() == "y") {
+                                            if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 > Date.now()) {
+                                                target.sendMessage(`§cAccepted teleport request from "${player.name}", but they can't teleport to you right now because they have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before they can teleport again because they are still on PVP cooldown.`);
+                                                player.sendMessageB(`§c"${target.name}" accepted your teleport request, but you can't teleport to them right now because you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
+                                            }
+                                            else {
+                                                player.teleport(target.location, {
+                                                    dimension: target.dimension,
+                                                });
+                                                target.sendMessage(`§aAccepted teleport request from "${player.name}".`);
+                                                player.sendMessageB(`§aSuccessfully teleported to "${target.name}".`);
+                                            }
+                                        }
+                                        else {
+                                            target.sendMessage(`§cDenied "${player.name}"'s teleport request.`);
+                                            player.sendMessageB(`§c"${target.name}" denied your teleport request.`);
+                                        }
+                                    })
+                                        .catch((e) => {
+                                        if (e instanceof TimeoutError) {
+                                            psend(target, `§c${player.name}'s teleport request timed out.`);
+                                            psend(player, `§cThe teleport request to ${target.name} timed out.`);
+                                        }
+                                        else if (e instanceof ExpireError) {
+                                            psend(target, `§c${player.name}'s teleport request expired.`);
+                                            psend(player, `§cThe teleport request to ${target.name} expired.`);
+                                        }
+                                        else
+                                            psend(player, "§c" + e + " " + e.stack);
+                                    });
+                                }
+                                else {
+                                    player.sendError(`§cError: Unable to find player.`, true);
+                                }
+                            });
+                        }
                     }
                     else {
                         player.sendMessageB('§cTPASystemDisabledError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at "Main Menu>Settings>TPA System>Enable TPA System"');

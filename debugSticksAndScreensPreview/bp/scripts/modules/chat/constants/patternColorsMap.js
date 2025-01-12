@@ -7,7 +7,7 @@ export const patternColorsMap = {
     'darkgray': '§8',
     'yellow': '§e',
     'white': '§f',
-    'red': '§',
+    'red': '§c',
     'minecoingold': '§g',
     'green': '§a',
     'lightpurple': '§d',

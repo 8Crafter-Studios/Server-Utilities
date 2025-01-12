@@ -757,6 +757,8 @@ const playerPermissionsDefault = Object.freeze({
         "andexdb.bypassProtectedAreas",
     ],
 });
+// overworld.spawnEntity("minecart", {x: 32, y: 142, z: 0}, {initialPersistence: true}).applyImpulse(Vector.back); overworld.spawnEntity("minecart", {x: -32, y: 142, z: 0}, {initialPersistence: true}).applyImpulse(Vector.forward); overworld.spawnEntity("minecart", {x: 0, y: 142, z: 32}, {initialPersistence: true}).applyImpulse(Vector.right); overworld.spawnEntity("minecart", {x: 0, y: 142, z: -32}, {initialPersistence: true}).applyImpulse(Vector.left);
+// srun(async ()=>{const blocks = modules.mcServer.BlockTypes.getAll().filter(v=>/(?<!hard_[a-z_]*)stained_glass$/.test(v.id)); let i = 0; while(i<500){overworld.fillBlocks(new modules.mcServer.BlockVolume({x: 46, y: 127, z: 16}, {x: 46, y: 142, z: -3}), blocks[i % blocks.length])}})
 const playerPermissions = JSON.parse(getStringFromDynamicProperties("playerPermissions", JSON.stringify(playerPermissionsDefault)));
 playerPermissions.everyone ??= JSON.parse(JSON.stringify(playerPermissionsDefault.everyone));
 playerPermissions.moderator ??= JSON.parse(JSON.stringify(playerPermissionsDefault.moderator));
