@@ -5,7 +5,7 @@ import { generatorProgress } from "modules/coordinates/constants/generatorProgre
 import { generateMinecraftSemiSphereBG } from "modules/coordinates/functions/generateMinecraftSemiSphereBG";
 import { generateMinecraftSphereBGIdGenerator } from "modules/coordinates/functions/generateMinecraftSphereBGIdGenerator";
 /**
- * @todo Make the new updated version of this function and then deprecate this one.
+ * @deprecated Legacy function. Superceeded by {@link fillSemiSphere}.
  */
 export async function fillBlocksHSSG(center, radius, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     /*console.warn(JSONStringify(drawMinecraftSphere(center, radius, 180).find(v=>Object.values(v).includes(NaN))))*/

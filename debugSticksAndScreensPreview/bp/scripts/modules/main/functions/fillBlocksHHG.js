@@ -4,7 +4,7 @@ import { generatorProgress } from "modules/coordinates/constants/generatorProgre
 import { generateHollowFillBG } from "modules/coordinates/functions/generateHollowFillBG";
 import { generatorProgressIdGenerator } from "modules/coordinates/functions/generatorProgressIdGenerator";
 /**
- * @deprecated
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHHFGB}.
  */
 export async function fillBlocksHHG(begin, end, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;

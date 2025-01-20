@@ -8,6 +8,7 @@ import { generateSkygridBG } from "modules/coordinates/functions/generateSkygrid
 /**
  * Generates a skygrid.
  * @since 1.18.0-development.20
+ * @deprecated Legacy function. Superceeded by {@link fillSkygrid}.
  * @version 1.0.0
  * @async
  * @param {Vector3} from The location of a corner of the area to generate the skygrid in.

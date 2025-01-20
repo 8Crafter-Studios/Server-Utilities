@@ -11,6 +11,13 @@ export declare class config {
     static set validChatCommandPrefixes(prefixes: string | undefined);
     static get invalidChatCommandAction(): number | undefined;
     static set invalidChatCommandAction(invalidChatCommandAction: number | undefined);
+    /**
+     * How long in seconds after getting damaged by another player that the player has to wait before they can teleport with commands such as `\spawn`, `\home`, `\gohome`, `\tpa`, and `\rtp`.
+     *
+     * It defaults to 0.
+     */
+    static get pvpCooldownToTeleport(): number | undefined;
+    static set pvpCooldownToTeleport(invalidChatCommandAction: number | undefined);
     static get undoClipboardMode(): StructureSaveMode | undefined;
     static set undoClipboardMode(undoClipboardMode: StructureSaveMode | undefined);
     static get spawnCommandLocation(): DimensionLocation | {

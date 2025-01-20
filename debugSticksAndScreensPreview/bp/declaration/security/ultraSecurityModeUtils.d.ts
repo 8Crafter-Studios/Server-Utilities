@@ -43,7 +43,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.headAdmin": {
         readonly id: "andexdb.headAdmin";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to have full head admin-level permissions.\n    §cDANGER!: This permission should only be given to highly trusted staff members. It is DANGEROUS to give this permission to anyone else.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -58,7 +58,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.admin": {
         readonly id: "andexdb.admin";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to have full admin-level permissions.\n    §cDANGER!: This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -73,7 +73,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.moderator": {
         readonly id: "andexdb.moderator";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to have full moderator-level permissions.\n    §cDANGER!: This permission should only be given to moderators. It is DANGEROUS to give this permission to anyone else.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -91,7 +91,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.useOwnerLevelCommands": {
         readonly id: "andexdb.useOwnerLevelCommands";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use owner-level custom commands.\n    §cDANGER!: This permission should only be given to the owner of the server. It is EXTREMELY DANGEROUS to give this permission to anyone else.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -112,7 +112,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.useAdminLevelCommands": {
         readonly id: "andexdb.useAdminLevelCommands";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl", "andexdb.useOwnerLevelCommands"];
+        readonly includedInPermissions: ["andexdb.useOwnerLevelCommands"];
         readonly description: "Allows the player to use moderator-level custom commands.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.useOwnerLevelCommands' permission.\n    §cDANGER!: This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -129,7 +129,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.useModeratorLevelCommands": {
         readonly id: "andexdb.useModeratorLevelCommands";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl", "andexdb.useAdminLevelCommands", "andexdb.useOwnerLevelCommands"];
+        readonly includedInPermissions: ["andexdb.useAdminLevelCommands", "andexdb.useOwnerLevelCommands"];
         readonly description: "Allows the player to use moderator-level custom commands.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.\n    This permission is included in the 'andexdb.useOwnerLevelCommands' permission.\n    This permission is included in the 'andexdb.useAdminLevelCommands' permission.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -145,7 +145,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.useScriptEvalEscapeSequence": {
         readonly id: "andexdb.useScriptEvalEscapeSequence";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to run arbitrary JavaScript code in the chat with the '${se}' or '${scripteval}' escape sequence.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -161,7 +161,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.useCommandsRunningEscapeSequence": {
         readonly id: "andexdb.useCommandsRunningEscapeSequence";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to run any vanilla command in the chat with the '${r}' or '${run}' escape sequence.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -178,7 +178,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.banPlayers": {
         readonly id: "andexdb.banPlayers";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to have the ability to ban players through the manage bans UI.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -191,7 +191,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.unbanPlayers": {
         readonly id: "andexdb.unbanPlayers";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to have the ability to unban players through the manage bans UI.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -205,7 +205,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.accessManageBansUI": {
         readonly id: "andexdb.accessManageBansUI";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the manage bans UI.\n    Note: The player will not be able to ban or unban anyone through the UI unless you give them the 'andexdb.banPlayers' or 'andexdb.unbanPlayers' permissions respectively.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -218,7 +218,7 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.accessManageCommandsUI": {
         readonly id: "andexdb.accessManageCommandsUI";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the manage commands UI.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    §cDANGER!: This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -236,20 +236,20 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.accessMainMenu": {
         readonly id: "andexdb.accessMainMenu";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the Main Menu.\n    Note: The player will not be able to access some of the submenus unless you give them the permissions for those submenus.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
     /**
-     * Allows the player to access the Security submenu of the Main Menu.
+ * Allows the player to access the Security submenu of the Main Menu.
 Note: Unless the player has the 'andexdb.fullControl' permission, the player cannot disable Ultra Security Mode through this menu, only the owner and players with the andexdb.fullControl permission can do that.
-     * This permission is included in the `andexdb.headAdmin` permission.
-     * @danger This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.
-     */
+ * This permission is included in the `andexdb.headAdmin` permission.
+ * @danger This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.
+ */
     readonly "andexdb.accessSecuritySettings": {
         readonly id: "andexdb.accessSecuritySettings";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the Security submenu of the Main Menu, and change the security settings in that menu.\n    Note: Unless the player has the 'andexdb.fullControl' permission, the player cannot disable Ultra Security Mode through this menu, only the owner and players with the andexdb.fullControl permission can do that.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    §cDANGER!: This permission should only be given to highly trusted staff members. It is DANGEROUS to give this permission to anyone else.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -266,7 +266,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.accessPersonalSettings": {
         readonly id: "andexdb.accessPersonalSettings";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the Personal Settings submenu of the Settings Menu.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -279,7 +279,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.accessNotificationsSettings": {
         readonly id: "andexdb.accessNotificationsSettings";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the Notifications Settings submenu of the Settings Menu.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -291,7 +291,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.accessExtraFeaturesSettings": {
         readonly id: "andexdb.accessExtraFeaturesSettings";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the Extra Features Settings submenu of the Settings Menu.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.headAdmin' permission.";
         readonly additionalPrompts: [];
     };
@@ -304,7 +304,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.accessAdvancedSettings": {
         readonly id: "andexdb.accessAdvancedSettings";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the Advanced Settings submenu of the Settings Menu.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.headAdmin' permission.";
         readonly additionalPrompts: [];
     };
@@ -317,7 +317,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.accessSettings": {
         readonly id: "andexdb.accessSettings";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access most of the submenus in the Settings Menu.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -331,7 +331,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.accessManagePlayersUI": {
         readonly id: "andexdb.accessManagePlayersUI";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to access the manage players UI.\n    Note: This permission SHOULD be given to moderators that you want to be able to ban people, because it is a lot easier to ban players through this UI.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -345,7 +345,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.UIs.managePlayersUI.deleteSavedPlayerData": {
         readonly id: "andexdb.UIs.managePlayersUI.deleteSavedPlayerData";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to delete saved data for players in the manage players UI.\n    Note: This only applies if the player has the andexdb.accessManagePlayersUI permission.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    §cDANGER!: This permission should only be given to trusted staff members. This is because deleting saved player data will result in not being able to see the inventory of the player while they are offline, as well as not being able to see their location, it also erases other important data.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -363,7 +363,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.UIs.managePlayersUI.manageHomes": {
         readonly id: "andexdb.UIs.managePlayersUI.manageHomes";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to delete saved data for players in the manage players UI.\n    Note: This only applies if the player has the andexdb.accessManagePlayersUI permission.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    §cDANGER!: This permission should only be given to trusted staff members. This is because deleting saved player data will result in not being able to see the inventory of the player while they are offline, as well as not being able to see their location, it also erases other important data.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
@@ -380,7 +380,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.canUseDebugStick": {
         readonly id: "andexdb.canUseDebugStick";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use the Debug Stick.\nThis permission is included in the 'andexdb.headAdmin' permission.\nThis permission is included in the 'andexdb.admin' permission.\nThis permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -393,7 +393,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.canUseEditorSticks": {
         readonly id: "andexdb.canUseEditorSticks";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the pl'yer to'use the Editor Sticks, including: Editor Stick, Editor Stick B, and Editor Stick C.\nThis permission is included in the 'andexdb.headAdmin' permission.\nThis permission is included in the 'andexdb.admin' permission.\nThis permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -406,7 +406,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.canUsePickBlockSticks": {
         readonly id: "andexdb.canUsePickBlockSticks";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use the Pick Block Sticks, including: Pick Block Stick, Data Pick Block Stick, Liquid Clipped Pick Block Stick, and Liquid Clipped Data Pick Block Stick.\nThis permission is included in the 'andexdb.headAdmin' permission.\nThis permission is included in the 'andexdb.admin' permission.\nThis permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -419,7 +419,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.canUseCommandRunnerStick": {
         readonly id: "andexdb.canUseCommandRunnerStick";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use the Command Runner Stick.\nThis permission is included in the 'andexdb.headAdmin' permission.\nThis permission is included in the 'andexdb.admin' permission.\n@danger This permission should only be given to trusted staff members. The Command Runner Stick allows the player to run ANY vanilla command.";
         readonly additionalPrompts: [];
     };
@@ -432,7 +432,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.canUseScriptRunnerStick": {
         readonly id: "andexdb.canUseScriptRunnerStick";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use the Script Runner Stick.\nThis permission is included in the 'andexdb.headAdmin' permission.\nThis permission is included in the 'andexdb.admin' permission.\n@danger This permission should only be given to trusted staff members. The Script Runner Stick allows the player to run ANY arbitrary JavaScript Code.";
         readonly additionalPrompts: [];
     };
@@ -445,7 +445,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.canUseInventoryController": {
         readonly id: "andexdb.canUseInventoryController";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use the Inventory Controller.\nThis permission is included in the 'andexdb.headAdmin' permission.\nThis permission is included in the 'andexdb.admin' permission.\nThis permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -458,7 +458,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.canUseEntityControllerItems": {
         readonly id: "andexdb.canUseEntityControllerItems";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use the following items: Entity Controller and Player Controller.\nThis permission is included in the 'andexdb.headAdmin' permission.\nThis permission is included in the 'andexdb.admin' permission.\nThis permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -471,7 +471,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.canUseEntityDebugSticks": {
         readonly id: "andexdb.canUseEntityDebugSticks";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.moderator", "andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use the following items: Entity Debug Stick and Player Debug Stick.\nThis permission is included in the 'andexdb.headAdmin' permission.\nThis permission is included in the 'andexdb.admin' permission.\nThis permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
@@ -483,7 +483,7 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.useWorldEdit": {
         readonly id: "andexdb.useWorldEdit";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to use WorldEdit.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
         readonly additionalPrompts: [];
     };
@@ -495,18 +495,26 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
     readonly "andexdb.bypassProtectedAreas": {
         readonly id: "andexdb.bypassProtectedAreas";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.admin", "andexdb.headAdmin", "andexdb.fullControl"];
+        readonly includedInPermissions: [];
         readonly description: "Allows the player to bypass all forms of spawn protection.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
         readonly additionalPrompts: [];
     };
 }>;
 declare global {
     const permissionType: typeof permissionTypes;
-    type permissionType = typeof permissionTypes[keyof typeof permissionTypes] | keyof typeof permissionTypes;
+    type permissionType = (typeof permissionTypes)[keyof typeof permissionTypes] | keyof typeof permissionTypes;
 }
 declare const playerPermissions: {
     everyone: (typeof permissionType)[keyof typeof permissionType]["id"][];
+    moderator: (typeof permissionType)[keyof typeof permissionType]["id"][];
+    admin: (typeof permissionType)[keyof typeof permissionType]["id"][];
+    headAdmin: (typeof permissionType)[keyof typeof permissionType]["id"][];
     [playerId: string]: (typeof permissionType)[keyof typeof permissionType]["id"][];
+};
+declare const permissionPresetMap: {
+    readonly "andexdb.moderator": "moderator";
+    readonly "andexdb.admin": "admin";
+    readonly "andexdb.headAdmin": "headAdmin";
 };
 declare const commandsUltraSecurityModeSecurityLevelOverrides: {
     categoryOverrides: { [key in commandCategory]: (typeof cmdslist.commands)[number]["ultraSecurityModeSecurityLevel"]; };
@@ -527,9 +535,10 @@ export declare class securityVariables {
     static convertPermissionTypeToId<T extends permissionType>(permission: T): T extends keyof typeof permissionType ? T : T extends (typeof permissionType)[keyof typeof permissionType] ? T["id"] : never;
     static convertPermissionTypeToObject<T extends permissionType>(permission: T): T extends keyof typeof permissionType ? (typeof permissionType)[T] : T;
     static testPlayerForPermission(player: Player, permission: permissionType): boolean;
+    static testPlayerForPermissionB(playerId: string, permission: permissionType): boolean;
     static testOfflinePlayerForPermission(playerId: string, permission: permissionType): boolean;
 }
-export declare function editPermissionForPlayerUI(player: Player, targetPlayerId: string): Promise<-403 | 1 | 0>;
+export declare function editPermissionForPlayerUI(player: Player, targetPlayerId: LooseAutocomplete<"everyone" | typeof permissionPresetMap[keyof typeof permissionPresetMap]>): Promise<-403 | 1 | 0>;
 export declare function selectSecurityMode(player: Player): Promise<1 | -403 | -424>;
 export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor(player: Player): Promise<0 | 1 | -403 | -423>;
 export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_categories(player: Player): Promise<0 | 1 | -403 | -423>;
@@ -539,4 +548,6 @@ export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_co
 export declare function selectCommandsUltraSecurityModeSecurityLevelOverrides_command_builtIn(player: Player, command: command<"built-in">): Promise<1 | -403 | -423>;
 export declare function selectCommandsUltraSecurityModeSecurityLevelOverrides_command_custom(player: Player, command: command<"custom">): Promise<1 | -403 | -423>;
 export declare function ultraSecurityModeDebug(player: Player): Promise<1 | -403 | -423>;
+export declare function resetPlayerPermissionsUI(player: Player): Promise<1 | -403 | -423>;
+export declare function managePermissionsPresets(player: Player): Promise<0 | 1 | -403 | -423>;
 export {};

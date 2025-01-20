@@ -5,7 +5,7 @@ import { generateInverseSkygridBG } from "modules/coordinates/functions/generate
 import { generatorProgressIdGenerator } from "modules/coordinates/functions/generatorProgressIdGenerator";
 /**
  * Generates an inverse skygrid.
- * @deprecated
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHISGGB}.
  * @async
  * @param {Vector3} from The location of a corner of the area to generate the inverse skygrid in.
  * @param {Vector3} to The location of the opposite corner of the area to generate the inverse skygrid in.

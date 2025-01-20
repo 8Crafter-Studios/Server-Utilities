@@ -131,9 +131,9 @@ export async function editModuleImportsConfig_module(sourceEntitya, module) {
                         moduleImportsConfig.overrideOptions[response.selection];
                     return await editModuleImportsConfig_module(sourceEntity, module);
                 });
-            case items.length + 1:
+            case itemsB.length + 1:
                 return 1;
-            case items.length + 2:
+            case itemsB.length + 2:
                 return 0;
             default:
                 let result = await editModuleImportsConfig_module_folder(sourceEntity, module, itemsB[r.selection - 1]);

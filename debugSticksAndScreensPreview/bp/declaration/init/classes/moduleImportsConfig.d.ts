@@ -7,9 +7,12 @@ type moduleOptionalImportPathMapObjectMapper<module extends moduleNameForModuleI
     [K in keyof Mutable<(typeof moduleOptionalImportPathMap)[module]> as K extends number ? (typeof moduleOptionalImportPathMap)[module][K] : never]: valueTypes;
 };
 type moduleNameForModuleImportsConfig = keyof typeof moduleOptionalImportPathMap;
-export declare const moduleNamesForModuleImportsConfigList: readonly ["ban", "chat", "command_utilities", "commands", "commands_documentation", "commands_list", "coordinates", "errors", "main", "player_save", "spawn_protection", "ui", "utilities"];
+export declare const moduleNamesForModuleImportsConfigList: readonly ["ban", "block_generation_utilities", "chat", "command_utilities", "commands", "commands_documentation", "commands_list", "coordinates", "errors", "main", "player_save", "spawn_protection", "ui", "utilities"];
 export declare const moduleNamesForModuleImportsConfigListDisplay: readonly [{
     readonly name: "ban";
+    readonly icon: "";
+}, {
+    readonly name: "block_generation_utilities";
     readonly icon: "";
 }, {
     readonly name: "chat";
@@ -61,6 +64,7 @@ export declare class moduleImportsConfig {
     static set override(option: (typeof this.overrideOptions)[number] | undefined | null);
     static get moduleOverrides(): {
         ban: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
+        block_generation_utilities: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         chat: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         command_utilities: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         commands: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;

@@ -4,6 +4,7 @@ import { getStringFromDynamicProperties } from "modules/utilities/functions/getS
 import { saveStringToDynamicProperties } from "modules/utilities/functions/saveStringToDynamicProperties";
 export const moduleNamesForModuleImportsConfigList = [
     "ban",
+    "block_generation_utilities",
     "chat",
     "command_utilities",
     "commands",
@@ -19,6 +20,7 @@ export const moduleNamesForModuleImportsConfigList = [
 ];
 export const moduleNamesForModuleImportsConfigListDisplay = [
     { name: "ban", icon: "" },
+    { name: "block_generation_utilities", icon: "" },
     { name: "chat", icon: "" },
     { name: "command_utilities", icon: "" },
     { name: "commands", icon: "" },
@@ -90,6 +92,31 @@ export class moduleImportsConfig {
             },
             set ban(option) {
                 swdp("moduleImportsConfig:moduleOverride.ban", [
+                    "none",
+                    "disableAll",
+                    "enableAll",
+                    "enableAllNonDeprecated",
+                ].includes(option)
+                    ? option
+                    : "none");
+            },
+            get block_generation_utilities() {
+                const option = gwdp("moduleImportsConfig:moduleOverride.block_generation_utilities");
+                if (option == "disableAll") {
+                    return "disableAll";
+                }
+                else if (option == "enableAll") {
+                    return "enableAll";
+                }
+                else if (option == "enableAllNonDeprecated") {
+                    return "enableAllNonDeprecated";
+                }
+                else {
+                    return "none";
+                }
+            },
+            set block_generation_utilities(option) {
+                swdp("moduleImportsConfig:moduleOverride.block_generation_utilities", [
                     "none",
                     "disableAll",
                     "enableAll",
@@ -422,12 +449,11 @@ export class moduleImportsConfig {
         this.setJSON(this.default);
     }
     static toJSON() {
-        return (JSON.parse(getStringFromDynamicProperties("moduleImportsConfigData", "null")) ??
-            this.default);
+        return Object.assign(this.default, Object.fromEntries(Object.entries(JSON.parse(getStringFromDynamicProperties("moduleImportsConfigData", "null")) ?? {}).filter((f) => optionalModuleObjectImportFilePaths.includes(f[0]))));
     }
     static toJSON_module(module) {
         let string = getStringFromDynamicProperties("moduleImportsConfigData");
-        return Object.fromEntries(Object.entries(JSON.parse(string == "" ? JSON.stringify(this.default) : string)).filter((f) => f[0].startsWith(`BP/scripts/modules/${module}/`)));
+        return Object.assign(Object.fromEntries(moduleOptionalImportPathMap[module].map(v => [v, 0])), Object.fromEntries(Object.entries(JSON.parse(string == "" ? JSON.stringify(this.default) : string)).filter((f) => f[0].startsWith(`BP/scripts/modules/${module}/`) && moduleOptionalImportPathMap[module].includes(f[0]))));
     }
     static setJSON(json) {
         saveStringToDynamicProperties(JSON.stringify(json), "moduleImportsConfigData");

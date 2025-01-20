@@ -6,6 +6,7 @@ import { generateHollowFillBG } from "modules/coordinates/functions/generateHoll
 import { generatorProgressIdGenerator } from "modules/coordinates/functions/generatorProgressIdGenerator";
 /**
  * Generates a hollow fill.
+ * @deprecated Legacy function. Superceeded by {@link fillHollow}.
  * @async
  * @param {Vector3} begin The location of a corner of the area to have its edges filled in.
  * @param {Vector3} end The location of the opposite corner of the area to have its edges filled in.

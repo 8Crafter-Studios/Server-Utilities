@@ -5,7 +5,7 @@ export function* removeAirFromStructure(structure) {
             for (let z = 0; z < structure.size.z; z++) {
                 if (structure.getBlockPermutation({ x, y, z }).type.id ==
                     "minecraft:air") {
-                    structure.setBlockPermutation({ x, y, z }, BlockPermutation.resolve("minecraft:structure_void"));
+                    structure.setBlockPermutation({ x, y, z }, undefined);
                 }
                 yield void undefined;
             }

@@ -4,7 +4,7 @@ import { generatorProgress } from "modules/coordinates/constants/generatorProgre
 import { generateDomeBG } from "modules/coordinates/functions/generateDomeBG";
 import { generatorProgressIdGenerator } from "modules/coordinates/functions/generatorProgressIdGenerator";
 /**
- * @todo Make the new updated version of this function and then deprecate this one.
+ * @deprecated Legacy function. Superceeded by {@link fillDome}.
  */
 export async function fillBlocksHDG(center, radius, thickness, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;

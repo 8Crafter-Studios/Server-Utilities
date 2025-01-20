@@ -5,7 +5,7 @@ import { generateHollowSphereBG } from "modules/coordinates/functions/generateHo
 import { generatorProgressIdGenerator } from "modules/coordinates/functions/generatorProgressIdGenerator";
 /**
  * Generates a hollow sphere.
- * @deprecated Legacy function. Superceeded by fillBlocksHHSGB().
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHHSGB}.
  * @async
  * @param {Vector3} center The location of the center of the hollow sphere.
  * @param {number} radius Radius of the hollow sphere.

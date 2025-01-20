@@ -7,6 +7,7 @@ import { generateInverseSkygridBG } from "modules/coordinates/functions/generate
 import { generateMinecraftSphereBGIdGenerator } from "modules/coordinates/functions/generateMinecraftSphereBGIdGenerator";
 /**
  * Generates an inverse skygrid.
+ * @deprecated Legacy function. Superceeded by {@link fillInverseSkygrid}.
  * @since 1.18.0-development.20
  * @version 1.0.0
  * @async

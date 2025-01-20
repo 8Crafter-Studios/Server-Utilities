@@ -1,6 +1,7 @@
 import { type Vector3, Dimension, type DimensionLocation, BlockPermutation } from "@minecraft/server";
 /**
  * Generates a sphere.
+ * @deprecated Legacy function. Superceeded by {@link fillSphere}.
  * @since 1.18.0-development.26
  * @version 1.0.0
  * @param {Vector3} center The location of the center of the sphere.

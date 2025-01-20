@@ -2,7 +2,7 @@ import { type Vector3, Dimension } from "@minecraft/server";
 import type { FillOptions2 } from "Main";
 /**
  * Generates a skygrid.
- * @deprecated
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHSGGB}.
  * @async
  * @param {Vector3} from The location of a corner of the area to generate the skygrid in.
  * @param {Vector3} to The location of the opposite corner of the area to generate the skygrid in.

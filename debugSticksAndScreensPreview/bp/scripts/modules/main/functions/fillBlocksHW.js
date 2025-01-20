@@ -3,7 +3,7 @@ import { clearAllContainerBlocks } from "modules/main/functions/clearAllContaine
 import { fillBlocksB } from "modules/main/functions/fillBlocksB";
 import { scanForContainerBlocks } from "modules/main/functions/scanForContainerBlocks";
 /**
- * @deprecated
+ * @deprecated Legacy function that may cause script hang error. Superceeded by {@link fillBlocksHWG}.
  */
 export function fillBlocksHW(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
     let mainArray = [];

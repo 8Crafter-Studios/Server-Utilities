@@ -3,7 +3,7 @@ import { clearAllContainerBlocks } from "modules/main/functions/clearAllContaine
 import { fillBlocksB } from "modules/main/functions/fillBlocksB";
 import { scanForContainerBlocks } from "modules/main/functions/scanForContainerBlocks";
 /**
- * @deprecated
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHOTG}.
  */
 export function fillBlocksHO(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
     let mainArray = [];
@@ -40,21 +40,14 @@ export function fillBlocksHO(from, to, dimension, block, blockStates, options, p
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         mainArray.forEach((v) => {
             try {
-                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ??
-                    "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock
-                    ? "replace " + (options?.matchingBlock ?? "")
-                    : ""} ${!!options?.matchingBlockStates
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlockStates
                     ? "[" +
                         Object.entries(options?.matchingBlockStates)
                             .map((v) => '"' +
                             v[0] +
                             '"' +
                             "=" +
-                            (typeof v[1] == "string"
-                                ? '"' + v[1] + '"'
-                                : typeof v[1] == "number"
-                                    ? String(v[1])
-                                    : String(v[1])))
+                            (typeof v[1] == "string" ? '"' + v[1] + '"' : typeof v[1] == "number" ? String(v[1]) : String(v[1])))
                             .join(",") +
                         "]"
                     : ""}`).successCount;

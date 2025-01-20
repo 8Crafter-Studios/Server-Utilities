@@ -1,6 +1,7 @@
 import { type Vector3, Dimension } from "@minecraft/server";
 /**
  * Generates a flood fill.
+ * @deprecated Legacy function. Superceeded by {@link fillFlood}.
  * @async
  * @param {Vector3} begin The location of a corner of the area to flood.
  * @param {Vector3} end The location of the opposite corner of the area to flood.

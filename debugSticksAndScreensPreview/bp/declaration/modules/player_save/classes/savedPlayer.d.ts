@@ -149,6 +149,14 @@ export declare class savedPlayer {
      * @since format version 1.6.0
      * @since v1.28.0-preview.20+BUILD.1
      */
+    inputInfo?: {
+        lastInputModeUsed: Player["inputInfo"]["lastInputModeUsed"];
+        touchOnlyAffectsHotbar: Player["inputInfo"]["touchOnlyAffectsHotbar"];
+    };
+    /**
+     * @since format version 1.6.0
+     * @since v1.28.0-preview.20+BUILD.1
+     */
     playerPermissions?: ReturnType<PlayerPermissions["toJSON"]>;
     /**
      * @since format version 1.6.0

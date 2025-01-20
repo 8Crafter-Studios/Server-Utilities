@@ -5,7 +5,8 @@ import { generatorProgress } from "modules/coordinates/constants/generatorProgre
 import { generateHollowFillBG } from "modules/coordinates/functions/generateHollowFillBG";
 import { generatorProgressIdGenerator } from "modules/coordinates/functions/generatorProgressIdGenerator";
 /**
- * Generates a outline fill.
+ * Generates an outline fill.
+ * @deprecated Legacy function. Superceeded by {@link fillOutline}.
  * @async
  * @param {Vector3} begin The location of a corner of the area to have its outline filled in.
  * @param {Vector3} end The location of the opposite corner of the area to have its outline filled in.

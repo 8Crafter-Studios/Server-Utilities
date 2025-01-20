@@ -9,7 +9,7 @@ export const commandsyntaxes = {
     "align": `${command.dp}align`,
     "aligncenter": `${command.dp}aligncenter`,
     "binvsee": `${command.dp}binvsee <dimension: dimension|~> <block: x y z>`,
-    "": `${command.dp}block
+    "block": `${command.dp}block
 ${command.dp}block facing get color ...
     ... rgba hex
     ... rgba frac
@@ -41,6 +41,7 @@ ${command.dp}block facing set color ...
 ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>`,
     "chatcommandui": `${command.dp}chatcommandui`,
     "chatsendui": `${command.dp}chatsendui`,
+    "chunkban": `${command.dp}chunkban [slot: int|~] [loopCount: int] [target: string|~]`,
     "clear": `§cThis command is still unfinished! `,
     "clearenderchest": `clearenderchest [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "clearenderchestslot": `clearenderchestslot [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
@@ -69,7 +70,11 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>`,
     "ec": `${command.dp}ec`,
     "ecinvsee": `ecinvsee [target: string|~]`,
     "ecinvseec": `ecinvseec [target: string|~]`,
+    "editorstick": `${command.dp}editorstick`,
+    "editorstickb": `${command.dp}editorstickb`,
+    "editorstickc": `${command.dp}editorstickc`,
     "einvsee": `${command.dp}einvsee <targetSelector: target>`,
+    "einvseeb": `${command.dp}einvseeb <targetSelector: target>`,
     "enchantmentbarrels": `${command.dp}enchantmentbarrels [level: number[?=0]]`,
     "enderchest": `${command.dp}enderchest`,
     "entityscaleversion": `${command.dp}entityscaleversion`,
@@ -105,6 +110,12 @@ ${command.dp}... run <command: command>`,
     "filljunk": `${command.dp}filljunk [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "fillop": `${command.dp}fillop [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
     "fillrandom": `${command.dp}fillrandom [stackCount: int|fill|replaceall|replacefill] [stackSize: int|max|~] [target: string|~]`,
+    "getbans": `${command.dp}getbans`,
+    "getidbans": `${command.dp}getidbans`,
+    "getnamebans": `${command.dp}getnamebans`,
+    "getuuid": `${command.dp}getuuid <targets: target[allowMultiple=true]>`,
+    "gma": `${command.dp}gma`,
+    "getworldspawnpoint": `${command.dp}getworldspawnpoint`,
     "give": `${command.dp}give <item: itemType> [amount: int[min=1,max=255]]`,
     "giveb": `${command.dp}giveb <item: itemType> [stackSize: int[min=1,max=255]>`,
     "givec": `${command.dp}givec <itemJSON: itemJSON>
@@ -165,11 +176,6 @@ examples:
 stack of 255 sharpness 1 wooden swords: {"minecraft:components": {"enchantable": {"add": {"level": 1, "type": "sharpness"}}}, "id": "wooden_sword", "count": 255}
 sharpness 5 fortune 3 efficiency 5 iron axe that cannot be dropped and are kept on death with the name "§4Storage Hog Axe§r" and the lore "§eTakes\\nUp\\nYour\\nInventory§r" (with the \\n as line break characters) that says lol in the chat and damages the user when used: {"minecraft:components": {"enchantable": {"add": [{"level": 1, "type": "sharpness"}, {"type": "fortune", "level": 3}, {"type": "efficiency", "level": 5}]}}, "id": "iron_axe", "count": 72, "keepondeath": true, "lockMode": "inventory", "name": "§r§4Storage Hog Axe§r§f", "lore": ["§r§eTakes\\nUp§r§f","§r§eYour\\nInventory§r§f"], "dynamicProperties": {"code": "world.sendMessage('lol'); event.source.runCommandAsync(\\"/damage @s 1 thorns entity @s\\")"}}
 stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot and are kept on death: {"minecraft:components": {"enchantable": {"addList": [{"level": 1, "type": "mending"}, {"type": "unbreaking", "level": 3}]}}, "id": "shield", "count": 16, "keepondeath": true, "lockMode": "slot"}`,
-    "getbans": `${command.dp}getbans`,
-    "getidbans": `${command.dp}getidbans`,
-    "getnamebans": `${command.dp}getnamebans`,
-    "getuuid": `${command.dp}getuuid <targets: target[allowMultiple=true]>`,
-    "gma": `${command.dp}gma`,
     "gmc": `${command.dp}gmc`,
     "gmd": `${command.dp}gmd`,
     "gmp": `${command.dp}gmp`,
@@ -179,6 +185,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "ground": `${command.dp}ground [-lp]`,
     "h": `${command.dp}h <presetId: float> [containerRow: float[?=0]]`,
     "h#": `${command.dp}h<presetId: float> [containerRow: float[?=0]]`,
+    "hcontents": `${command.dp}hcontents [presetId: int]`,
     "heal": `${command.dp}heal [targets: target[allowMultiple=true]]`,
     "health": `${command.dp}health <health: int> [targets: target[allowMultiple=true]]`,
     "help": `${command.dp}help
@@ -201,6 +208,7 @@ ${command.dp}help jsfunction <JavaScriptFunctionVariableConstantOrClassName: str
 ${command.dp}help itemjsonformat
 ${command.dp}help itemjsonformatcmpr
 ${command.dp}help itemjsonformatsimplified`,
+    "hlist": `${command.dp}hlist`,
     "home": `${command.dp}home <mode: set|remove|go|warp|teleport> <homeName: text>
 ${command.dp}home clear
 ${command.dp}home removeall
@@ -411,14 +419,19 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
     "mngplyrs": `${command.dp}mngplyrs`,
     "mm": `${command.dp}mm`,
     "msgui": `${command.dp}msgui`,
+    "notificationsettings": `${command.dp}notificationsettings`,
+    "notificationssettings": `${command.dp}notificationssettings`,
     "offlineinfo": `${command.dp}offlineinfo <playerName: string>`,
     "offlineuuidinfo": `${command.dp}offlineuuidinfo <playerUUID: int>`,
     "offlineinvsee": `${command.dp}offlineinvsee <playerName: string>`,
     "offlineuuidinvsee": `${command.dp}offlineuuidinvsee <playerUUID: int>`,
+    "phase": `${command.dp}phase`,
     "printlayers": `${command.dp}printlayers`,
     "playershopsystemsettings": `${command.dp}playershopsystemsettings`,
     "rank": `${command.dp}rank <players: target> <mode: add|remove> <tag: string>\n${command.dp}rank <players: target> clear`,
     "remexp": `${command.dp}remexp [radius: number]`,
+    "remexpne": `${command.dp}remexpne [radius: number]`,
+    "remexpentity": `${command.dp}remexpentity [radius: number]`,
     "replacenear": `${command.dp}repalcenear <radius: number> <replaceTileName: Block> <replaceBlockStates: block states> <tileName: Block> <blockStates: block states>`,
     "run": `${command.dp}run <delayTicks: int[min=0]> <command: command>`,
     "scanenderchest": `${command.dp}scanenderchest [targets: target|~]`,
@@ -493,9 +506,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
     "shopsystemsettings": `${command.dp}shopsystemsettings`,
     "spawn": `${command.dp}spawn`,
     "shuffleinventory": `${command.dp}shuffleinventory <playerTarget: target|~>`,
+    "stopalldbintervals": `${command.dp}stopalldbintervals`,
+    "stopallsaintervals": `${command.dp}stopallsaintervals`,
     "structure": `${command.dp}structure createempty <structureName: string> <sizeX: float> <sizeY: float> <sizeZ: float> [saveMode: memory|disk]
-${command.dp}structure save <structureName: string> <from: x y z> <to: x y z> [saveMode: world|memory] [includeEntities: Boolean] [includeBlocks: Boolean]
-${command.dp}structure load <structureName: string> <to: x y z> [rotation: 0|90|190|270] [mirror: none|x|z|xz] [includeEntities: Boolean] [includeBlocks: Boolean] [waterlogged: Boolean] [integrity: float] [integritySeed: string] [animationMode: none|blocks|layers] [animationSeconds: float]
+${command.dp}structure save <structureName: string> <from: x y z> <to: x y z> [saveMode: ({world}|{memory})[?=memory]] [includeEntities: Boolean[?=true]] [includeBlocks: Boolean[?=true]]
+${command.dp}structure load <structureName: string> [to: x y z[?=~~~]] [rotation: (0|90|190|270)[?=0]] [mirror: ({none}|{x}|{z}|{xz})[?=none]] [includeEntities: Boolean[?=true]] [includeBlocks: Boolean[?=true]] [waterlogged: Boolean[?=false]] [integrity: float[?=1,min=0,max=1]] [integritySeed: string] [animationMode: ({none}|{blocks}|{layers})[?=none]] [animationSeconds: float[?=0]]
 ${command.dp}structure delete <structureName: string>
 ${command.dp}structure getinfo <structureName: string>
 ${command.dp}structure copy <copyFromStructureName: string> <copyToStructureName: string>
@@ -507,10 +522,11 @@ ${command.dp}structure removeair <structureName: string>
 ${command.dp}structure removeall
 ${command.dp}structure list`,
     "summon": `${command.dp}summon <spawnCount: int> <entity: EntityType<[spawnEvent]>> [spawnPos: x y z] [yRot: value] [xRot: value] [persistent: bool] [nameTag: string]
-ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn"`,
+ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Baby Sheep That Won't Despawn"`,
     "swapinventories": `${command.dp}swapinventories [player: target|~] [otherPlayer: target|~]`,
     "swapinventoriesb": `${command.dp}swapinventoriesb [player: playerName|~] [otherPlayer: playerName|~]`,
     "swapitems": `${command.dp}swapitems [slot: int|head|chest|legs|feet|mainhand|offhand|~] [otherSlot: int|head|chest|legs|feet|mainhand|offhand|~] [player: target|~] [otherPlayer: target|~]`,
+    "swaprows": `${command.dp}swaprows <row1: float|{equipment}> [row2: (float|{equipment})[?=0]] [player1: target[?=@s]] [player2: target[?=@s]]`,
     "takeitem": `${command.dp}takeitem <fromSlot: int|head|chest|legs|feet|mainhand|offhand|~> <fromPlayer: target|~>`,
     "terminal": `${command.dp}terminal`,
     "transferitem": `${command.dp}transferitem <transferItemToPlayer: target>`,
@@ -544,14 +560,14 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Sheep That Won't Despawn
     "wreset": `${command.dp}wreset`,
     "wset": `${command.dp}wset <dimension: dimension> <x: float> <y: float> <z: float> <name: escapableString>`,
     "transformresultatdvindex": `${command.dp}transformresultatdvindex [data: int]`,
-    "gettransformsteb": `${command.dp}gettransformsteb [itemName: string] [data: int]`,
+    "gettransformst": `${command.dp}gettransformst [itemName: string] [data: int]`,
     "findtransformdvindex": `${command.dp}findtransformdvindex [itemName: string] [data: int]`,
     "roie": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
     "remotheritemenchants": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
     "removeotheritemenchantments": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
     "brush": `${command.dp}brush [-l] none
-${command.dp}brush [-l] <brushType: sphere|cube|square>` /*+` [-h]`*/ + ` <blockPattern: BlockPattern> [radius: float]
-${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float]` /*+`
+${command.dp}brush [-l] <brushType: sphere|cube|square>` /*+` [-h]`*/ + ` <blockPattern: BlockPattern> [radius: float] [mask: Mask]
+${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float] [mask: Mask]` /*+`
         ${command.dp}brush [-l] <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]`*/
         + `
 ${command.dp}brush [-l] <brushType: extinguish|ex|remexp> [radius: float]`,
@@ -561,6 +577,9 @@ ${command.dp}brush [-l] <brushType: extinguish|ex|remexp> [radius: float]`,
     "selectioninfo": `${command.dp}selectioninfo`,
     "selinfo": `${command.dp}selinfo`,
     "seli": `${command.dp}seli`,
+    "selectionrender": `${command.dp}selectionrender`,
+    "selrender": `${command.dp}selrender`,
+    "selr": `${command.dp}selr`,
     "snapshot": `${command.dp}snapshot backup <areaId: string>
 ${command.dp}snapshot rollback <areaId: string> [backupIndex: number]
 ${command.dp}snapshot deletebackup <areaId: string> [backupIndex: number]
@@ -570,6 +589,11 @@ ${command.dp}snapshot clearareas
 ${command.dp}snapshot listbackups <areaId: string>
 ${command.dp}snapshot listareas
 ${command.dp}snapshot list`,
+    "\\\\savestructure": `${command.dp}\\savestructure <structureName: string> [saveMode: ({world}|{memory})[?=memory]] [includeEntities: Boolean[?=true]] [includeBlocks: Boolean[?=true]]`,
+    "\\\\deletesavedpos": `${command.dp}\\deletesavedpos <selectionID: string>`,
+    "\\\\listpos": `${command.dp}\\listpos`,
+    "\\\\loadpos": `${command.dp}\\loadpos <selectionID: string>`,
+    "\\\\savepos": `${command.dp}\\savepos <selectionID: string>`,
     "\\\\cut": `${command.dp}\\cut [-meb]`,
     "\\\\copy": `${command.dp}\\copy [-meb]`,
     "\\\\paste": `${command.dp}\\paste [-webxzh] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
@@ -583,16 +607,19 @@ ${command.dp}snapshot list`,
     "\\\\chunk": `${command.dp}\\chunk`,
     "\\\\shift": `${command.dp}\\shift <direction: {north}|{south}|{east}|{west}|{up}|{down}> <distance: float>`,
     "\\\\offset": `${command.dp}\\offset [x: float] [y: float] [z: float]`,
-    "\\\\sphere": `${command.dp}\\sphere <radius: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
-    "\\\\hsphere": `${command.dp}\\hsphere <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
-    "\\\\cone": `${command.dp}\\cone <radius: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
-    "\\\\hcone": `${command.dp}\\hcone <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
-    "\\\\remove": `${command.dp}\\remove`,
-    "\\\\walls": `${command.dp}\\walls <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
-    "\\\\set": `${command.dp}\\set <blockPattern: BlockPattern>`,
-    "\\\\seti": `${command.dp}\\seti <integrity: number> <blockPattern: BlockPattern>`,
-    "\\\\flood": `${command.dp}\\flood`,
-    "\\\\drain": `${command.dp}\\drain`,
+    "\\\\cyl": `${command.dp}\\cyl [-c] <axis: {x}|{y}|{z}> <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\tube": `${command.dp}\\tube [-c] <axis: {x}|{y}|{z}> <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\sphere": `${command.dp}\\sphere [-c] <radius: float> <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\hsphere": `${command.dp}\\hsphere [-c] <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\stsphere": `${command.dp}\\stsphere [-c] <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\cone": `${command.dp}\\cone [-c] <radius: float> <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\hcone": `${command.dp}\\hcone [-c] <radius: float> <thickness: float> <blockPattern: BlockPattern> [mask: SingleBlockMask]`,
+    "\\\\remove": `${command.dp}\\remove [-c]`,
+    "\\\\walls": `${command.dp}\\walls [-c] <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\set": `${command.dp}\\set [-c] <blockPattern: BlockPattern>`,
+    "\\\\seti": `${command.dp}\\seti [-c] <integrity: number> <blockPattern: BlockPattern>`,
+    "\\\\flood": `${command.dp}\\flood [mask: Mask]`,
+    "\\\\drain": `${command.dp}\\drain [mask: Mask]`,
     "\\\\generate": `${command.dp}\\generate [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
     "\\\\generatef": `${command.dp}\\generatef [-sr] <blockPattern: BlockPattern> <expression: 3DGeometricMathEquation>`,
     "\\\\generatejs": `${command.dp}\\generatejs <blockPattern: BlockPattern> <function: (worldX, worldY, worldZ, relativeX, relativeY, relativeZ, pos1X, pos1Y, pos1Z, pos2X, pos2Y, pos2Z, negativeCornerX, negativeCornerY, negativeCornerZ, positiveCornerX, positiveCornerY, positiveCornerZ)=>boolean>`,
@@ -605,7 +632,13 @@ ${command.dp}snapshot list`,
     "\\\\generates2d": `${command.dp}\\generates2d <step: float> <axis: x|y|z> <blockPattern: BlockPattern> <expression: 2DGeometricMathEquation>`,
     "\\\\stack": `${command.dp}\\stack [stackCount: int]`,
     "\\\\selectmode": `${command.dp}\\selectmode [default|noliquid|nopassable|noliquidnopassable]`,
-    "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [mask: mask]`,
+    "\\\\ceil": `${command.dp}\\ceil <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\floor": `${command.dp}\\floor <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\hcube": `${command.dp}\\hcube <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\hreplace": `${command.dp}\\hreplace <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\maze": `${command.dp}\\maze [wallBlockType: Block[?=minecraft:stone]] [airBlockType: Block[?=minecraft:air]] [entranceDirection: ({North}|{South}|{East}|{West})[?=North]] [exitDirection: ({North}|{South}|{East}|{West})[?=South]] [complexity: int[?=0]]`,
+    "\\\\regenerateblocks": `${command.dp}regenerateblocks [radiusAroundAreaToUseToDetermineGeneratedBlockType: float[?=5]]`,
     "\\\\idtfill": `${command.dp}\\idtfill <integrity: float> <tileName: Block> {blockStates: block states} <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> {blockStates: block states} [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: {skygrid}|{inverseskygrid}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]

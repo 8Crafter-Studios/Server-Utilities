@@ -1,7 +1,7 @@
 import { type Vector3, Dimension } from "@minecraft/server";
 /**
  * Generates a hollow sphere.
- * @deprecated Legacy function that may cause script hang errors. Superceeded by fillBlocksHHSGB().
+ * @deprecated Legacy function that may cause script hang errors. Superceeded by {@link fillBlocksHHSG}.
  * @param {Vector3} center The location of the center of the hollow sphere.
  * @param {number} radius Radius of the hollow sphere.
  * @param {number} thickness Thickness of the hollow sphere.

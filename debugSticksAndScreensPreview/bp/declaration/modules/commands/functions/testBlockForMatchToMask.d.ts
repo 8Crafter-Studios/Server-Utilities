@@ -9,4 +9,4 @@ export declare function testBlockForMatchToMask(block: Block, matches: {
     states?: {
         [id: string]: string | number | boolean;
     };
-}[]): boolean | (() => boolean);
+}[]): boolean;

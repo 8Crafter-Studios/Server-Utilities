@@ -25,7 +25,7 @@ export const commands = [
     {
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
-        formatting_code: "§r§c",
+        formatting_code: "§r§f",
         commandName: "\\\\ceil",
         escregexp: {
             v: "^\\\\ceil$",
@@ -35,12 +35,12 @@ export const commands = [
                 format: "\\ceil",
             },
         ],
-        command_version: "0.0.0",
+        command_version: "1.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\ceil",
         deprecated: false,
-        functional: false,
+        functional: true,
         hidden: false,
         enabled: true,
         ultraSecurityModeSecurityLevel: "WorldEdit",
@@ -158,12 +158,13 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: -1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
-        formatting_code: "§r§c",
+        formatting_code: "§r§f",
         commandName: "\\\\cyl",
         escregexp: {
             v: "^\\\\cyl$",
@@ -173,14 +174,15 @@ export const commands = [
                 format: "\\cyl",
             },
         ],
-        command_version: "0.0.0",
+        command_version: "1.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\cyl",
-        functional: false,
+        functional: true,
         deprecated: false,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -204,6 +206,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: -1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -216,10 +219,10 @@ export const commands = [
         },
         formats: [
             {
-                format: "\\drain",
+                format: "\\drain [mask: Mask]",
             },
         ],
-        command_version: "1.0.2",
+        command_version: "2.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\drain",
@@ -227,6 +230,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -239,10 +243,10 @@ export const commands = [
         },
         formats: [
             {
-                format: "\\flood",
+                format: "\\flood [mask: Mask]",
             },
         ],
-        command_version: "1.0.2",
+        command_version: "2.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\flood",
@@ -250,12 +254,13 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
-        formatting_code: "§r§c",
+        formatting_code: "§r§f",
         commandName: "\\\\floor",
         escregexp: {
             v: "^\\\\floor$",
@@ -265,14 +270,15 @@ export const commands = [
                 format: "\\floor",
             },
         ],
-        command_version: "0.0.0",
+        command_version: "1.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\floor",
         deprecated: false,
-        functional: false,
+        functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -416,7 +422,7 @@ export const commands = [
     {
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
-        formatting_code: "§r§c",
+        formatting_code: "§r§f",
         commandName: "\\\\hcube",
         escregexp: {
             v: "^\\\\hcube$",
@@ -426,14 +432,15 @@ export const commands = [
                 format: "\\hcube",
             },
         ],
-        command_version: "0.0.0",
+        command_version: "1.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\hcube",
         deprecated: false,
-        functional: false,
+        functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -480,6 +487,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: -1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -503,6 +511,31 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: -1,
+        ultraSecurityModeSecurityLevel: "WorldEdit",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
+        commandName: "\\\\hreplace",
+        escregexp: {
+            v: "^\\\\hreplace$",
+        },
+        formats: [
+            {
+                format: "\\hreplace",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["system", "world", "server", "worldedit"],
+        commandSettingsId: "built-inCommandSettings:\\hreplace",
+        deprecated: false,
+        functional: false,
+        hidden: false,
+        enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -518,7 +551,7 @@ export const commands = [
                 format: "\\hsphere",
             },
         ],
-        command_version: "1.0.0",
+        command_version: "2.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\hsphere",
@@ -526,6 +559,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -549,6 +583,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 0,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -572,6 +607,31 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 0,
+        ultraSecurityModeSecurityLevel: "WorldEdit",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
+        commandName: "\\\\listpos",
+        escregexp: {
+            v: "^\\\\listpos$",
+        },
+        formats: [
+            {
+                format: "\\\\listpos",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["system", "world", "server", "worldedit"],
+        commandSettingsId: "built-inCommandSettings:\\listpos",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true,
+        undoSupported: 0,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -618,6 +678,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -825,6 +886,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -840,7 +902,7 @@ export const commands = [
                 format: "\\replace",
             },
         ],
-        command_version: "2.0.0",
+        command_version: "3.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\replace",
@@ -848,6 +910,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -871,6 +934,31 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: -1,
+        ultraSecurityModeSecurityLevel: "WorldEdit",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
+        commandName: "\\\\savestructure",
+        escregexp: {
+            v: "^\\\\savestructure$",
+        },
+        formats: [
+            {
+                format: "\\savestructure",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["system", "world", "server", "worldedit"],
+        commandSettingsId: "built-inCommandSettings:\\savestructure",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true,
+        undoSupported: -1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -894,6 +982,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 0,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -917,6 +1006,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -940,6 +1030,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -1001,7 +1092,7 @@ export const commands = [
                 format: "\\sphere",
             },
         ],
-        command_version: "1.0.0",
+        command_version: "2.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\sphere",
@@ -1009,6 +1100,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -1032,6 +1124,55 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
+        ultraSecurityModeSecurityLevel: "WorldEdit",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
+        commandName: "\\\\stsphere",
+        escregexp: {
+            v: "^\\\\stsphere$",
+        },
+        formats: [
+            {
+                format: "\\stsphere",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["system", "world", "server", "worldedit"],
+        commandSettingsId: "built-inCommandSettings:\\stsphere",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true,
+        undoSupported: 1,
+        ultraSecurityModeSecurityLevel: "WorldEdit",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
+        commandName: "\\\\tube",
+        escregexp: {
+            v: "^\\\\tube$",
+        },
+        formats: [
+            {
+                format: "\\tube",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["system", "world", "server", "worldedit"],
+        commandSettingsId: "built-inCommandSettings:\\tube",
+        functional: true,
+        deprecated: false,
+        hidden: false,
+        enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -1055,12 +1196,13 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 0,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
-        formatting_code: "§r§e",
+        formatting_code: "§r§f",
         commandName: "\\\\walls",
         escregexp: {
             v: "^\\\\walls$",
@@ -1070,7 +1212,7 @@ export const commands = [
                 format: "\\walls",
             },
         ],
-        command_version: "1.0.2-beta.3",
+        command_version: "3.0.0",
         description: "",
         category: ["system", "world", "server", "worldedit"],
         commandSettingsId: "built-inCommandSettings:\\walls",
@@ -1078,6 +1220,7 @@ export const commands = [
         functional: true,
         hidden: false,
         enabled: true,
+        undoSupported: 1,
         ultraSecurityModeSecurityLevel: "WorldEdit",
     },
     {
@@ -1228,7 +1371,7 @@ export const commands = [
                 format: "brush",
             },
         ],
-        command_version: "1.0.0",
+        command_version: "2.0.0",
         description: "",
         category: ["world", "worldedit"],
         commandSettingsId: "built-inCommandSettings:brush",
@@ -2012,7 +2155,7 @@ export const commands = [
         },
         formats: [
             {
-                format: "einvsee <targetSelector: targetSelector>",
+                format: "einvsee <targetSelector: target>",
             },
         ],
         command_version: "1.6.0",
@@ -2035,7 +2178,7 @@ export const commands = [
         },
         formats: [
             {
-                format: "einvseeb <targetSelector: targetSelector>",
+                format: "einvseeb <targetSelector: target>",
             },
         ],
         command_version: "1.6.0",
@@ -4377,12 +4520,26 @@ export const commands = [
         escregexp: {
             v: "^remexpentity$",
         },
-        formats: [
+        aliases: [
             {
-                format: "remexpentity [radius: number]",
+                commandName: "rempexpen",
+                escregexp: {
+                    v: "^rempexpen$",
+                },
+            },
+            {
+                commandName: "remexpe",
+                escregexp: {
+                    v: "^remexpe$",
+                },
             },
         ],
-        command_version: "2.3.0",
+        formats: [
+            {
+                format: "remexpentity [radius: number[?=10]]",
+            },
+        ],
+        command_version: "2.4.0",
         description: "Removes explosive entities in the specified radius, the radius defaults to 10 if not specified.",
         category: ["world"],
         commandSettingsId: "built-inCommandSettings:remexpentity",
@@ -4663,6 +4820,43 @@ export const commands = [
         description: "",
         category: ["world", "worldedit"],
         commandSettingsId: "built-inCommandSettings:selectioninfo",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true,
+        ultraSecurityModeSecurityLevel: "WorldEdit",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
+        commandName: "selectionrender",
+        escregexp: {
+            v: "^selectionrender$",
+        },
+        aliases: [
+            {
+                commandName: "selrender",
+                escregexp: {
+                    v: "^selrender$",
+                },
+            },
+            {
+                commandName: "selr",
+                escregexp: {
+                    v: "^selr$",
+                },
+            },
+        ],
+        formats: [
+            {
+                format: "selectionrender",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["world", "worldedit"],
+        commandSettingsId: "built-inCommandSettings:selectionrender",
         deprecated: false,
         functional: true,
         hidden: false,
@@ -4956,7 +5150,7 @@ export const commands = [
         description: "Stops all known intervals from system.runInterval() for this add-on.",
         category: ["system"],
         commandSettingsId: "built-inCommandSettings:stopalldbintervals",
-        deprecated: true,
+        deprecated: false,
         functional: true,
         hidden: false,
         enabled: true,
@@ -4979,7 +5173,7 @@ export const commands = [
         description: "Stops all known intervals from system.runInterval() for the entity scale add-on if it is active and is on version 1.14.0 or newer.",
         category: ["system", "Entity Scale Add-On"],
         commandSettingsId: "built-inCommandSettings:stopallsaintervals",
-        deprecated: true,
+        deprecated: false,
         functional: true,
         hidden: false,
         enabled: true,
@@ -5021,7 +5215,7 @@ export const commands = [
                 format: "structure",
             },
         ],
-        command_version: "2.3.17",
+        command_version: "2.3.18",
         description: "",
         category: ["system", "world", "server", "blocks"],
         commandSettingsId: "built-inCommandSettings:structure",
@@ -5163,10 +5357,10 @@ export const commands = [
         ],
         formats: [
             {
-                format: "swaprows <row1: float|{equipment}> [row2: (float|{equipment})[?=0]] [player1: (string|~)[?=~]] [player2: (string|~)[?=~]]",
+                format: "swaprows <row1: float|{equipment}> [row2: (float|{equipment})[?=0]] [player1: target[?=@s]] [player2: target[?=@s]]",
             },
         ],
-        command_version: "1.0.0",
+        command_version: "2.0.0",
         description: "Swaps two inventory rows, if the row number is not a whole number then it will offset the row selection by that much.",
         category: ["players", "containers/inventories"],
         commandSettingsId: "built-inCommandSettings:swaprows",

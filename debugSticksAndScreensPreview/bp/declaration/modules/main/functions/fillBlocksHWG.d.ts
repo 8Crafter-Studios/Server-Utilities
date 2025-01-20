@@ -1,6 +1,6 @@
 import { type Vector3, Dimension, type DimensionLocation, BlockType } from "@minecraft/server";
 /**
- * @deprecated
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHWFGB}.
  */
 export declare function fillBlocksHWG(begin: Vector3, end: Vector3, dimension: Dimension, block: string | ((location: DimensionLocation) => BlockType), blockStates?: Record<string, string | number | boolean>, options?: {
     matchingBlock?: string;

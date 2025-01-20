@@ -1,16 +1,583 @@
 {
    "content" : [
       {
-         "path" : "textures/items/wide_brush_dyed.tga"
+         "path" : ".git/COMMIT_EDITMSG"
       },
       {
-         "path" : "textures/items/diamond_red_left_arrow_transform_template.png"
+         "path" : "textures/particles/xz_axis_particle_pos1_down.png"
+      },
+      {
+         "path" : ".git/objects/2c/d96af6525ca599c7d1a388e75e48159b79ef39"
+      },
+      {
+         "path" : ".git/FETCH_HEAD"
+      },
+      {
+         "path" : ".git/objects/3f/0cc9caeb4c1390541c7211109d512543d580e9"
+      },
+      {
+         "path" : "textures/particles/particles_plain_no_pbr.png"
+      },
+      {
+         "path" : ".git/description"
+      },
+      {
+         "path" : ".git/hooks/prepare-commit-msg.sample"
+      },
+      {
+         "path" : ".git/HEAD"
+      },
+      {
+         "path" : ".git/ORIG_HEAD"
+      },
+      {
+         "path" : "ui/how_to_play_screen.json"
+      },
+      {
+         "path" : ".git/hooks/sendemail-validate.sample"
+      },
+      {
+         "path" : ".git/config"
+      },
+      {
+         "path" : ".git/objects/42/14af38aadc5428ca4ee1aef0580c8ac8aaf88c"
+      },
+      {
+         "path" : ".git/hooks/applypatch-msg.sample"
+      },
+      {
+         "path" : ".git/objects/3f/bcb391d87976be05347a598d7a8b066265483e"
+      },
+      {
+         "path" : ".git/hooks/commit-msg.sample"
+      },
+      {
+         "path" : ".git/hooks/fsmonitor-watchman.sample"
+      },
+      {
+         "path" : ".git/objects/67/cbe93a76c23ca44060af743360207dafe57a71"
+      },
+      {
+         "path" : ".git/hooks/pre-merge-commit.sample"
+      },
+      {
+         "path" : ".git/objects/bc/1e6d954ce3fc27397414acc7cf783e1484b8c1"
+      },
+      {
+         "path" : ".git/hooks/post-update.sample"
+      },
+      {
+         "path" : ".git/objects/14/441333211b2ec8075debe5b75dd6d9229764b4"
+      },
+      {
+         "path" : ".git/hooks/pre-applypatch.sample"
       },
       {
          "path" : "bug_pack_icon.png"
       },
       {
-         "path" : "textures/items/diamond_red_up_arrow_transform_template.png"
+         "path" : ".git/objects/fb/0b3c7e40ed60899712ff1106302a3b1346c6d3"
+      },
+      {
+         "path" : ".git/objects/13/0bb22b941a28390ffc4fa3440717f0676af95a"
+      },
+      {
+         "path" : ".git/hooks/pre-commit.sample"
+      },
+      {
+         "path" : ".git/hooks/pre-push.sample"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2.json"
+      },
+      {
+         "path" : ".git/objects/2b/41ade346d73f2a3e53ea5a515f775ddaefa333"
+      },
+      {
+         "path" : ".git/objects/d1/6dbf281bfb5342bf81937a9413333583d42d8f"
+      },
+      {
+         "path" : ".git/hooks/pre-rebase.sample"
+      },
+      {
+         "path" : ".git/objects/39/b28ccb01736ecf9656b6a9a29076896e8e5435"
+      },
+      {
+         "path" : ".git/objects/0b/b6278061fb88df2b2495d4e208f16dbcffc3af"
+      },
+      {
+         "path" : ".git/hooks/pre-receive.sample"
+      },
+      {
+         "path" : ".git/hooks/push-to-checkout.sample"
+      },
+      {
+         "path" : ".git/hooks/update.sample"
+      },
+      {
+         "path" : ".git/objects/16/ef80f37249a903e23180fa15515e50ec116522"
+      },
+      {
+         "path" : ".git/objects/d4/7a3cd67824d880d2af65aeb1af1a1a3b9dcaa6"
+      },
+      {
+         "path" : ".git/index"
+      },
+      {
+         "path" : ".git/info/exclude"
+      },
+      {
+         "path" : ".git/objects/0f/699c124318f722d796ca1a1dfc85d405173150"
+      },
+      {
+         "path" : ".git/logs/HEAD"
+      },
+      {
+         "path" : ".git/objects/c5/9c0f00a1df01f42643856350e82fe42f0a9bef"
+      },
+      {
+         "path" : ".git/logs/refs/heads/main"
+      },
+      {
+         "path" : ".git/logs/refs/remotes/origin/main"
+      },
+      {
+         "path" : ".git/objects/1f/bff50b08fcfcc60277063e5adc250b1ce31ebd"
+      },
+      {
+         "path" : ".git/objects/ec/fea7f8c4c5d4e9f95e3a9edcb500771d696297"
+      },
+      {
+         "path" : ".git/objects/07/f0363d66c64025939822b42171ad88faad738e"
+      },
+      {
+         "path" : ".git/objects/04/8885612dcb364f1e193744f83292887f648a9c"
+      },
+      {
+         "path" : ".git/objects/07/5d13268dd676d7aa43967ccb2a5bf1fd6729d9"
+      },
+      {
+         "path" : ".git/objects/a9/feb7228c7fd2e9b1e2008cd9b509a5bb0ed999"
+      },
+      {
+         "path" : ".git/objects/1f/97ef8502bb70721bdeaecfc36eed3e68736ad5"
+      },
+      {
+         "path" : ".git/objects/0d/41020b3456043d06a161e1f681746f853f378c"
+      },
+      {
+         "path" : ".git/objects/23/94ad321ba5ced8e92eae9295e4efd0db787fe3"
+      },
+      {
+         "path" : ".git/objects/0d/80861fef07864b65daa1fb7428aa0a55b7994e"
+      },
+      {
+         "path" : ".git/objects/9f/896be9b196806ef82caf4f06a5e54d43c15b9a"
+      },
+      {
+         "path" : ".git/objects/28/d1900c6ded6f94654bdbbd709379b206b80d19"
+      },
+      {
+         "path" : ".git/objects/3e/6b545633827786db18c2671dcdb1c5c52983b9"
+      },
+      {
+         "path" : ".git/objects/0d/b57a8a4b79999562c52ba01c51278cc1babcc7"
+      },
+      {
+         "path" : ".git/objects/0f/019c9cf2c9245799b68f52a62ac71f91ce641c"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover.json"
+      },
+      {
+         "path" : ".git/objects/6f/d8c7ad38e9ac29ef0ef2ea11c27848b8c186e0"
+      },
+      {
+         "path" : ".git/objects/14/927fb7f4d1d7dc6a2ba2f4d479121924a074fd"
+      },
+      {
+         "path" : "textures/items/diamond_downgrade_transform_template.png"
+      },
+      {
+         "path" : ".git/objects/1d/4d95aa71f451bf6dae573bc5d3e56316848fcf"
+      },
+      {
+         "path" : "textures/items/diamond_green_right_arrow_transform_template.png"
+      },
+      {
+         "path" : ".git/objects/1f/000054dc1ea44487d4666698a24add17a362e4"
+      },
+      {
+         "path" : ".git/objects/ed/ba4fa2cd956daa6d96df145d9347ef43771ed7"
+      },
+      {
+         "path" : ".git/objects/25/c8282de0fefc56c2126a9ac91cc007f02758f6"
+      },
+      {
+         "path" : "particles/custom_text_glyph_E3_texture_billboard_2.particle.json"
+      },
+      {
+         "path" : ".git/objects/32/76cc5dc88ebe34286cfa94d44461a1874bceb7"
+      },
+      {
+         "path" : ".git/objects/2a/ac0d930bdc5ea0b9b87dbd3954e85179362443"
+      },
+      {
+         "path" : "particles/custom_glowing_light.particle.json"
+      },
+      {
+         "path" : ".git/objects/30/ab19e84b9d3716b8cf50535b53d5d0a130a932"
+      },
+      {
+         "path" : ".git/objects/fa/b81b81415f91f4e07a1a74dc3e6bdbd391f323"
+      },
+      {
+         "path" : ".git/objects/4b/362a6e788deaf8ca7d8e4152070e8801a9a8f3"
+      },
+      {
+         "path" : ".git/objects/39/d4dc079c48bbe2e2143daeef19c37f11b850e9"
+      },
+      {
+         "path" : ".git/objects/3b/1da298d470e08a7ef0724aa3c22cc38e7f2cac"
+      },
+      {
+         "path" : "textures/ui/help/installation/select_realm_active_world_edit_world_button_arrow.png"
+      },
+      {
+         "path" : ".git/objects/3b/e2a4bafd20701fd4941d9d80895d71cc94cb4a"
+      },
+      {
+         "path" : ".git/objects/46/830e71afbcd15f98952f289053da9074d3a686"
+      },
+      {
+         "path" : ".git/refs/remotes/origin/main"
+      },
+      {
+         "path" : ".git/objects/49/824ada6d099eedcd407291e6eb479babcefcd2"
+      },
+      {
+         "path" : "ui/ui_common.json"
+      },
+      {
+         "path" : ".git/objects/4a/60a3b4cff18a8ce23bcc2b5dec2e289aff71bc"
+      },
+      {
+         "path" : "textures/ui/help/installation/required_experimental_toggles.png"
+      },
+      {
+         "path" : ".git/objects/4b/b0026b623fc2d6faca9d1a73d85659ea38ed53"
+      },
+      {
+         "path" : ".git/objects/4c/0a8018ecd94350a2cebee26c09bd05b7708591"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1_down.json"
+      },
+      {
+         "path" : ".git/objects/4c/d88b3231d90137b9a49d056d3e1e11a593af11"
+      },
+      {
+         "path" : ".git/objects/4d/aa401abffdedc6b964d717b4c11e0c9149b2ca"
+      },
+      {
+         "path" : ".git/objects/57/24258f417387615317976f478ea0e0f34aa63f"
+      },
+      {
+         "path" : ".git/objects/5a/e47d15da5c6c8787c196b05b18c72575e75ff0"
+      },
+      {
+         "path" : ".git/objects/f9/9155b6f7c8302f5296e297230440495024ebb4"
+      },
+      {
+         "path" : ".git/objects/5c/6fe7c31703e9533c779ad31a8f713b1dfd0f74"
+      },
+      {
+         "path" : "blocks.json"
+      },
+      {
+         "path" : ".git/objects/60/ac5cdf54821337d941784829acf34d934bdde8"
+      },
+      {
+         "path" : ".git/objects/60/d68776390ebb14e8b8cafd9c47d7562509da5a"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2_west.json"
+      },
+      {
+         "path" : ".git/objects/cf/949c7f89e45f97043c4b264f82a7b802649772"
+      },
+      {
+         "path" : ".git/objects/62/cf750fa52d5cc2624d9c962850996f89df8901"
+      },
+      {
+         "path" : ".git/objects/63/4457fe5fab8148e692a919dfb7af70fd876541"
+      },
+      {
+         "path" : ".git/objects/63/9af4fe2fbde25f4e1fb21ca19f41667d4cf130"
+      },
+      {
+         "path" : ".git/objects/c0/ae91bb528eaf16c22f4dea7ccc07974149bacd"
+      },
+      {
+         "path" : ".git/objects/65/00acfefc2b0d20e9fee942773b2a3182a31a4a"
+      },
+      {
+         "path" : ".git/objects/68/61196e56bbc75bed240672cf63ef0a08b1f5d2"
+      },
+      {
+         "path" : ".git/objects/6c/6e5c3832a5a5cb8c03345b329d97db2d763e19"
+      },
+      {
+         "path" : ".git/objects/f6/7e5fcb989289c14ed103bb7c524ad7dc05b638"
+      },
+      {
+         "path" : ".git/objects/6c/758bcf5fe6f5015cc1f6afeda429445d3d24f4"
+      },
+      {
+         "path" : ".git/objects/6d/7f9cb2d02b58460530a2d157ef48a7aebdb28b"
+      },
+      {
+         "path" : ".git/objects/70/00c117840cca1e6966889f916e01973e7a0701"
+      },
+      {
+         "path" : ".git/objects/70/f0fdadfa54089db337d243a4e2a634f0079281"
+      },
+      {
+         "path" : ".git/objects/71/217f57f69b78262562ecc92095cf9518bf5e5a"
+      },
+      {
+         "path" : ".git/objects/71/8d904af87ce2cba54356ab53042fd9c22029ea"
+      },
+      {
+         "path" : ".git/objects/72/e07a0229b66368d7a4eb7ade1709af57ccf4bb"
+      },
+      {
+         "path" : "ui/ui_template_buttons.json"
+      },
+      {
+         "path" : ".git/objects/79/e2a63160ce53a6ee2d48d5449dbf69cc354878"
+      },
+      {
+         "path" : ".git/objects/7a/4f84610637058522b7271a4f528e461b7fe5af"
+      },
+      {
+         "path" : ".git/objects/7f/fffb27dd753a35fb528ab0660168e11fedd253"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos2_east.png"
+      },
+      {
+         "path" : ".git/objects/80/09f8361d52d24e0d3ed8c4e7e3c9605c9930b2"
+      },
+      {
+         "path" : ".git/objects/80/2b625d37b65822cb6a4a1aacfc270f5aebda42"
+      },
+      {
+         "path" : ".git/objects/81/99ef4d7e44427b80b4f90a9c2bffa2b6e6593f"
+      },
+      {
+         "path" : ".git/objects/c0/854621acda905bf9b8f5ee3e0e26aeae5cbb4b"
+      },
+      {
+         "path" : ".git/objects/89/ba3890789085fad35b21dbd816897b0377d9fc"
+      },
+      {
+         "path" : ".git/objects/8c/165d156edefea134f2b5ce9b7115eb47f392e4"
+      },
+      {
+         "path" : ".git/objects/8d/b28321393aaacf7a5c21da04b9cc54d0903bff"
+      },
+      {
+         "path" : ".git/objects/90/ac0fad429315103aa30f850a538d7aa3e8ccd4"
+      },
+      {
+         "path" : ".git/objects/94/e84a10503ee5f20f525b131605755890d824b1"
+      },
+      {
+         "path" : ".git/objects/98/1ef169f56e5c10a2d5b231a580ce25d04020a5"
+      },
+      {
+         "path" : ".git/objects/98/e0d8b53d320ab8fc4d39fef89821d9c454baa4"
+      },
+      {
+         "path" : ".git/objects/9a/92b6fcddffa07cfc9f2a1e769663237483173d"
+      },
+      {
+         "path" : ".git/objects/9c/0acce68078417231eba64cdb1aa6f773c0185f"
+      },
+      {
+         "path" : ".git/objects/a3/d0b2fa3008205deaf0777e465a38ae64896d65"
+      },
+      {
+         "path" : ".git/objects/a6/d968667ea837faceceb59fa7398bd652a7c17d"
+      },
+      {
+         "path" : ".git/objects/b1/d8f887d5575f57b9995b8cc70f02cbc28050ac"
+      },
+      {
+         "path" : ".git/objects/a6/f17d6040a0ca8fd155ec52e59ea47b634ad9ad"
+      },
+      {
+         "path" : ".git/objects/a7/d849895fbea85a6dbc08e9c749b322e7c0f39b"
+      },
+      {
+         "path" : ".git/objects/aa/d72f146fb55cea82ff1af0aa090ca24055667f"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos1_north.png"
+      },
+      {
+         "path" : ".git/objects/ab/947ada335bbfae4b869a0db315c0404cf73171"
+      },
+      {
+         "path" : ".git/objects/ad/db763c952ceabf1b6f1c56f525d5876e4f45eb"
+      },
+      {
+         "path" : ".git/objects/ae/9654c8e86cc1d2616e007691c5a941ea487410"
+      },
+      {
+         "path" : ".git/objects/cf/3763f442a0cb8dffd4cbedd83444a82d42cf99"
+      },
+      {
+         "path" : ".git/objects/b0/4e5fcb29a47ee6a88ffe260ac729cce8e0bba6"
+      },
+      {
+         "path" : ".git/objects/b3/09ed62de884478e7df429822138618bd88928e"
+      },
+      {
+         "path" : ".git/objects/bc/7215f18fa50e0cf0bab8304dd1f0d701c12f01"
+      },
+      {
+         "path" : ".git/objects/b4/e3cb4234e26c9b6e974041a0a3957584dc881a"
+      },
+      {
+         "path" : ".git/objects/b5/5b46fffec3baeb4039f2b3d4bca3df14f42621"
+      },
+      {
+         "path" : ".git/objects/b7/49bd14bc0fed584d0548f05ca47207d5f96b40"
+      },
+      {
+         "path" : "textures/particles/xz_axis_particle_pos2.png"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos2_east.json"
+      },
+      {
+         "path" : ".git/objects/be/5c79f9b9cf2d3c1129676a39a097eca2f5084a"
+      },
+      {
+         "path" : ".git/objects/bf/657a7318ed5a06ab5538d11f5a0dfabfd0ac88"
+      },
+      {
+         "path" : ".git/objects/bf/7ffe7d922f518e34ee36da228b73093dfcdd4d"
+      },
+      {
+         "path" : ".git/objects/d0/ffb78ecaf0332eedd23a909acee8b4a2d9b719"
+      },
+      {
+         "path" : ".git/objects/c0/457cc0d94ac373ec649c48b0d551a0ed9ecf60"
+      },
+      {
+         "path" : ".git/objects/c2/7870630e139b57b5146b0968e55e2020e827a0"
+      },
+      {
+         "path" : ".git/objects/c6/dfd3587dec1eb36d5b3e3fdaa1e00cb11c5bee"
+      },
+      {
+         "path" : ".git/objects/c9/9b65759134f0b1eed45354e617601f13350a8c"
+      },
+      {
+         "path" : ".git/objects/ca/f30a4195b656ed02449f3578b16e9ac05c7099"
+      },
+      {
+         "path" : ".git/objects/cc/68e812a7c26118810c8ac5a744cc00bb1b9a76"
+      },
+      {
+         "path" : ".git/objects/d1/91700c5a8a210124e931df5537533c3a571201"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1_east.json"
+      },
+      {
+         "path" : ".git/objects/d2/4a4190ecabb144a07fb14689bf33317f1d5c43"
+      },
+      {
+         "path" : ".git/objects/d5/fd713dbc72ab9c57c0e1e89f6a2682415c9795"
+      },
+      {
+         "path" : ".git/objects/d6/062e5131d776938bb0ab41209e5039b3c45d28"
+      },
+      {
+         "path" : ".git/objects/d7/e6c4802deaf7eade178a46c0cc2b0d84065296"
+      },
+      {
+         "path" : ".git/objects/da/f0f7ed105757f504b3207f7a8ca38443009df0"
+      },
+      {
+         "path" : ".git/objects/de/22ca02efda2c5d2c82f7104889a1890079ff01"
+      },
+      {
+         "path" : ".git/objects/de/79ba465a32d62bf9a26c2fe105c072a8d54ca1"
+      },
+      {
+         "path" : ".git/objects/df/e0770424b2a19faf507a501ebfc23be8f54e7b"
+      },
+      {
+         "path" : ".git/objects/df/e2106abcfe2beb2fec59724bac1b92fb15e94e"
+      },
+      {
+         "path" : ".git/objects/e0/a27dc6c0050e286733e3035d3a09bc0eeb37bc"
+      },
+      {
+         "path" : ".git/objects/e1/6f6481e27e4297764ab2729f7043b4a8dbab77"
+      },
+      {
+         "path" : "textures/items/orange_brush.png"
+      },
+      {
+         "path" : ".git/objects/e5/82aa9ab1d61f5141e709a6e144f9cbd50b3152"
+      },
+      {
+         "path" : ".git/objects/ef/c2902361da7c8f241f909679d85e95d223afe2"
+      },
+      {
+         "path" : ".git/objects/e6/90b7cd98b7dcdd98bcfc36baaa58f4effc39f5"
+      },
+      {
+         "path" : ".git/objects/f8/dcd4ccf8f9462e76a8f351fb56fea60d85a0ba"
+      },
+      {
+         "path" : ".git/objects/e9/b6433b343960178486810de73e4cb68c7247ec"
+      },
+      {
+         "path" : ".git/objects/f1/0d32964480cd6736cfe60e0c4df5b42b00d541"
+      },
+      {
+         "path" : ".git/objects/f3/f41bf28840df59818cc217d32fd3f770b13e85"
+      },
+      {
+         "path" : ".git/objects/f4/df46104b08f2d05cb537c79d169cf24aaf6edf"
+      },
+      {
+         "path" : ".git/objects/f5/15a0396dac58c7dc6eaf1580d81aab751322a4"
+      },
+      {
+         "path" : ".git/objects/f8/cbbbd6f89e004b19e690fb7543522f156be2ee"
+      },
+      {
+         "path" : ".git/objects/fa/d9e1839951ec78bdde44f7753109e82c5a5938"
+      },
+      {
+         "path" : ".git/objects/fe/866b53acaba6657cb82785998afaece0d671c0"
+      },
+      {
+         "path" : "particles/xz_axis_particle_pos1_south.json"
+      },
+      {
+         "path" : ".git/refs/heads/main"
+      },
+      {
+         "path" : ".gitattributes"
       },
       {
          "path" : "textures/particles/xz_axis_particle_pos1.png"
@@ -19,28 +586,13 @@
          "path" : ".mcattributes"
       },
       {
-         "path" : "particles/xz_axis_particle_pos2.json"
+         "path" : "LICENSE.txt"
+      },
+      {
+         "path" : "README.md"
       },
       {
          "path" : "animations/animation.none.none.none.animation.json"
-      },
-      {
-         "path" : "particles/custom_item_texture_billboard_2.particle.json"
-      },
-      {
-         "path" : "textures/ui/8Crafter.png"
-      },
-      {
-         "path" : "models/blocks/no_bones.geo.json"
-      },
-      {
-         "path" : "blocks.json"
-      },
-      {
-         "path" : "font/glyph_F0.png"
-      },
-      {
-         "path" : "particles/custom_glowing_light.particle.json"
       },
       {
          "path" : "contents.json"
@@ -49,10 +601,7 @@
          "path" : "font/glyph_EF.png"
       },
       {
-         "path" : "LICENSE.txt"
-      },
-      {
-         "path" : "particles/xz_axis_particle_pos1_east.json"
+         "path" : "font/glyph_F0.png"
       },
       {
          "path" : "textures/ui/button_borderless_light_blue_default.png"
@@ -61,13 +610,10 @@
          "path" : "manifest.json"
       },
       {
-         "path" : "textures/items/netherite_downgrade_smithing_template.png"
+         "path" : "textures/ui/8Crafter.png"
       },
       {
-         "path" : "particles/custom_text_glyph_E1_texture_billboard_2.particle.json"
-      },
-      {
-         "path" : "particles/custom_block_texture_billboard_2.particle.json"
+         "path" : "models/blocks/no_bones.geo.json"
       },
       {
          "path" : "pack_icon.png"
@@ -79,55 +625,43 @@
          "path" : "particles/custom_block_texture_billboard.particle.json"
       },
       {
-         "path" : "particles/xz_axis_particle_pos1_north.json"
+         "path" : "particles/custom_block_texture_billboard_2.particle.json"
       },
       {
          "path" : "particles/custom_item_texture_billboard.particle.json"
       },
       {
-         "path" : "textures/ui/button_borderless_light_blue_hover.png"
-      },
-      {
-         "path" : "textures/particle/slight_red_screen_border.png"
-      },
-      {
-         "path" : "particles/custom_text_ascii_sga_texture_billboard_2.particle.json"
+         "path" : "particles/custom_item_texture_billboard_2.particle.json"
       },
       {
          "path" : "textures/items/diamond_green_down_arrow_transform_template.png"
       },
       {
+         "path" : "particles/custom_text_ascii_sga_texture_billboard_2.particle.json"
+      },
+      {
          "path" : "particles/custom_text_glyph_E0_texture_billboard_2.particle.json"
       },
       {
-         "path" : "particles/custom_text_glyph_E3_texture_billboard_2.particle.json"
+         "path" : "particles/custom_text_glyph_E1_texture_billboard_2.particle.json"
       },
       {
          "path" : "particles/custom_text_texture_billboard_2.particle.json"
       },
       {
-         "path" : "textures/items/diamond_green_left_arrow_transform_template.png"
+         "path" : "textures/blocks/friction_block.png"
       },
       {
          "path" : "particles/falling_border_dust.particle.json"
       },
       {
-         "path" : "textures/blocks/friction_block.png"
-      },
-      {
          "path" : "particles/green_cube.json"
-      },
-      {
-         "path" : "particles/xz_axis_particle_pos1_down.json"
       },
       {
          "path" : "particles/rising_border_dust.particle.json"
       },
       {
          "path" : "particles/vanilla/falling_border_dust.particle.json"
-      },
-      {
-         "path" : "textures/items/orange_brush.png"
       },
       {
          "path" : "textures/ui/button_borderless_light_blue_default.json"
@@ -142,7 +676,7 @@
          "path" : "particles/xz_axis_particle_pos1.json"
       },
       {
-         "path" : "particles/xz_axis_particle_pos1_south.json"
+         "path" : "particles/xz_axis_particle_pos1_north.json"
       },
       {
          "path" : "particles/xz_axis_particle_pos1_west.json"
@@ -151,28 +685,10 @@
          "path" : "particles/xz_axis_particle_pos2_down.json"
       },
       {
-         "path" : "textures/particles/xz_axis_particle_pos2.png"
-      },
-      {
-         "path" : "particles/xz_axis_particle_pos2_east.json"
-      },
-      {
-         "path" : "textures/items/diamond_blue_up_arrow_transform_template.png"
-      },
-      {
          "path" : "particles/xz_axis_particle_pos2_north.json"
       },
       {
-         "path" : "textures/items/blue_brush.png"
-      },
-      {
          "path" : "particles/xz_axis_particle_pos2_south.json"
-      },
-      {
-         "path" : "textures/item_texture.json"
-      },
-      {
-         "path" : "particles/xz_axis_particle_pos2_west.json"
       },
       {
          "path" : "texts/en_US.lang"
@@ -184,7 +700,10 @@
          "path" : "textures/blocks/gray_outline_block_texture.png"
       },
       {
-         "path" : "textures/particle/particles.png"
+         "path" : "textures/item_texture.json"
+      },
+      {
+         "path" : "textures/items/blue_brush.png"
       },
       {
          "path" : "ui/how_to_play_common.json"
@@ -193,16 +712,22 @@
          "path" : "textures/items/blue_brush_dyed.tga"
       },
       {
-         "path" : "textures/items/diamond_downgrade_transform_template.png"
+         "path" : "textures/items/diamond_blue_up_arrow_transform_template.png"
       },
       {
-         "path" : "textures/particle/custom_glowing_light_faint.png"
+         "path" : "textures/items/diamond_green_left_arrow_transform_template.png"
       },
       {
-         "path" : "textures/items/diamond_green_right_arrow_transform_template.png"
+         "path" : "textures/items/diamond_red_left_arrow_transform_template.png"
       },
       {
          "path" : "textures/items/diamond_red_right_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/diamond_red_up_arrow_transform_template.png"
+      },
+      {
+         "path" : "textures/items/netherite_downgrade_smithing_template.png"
       },
       {
          "path" : "textures/particle/slight_red_tint.png"
@@ -214,28 +739,34 @@
          "path" : "ui/settings_screen.json"
       },
       {
-         "path" : "textures/items/stick_dyed.tga"
-      },
-      {
          "path" : "textures/items/wide_brush.png"
       },
       {
-         "path" : "textures/particles/particles_plain_no_pbr.png"
+         "path" : "textures/items/stick_dyed.tga"
+      },
+      {
+         "path" : "textures/items/wide_brush_dyed.tga"
+      },
+      {
+         "path" : "textures/particle/custom_glowing_light_faint.png"
+      },
+      {
+         "path" : "textures/particle/particles.png"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_hover.png"
+      },
+      {
+         "path" : "textures/particle/slight_red_screen_border.png"
       },
       {
          "path" : "textures/particles/particles_plain_no_pbr.texture_set.json"
-      },
-      {
-         "path" : "textures/particles/xz_axis_particle_pos1_down.png"
       },
       {
          "path" : "textures/ui/help/installation/edit_realm_button_arrow.png"
       },
       {
          "path" : "textures/particles/xz_axis_particle_pos1_east.png"
-      },
-      {
-         "path" : "textures/particles/xz_axis_particle_pos1_north.png"
       },
       {
          "path" : "textures/particles/xz_axis_particle_pos1_south.png"
@@ -245,9 +776,6 @@
       },
       {
          "path" : "textures/particles/xz_axis_particle_pos2_down.png"
-      },
-      {
-         "path" : "textures/particles/xz_axis_particle_pos2_east.png"
       },
       {
          "path" : "textures/particles/xz_axis_particle_pos2_north.png"
@@ -260,9 +788,6 @@
       },
       {
          "path" : "textures/terrain_texture.json"
-      },
-      {
-         "path" : "textures/ui/button_borderless_light_blue_hover.json"
       },
       {
          "path" : "textures/ui/button_borderless_light_blue_hover_pressed.json"
@@ -286,25 +811,10 @@
          "path" : "textures/ui/help/installation/realm_game_settings_replace_world_button_arrow.png"
       },
       {
-         "path" : "textures/ui/help/installation/required_experimental_toggles.png"
-      },
-      {
-         "path" : "textures/ui/help/installation/select_realm_active_world_edit_world_button_arrow.png"
-      },
-      {
-         "path" : "ui/how_to_play_screen.json"
-      },
-      {
          "path" : "ui/server_form.json"
       },
       {
          "path" : "ui/settings_sections/settings_common.json"
-      },
-      {
-         "path" : "ui/ui_common.json"
-      },
-      {
-         "path" : "ui/ui_template_buttons.json"
       }
    ],
    "version" : 1

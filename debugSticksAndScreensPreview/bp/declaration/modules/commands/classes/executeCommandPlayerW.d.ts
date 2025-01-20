@@ -145,4 +145,6 @@ export declare class executeCommandPlayerW {
     teleport(location: Vector3, teleportOptions?: TeleportOptions): void;
     triggerEvent(eventName: string): void;
     tryTeleport(location: Vector3, teleportOptions?: TeleportOptions): boolean;
+    saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
+    getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
 }

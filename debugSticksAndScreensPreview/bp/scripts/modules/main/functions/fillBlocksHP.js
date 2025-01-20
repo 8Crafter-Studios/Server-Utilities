@@ -3,7 +3,8 @@ import { clearAllContainerBlocks } from "modules/main/functions/clearAllContaine
 import { fillBlocksB } from "modules/main/functions/fillBlocksB";
 import { scanForContainerBlocks } from "modules/main/functions/scanForContainerBlocks";
 /**
- * @deprecated
+ * @deprecated Legacy function. Superceeded by {@link fillPillars}.
+ * @todo make the fillPillars function
  */
 export function fillBlocksHP(from, to, dimension, block, blockStates, options, placeholderid, replacemode = false) {
     let mainArray = [];

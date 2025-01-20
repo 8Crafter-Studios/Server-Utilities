@@ -193,16 +193,16 @@ const exports = (() => {
       exports.Vector2Utils = Vector2Utils;
       exports.VECTOR3_UP = { x: 0, y: 1, z: 0 };
       exports.VECTOR3_DOWN = { x: 0, y: -1, z: 0 };
-      exports.VECTOR3_LEFT = { x: -1, y: 0, z: 0 };
-      exports.VECTOR3_RIGHT = { x: 1, y: 0, z: 0 };
+      exports.VECTOR3_LEFT = { x: 1, y: 0, z: 0 };
+      exports.VECTOR3_RIGHT = { x: -1, y: 0, z: 0 };
       exports.VECTOR3_FORWARD = { x: 0, y: 0, z: 1 };
       exports.VECTOR3_BACK = { x: 0, y: 0, z: -1 };
       exports.VECTOR3_ONE = { x: 1, y: 1, z: 1 };
       exports.VECTOR3_ZERO = { x: 0, y: 0, z: 0 };
       exports.VECTOR3_WEST = { x: -1, y: 0, z: 0 };
       exports.VECTOR3_EAST = { x: 1, y: 0, z: 0 };
-      exports.VECTOR3_NORTH = { x: 0, y: 0, z: 1 };
-      exports.VECTOR3_SOUTH = { x: 0, y: 0, z: -1 };
+      exports.VECTOR3_NORTH = { x: 0, y: 0, z: -1 };
+      exports.VECTOR3_SOUTH = { x: 0, y: 0, z: 1 };
     }
   });
 

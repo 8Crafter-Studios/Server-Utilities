@@ -4,7 +4,7 @@ import { degradeArray } from "modules/coordinates/functions/degradeArray";
 import { generateMinecraftTunnel } from "modules/coordinates/functions/generateMinecraftTunnel";
 /**
  * Generates a tunnel.
- * @deprecated Legacy function that may cause script hang errors.
+ * @deprecated Legacy function that may cause script hang errors. Superceeded by {@link fillTunnel}.
  * @param {Vector3} center The location of the center of the tunnel.
  * @param {number} radius The radius of the tunnel.
  * @param {number} length The length of the tunnel.

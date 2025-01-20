@@ -1,6 +1,7 @@
 import { type Vector3, Dimension, type DimensionLocation, BlockPermutation } from "@minecraft/server";
 /**
  * Generates an inverse skygrid.
+ * @deprecated Legacy function. Superceeded by {@link fillInverseSkygrid}.
  * @since 1.18.0-development.20
  * @version 1.0.0
  * @async

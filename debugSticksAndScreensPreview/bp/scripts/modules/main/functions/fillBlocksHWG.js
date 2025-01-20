@@ -4,7 +4,7 @@ import { generatorProgress } from "modules/coordinates/constants/generatorProgre
 import { generateWallsFillBG } from "modules/coordinates/functions/generateWallsFillBG";
 import { generatorProgressIdGenerator } from "modules/coordinates/functions/generatorProgressIdGenerator";
 /**
- * @deprecated
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHWFGB}.
  */
 export async function fillBlocksHWG(begin, end, dimension, block, blockStates, options, placeholderid, replacemode = false, integrity = 100) {
     let counter = 0;

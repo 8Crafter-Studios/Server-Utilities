@@ -80,5 +80,26 @@ declare module "@minecraft/server" {
         get roty(): number;
         get timeZone(): number;
         set timeZone(timezone: number | string | boolean | null | undefined);
+        /**
+         * Saves a string to an entity's dynamic properties, optionally clearing old properties first.
+         *
+         * @param {string} string - The string to save to the entity's dynamic properties.
+         * @param {string} propertyName - The base name of the dynamic property where the string will be saved.
+         * @param {boolean} clearOldProperties - Whether to clear old properties before saving the new string. Defaults to `true`.
+         * @param {number | bigint} chunkSize - The size of each chunk of the string to save. Defaults to `32760`.
+         *
+         * @throws {TypeError} If `propertyName` is not a string.
+         * @throws {TypeError} If `clearOldProperties` is not a boolean.
+         */
+        saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
+        /**
+         * Retrieves a concatenated string from an entity's dynamic properties.
+         *
+         * @param {string} propertyName - The base name of the dynamic property to retrieve.
+         * @param {string} zeroLengthPlaceholder - A placeholder string to return if the dynamic property length is zero. Defaults to an empty string.
+         * @returns {string} The concatenated string from the entity's dynamic properties, or the zeroLengthPlaceholder if the length is zero.
+         * @throws {TypeError} If the propertyName is not a string.
+         */
+        getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
     }
 }

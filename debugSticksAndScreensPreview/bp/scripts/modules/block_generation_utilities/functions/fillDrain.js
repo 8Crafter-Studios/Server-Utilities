@@ -1,0 +1,356 @@
+import { Dimension, BlockPermutation, system, UnloadedChunksError } from "@minecraft/server";
+/**
+ * Drains the specified area. Supports block masks.
+ * @async
+ * @param {Vector3} begin The location of a corner of the area to fill in.
+ * @param {Vector3} end The location of the opposite corner of the area to fill in.
+ * @param {Dimension} dimension The dimension to generate the fill in.
+ * @param options Optional extra options for the fill generation execution.
+ * @param options.blockMask The block mask to match.
+ * @param options.minMSBetweenTickWaits The shortest the generation can run for before pausing until the next tick.
+ * @param options.integrity The integrity of the fill generation.
+ * @param options.liteMode Whether to skip keeping track of how many blocks were actually changed.
+ * @returns A promise that resolves with the details of the fill generation once the fill generation is complete.
+ * @remarks The most modern version of the drain filling functions.
+ */
+export async function fillDrain(begin, end, dimension, options) {
+    const startTime = Date.now();
+    const startTick = system.currentTick;
+    const integrity = options?.integrity ?? 100;
+    var counter = 0n;
+    var msSinceLastTickWait = Date.now();
+    var index = 0n;
+    let containsUnloadedChunks = false;
+    if (options?.liteMode ?? false) {
+        // If lite mode is enabled.
+        if (!!!options?.blockMask || options?.blockMask?.blocks?.length == 0) {
+            // If there is no block mask or the block mask is empty.
+            if (integrity != 100) {
+                // If integrity is not full.
+                for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                    for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                        for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            if (Math.random() <= integrity / 100) {
+                                try {
+                                    const b = dimension.getBlock({ x, y, z });
+                                    if ([
+                                        "minecraft:water",
+                                        "minecraft:flowing_water",
+                                        "minecraft:lava",
+                                        "minecraft:flowing_lava",
+                                    ].includes(b.typeId)) {
+                                        b.setType("minecraft:air");
+                                    }
+                                    else if (b.type.canBeWaterlogged == true &&
+                                        b.isWaterlogged) {
+                                        b.setWaterlogged(false);
+                                    }
+                                }
+                                catch (e) {
+                                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                                        containsUnloadedChunks = true;
+                                    }
+                                }
+                            }
+                            index++;
+                            if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                await waitTick();
+                                msSinceLastTickWait = Date.now();
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                // If integrity is full.
+                for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                    for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                        for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            try {
+                                const b = dimension.getBlock({ x, y, z });
+                                if ([
+                                    "minecraft:water",
+                                    "minecraft:flowing_water",
+                                    "minecraft:lava",
+                                    "minecraft:flowing_lava",
+                                ].includes(b.typeId)) {
+                                    b.setType("minecraft:air");
+                                }
+                                else if (b.type.canBeWaterlogged == true &&
+                                    b.isWaterlogged) {
+                                    b.setWaterlogged(false);
+                                }
+                            }
+                            catch (e) {
+                                if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                                    containsUnloadedChunks = true;
+                                }
+                            }
+                            index++;
+                            if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                await waitTick();
+                                msSinceLastTickWait = Date.now();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            if (integrity != 100) {
+                // If integrity is not full.
+                for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                    for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                        for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            try {
+                                const b = dimension.getBlock({ x, y, z });
+                                if (options.blockMask.testIfMatches(b)) {
+                                    if (Math.random() <= integrity / 100) {
+                                        if ([
+                                            "minecraft:water",
+                                            "minecraft:flowing_water",
+                                            "minecraft:lava",
+                                            "minecraft:flowing_lava",
+                                        ].includes(b.typeId)) {
+                                            b.setType("minecraft:air");
+                                        }
+                                        else if (b.type.canBeWaterlogged == true &&
+                                            b.isWaterlogged) {
+                                            b.setWaterlogged(false);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (e) {
+                                if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                                    containsUnloadedChunks = true;
+                                }
+                            }
+                            index++;
+                            if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                await waitTick();
+                                msSinceLastTickWait = Date.now();
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                // If integrity is full.
+                for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                    for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                        for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            try {
+                                const b = dimension.getBlock({ x, y, z });
+                                if (options.blockMask.testIfMatches(b)) {
+                                    if ([
+                                        "minecraft:water",
+                                        "minecraft:flowing_water",
+                                        "minecraft:lava",
+                                        "minecraft:flowing_lava",
+                                    ].includes(b.typeId)) {
+                                        b.setType("minecraft:air");
+                                    }
+                                    else if (b.type.canBeWaterlogged == true &&
+                                        b.isWaterlogged) {
+                                        b.setWaterlogged(false);
+                                    }
+                                }
+                            }
+                            catch (e) {
+                                if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                                    containsUnloadedChunks = true;
+                                }
+                            }
+                            index++;
+                            if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                await waitTick();
+                                msSinceLastTickWait = Date.now();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else {
+        // If lite mode is disabled.
+        if (!!!options?.blockMask || options?.blockMask?.blocks?.length == 0) {
+            // If there is no block mask or the block mask is empty.
+            if (integrity != 100) {
+                // If integrity is not full.
+                for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                    for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                        for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            if (Math.random() <= integrity / 100) {
+                                try {
+                                    const b = dimension.getBlock({ x, y, z });
+                                    if ([
+                                        "minecraft:water",
+                                        "minecraft:flowing_water",
+                                        "minecraft:lava",
+                                        "minecraft:flowing_lava",
+                                    ].includes(b.typeId)) {
+                                        b.setType("minecraft:air");
+                                        counter++; // Increase the counter.
+                                    }
+                                    else if (b.type.canBeWaterlogged == true &&
+                                        b.isWaterlogged) {
+                                        b.setWaterlogged(false);
+                                        counter++; // Increase the counter.
+                                    }
+                                }
+                                catch (e) {
+                                    if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                                        containsUnloadedChunks = true;
+                                    }
+                                }
+                            }
+                            index++;
+                            if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                await waitTick();
+                                msSinceLastTickWait = Date.now();
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                // If integrity is full.
+                for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                    for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                        for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            try {
+                                const b = dimension.getBlock({ x, y, z });
+                                if ([
+                                    "minecraft:water",
+                                    "minecraft:flowing_water",
+                                    "minecraft:lava",
+                                    "minecraft:flowing_lava",
+                                ].includes(b.typeId)) {
+                                    b.setType("minecraft:air");
+                                    counter++; // Increase the counter.
+                                }
+                                else if (b.type.canBeWaterlogged == true &&
+                                    b.isWaterlogged) {
+                                    b.setWaterlogged(false);
+                                    counter++; // Increase the counter.
+                                }
+                            }
+                            catch (e) {
+                                if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                                    containsUnloadedChunks = true;
+                                }
+                            }
+                            index++;
+                            if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                await waitTick();
+                                msSinceLastTickWait = Date.now();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            if (integrity != 100) {
+                // If integrity is not full.
+                for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                    for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                        for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            try {
+                                const b = dimension.getBlock({ x, y, z });
+                                if (options.blockMask.testIfMatches(b)) {
+                                    if (Math.random() <= integrity / 100) {
+                                        if ([
+                                            "minecraft:water",
+                                            "minecraft:flowing_water",
+                                            "minecraft:lava",
+                                            "minecraft:flowing_lava",
+                                        ].includes(b.typeId)) {
+                                            b.setType("minecraft:air");
+                                            counter++; // Increase the counter.
+                                        }
+                                        else if (b.type.canBeWaterlogged == true &&
+                                            b.isWaterlogged) {
+                                            b.setWaterlogged(false);
+                                            counter++; // Increase the counter.
+                                        }
+                                    }
+                                }
+                            }
+                            catch (e) {
+                                if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                                    containsUnloadedChunks = true;
+                                }
+                            }
+                            index++;
+                            if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                await waitTick();
+                                msSinceLastTickWait = Date.now();
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                // If integrity is full.
+                for (let x = Math.min(begin.x, end.x); x <= Math.max(begin.x, end.x); x++) {
+                    for (let y = Math.min(begin.y, end.y); y <= Math.max(begin.y, end.y); y++) {
+                        for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
+                            try {
+                                const b = dimension.getBlock({ x, y, z });
+                                if (options.blockMask.testIfMatches(b)) {
+                                    if ([
+                                        "minecraft:water",
+                                        "minecraft:flowing_water",
+                                        "minecraft:lava",
+                                        "minecraft:flowing_lava",
+                                    ].includes(b.typeId)) {
+                                        b.setType("minecraft:air");
+                                        counter++; // Increase the counter.
+                                    }
+                                    else if (b.type.canBeWaterlogged == true &&
+                                        b.isWaterlogged) {
+                                        b.setWaterlogged(false);
+                                        counter++; // Increase the counter.
+                                    }
+                                }
+                            }
+                            catch (e) {
+                                if (e instanceof TypeError || e instanceof UnloadedChunksError) {
+                                    containsUnloadedChunks = true;
+                                }
+                            }
+                            index++;
+                            if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                await waitTick();
+                                msSinceLastTickWait = Date.now();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (options?.liteMode == true) {
+        return {
+            startTick,
+            endTick: system.currentTick,
+            startTime,
+            endTime: Date.now(),
+            containsUnloadedChunks,
+        };
+    }
+    else {
+        return {
+            counter: counter,
+            startTick,
+            endTick: system.currentTick,
+            startTime,
+            endTime: Date.now(),
+            containsUnloadedChunks,
+        };
+    }
+}
+//# sourceMappingURL=fillDrain.js.map

@@ -1,6 +1,6 @@
 import { type Vector3, Dimension } from "@minecraft/server";
 /**
- * @todo Make the new updated version of this function and then deprecate this one.
+ * @deprecated Legacy function. Superceeded by {@link fillDome}.
  */
 export declare function fillBlocksHDG(center: Vector3, radius: number, thickness: number, dimension: Dimension, block: string | Function, blockStates?: Record<string, string | number | boolean>, options?: {
     matchingBlock?: string;

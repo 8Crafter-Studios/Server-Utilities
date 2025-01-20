@@ -14,6 +14,34 @@ declare global {
         get __proto__(): Object;
         set __proto__(prototype: Object | null);
     }
+    interface ObjectConstructor {
+        /**
+         * Gets the own property descriptor of the specified object.
+         * An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
+         * @param o Object that contains the property.
+         * @param p Name of the property.
+         */
+        getOwnPropertyDescriptor<T extends any>(o: T, p: keyof T): PropertyDescriptor | undefined;
+        getOwnPropertyDescriptor(o: any, p: PropertyKey): PropertyDescriptor | undefined;
+        /**
+         * Adds a property to an object, or modifies attributes of an existing property.
+         * @param o Object on which to add or modify the property. This can be a native JavaScript object (that is, a user-defined object or a built in object) or a DOM object.
+         * @param p The property name.
+         * @param attributes Descriptor for the property. It can be for a data property or an accessor property.
+         */
+        defineProperty<T>(o: T, p: keyof T, attributes: PropertyDescriptor & ThisType<any>): T;
+        defineProperty<T>(o: T, p: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): T;
+        /**
+         * Adds one or more properties to an object, and/or modifies attributes of existing properties.
+         * @param o Object on which to add or modify the properties. This can be a native JavaScript object or a DOM object.
+         * @param properties JavaScript object that contains one or more descriptor objects. Each descriptor object describes a data property or an accessor property.
+         */
+        defineProperties<T>(o: T, properties: {
+            [key in keyof T]: PropertyDescriptor;
+        } & {
+            [key: PropertyKey]: PropertyDescriptor;
+        } & ThisType<any>): T;
+    }
     class TimeoutError extends Error {
     }
     class ExpireError extends Error {

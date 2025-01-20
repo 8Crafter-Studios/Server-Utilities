@@ -1,7 +1,7 @@
 import { type Vector3, Dimension } from "@minecraft/server";
 /**
  * Generates a sphere.
- * @deprecated Legacy function. Superceeded by fillBlocksHSGB().
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHSGB}.
  * @async
  * @param {Vector3} center The location of the center of the sphere.
  * @param {number} radius Radius of the sphere.

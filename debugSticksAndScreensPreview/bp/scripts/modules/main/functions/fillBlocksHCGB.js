@@ -7,11 +7,12 @@ import { generateMinecraftConeBG } from "modules/coordinates/functions/generateM
 import { generateMinecraftSphereBGIdGenerator } from "modules/coordinates/functions/generateMinecraftSphereBGIdGenerator";
 /**
  * Generates a cone.
+ * @deprecated Legacy function. Superceeded by {@link fillCone}.
  * @since 1.18.0-development.20
  * @version 1.0.0
  * @param {Vector3} center The location of the bottom center of the cone.
- * @param {boolean} radius Radius of the cone.
- * @param {boolean} height Height of the cone.
+ * @param {number} radius Radius of the cone.
+ * @param {number} height Height of the cone.
  * @param {Dimension} dimension The dimension to generate the cone in.
  * @param block The function to determine the BlockPermutation to generate.
  * @param options Optional extra options for the cone generation execution.

@@ -3,7 +3,7 @@ import { clearContainer } from "modules/command_utilities/functions/clearContain
 import { generateMinecraftSphereB } from "modules/coordinates/functions/generateMinecraftSphereB";
 /**
  * Generates a sphere.
- * @deprecated Legacy function that may cause script hang errors. Superceeded by fillBlocksHSGB().
+ * @deprecated Legacy function that may cause script hang errors. Superceeded by {@link fillBlocksHSG}.
  * @param {Vector3} center The location of the center of the sphere.
  * @param {number} radius Radius of the sphere.
  * @param {Dimension} dimension The dimension to generate the sphere in.

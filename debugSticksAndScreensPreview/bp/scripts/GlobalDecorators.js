@@ -42,20 +42,73 @@ function log(value, propertyKey) {
 globalThis.log = log;
 function configurable(value) {
     return function (target, propertyKey, descriptor) {
-        descriptor.configurable = value;
+        if (descriptor != undefined) {
+            descriptor.configurable = value;
+        }
+        else {
+            Object.defineProperty(target, propertyKey, {
+                ...Object.getOwnPropertyDescriptor(target, propertyKey),
+                configurable: value,
+            });
+        }
     };
 }
 globalThis.configurable = configurable;
 function enumerable(value) {
     return function (target, propertyKey, descriptor) {
-        descriptor.enumerable = value;
+        if (descriptor != undefined) {
+            descriptor.enumerable = value;
+        }
+        else {
+            Object.defineProperty(target, propertyKey, {
+                ...Object.getOwnPropertyDescriptor(target, propertyKey),
+                enumerable: value,
+            });
+        }
     };
 }
 globalThis.enumerable = enumerable;
 function writable(value) {
     return function (target, propertyKey, descriptor) {
-        descriptor.writable = value;
+        if (descriptor != undefined) {
+            descriptor.writable = value;
+        }
+        else {
+            Object.defineProperty(target, propertyKey, {
+                ...Object.getOwnPropertyDescriptor(target, propertyKey),
+                writable: value,
+            });
+        }
     };
 }
 globalThis.writable = writable;
+const readonlifyMap = new Map();
+// CLASS DECORATOR
+function readonlify(constructor) {
+    const c = class extends constructor {
+        constructor(...args) {
+            super(...args);
+            if (new.target === c)
+                readonlifyMap.set(this, true);
+        }
+    };
+    return c;
+}
+globalThis.readonlify = readonlify;
+// PROPERTY DECORATOR
+function readonly(target, key, propertyDescriptor) {
+    let z = undefined;
+    Object.defineProperty(target, key, {
+        get() {
+            return z;
+        },
+        set(value) {
+            console.log("Set ", value);
+            if (readonlifyMap.get(this))
+                throw new Error();
+            z = value;
+        }
+    });
+}
+globalThis.readonly = readonly;
 //# sourceMappingURL=GlobalDecorators.js.map

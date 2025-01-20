@@ -1,6 +1,7 @@
 import { type Vector3, Dimension, type DimensionLocation, BlockPermutation } from "@minecraft/server";
 /**
  * Generates a hollow fill.
+ * @deprecated Legacy function. Superceeded by {@link fillHollow}.
  * @async
  * @param {Vector3} begin The location of a corner of the area to have its edges filled in.
  * @param {Vector3} end The location of the opposite corner of the area to have its edges filled in.

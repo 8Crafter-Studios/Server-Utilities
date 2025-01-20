@@ -1,5 +1,5 @@
 import "init/functions/breakpoint";
-export declare const current_format_version = "1.28.0-preview.20+BUILD.1";
+export declare const current_format_version = "1.29.0-preview.20+BUILD.1";
 export declare const current_supported_minecraft_version = "1.21.5x";
 declare global {
     namespace globalThis {
@@ -29,5 +29,15 @@ declare global {
         };
         var entity_scale_format_version: string | null;
         var multipleEntityScaleVersionsDetected: boolean;
+        var errorLog: {
+            playerDataAutoSave: {
+                time: number;
+                error: Error;
+            }[];
+            [logCategory: string]: {
+                time: number;
+                error: Error;
+            }[];
+        };
     }
 }

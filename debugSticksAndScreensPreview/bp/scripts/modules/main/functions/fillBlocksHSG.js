@@ -6,7 +6,7 @@ import { generateMinecraftSphereBG } from "modules/coordinates/functions/generat
 import { generateMinecraftSphereBGIdGenerator } from "modules/coordinates/functions/generateMinecraftSphereBGIdGenerator";
 /**
  * Generates a sphere.
- * @deprecated Legacy function. Superceeded by fillBlocksHSGB().
+ * @deprecated Legacy function. Superceeded by {@link fillBlocksHSGB}.
  * @async
  * @param {Vector3} center The location of the center of the sphere.
  * @param {number} radius Radius of the sphere.
