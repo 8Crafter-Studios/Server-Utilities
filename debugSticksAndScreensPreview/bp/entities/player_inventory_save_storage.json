@@ -19,8 +19,26 @@
       },
       "no_hitbox": {
         "minecraft:collision_box": {
-          "height": 1,
-          "width": 1
+          "height": 0,
+          "width": 0
+        }
+      },
+      "make_inventory_not_private": {
+        "minecraft:inventory": {
+          "container_type": "horse",
+          "can_be_siphoned_from": false,
+          "inventory_size": 45,
+          "private": false,
+          "restrict_to_owner": false
+        }
+      },
+      "make_inventory_private": {
+        "minecraft:inventory": {
+          "container_type": "horse",
+          "can_be_siphoned_from": false,
+          "inventory_size": 45,
+          "private": true,
+          "restrict_to_owner": false
         }
       }
     },
@@ -31,13 +49,14 @@
       },
       "minecraft:health": {
         "value": 1000,
-        "max": 1000
+        "max": 1000,
+        "min": 1
       },
       "minecraft:inventory": {
         "container_type": "horse",
         "can_be_siphoned_from": false,
         "inventory_size": 45,
-        "private": false,
+        "private": true,
         "restrict_to_owner": false
       },
       "minecraft:is_chested": {},/*
@@ -114,7 +133,7 @@
         "triggers": [
           {
             "cause": "all",
-            "deals_damage": false
+            "deals_damage": "no"
           }
         ]
       },
@@ -175,6 +194,30 @@
         "add": {
           "component_groups": [
             "no_hitbox"
+          ]
+        }
+      },
+      "andexdb:make_inventory_not_private": {
+        "add": {
+          "component_groups": [
+            "make_inventory_not_private"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "make_inventory_private"
+          ]
+        }
+      },
+      "andexdb:make_inventory_private": {
+        "remove": {
+          "component_groups": [
+            "make_inventory_not_private"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "make_inventory_private"
           ]
         }
       }
