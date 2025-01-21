@@ -1,5 +1,6 @@
 import { Vector3Utils } from "@minecraft/math.js";
 import { world, Player } from "@minecraft/server";
+import { securityVariables } from "security/ultraSecurityModeUtils";
 subscribedEvents.beforePlayerInteractWithEntity =
     world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
         if (!!event?.itemStack?.getDynamicProperty("playerInteractWithEntityCode")) {
@@ -28,6 +29,12 @@ subscribedEvents.beforePlayerInteractWithEntity =
         }
         if (event.itemStack?.typeId == "andexdb:entity_debug_stick") {
             event.cancel = true;
+            if (securityVariables.ultraSecurityModeEnabled) {
+                if (securityVariables.testPlayerForPermission(event.player, "andexdb.canUseEntityDebugSticks") == false) {
+                    event.player.sendMessage("§cYou do not have permission to use an Entity Debug Stick. You need the following permission to use this item: andexdb.canUseEntityDebugSticks");
+                    return;
+                }
+            }
             const playerTargetB = event.target;
             let entityViewedEntityType;
             let entityViewedEntityName;
