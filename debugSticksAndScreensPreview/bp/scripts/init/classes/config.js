@@ -877,6 +877,50 @@ export class config {
             set showEntityScaleFoundChatLog(showEntityScaleFoundChatLog) {
                 world.setDynamicProperty("andexdbSettings:showEntityScaleFoundChatLog", showEntityScaleFoundChatLog ?? false);
             },
+            get showBlueModsAnticheatNotFoundConsoleLog() {
+                return Boolean(world.getDynamicProperty("andexdbSettings:showBlueModsAnticheatNotFoundConsoleLog") ?? true);
+            },
+            set showBlueModsAnticheatNotFoundConsoleLog(showBlueModsAnticheatNotFoundConsoleLog) {
+                world.setDynamicProperty("andexdbSettings:showBlueModsAnticheatNotFoundConsoleLog", showBlueModsAnticheatNotFoundConsoleLog ?? true);
+            },
+            get showBlueModsAnticheatFoundConsoleLog() {
+                return Boolean(world.getDynamicProperty("andexdbSettings:showBlueModsAnticheatFoundConsoleLog") ?? true);
+            },
+            set showBlueModsAnticheatFoundConsoleLog(showBlueModsAnticheatFoundConsoleLog) {
+                world.setDynamicProperty("andexdbSettings:showBlueModsAnticheatFoundConsoleLog", showBlueModsAnticheatFoundConsoleLog ?? true);
+            },
+            get showBlueModsAnticheatNotFoundChatLog() {
+                return Boolean(world.getDynamicProperty("andexdbSettings:showBlueModsAnticheatNotFoundChatLog") ?? false);
+            },
+            set showBlueModsAnticheatNotFoundChatLog(showBlueModsAnticheatNotFoundChatLog) {
+                world.setDynamicProperty("andexdbSettings:showBlueModsAnticheatNotFoundChatLog", showBlueModsAnticheatNotFoundChatLog ?? false);
+            },
+            get showBlueModsAnticheatFoundChatLog() {
+                return Boolean(world.getDynamicProperty("andexdbSettings:showBlueModsAnticheatFoundChatLog") ?? false);
+            },
+            set showBlueModsAnticheatFoundChatLog(showBlueModsAnticheatFoundChatLog) {
+                world.setDynamicProperty("andexdbSettings:showBlueModsAnticheatFoundChatLog", showBlueModsAnticheatFoundChatLog ?? false);
+            },
+            /**
+             * Sets whether or not the add-on is allowed to connect to and communicate with the entity scale add-on.
+             * @warning It is HIGHLY DISCOURAGED to disable this option.
+             */
+            get allowConnectingToEntityScale() {
+                return Boolean(world.getDynamicProperty("andexdbSettings:allowConnectingToEntityScale") ?? true);
+            },
+            set allowConnectingToEntityScale(allowConnectingToEntityScale) {
+                world.setDynamicProperty("andexdbSettings:allowConnectingToEntityScale", allowConnectingToEntityScale ?? true);
+            },
+            /**
+             * Sets whether or not the add-on is allowed to connect to and communicate with the BlueMods Anticheat add-on.
+             * @warning It is HIGHLY DISCOURAGED to disable this option.
+             */
+            get allowConnectingToBlueModsAnticheat() {
+                return Boolean(world.getDynamicProperty("andexdbSettings:allowConnectingToBlueModsAnticheat") ?? true);
+            },
+            set allowConnectingToBlueModsAnticheat(allowConnectingToBlueModsAnticheat) {
+                world.setDynamicProperty("andexdbSettings:allowConnectingToBlueModsAnticheat", allowConnectingToBlueModsAnticheat ?? true);
+            },
         };
     }
     static reset() {

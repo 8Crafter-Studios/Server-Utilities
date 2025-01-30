@@ -1,4 +1,5 @@
 import { world, system } from "@minecraft/server";
+import { checkIfCompatibleBlueModsAnticheatIsActive } from "modules/main/functions/checkIfCompatibleBlueModsAnticheatIsActive";
 import { checkIfCompatibleEntityScaleIsActive } from "modules/main/functions/checkIfCompatibleEntityScaleIsActive";
 subscribedEvents.afterWorldInitialize =
     world.afterEvents.worldInitialize.subscribe(async (event) => {
@@ -26,38 +27,75 @@ subscribedEvents.afterWorldInitialize =
         }
         catch (e) { }
         globalThis.initiallizeTick = system.currentTick;
-        try {
-            const r = await checkIfCompatibleEntityScaleIsActive(true, 5);
-            if (r != false) {
-                if (entity_scale_format_version != null &&
-                    r.trim() != entity_scale_format_version) {
-                    globalThis.multipleEntityScaleVersionsDetected = true;
+        if (config.system.allowConnectingToEntityScale) {
+            try {
+                const r = await checkIfCompatibleEntityScaleIsActive(true, 5);
+                if (r != false) {
+                    if (entity_scale_format_version != null &&
+                        r.trim() != entity_scale_format_version) {
+                        globalThis.multipleEntityScaleVersionsDetected = true;
+                    }
+                    entity_scale_format_version = r.trim();
                 }
-                entity_scale_format_version = r.trim();
+                if (r == false && config.system.showEntityScaleNotFoundConsoleLog) {
+                    system.waitTicks(100).then(() => {
+                        if (entity_scale_format_version == null)
+                            console.log(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`);
+                    });
+                }
+                else if (r != false &&
+                    config.system.showEntityScaleFoundConsoleLog) {
+                    console.log(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+                }
+                if (r == false && config.system.showEntityScaleNotFoundChatLog) {
+                    system.waitTicks(100).then(() => {
+                        if (entity_scale_format_version == null)
+                            world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`);
+                    });
+                }
+                else if (r != false &&
+                    config.system.showEntityScaleFoundChatLog) {
+                    world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+                }
             }
-            if (r == false && config.system.showEntityScaleNotFoundConsoleLog) {
-                system.waitTicks(100).then(() => {
-                    if (entity_scale_format_version == null)
-                        console.log(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`);
-                });
-            }
-            else if (r != false &&
-                config.system.showEntityScaleFoundConsoleLog) {
-                console.log(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
-            }
-            if (r == false && config.system.showEntityScaleNotFoundChatLog) {
-                system.waitTicks(100).then(() => {
-                    if (entity_scale_format_version == null)
-                        world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of entity scale was detected, some features may not be available.`);
-                });
-            }
-            else if (r != false &&
-                config.system.showEntityScaleFoundChatLog) {
-                world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of entity scale was detected: ${entity_scale_format_version}.`);
+            catch (e) {
+                console.error(e, e.stack);
             }
         }
-        catch (e) {
-            console.error(e, e.stack);
+        if (config.system.allowConnectingToBlueModsAnticheat) {
+            try {
+                const r = await checkIfCompatibleBlueModsAnticheatIsActive(true, 5);
+                if (r != false) {
+                    if (bluemods_anticheat_format_version != null &&
+                        r.trim() != bluemods_anticheat_format_version) {
+                        globalThis.multipleBlueModsAnticheatVersionsDetected = true;
+                    }
+                    bluemods_anticheat_format_version = r.trim();
+                }
+                if (r == false && config.system.showBlueModsAnticheatNotFoundConsoleLog) {
+                    system.waitTicks(100).then(() => {
+                        if (bluemods_anticheat_format_version == null)
+                            console.log(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of BlueMods Anticheat was detected, some features may not be available.`);
+                    });
+                }
+                else if (r != false &&
+                    config.system.showBlueModsAnticheatFoundConsoleLog) {
+                    console.log(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of BlueMods Anticheat was detected: ${bluemods_anticheat_format_version}.`);
+                }
+                if (r == false && config.system.showBlueModsAnticheatNotFoundChatLog) {
+                    system.waitTicks(100).then(() => {
+                        if (bluemods_anticheat_format_version == null)
+                            world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> No compatible version of BlueMods Anticheat was detected, some features may not be available.`);
+                    });
+                }
+                else if (r != false &&
+                    config.system.showBlueModsAnticheatFoundChatLog) {
+                    world.sendMessage(`<8Crafter's Debug Sticks[${format_version}]> A compatible version of BlueMods Anticheat was detected: ${bluemods_anticheat_format_version}.`);
+                }
+            }
+            catch (e) {
+                console.error(e, e.stack);
+            }
         } /*
     try{DimensionTypes.getAll().forEach((dimensionType)=>{if (world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}) !== undefined){world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", exclude: true, minScore: -99999999, maxScore: 99999999}]}).forEach((scoreboardEntity)=>{scoreboardEntity.runCommand("/scoreboard players @s set andexdbDebug 0")})}})}catch(e){}
     try{DimensionTypes.getAll().forEach((dimensionType)=>{world.getDimension(dimensionType.typeId).getEntities().forEach((scoreboardEntity)=>{if(world.getDimension(dimensionType.typeId).getEntities({scoreOptions: [{objective: "andexdbDebug", minScore: -99999999, maxScore: 99999999}]}).find((testEntity)=>(scoreboardEntity == testEntity)) == undefined){console.warn(scoreboardEntity.id)}})})}catch(e){}*/ /*

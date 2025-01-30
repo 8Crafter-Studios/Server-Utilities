@@ -82,150 +82,152 @@ try {
                         }
                         catch (e) { }
                         if (config.chatRanks.showRanksOnPlayerNameTags) {
-                            if (!playerList2[index].hasTag("doNotSetNameTag")) {
-                                let nameFormatting = "";
-                                let nameGradientMode = undefined;
-                                let showDimension = false;
-                                let showHealth = false;
-                                if (playerList2[index].hasTag("nameFormatting:r")) {
-                                    nameFormatting += "§r";
-                                }
-                                if (playerList2[index].hasTag("nameFormatting:o")) {
-                                    nameFormatting += "§o";
-                                }
-                                if (playerList2[index].hasTag("nameFormatting:l")) {
-                                    nameFormatting += "§l";
-                                }
-                                if (playerList2[index].hasTag("nameFormatting:k")) {
-                                    nameFormatting += "§k";
-                                }
-                                if (playerList2[index].hasTag("nameColor:0")) {
-                                    nameFormatting += "§0";
-                                }
-                                else {
-                                    if (playerList2[index].hasTag("nameColor:1")) {
-                                        nameFormatting += "§1";
+                            try {
+                                if (!playerList2[index].hasTag("doNotSetNameTag")) {
+                                    let nameFormatting = "";
+                                    let nameGradientMode = undefined;
+                                    let showDimension = false;
+                                    let showHealth = false;
+                                    if (playerList2[index].hasTag("nameFormatting:r")) {
+                                        nameFormatting += "§r";
+                                    }
+                                    if (playerList2[index].hasTag("nameFormatting:o")) {
+                                        nameFormatting += "§o";
+                                    }
+                                    if (playerList2[index].hasTag("nameFormatting:l")) {
+                                        nameFormatting += "§l";
+                                    }
+                                    if (playerList2[index].hasTag("nameFormatting:k")) {
+                                        nameFormatting += "§k";
+                                    }
+                                    if (playerList2[index].hasTag("nameColor:0")) {
+                                        nameFormatting += "§0";
                                     }
                                     else {
-                                        if (playerList2[index].hasTag("nameColor:2")) {
-                                            nameFormatting += "§2";
+                                        if (playerList2[index].hasTag("nameColor:1")) {
+                                            nameFormatting += "§1";
                                         }
                                         else {
-                                            if (playerList2[index].hasTag("nameColor:3")) {
-                                                nameFormatting += "§3";
+                                            if (playerList2[index].hasTag("nameColor:2")) {
+                                                nameFormatting += "§2";
                                             }
                                             else {
-                                                if (playerList2[index].hasTag("nameColor:4")) {
-                                                    nameFormatting += "§4";
+                                                if (playerList2[index].hasTag("nameColor:3")) {
+                                                    nameFormatting += "§3";
                                                 }
                                                 else {
-                                                    if (playerList2[index].hasTag("nameColor:5")) {
-                                                        nameFormatting += "§5";
+                                                    if (playerList2[index].hasTag("nameColor:4")) {
+                                                        nameFormatting += "§4";
                                                     }
                                                     else {
-                                                        if (playerList2[index].hasTag("nameColor:6")) {
-                                                            nameFormatting +=
-                                                                "§6";
+                                                        if (playerList2[index].hasTag("nameColor:5")) {
+                                                            nameFormatting += "§5";
                                                         }
                                                         else {
-                                                            if (playerList2[index].hasTag("nameColor:7")) {
+                                                            if (playerList2[index].hasTag("nameColor:6")) {
                                                                 nameFormatting +=
-                                                                    "§7";
+                                                                    "§6";
                                                             }
                                                             else {
-                                                                if (playerList2[index].hasTag("nameColor:8")) {
+                                                                if (playerList2[index].hasTag("nameColor:7")) {
                                                                     nameFormatting +=
-                                                                        "§8";
+                                                                        "§7";
                                                                 }
                                                                 else {
-                                                                    if (playerList2[index].hasTag("nameColor:9")) {
+                                                                    if (playerList2[index].hasTag("nameColor:8")) {
                                                                         nameFormatting +=
-                                                                            "§9";
+                                                                            "§8";
                                                                     }
                                                                     else {
-                                                                        if (playerList2[index].hasTag("nameColor:a")) {
+                                                                        if (playerList2[index].hasTag("nameColor:9")) {
                                                                             nameFormatting +=
-                                                                                "§a";
+                                                                                "§9";
                                                                         }
                                                                         else {
-                                                                            if (playerList2[index].hasTag("nameColor:b")) {
+                                                                            if (playerList2[index].hasTag("nameColor:a")) {
                                                                                 nameFormatting +=
-                                                                                    "§b";
+                                                                                    "§a";
                                                                             }
                                                                             else {
-                                                                                if (playerList2[index].hasTag("nameColor:c")) {
+                                                                                if (playerList2[index].hasTag("nameColor:b")) {
                                                                                     nameFormatting +=
-                                                                                        "§c";
+                                                                                        "§b";
                                                                                 }
                                                                                 else {
-                                                                                    if (playerList2[index].hasTag("nameColor:d")) {
+                                                                                    if (playerList2[index].hasTag("nameColor:c")) {
                                                                                         nameFormatting +=
-                                                                                            "§d";
+                                                                                            "§c";
                                                                                     }
                                                                                     else {
-                                                                                        if (playerList2[index].hasTag("nameColor:e")) {
+                                                                                        if (playerList2[index].hasTag("nameColor:d")) {
                                                                                             nameFormatting +=
-                                                                                                "§e";
+                                                                                                "§d";
                                                                                         }
                                                                                         else {
-                                                                                            if (playerList2[index].hasTag("nameColor:f")) {
+                                                                                            if (playerList2[index].hasTag("nameColor:e")) {
                                                                                                 nameFormatting +=
-                                                                                                    "§f";
+                                                                                                    "§e";
                                                                                             }
                                                                                             else {
-                                                                                                if (playerList2[index].hasTag("nameColor:g")) {
+                                                                                                if (playerList2[index].hasTag("nameColor:f")) {
                                                                                                     nameFormatting +=
-                                                                                                        "§g";
+                                                                                                        "§f";
                                                                                                 }
                                                                                                 else {
-                                                                                                    if (playerList2[index].hasTag("nameColor:h")) {
+                                                                                                    if (playerList2[index].hasTag("nameColor:g")) {
                                                                                                         nameFormatting +=
-                                                                                                            "§h";
+                                                                                                            "§g";
                                                                                                     }
                                                                                                     else {
-                                                                                                        if (playerList2[index].hasTag("nameColor:i")) {
+                                                                                                        if (playerList2[index].hasTag("nameColor:h")) {
                                                                                                             nameFormatting +=
-                                                                                                                "§i";
+                                                                                                                "§h";
                                                                                                         }
                                                                                                         else {
-                                                                                                            if (playerList2[index].hasTag("nameColor:j")) {
+                                                                                                            if (playerList2[index].hasTag("nameColor:i")) {
                                                                                                                 nameFormatting +=
-                                                                                                                    "§j";
+                                                                                                                    "§i";
                                                                                                             }
                                                                                                             else {
-                                                                                                                if (playerList2[index].hasTag("nameColor:m")) {
+                                                                                                                if (playerList2[index].hasTag("nameColor:j")) {
                                                                                                                     nameFormatting +=
-                                                                                                                        "§m";
+                                                                                                                        "§j";
                                                                                                                 }
                                                                                                                 else {
-                                                                                                                    if (playerList2[index].hasTag("nameColor:n")) {
+                                                                                                                    if (playerList2[index].hasTag("nameColor:m")) {
                                                                                                                         nameFormatting +=
-                                                                                                                            "§n";
+                                                                                                                            "§m";
                                                                                                                     }
                                                                                                                     else {
-                                                                                                                        if (playerList2[index].hasTag("nameColor:p")) {
+                                                                                                                        if (playerList2[index].hasTag("nameColor:n")) {
                                                                                                                             nameFormatting +=
-                                                                                                                                "§p";
+                                                                                                                                "§n";
                                                                                                                         }
                                                                                                                         else {
-                                                                                                                            if (playerList2[index].hasTag("nameColor:q")) {
+                                                                                                                            if (playerList2[index].hasTag("nameColor:p")) {
                                                                                                                                 nameFormatting +=
-                                                                                                                                    "§q";
+                                                                                                                                    "§p";
                                                                                                                             }
                                                                                                                             else {
-                                                                                                                                if (playerList2[index].hasTag("nameColor:s")) {
+                                                                                                                                if (playerList2[index].hasTag("nameColor:q")) {
                                                                                                                                     nameFormatting +=
-                                                                                                                                        "§s";
+                                                                                                                                        "§q";
                                                                                                                                 }
                                                                                                                                 else {
-                                                                                                                                    if (playerList2[index].hasTag("nameColor:t")) {
+                                                                                                                                    if (playerList2[index].hasTag("nameColor:s")) {
                                                                                                                                         nameFormatting +=
-                                                                                                                                            "§t";
+                                                                                                                                            "§s";
                                                                                                                                     }
                                                                                                                                     else {
-                                                                                                                                        if (playerList2[index].hasTag("nameColor:u")) {
+                                                                                                                                        if (playerList2[index].hasTag("nameColor:t")) {
                                                                                                                                             nameFormatting +=
-                                                                                                                                                "§u";
+                                                                                                                                                "§t";
+                                                                                                                                        }
+                                                                                                                                        else {
+                                                                                                                                            if (playerList2[index].hasTag("nameColor:u")) {
+                                                                                                                                                nameFormatting +=
+                                                                                                                                                    "§u";
+                                                                                                                                            }
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 }
@@ -252,139 +254,142 @@ try {
                                             }
                                         }
                                     }
-                                }
-                                playerList2[index]
-                                    .getTags()
-                                    .filter((v) => v.startsWith("nameColor:"))
-                                    .forEach((v) => {
-                                    if (patternColors.includes(v.slice(10).toLowerCase())) {
-                                        nameFormatting +=
-                                            patternColorsMap[v.slice(10).toLowerCase()];
-                                    }
-                                    else if (Object.keys(patternFunctionList).includes(v.slice(10).toLowerCase())) {
-                                        nameGradientMode = v
-                                            .slice(10)
-                                            .toLowerCase();
-                                    }
-                                    else if ([
-                                        "0",
-                                        "1",
-                                        "2",
-                                        "3",
-                                        "4",
-                                        "5",
-                                        "6",
-                                        "7",
-                                        "8",
-                                        "9",
-                                        "a",
-                                        "b",
-                                        "c",
-                                        "d",
-                                        "e",
-                                        "f",
-                                        "g",
-                                        "h",
-                                        "i",
-                                        "j",
-                                        "m",
-                                        "n",
-                                        "p",
-                                        "q",
-                                        "s",
-                                        "t",
-                                        "u",
-                                    ].includes(v.slice(13).toLowerCase())) {
-                                        undefined;
-                                    }
-                                });
-                                playerList2[index]
-                                    .getTags()
-                                    .filter((v) => v.startsWith("nameFormatting:"))
-                                    .forEach((v) => {
-                                    if (["r", "o", "l", "k"].includes(v.slice(15).toLowerCase())) {
-                                        undefined;
-                                    }
-                                    else {
-                                        nameFormatting += v
-                                            .slice(15)
-                                            .toLowerCase();
-                                    }
-                                });
-                                if (playerList2[index].hasTag("config:health")) {
-                                    showHealth = true;
-                                }
-                                if (playerList2[index].hasTag("config:dimension")) {
-                                    showDimension = true;
-                                }
-                                let nameb = playerList2[index].hasTag("nameTagUseSudo")
-                                    ? !!nameGradientMode
-                                        ? evaluateChatColorType(playerList2[index]
-                                            .getTags()
-                                            .find((t) => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
-                                            world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
-                                            "sudo:")))
-                                            .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
-                                            world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
-                                            "sudo:").length), nameGradientMode)
-                                        : playerList2[index]
-                                            .getTags()
-                                            .find((t) => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
-                                            world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
-                                            "sudo:")))
-                                            .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
-                                            world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
-                                            "sudo:").length)
-                                    : !!playerList2[index]
+                                    playerList2[index]
                                         .getTags()
-                                        .find((t) => t.startsWith("nameTagSudo:"))
+                                        .filter((v) => v.startsWith("nameColor:"))
+                                        .forEach((v) => {
+                                        if (patternColors.includes(v.slice(10).toLowerCase())) {
+                                            nameFormatting +=
+                                                patternColorsMap[v.slice(10).toLowerCase()];
+                                        }
+                                        else if (Object.keys(patternFunctionList).includes(v.slice(10).toLowerCase())) {
+                                            nameGradientMode = v
+                                                .slice(10)
+                                                .toLowerCase();
+                                        }
+                                        else if ([
+                                            "0",
+                                            "1",
+                                            "2",
+                                            "3",
+                                            "4",
+                                            "5",
+                                            "6",
+                                            "7",
+                                            "8",
+                                            "9",
+                                            "a",
+                                            "b",
+                                            "c",
+                                            "d",
+                                            "e",
+                                            "f",
+                                            "g",
+                                            "h",
+                                            "i",
+                                            "j",
+                                            "m",
+                                            "n",
+                                            "p",
+                                            "q",
+                                            "s",
+                                            "t",
+                                            "u",
+                                        ].includes(v.slice(13).toLowerCase())) {
+                                            undefined;
+                                        }
+                                    });
+                                    playerList2[index]
+                                        .getTags()
+                                        .filter((v) => v.startsWith("nameFormatting:"))
+                                        .forEach((v) => {
+                                        if (["r", "o", "l", "k"].includes(v.slice(15).toLowerCase())) {
+                                            undefined;
+                                        }
+                                        else {
+                                            nameFormatting += v
+                                                .slice(15)
+                                                .toLowerCase();
+                                        }
+                                    });
+                                    if (playerList2[index].hasTag("config:health")) {
+                                        showHealth = true;
+                                    }
+                                    if (playerList2[index].hasTag("config:dimension")) {
+                                        showDimension = true;
+                                    }
+                                    let nameb = playerList2[index].hasTag("nameTagUseSudo")
                                         ? !!nameGradientMode
-                                            ? evaluateChatColorType(tryget(() => playerList2[index]
+                                            ? evaluateChatColorType(playerList2[index]
                                                 .getTags()
-                                                .find((t) => t.startsWith("nameTagSudo:"))
-                                                .slice(12)), nameGradientMode)
-                                            : tryget(() => playerList2[index]
+                                                .find((t) => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
+                                                world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
+                                                "sudo:")))
+                                                .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
+                                                world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
+                                                "sudo:").length), nameGradientMode)
+                                            : playerList2[index]
                                                 .getTags()
-                                                .find((t) => t.startsWith("nameTagSudo:"))
-                                                .slice(12))
-                                        : playerList2[index].hasTag("chatHideNameTag")
-                                            ? ""
-                                            : playerList2[index].hasTag("chatUseNameTag")
-                                                ? !!nameGradientMode
-                                                    ? evaluateChatColorType(playerList2[index].nameTag, nameGradientMode)
-                                                    : playerList2[index].nameTag
-                                                : !!nameGradientMode
-                                                    ? evaluateChatColorType(playerList2[index].name, nameGradientMode)
-                                                    : playerList2[index].name;
-                                let indexb = index;
-                                let rank = playerList2[indexb]
-                                    .getTags()
-                                    .filter((t) => t.startsWith(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ??
-                                    world.getDynamicProperty("andexdbSettings:chatRankPrefix") ??
-                                    "rank:")))
-                                    .map((t, index, array) => {
-                                    let rank = t.slice(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ??
+                                                .find((t) => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
+                                                world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
+                                                "sudo:")))
+                                                .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
+                                                world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
+                                                "sudo:").length)
+                                        : !!playerList2[index]
+                                            .getTags()
+                                            .find((t) => t.startsWith("nameTagSudo:"))
+                                            ? !!nameGradientMode
+                                                ? evaluateChatColorType(tryget(() => playerList2[index]
+                                                    .getTags()
+                                                    .find((t) => t.startsWith("nameTagSudo:"))
+                                                    .slice(12)), nameGradientMode)
+                                                : tryget(() => playerList2[index]
+                                                    .getTags()
+                                                    .find((t) => t.startsWith("nameTagSudo:"))
+                                                    .slice(12))
+                                            : playerList2[index].hasTag("chatHideNameTag")
+                                                ? ""
+                                                : playerList2[index].hasTag("chatUseNameTag")
+                                                    ? !!nameGradientMode
+                                                        ? evaluateChatColorType(playerList2[index].nameTag, nameGradientMode)
+                                                        : playerList2[index].nameTag
+                                                    : !!nameGradientMode
+                                                        ? evaluateChatColorType(playerList2[index].name, nameGradientMode)
+                                                        : playerList2[index].name;
+                                    let indexb = index;
+                                    let rank = playerList2[indexb]
+                                        .getTags()
+                                        .filter((t) => t.startsWith(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ??
                                         world.getDynamicProperty("andexdbSettings:chatRankPrefix") ??
-                                        "rank:").length);
-                                    let tags = playerList2[indexb].getTags();
-                                    return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}\``);
-                                })
-                                    .join(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ??
-                                    config.chatRanks.rankDisplaySeparator));
-                                if (rank == "") {
-                                    let tags = playerList2[indexb].getTags();
-                                    rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
+                                        "rank:")))
+                                        .map((t, index, array) => {
+                                        let rank = t.slice(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:chatRankPrefix") ??
+                                            world.getDynamicProperty("andexdbSettings:chatRankPrefix") ??
+                                            "rank:").length);
+                                        let tags = playerList2[indexb].getTags();
+                                        return eval(`\`${String(world.getDynamicProperty("andexdbSettings:rankTemplateString") ?? "[${rank}§r§f]")}\``);
+                                    })
+                                        .join(String(playerList2[indexb].getDynamicProperty("andexdbPersonalSettings:rankDisplaySeparator") ??
+                                        config.chatRanks.rankDisplaySeparator));
+                                    if (rank == "") {
+                                        let tags = playerList2[indexb].getTags();
+                                        rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
+                                    }
+                                    let dimension = dimensionTypeDisplayFormattingE[playerList2[index].dimension.id];
+                                    const currentHealth = playerList2[indexb].getComponent("health").currentValue;
+                                    const maxHealth = playerList2[indexb].getComponent("health").effectiveMax;
+                                    playerList2[indexb].nameTag = eval(`\`${config.chatRanks.nameTagTemplateString}\``); /*(
+            playerList2[index].hasTag("nameTagUseSudo")?
+            playerList2[index].getTags().find(t=>t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
+            .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length):
+            tryget(()=>playerList2[index].getTags().find(t=>t.startsWith("nameTagSudo:")).slice(12))??playerList2[index].name
+        )*/
                                 }
-                                let dimension = dimensionTypeDisplayFormattingE[playerList2[index].dimension.id];
-                                const currentHealth = playerList2[indexb].getComponent("health").currentValue;
-                                const maxHealth = playerList2[indexb].getComponent("health").effectiveMax;
-                                playerList2[indexb].nameTag =
-                                    eval(config.chatRanks.nameTagTemplateString ?? `\`${'${(showDimension ? `[${dimension}§r§f] ` : "")}${rank} ${nameb}${(showHealth ? `§r§f[${currentHealth}/${maxHealth}] ` : "")}'}\``); /*(
-    playerList2[index].hasTag("nameTagUseSudo")?
-    playerList2[index].getTags().find(t=>t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))
-    .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:").length):
-    tryget(()=>playerList2[index].getTags().find(t=>t.startsWith("nameTagSudo:")).slice(12))??playerList2[index].name
-)*/
+                            }
+                            catch (e) {
+                                console.error(e, e.stack);
+                                world.getPlayers({ tags: ["getNameTagRankSettingsErrors"] }).forEach(p => p.sendMessage("§cError while setting " + tryget(() => playerList2[index].name) + "'s name tag in rankNameTags_editorStickActionbar_artificialLagMS: " + e + e.stack));
                             }
                         }
                         try {

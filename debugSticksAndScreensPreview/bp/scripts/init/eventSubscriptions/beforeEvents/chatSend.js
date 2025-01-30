@@ -3,6 +3,9 @@ import { srun } from "init/functions/srun";
 import { chatMessage } from "modules/chat/functions/chatMessage";
 import { getPlayersWithAnyOfTags } from "modules/commands/functions/getPlayersWithAnyOfTags";
 subscribedEvents.beforeChatSend = world.beforeEvents.chatSend.subscribe((eventData) => {
+    if (bluemods_anticheat_format_version != null && eventData.message.startsWith(blueModsAnticheatConfig.prefix)) {
+        return;
+    }
     try {
         getPlayersWithAnyOfTags([
             "getBeforeChatSendNotifications",

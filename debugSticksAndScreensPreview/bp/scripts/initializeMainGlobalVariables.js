@@ -1,12 +1,15 @@
 import { system } from "@minecraft/server";
 import "init/functions/breakpoint";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const current_format_version = "1.29.4";
+export const current_format_version = "1.30.0";
 globalThis.format_version = current_format_version;
 export const current_supported_minecraft_version = "1.21.5x";
 globalThis.supported_minecraft_version = current_supported_minecraft_version;
 globalThis.entity_scale_format_version = null;
 globalThis.multipleEntityScaleVersionsDetected = false;
+globalThis.bluemods_anticheat_format_version = null;
+globalThis.multipleBlueModsAnticheatVersionsDetected = false;
+globalThis.blueModsAnticheatConfig = {};
 globalThis.modules = {
     assets: {
         classes: {},

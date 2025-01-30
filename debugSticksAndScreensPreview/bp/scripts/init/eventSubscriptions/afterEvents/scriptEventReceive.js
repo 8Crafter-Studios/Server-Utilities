@@ -42,7 +42,7 @@ subscribedEvents.afterScriptEventReceive =
                 }
             });
         }
-        if (id.startsWith("andexsa:")) {
+        if (id.startsWith("andexsa:") || id.startsWith("bluemods:")) {
             return;
         }
         if (id == "andexdb:entityScaleInitSignal") {
@@ -65,6 +65,32 @@ subscribedEvents.afterScriptEventReceive =
                 globalThis.multipleEntityScaleVersionsDetected = true;
             }
             entity_scale_format_version = message.trim();
+            return;
+        }
+        if (id == "andexdb:blueModsInitSignal") {
+            world
+                .getDimension("overworld")
+                .runCommand(`/scriptevent bluemods:blueModsInitSignalReceivedByDebugSticks ${format_version}`);
+            if (bluemods_anticheat_format_version != null &&
+                message.trim() != entity_scale_format_version) {
+                globalThis.multipleBlueModsAnticheatVersionsDetected = true;
+            }
+            entity_scale_format_version = message.trim();
+            return;
+        }
+        else if (id == "andexdb:blueModsTestSignal") {
+            world
+                .getDimension("overworld")
+                .runCommand(`/scriptevent bluemods:blueModsTestSignalReceivedByDebugSticks ${format_version}`);
+            if (bluemods_anticheat_format_version != null &&
+                message.trim() != entity_scale_format_version) {
+                globalThis.multipleBlueModsAnticheatVersionsDetected = true;
+            }
+            entity_scale_format_version = message.trim();
+            return;
+        }
+        else if (id == "andexdb:blueModsAnticheatConfig") {
+            blueModsAnticheatConfig = JSON.parse(message.trim());
             return;
         }
         if (id == "andexdb:scriptevent") {

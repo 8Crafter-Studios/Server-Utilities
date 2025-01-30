@@ -1366,6 +1366,37 @@ export const commands = [
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
         formatting_code: "§r§f",
+        commandName: "bluemodsversion",
+        escregexp: {
+            v: "^bluemodsversion$",
+        },
+        aliases: [
+            {
+                commandName: "bmver",
+                escregexp: {
+                    v: "^bmver$",
+                },
+            },
+        ],
+        formats: [
+            {
+                format: "bluemodsversion",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["system", "world", "server"],
+        commandSettingsId: "built-inCommandSettings:bluemodsversion",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true,
+        ultraSecurityModeSecurityLevel: "admin",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
         commandName: "brush",
         escregexp: {
             v: "^brush$",
