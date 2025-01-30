@@ -5,7 +5,14 @@
       "identifier": "andexdb:tickingarea_6",
       "is_spawnable": true,
       "is_summonable": true,
-      "is_experimental": false
+      "is_experimental": false,
+      "properties": {
+        "andexdb:is_visible": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        }
+      }
     },
     "components": {
       "minecraft:collision_box": {
@@ -20,31 +27,47 @@
           }
         ]
       },
-      "minecraft:tick_world":{
+      "minecraft:tick_world": {
         "distance_to_players": 128,
         "never_despawn": true,
         "radius": 6
       },
       "minecraft:type_family": {
-        "family": [ "tickingarea", "tickingarea_6" ]
+        "family": [
+          "tickingarea",
+          "tickingarea_6"
+        ]
       },
-      "minecraft:fire_immune":{
+      "minecraft:fire_immune": {},
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": false
       },
-      "minecraft:pushable":{
-          "is_pushable": false,
-          "is_pushable_by_piston": false
+      "minecraft:persistent": {},
+      "minecraft:physics": {
+        "has_collision": false,
+        "has_gravity": false
       },
-      "minecraft:persistent":{
+      "minecraft:custom_hit_test": {
+        "hitboxes": [
+        ]
       },
-      "minecraft:physics":{
-          "has_collision": false,
-          "has_gravity": false
-      },
-      "minecraft:is_hidden_when_invisible": {
-      },
+      "minecraft:is_hidden_when_invisible": {},
       "minecraft:nameable": {
         "allow_name_tag_renaming": false,
         "always_show": false
+      }
+    },
+    "events": {
+      "andexdb:make_tickingarea_invisible": {
+        "set_property": {
+          "andexdb:is_visible": false
+        }
+      },
+      "andexdb:make_tickingarea_visible": {
+        "set_property": {
+          "andexdb:is_visible": true
+        }
       }
     }
   }

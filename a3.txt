@@ -273,3 +273,29 @@ function getFiles (dir, files_){
 const out = 'export const src = ' + JSON.stringify(getFiles('BP/src'), undefined, 4) + '\nexport const scripts = ' + JSON.stringify(getFiles('BP/scripts'), undefined, 4) + '\nexport const declaration = ' + JSON.stringify(getFiles('BP/declaration'), undefined, 4);
 require('copy-paste').global();
 copy(out);"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"Andexter".split("").map(s=>String.fromCharCode(s.charCodeAt()+0xE400)).join("") + "8'" + "s Pet Player".split("").map(s=>String.fromCharCode(s.charCodeAt()+0xE400)).join("")
+console.log(("Andexter".split("").map(s=>String.fromCharCode(s.charCodeAt()+0xE400)).join("") + "8'" + "s Pet Player".split("").map(s=>String.fromCharCode(s.charCodeAt()+0xE400)).join("")).split("").map(v=>"\\u"+v.charCodeAt().toString(16).toUpperCase().padStart(4, 0)).join(""))

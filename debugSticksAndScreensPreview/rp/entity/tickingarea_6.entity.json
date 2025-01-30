@@ -1,0 +1,37 @@
+{
+  "format_version": "1.20.40",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "andexdb:tickingarea_6",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/tickingarea_6"
+      },
+      "geometry": {
+        "default": "geometry.andexdb.tickingarea_6",
+        "invisible": "geometry.none"
+      },
+      "scripts": {
+        "initialize": [
+          "variable.color_r = 1.0;",
+          "variable.color_g = 1.0;",
+          "variable.color_b = 1.0;",
+          "variable.color_a = 1.0;"
+        ],
+        "animate": [
+          "main"
+        ]
+      },
+      "animations": {
+        "main": "controller.animation.andexdb.tickingarea.main",
+        "number_hover": "animation.andexdb.tickingarea.number_hover",
+        "number_spin": "animation.andexdb.tickingarea.number_spin"
+      },
+      "render_controllers": [
+        "controller.render.andexdb:tickingarea.main"
+      ]
+    }
+  }
+}

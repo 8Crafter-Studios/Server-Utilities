@@ -754,6 +754,30 @@ export const commands = [
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
         formatting_code: "§r§f",
+        commandName: "\\\\oreplace",
+        escregexp: {
+            v: "^\\\\oreplace$",
+        },
+        formats: [
+            {
+                format: "\\oreplace",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["system", "world", "server", "worldedit"],
+        commandSettingsId: "built-inCommandSettings:\\oreplace",
+        deprecated: false,
+        functional: false,
+        hidden: false,
+        enabled: true,
+        undoSupported: 1,
+        ultraSecurityModeSecurityLevel: "WorldEdit",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
         commandName: "\\\\paste",
         escregexp: {
             v: "^\\\\paste$",

@@ -57,7 +57,7 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
         event.cancel = true;
         if (securityVariables.ultraSecurityModeEnabled) {
             if (securityVariables.testPlayerForPermission(event.player, "andexdb.canUseDebugStick") == false) {
-                event.player.sendMessage("§cYou do not have permission to use a Debug Stick. You need the following permission to use this item: andexdb.canUseDebugStick");
+                event.player.sendMessage("§cYou do not have permission to use an Debug Stick. You need the following permission to use this item: andexdb.canUseDebugStick");
                 return;
             }
         }

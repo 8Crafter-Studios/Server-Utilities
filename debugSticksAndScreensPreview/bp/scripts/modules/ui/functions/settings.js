@@ -17,6 +17,7 @@ import { uiSettings } from "./uiSettings";
 import { editModuleImportsConfig } from "./editModuleImportsConfig";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
+import { moneySystemSettings } from "./moneySystemSettings";
 export async function settings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
         ? sourceEntitya.player
@@ -45,7 +46,8 @@ export async function settings(sourceEntitya) {
     form.button("Notifications Settings", "textures/ui/icon_bell");
     form.button("Home System Settings", "textures/ui/store_home_icon");
     form.button("TPA System Settings", "textures/items/ender_pearl");
-    form.button("Module Imports", "textures/items/import");
+    form.button("Money System Settings", "textures/items/emerald");
+    form.button("Module Imports", "textures/ui/import");
     form.button("Manage Game Rules", "textures/ui/controller_glyph_color");
     form.button("Extra Features", "textures/ui/color_plus");
     form.button("Advanced", "textures/ui/creator_glyph_color");
@@ -133,7 +135,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                 }
                 break;
             case 9:
-                if ((await editModuleImportsConfig(sourceEntity)) == 1) {
+                if ((await moneySystemSettings(sourceEntity)) == 1) {
                     return await settings(sourceEntity);
                 }
                 else {
@@ -141,7 +143,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                 }
                 break;
             case 10:
-                if ((await manageGameRulesUI(sourceEntity)) == 1) {
+                if ((await editModuleImportsConfig(sourceEntity)) == 1) {
                     return await settings(sourceEntity);
                 }
                 else {
@@ -149,7 +151,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                 }
                 break;
             case 11:
-                if ((await extraFeaturesSettings(sourceEntity)) == 1) {
+                if ((await manageGameRulesUI(sourceEntity)) == 1) {
                     return await settings(sourceEntity);
                 }
                 else {
@@ -157,7 +159,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                 }
                 break;
             case 12:
-                if ((await advancedSettings(sourceEntity)) == 1) {
+                if ((await extraFeaturesSettings(sourceEntity)) == 1) {
                     return await settings(sourceEntity);
                 }
                 else {
@@ -165,8 +167,16 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                 }
                 break;
             case 13:
-                return 1;
+                if ((await advancedSettings(sourceEntity)) == 1) {
+                    return await settings(sourceEntity);
+                }
+                else {
+                    return 0;
+                }
+                break;
             case 14:
+                return 1;
+            case 15:
                 return 0;
             default:
                 return 1;

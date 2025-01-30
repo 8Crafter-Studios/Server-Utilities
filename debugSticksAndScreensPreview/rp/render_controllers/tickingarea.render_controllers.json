@@ -1,0 +1,27 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.andexdb:tickingarea.main": {
+      "arrays": {
+        "geometries": {
+          "Array.geos": [
+            "Geometry.invisible",
+            "Geometry.default"
+          ]
+        }
+      },
+      "geometry": "Array.geos[(q.property('andexdb:is_visible') == true) ? 1.0 : 0.0]",
+      "materials": [ { "*": "material.default" } ],
+      "textures": [ "texture.default" ],
+      "color": {
+        "r": "(variable.color_r ?? 1.0)",
+        "g": "(variable.color_g ?? 1.0)",
+        "b": "(variable.color_b ?? 1.0)",
+        "a": "(variable.color_a ?? 1.0)"
+      }/* ,
+      "part_visibility": [
+        { "*": "" }
+      ] */
+    }
+  }
+}

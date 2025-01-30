@@ -85,6 +85,9 @@
          "path" : ".git/hooks/pre-commit.sample"
       },
       {
+         "path" : ".git/objects/2c/b0f8e2c561c4d96f54faf7715266043b6d6bd7"
+      },
+      {
          "path" : ".git/hooks/pre-push.sample"
       },
       {
@@ -328,6 +331,9 @@
          "path" : ".git/objects/6c/6e5c3832a5a5cb8c03345b329d97db2d763e19"
       },
       {
+         "path" : "render_controllers/tickingarea.render_controllers.json"
+      },
+      {
          "path" : ".git/objects/f6/7e5fcb989289c14ed103bb7c524ad7dc05b638"
       },
       {
@@ -394,6 +400,9 @@
          "path" : ".git/objects/94/e84a10503ee5f20f525b131605755890d824b1"
       },
       {
+         "path" : "animations/tickingarea.animation.json"
+      },
+      {
          "path" : ".git/objects/98/1ef169f56e5c10a2d5b231a580ce25d04020a5"
       },
       {
@@ -406,6 +415,12 @@
          "path" : ".git/objects/9c/0acce68078417231eba64cdb1aa6f773c0185f"
       },
       {
+         "path" : ".git/objects/a7/d849895fbea85a6dbc08e9c749b322e7c0f39b"
+      },
+      {
+         "path" : ".git/objects/9e/98fff124335e47054a51cb03f1db1dd40d6d22"
+      },
+      {
          "path" : ".git/objects/a3/d0b2fa3008205deaf0777e465a38ae64896d65"
       },
       {
@@ -416,9 +431,6 @@
       },
       {
          "path" : ".git/objects/a6/f17d6040a0ca8fd155ec52e59ea47b634ad9ad"
-      },
-      {
-         "path" : ".git/objects/a7/d849895fbea85a6dbc08e9c749b322e7c0f39b"
       },
       {
          "path" : ".git/objects/aa/d72f146fb55cea82ff1af0aa090ca24055667f"
@@ -454,6 +466,9 @@
          "path" : ".git/objects/b5/5b46fffec3baeb4039f2b3d4bca3df14f42621"
       },
       {
+         "path" : "animation_controllers/tickingarea.animation_controllers.json"
+      },
+      {
          "path" : ".git/objects/b7/49bd14bc0fed584d0548f05ca47207d5f96b40"
       },
       {
@@ -464,6 +479,9 @@
       },
       {
          "path" : ".git/objects/be/5c79f9b9cf2d3c1129676a39a097eca2f5084a"
+      },
+      {
+         "path" : ".git/objects/be/b879abfbdc0a9f04b5b5d539cec77650c0d418"
       },
       {
          "path" : ".git/objects/bf/657a7318ed5a06ab5538d11f5a0dfabfd0ac88"
@@ -595,7 +613,16 @@
          "path" : "animations/animation.none.none.none.animation.json"
       },
       {
+         "path" : "textures/items/netherite_downgrade_smithing_template.png"
+      },
+      {
+         "path" : "blockbench_models/tickingarea.bbmodel"
+      },
+      {
          "path" : "contents.json"
+      },
+      {
+         "path" : "entity/tickingarea_6.entity.json"
       },
       {
          "path" : "font/glyph_EF.png"
@@ -614,6 +641,12 @@
       },
       {
          "path" : "models/blocks/no_bones.geo.json"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_pressed.png"
+      },
+      {
+         "path" : "models/entity/tickingarea.geo.json"
       },
       {
          "path" : "pack_icon.png"
@@ -676,6 +709,9 @@
          "path" : "particles/xz_axis_particle_pos1.json"
       },
       {
+         "path" : "textures/entity/tickingarea_6.png"
+      },
+      {
          "path" : "particles/xz_axis_particle_pos1_north.json"
       },
       {
@@ -698,6 +734,12 @@
       },
       {
          "path" : "textures/blocks/gray_outline_block_texture.png"
+      },
+      {
+         "path" : "textures/ui/button_borderless_light_blue_pressed.json"
+      },
+      {
+         "path" : "textures/entity/timer_6c.png"
       },
       {
          "path" : "textures/item_texture.json"
@@ -725,9 +767,6 @@
       },
       {
          "path" : "textures/items/diamond_red_up_arrow_transform_template.png"
-      },
-      {
-         "path" : "textures/items/netherite_downgrade_smithing_template.png"
       },
       {
          "path" : "textures/particle/slight_red_tint.png"
@@ -794,12 +833,6 @@
       },
       {
          "path" : "textures/ui/button_borderless_light_blue_hover_pressed.png"
-      },
-      {
-         "path" : "textures/ui/button_borderless_light_blue_pressed.json"
-      },
-      {
-         "path" : "textures/ui/button_borderless_light_blue_pressed.png"
       },
       {
          "path" : "textures/ui/debug_sticks_pack_icon.png"
