@@ -37,7 +37,7 @@ export async function extraFeaturesSettings(sourceEntitya) {
     form.button("World Border System", "textures/ui/worldsIcon");
     form.button("Shop System", "textures/ui/store_home_icon");
     form.button("Back", "textures/ui/arrow_left");
-    form.button("Crossout", "textures/ui/arrow_left"); /*
+    form.button("Close", "textures/ui/crossout"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     return await forceShow(form, sourceEntity)
         .then(async (ra) => {

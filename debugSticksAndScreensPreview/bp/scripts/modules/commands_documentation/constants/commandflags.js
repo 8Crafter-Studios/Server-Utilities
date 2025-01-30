@@ -4,31 +4,37 @@ a: kill animals
 b: kill ambient mobs
 c: kill cloned players
 e: kill everything
+f: kill animals and ambient mobs
 g: kill golems
 h: kill hostile mobs
 i: kill items and experience orbs
 j: kill projectiles
 l: kill bosses
+n: kill npcs
 o: kill paintings
 p: kill players
 r: kill armor stands
 t: allow killing of name tagged entities
-v: kill vehicles`,
+v: kill vehicles
+w: kill water mobs`,
     "butcherdespawn": `No Flags: Kill items and experience orbs.
 a: despawn animals
 b: despawn ambient mobs
 c: despawn cloned players
 e: despawn everything
+f: despawn animals and ambient mobs
 g: despawn golems
 h: despawn hostile mobs
 i: despawn items and experience orbs
 j: despawn projectiles
 l: despawn bosses
+n: despawn npcs
 o: despawn paintings
 p: despawn players
 r: despawn armor stands
 t: allow despawning of name tagged entities
-v: despawn vehicles`,
+v: despawn vehicles
+w: despawn water mobs`,
     "\\\\cut": `m: cut to memory instead of storage
 e: don't include entities
 b: don't include blocks`,

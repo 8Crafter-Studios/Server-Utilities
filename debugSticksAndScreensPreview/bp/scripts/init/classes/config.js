@@ -586,11 +586,11 @@ export class config {
                 world.setDynamicProperty("andexdbSettings:messageTemplateString", messageTemplateString ?? '§r${timestampenabled?`[${timestamp}]`:""}${ranks}§r${(ranks!="")?" ":""}<${name}§r> ${message}');
             },
             get nameTagTemplateString() {
-                return String(world.getDynamicProperty("andexdbSettings:messageTemplateString") ??
+                return String(world.getDynamicProperty("andexdbSettings:nameTagTemplateString") ??
                     '${(showDimension ? `[${dimension}§r§f] ` : "")}${rank} ${nameb}${(showHealth ? `§r§f[${currentHealth}/${maxHealth}] ` : "")}');
             },
-            set nameTagTemplateString(messageTemplateString) {
-                world.setDynamicProperty("andexdbSettings:messageTemplateString", messageTemplateString ?? '${(showDimension ? `[${dimension}§r§f] ` : "")}${rank} ${nameb}${(showHealth ? `§r§f[${currentHealth}/${maxHealth}] ` : "")}');
+            set nameTagTemplateString(nameTagTemplateString) {
+                world.setDynamicProperty("andexdbSettings:nameTagTemplateString", nameTagTemplateString ?? '${(showDimension ? `[${dimension}§r§f] ` : "")}${rank} ${nameb}${(showHealth ? `§r§f[${currentHealth}/${maxHealth}] ` : "")}');
             },
             get defaultRankTemplateString() {
                 return String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "");

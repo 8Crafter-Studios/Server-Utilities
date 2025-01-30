@@ -28,7 +28,7 @@ export class MoneySystem {
         }
         if (config.moneySystem.useScoreboardBasedMoneySystem) {
             try {
-                world.scoreboard.getObjective(config.moneySystem.scoreboardName).setScore(world.scoreboard.getParticipants().find(v => tryget(() => v.getEntity()?.id) == this.playerID) ?? world.scoreboard.getParticipants().find(v => v.id == savedPlayer.getSavedPlayer("player:" + this.playerID).scoreboardIdentity), (this.money + amount.toBigInt()).toNumber());
+                world.scoreboard.getObjective(config.moneySystem.scoreboardName).setScore(world.scoreboard.getParticipants().find(v => tryget(() => v.getEntity()?.id) == this.playerID) ?? world.scoreboard.getParticipants().find(v => v.id == savedPlayer.getSavedPlayer("player:" + this.playerID).scoreboardIdentity), Math.min((this.money + amount.toBigInt()).toNumber(), 2147483647));
             }
             catch { }
             ;
@@ -49,7 +49,7 @@ export class MoneySystem {
         }
         if (config.moneySystem.useScoreboardBasedMoneySystem) {
             try {
-                world.scoreboard.getObjective(config.moneySystem.scoreboardName).setScore(world.scoreboard.getParticipants().find(v => tryget(() => v.getEntity()?.id) == this.playerID) ?? world.scoreboard.getParticipants().find(v => v.id == savedPlayer.getSavedPlayer("player:" + this.playerID).scoreboardIdentity), (this.money - amount.toBigInt()).toNumber());
+                world.scoreboard.getObjective(config.moneySystem.scoreboardName).setScore(world.scoreboard.getParticipants().find(v => tryget(() => v.getEntity()?.id) == this.playerID) ?? world.scoreboard.getParticipants().find(v => v.id == savedPlayer.getSavedPlayer("player:" + this.playerID).scoreboardIdentity), Math.min((this.money - amount.toBigInt()).toNumber(), 2147483647));
             }
             catch { }
             ;
@@ -70,7 +70,7 @@ export class MoneySystem {
         }
         if (config.moneySystem.useScoreboardBasedMoneySystem) {
             try {
-                world.scoreboard.getObjective(config.moneySystem.scoreboardName).setScore(world.scoreboard.getParticipants().find(v => tryget(() => v.getEntity()?.id) == this.playerID) ?? world.scoreboard.getParticipants().find(v => v.id == savedPlayer.getSavedPlayer("player:" + this.playerID).scoreboardIdentity), amount.toNumber());
+                world.scoreboard.getObjective(config.moneySystem.scoreboardName).setScore(world.scoreboard.getParticipants().find(v => tryget(() => v.getEntity()?.id) == this.playerID) ?? world.scoreboard.getParticipants().find(v => v.id == savedPlayer.getSavedPlayer("player:" + this.playerID).scoreboardIdentity), Math.min(amount.toNumber(), 2147483647));
             }
             catch { }
             ;

@@ -26614,7 +26614,7 @@ ${command.dp}snapshot list`);
                         types.push("minecraft:area_effect_cloud", "minecraft:tnt");
                     }
                     if (args[1].includes("j")) {
-                        types.push("minecraft:arrow", "minecraft:snowball", "minecraft:ice_bomb", "minecraft:wind_charge_projectile", "minecraft:egg", "minecraft:dragon_fireball", "minecraft:fireball", "minecraft:small_fireball", "minecraft:xb_bottle", "minecraft:wither_skull", "minecraft:wither_skull_dangerous", "minecraft:thrown_trident", "minecraft:splash_potion", "minecraft:lingering_potion", "minecraft:shulker_bullet");
+                        types.push("minecraft:arrow", "minecraft:snowball", "minecraft:ice_bomb", "minecraft:wind_charge_projectile", "minecraft:egg", "minecraft:dragon_fireball", "minecraft:fireball", "minecraft:small_fireball", "minecraft:xp_bottle", "minecraft:wither_skull", "minecraft:wither_skull_dangerous", "minecraft:thrown_trident", "minecraft:splash_potion", "minecraft:lingering_potion", "minecraft:shulker_bullet");
                     }
                     if (args[1].includes("n")) {
                         types.push("minecraft:npc");
@@ -26697,7 +26697,7 @@ ${command.dp}snapshot list`);
                         types.push("minecraft:area_effect_cloud", "minecraft:tnt");
                     }
                     if (args[1].includes("j")) {
-                        types.push("minecraft:arrow", "minecraft:snowball", "minecraft:ice_bomb", "minecraft:wind_charge_projectile", "minecraft:egg", "minecraft:dragon_fireball", "minecraft:fireball", "minecraft:small_fireball", "minecraft:xb_bottle", "minecraft:wither_skull", "minecraft:wither_skull_dangerous", "minecraft:thrown_trident", "minecraft:splash_potion", "minecraft:lingering_potion", "minecraft:shulker_bullet");
+                        types.push("minecraft:arrow", "minecraft:snowball", "minecraft:ice_bomb", "minecraft:wind_charge_projectile", "minecraft:egg", "minecraft:dragon_fireball", "minecraft:fireball", "minecraft:small_fireball", "minecraft:xp_bottle", "minecraft:wither_skull", "minecraft:wither_skull_dangerous", "minecraft:thrown_trident", "minecraft:splash_potion", "minecraft:lingering_potion", "minecraft:shulker_bullet");
                     }
                     if (args[1].includes("n")) {
                         types.push("minecraft:npc");
