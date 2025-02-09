@@ -44,6 +44,16 @@ Find/Replace to update the old gametests block types:
     (?<=includedInPermissions: \[[0-9a-zA-Z\."\s\n,]*)(?:,\s?)?"andexdb.fullControl"(?=[0-9a-zA-Z\."\s\n,]*\])
     {EMPTY STRING}
 
+    Find(RegEx): (?<=\s*get [a-zA-Z]+\(\))(?=\s?\{
+\s*return [a-zA-Z]+\(world\.getDynamicProperty\("[^"]+"\) \?\? .+\);
+\s*\},
+\s*set [a-zA-Z]+\([a-zA-Z]+: ([a-zA-Z|\s]+) \| undefined\) \{)
+    Replace: : $1
+
+    Find(RegEx): const sourceEntity = sourceEntitya instanceof executeCommandPlayerW \? sourceEntitya\.player : sourceEntitya(?![\s\n]+assertIsDefined\(sourceEntity\);)
+    Replace: const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya
+        assertIsDefined(sourceEntity);
+
 
 
 (async()=>{const colorCore = await import("color-core"); console.log(Object.keys(colorCore.default).map(v=>`exports.${v} as ${v}`).join(", "))})()
