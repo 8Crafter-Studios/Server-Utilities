@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import GameTestExtensions from "./GameTestExtensions.js";
 import * as GameTest from "@minecraft/server-gametest";
-import { BlockPistonState, Direction, Entity, EntityDamageCause, FluidContainer, FluidType, ItemStack, ItemTypes, PotionEffectType, world, } from "@minecraft/server";
+import { Block, BlockFluidContainerComponent, BlockPistonState, BlockRecordPlayerComponent, Direction, Entity, EntityDamageCause, EntityInventoryComponent, FluidContainer, FluidType, ItemStack, ItemType, ItemTypes, Player, PotionEffectType, world, } from "@minecraft/server";
 import mcMath from "@minecraft/math.js";
 GameTest.register("APITests", "on_entity_created", (test) => {
     const entitySpawnCallback = world.afterEvents.entitySpawn.subscribe((entity) => {
@@ -69,8 +69,8 @@ GameTest.register("APITests", "add_effect", (test) => {
     const villager = test.spawn(villagerId, villagerLoc);
     const duration = 20;
     villager.addEffect("poison", duration);
-    test.assertEntityState(villagerLoc, villagerId, (entity) => entity.getEffect("poison").duration == duration);
-    test.assertEntityState(villagerLoc, villagerId, (entity) => entity.getEffect("poison").amplifier == 1);
+    test.assertEntityState(villagerLoc, villagerId, (entity) => entity.getEffect("poison")?.duration == duration);
+    test.assertEntityState(villagerLoc, villagerId, (entity) => entity.getEffect("poison")?.amplifier == 1);
     test.runAfterDelay(duration, () => {
         test.assertEntityState(villagerLoc, villagerId, (entity) => entity.getEffect("poison") === undefined);
         test.succeed();
@@ -286,7 +286,7 @@ GameTest.register("APITests", "chat", (test) => {
             eventData.cancel = true;
         }
         else if (eventData.message === "!players") {
-            test.print(`There are ${eventData.targets.length} players in the server.`);
+            test.print(`There are ${eventData.targets?.length} players in the server.`);
             for (const target of eventData.targets) {
                 test.print("Player: " + target.name);
             }
@@ -359,25 +359,25 @@ GameTest.register("APITests", "piston", (test) => {
     const dimension = test.getDimension();
     const pistonLoc = { x: 1, y: 2, z: 1 };
     const redstoneLoc = { x: 1, y: 2, z: 0 };
-    const pistonComp = test.getDimension().getBlock(test.worldBlockLocation(pistonLoc)).getComponent("piston");
+    const pistonComp = test.getDimension().getBlock(test.worldBlockLocation(pistonLoc))?.getComponent("piston");
     test.assert(pistonComp != undefined, "Expected piston component");
     let assertPistonState = (isMoving, isExpanded, isExpanding, isRetracted, isRetracting) => {
-        test.assert(pistonComp.isMoving === isMoving, `Unexpected isMoving, expected[${isMoving}] actual[${pistonComp.isMoving}]`);
-        test.assert((pistonComp.state == BlockPistonState.Expanded) === isExpanded, `Unexpected isExpanded, expected[${isExpanded}] actual[${(pistonComp.state == BlockPistonState.Expanded)}]`);
-        test.assert((pistonComp.state == BlockPistonState.Expanding) === isExpanding, `Unexpected isExpanding, expected[${isExpanding}] actual[${(pistonComp.state == BlockPistonState.Expanding)}]`);
-        test.assert((pistonComp.state == BlockPistonState.Retracted) === isRetracted, `Unexpected isRetracted, expected[${isRetracted}] actual[${(pistonComp.state == BlockPistonState.Retracted)}]`);
-        test.assert((pistonComp.state == BlockPistonState.Retracting) === isRetracting, `Unexpected isRetracting, expected[${isRetracting}] actual[${(pistonComp.state == BlockPistonState.Retracting)}]`);
+        test.assert(pistonComp?.isMoving === isMoving, `Unexpected isMoving, expected[${isMoving}] actual[${pistonComp?.isMoving}]`);
+        test.assert((pistonComp?.state == BlockPistonState.Expanded) === isExpanded, `Unexpected isExpanded, expected[${isExpanded}] actual[${(pistonComp?.state == BlockPistonState.Expanded)}]`);
+        test.assert((pistonComp?.state == BlockPistonState.Expanding) === isExpanding, `Unexpected isExpanding, expected[${isExpanding}] actual[${(pistonComp?.state == BlockPistonState.Expanding)}]`);
+        test.assert((pistonComp?.state == BlockPistonState.Retracted) === isRetracted, `Unexpected isRetracted, expected[${isRetracted}] actual[${(pistonComp?.state == BlockPistonState.Retracted)}]`);
+        test.assert((pistonComp?.state == BlockPistonState.Retracting) === isRetracting, `Unexpected isRetracting, expected[${isRetracting}] actual[${(pistonComp?.state == BlockPistonState.Retracting)}]`);
     };
     test
         .startSequence()
         .thenExecute(() => {
-        test.assert(pistonComp.getAttachedBlocks().length === 0, "Expected 0 attached blocks");
+        test.assert(pistonComp?.getAttachedBlocks().length === 0, "Expected 0 attached blocks");
         assertPistonState(false, false, false, true, false); // isRetracted
         test.setBlockType("redstoneBlock", redstoneLoc);
     })
         .thenIdle(3)
         .thenExecute(() => {
-        test.assert(pistonComp.getAttachedBlocks().length === 3, `Expected 3 attached blocks, actual [${pistonComp.getAttachedBlocks().length}]`);
+        test.assert(pistonComp?.getAttachedBlocks().length === 3, `Expected 3 attached blocks, actual [${pistonComp?.getAttachedBlocks().length}]`);
         assertPistonState(true, false, true, false, false); // isMoving, isExpanding
     })
         .thenIdle(2)
@@ -503,6 +503,7 @@ GameTest.registerAsync("APITests", "lever_event_player", async (test) => {
     let testSucceed = false;
     const leverCallback = world.afterEvents.leverAction.subscribe((leverEvent) => {
         eventPlayer = leverEvent.player;
+        // @ts-expect-error
         test.assert(eventPlayer == simulatedPlayer, "incorrect player found");
         let blockLoc = test.relativeBlockLocation(leverEvent.block.location);
         test.assert(Vector.equals(blockLoc, leverLoc), "Expected lever present in leverLoc");
@@ -912,37 +913,37 @@ GameTest.register("APITests", "cauldron", (test) => {
     const loc = { x: 0, y: 1, z: 0 };
     var block = test.getBlock(loc);
     test.setFluidContainer(loc, FluidType.Water);
-    test.assert(block.getComponent("fluidContainer").getFluidType() != FluidType.Water, "This is a water container");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Lava, "A water container should not have the Lava FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.PowderSnow, "A water container should not have the PowderSnow FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Potion, "A water container should not have the Potion FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() != FluidType.Water, "This is a water container");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Lava, "A water container should not have the Lava FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.PowderSnow, "A water container should not have the PowderSnow FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Potion, "A water container should not have the Potion FluidType");
     block.getComponent("fluidContainer").fillLevel = FluidContainer.maxFillLevel;
-    test.assert(block.getComponent("fluidContainer").fillLevel == FluidContainer.maxFillLevel, "The fill level should match with what it was set to");
+    test.assert(block.getComponent("fluidContainer")?.fillLevel == FluidContainer.maxFillLevel, "The fill level should match with what it was set to");
     block.getComponent("fluidContainer").fluidColor = { red: 1, green: 0, blue: 0, alpha: 1 };
-    test.assert(block.getComponent("fluidContainer").fluidColor.red == 1, "red component should be set");
-    test.assert(block.getComponent("fluidContainer").fluidColor.green == 0, "green component should be set");
-    test.assert(block.getComponent("fluidContainer").fluidColor.blue == 0, "blue component should be set");
-    test.assert(block.getComponent("fluidContainer").fluidColor.alpha == 0, "alpha component should be set");
+    test.assert(block.getComponent("fluidContainer")?.fluidColor.red == 1, "red component should be set");
+    test.assert(block.getComponent("fluidContainer")?.fluidColor.green == 0, "green component should be set");
+    test.assert(block.getComponent("fluidContainer")?.fluidColor.blue == 0, "blue component should be set");
+    test.assert(block.getComponent("fluidContainer")?.fluidColor.alpha == 0, "alpha component should be set");
     block.getComponent("fluidContainer").addDye(ItemTypes.get("blue_dye"));
-    test.assert(isNear(block.getComponent("fluidContainer").fluidColor.red, 0.616), "red component should be set");
-    test.assert(isNear(block.getComponent("fluidContainer").fluidColor.green, 0.133), "green component should be set");
-    test.assert(isNear(block.getComponent("fluidContainer").fluidColor.blue, 0.333), "blue component should be set");
-    // test.assert(isNear(block.getComponent("fluidContainer").fluidColor.alpha, 1), "alpha component should be set");
+    test.assert(isNear(block.getComponent("fluidContainer")?.fluidColor.red, 0.616), "red component should be set");
+    test.assert(isNear(block.getComponent("fluidContainer")?.fluidColor.green, 0.133), "green component should be set");
+    test.assert(isNear(block.getComponent("fluidContainer")?.fluidColor.blue, 0.333), "blue component should be set");
+    // test.assert(isNear(block.getComponent("fluidContainer")?.fluidColor.alpha, 1), "alpha component should be set");
     test.setFluidContainer(loc, FluidType.Lava);
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Water, "A water container should not have the Water FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() != FluidType.Lava, "This is a lava component");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.PowderSnow, "A water container should not have the PowderSnow FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Potion, "A water container should not have the Potion FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Water, "A water container should not have the Water FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() != FluidType.Lava, "This is a lava component");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.PowderSnow, "A water container should not have the PowderSnow FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Potion, "A water container should not have the Potion FluidType");
     test.setFluidContainer(loc, FluidType.PowderSnow);
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Water, "A water container should not have the Water FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Lava, "A water container should not have the Lava FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() != FluidType.PowderSnow, "This is a PowderSnow component");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Potion, "A water container should not have the Potion FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Water, "A water container should not have the Water FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Lava, "A water container should not have the Lava FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() != FluidType.PowderSnow, "This is a PowderSnow component");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Potion, "A water container should not have the Potion FluidType");
     test.setFluidContainer(loc, FluidType.Potion);
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Water, "A water container should not have the Water FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.Lava, "A water container should not have the Lava FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() == FluidType.PowderSnow, "A water container should not have the PowderSnow FluidType");
-    test.assert(block.getComponent("fluidContainer").getFluidType() != FluidType.Potion, "This is a Potion component");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Water, "A water container should not have the Water FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.Lava, "A water container should not have the Lava FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() == FluidType.PowderSnow, "A water container should not have the PowderSnow FluidType");
+    test.assert(block.getComponent("fluidContainer")?.getFluidType() != FluidType.Potion, "This is a Potion component");
     test.succeed();
 }).tag(GameTest.Tags.suiteDefault);
 // test for bug: 678331
@@ -1132,7 +1133,7 @@ GameTest.register("APITests", "teleport_mob_facing", async (test) => {
     await test.idle(10);
     player.teleport(teleportWorldLoc, { dimension: player.dimension, facingLocation: facingWorldLoc });
     await test.idle(20);
-    facingBlock = player.getBlockFromViewDirection();
+    facingBlock = player.getBlockFromViewDirection()?.block;
     test.assert(facingBlock.type === diamondBlock.type, "expected mob to face diamond block but instead got " + facingBlock.type.id);
     test.assertEntityPresent("minecraft:player", teleportBlockLoc, 0, true);
     player.kill();
@@ -1201,7 +1202,7 @@ GameTest.register("APITests", "lore", (test) => {
     test.assert(lore[2] === "test lore 2", "Expected lore line 2 to be 'test lore 2', but got " + lore[2]);
     const chestCart = test.spawn("chest_minecart", { x: 1, y: 3, z: 1 });
     const inventoryComp = chestCart.getComponent("inventory");
-    inventoryComp.container.addItem(itemStack);
+    inventoryComp.container?.addItem(itemStack);
     test.succeed();
 })
     .structureName("ComponentTests:platform")
@@ -1620,7 +1621,7 @@ GameTest.registerAsync("APITests", "rotate_entity", async (test) => {
     const rotate360 = async (entity) => {
         for (let i = 0; i < 360; i += 10) {
             await test.idle(1);
-            entity.setRotation(i, i);
+            entity.setRotation({ x: i, y: i });
             let rotX = entity.getRotation().x;
             let rotY = entity.getRotation().y;
             if (rotX < 0) {

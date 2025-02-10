@@ -19,9 +19,9 @@ export function editorStick(sourceEntitya, message = "") {
         block2 = world
             .getDimension(allCoordinates[0])
             .getBlock({
-            x: allCoordinates[1],
-            y: allCoordinates[2],
-            z: allCoordinates[3],
+            x: allCoordinates[1].toNumber(),
+            y: allCoordinates[2].toNumber(),
+            z: allCoordinates[3].toNumber(),
         });
     }
     form.title("Editor Stick");

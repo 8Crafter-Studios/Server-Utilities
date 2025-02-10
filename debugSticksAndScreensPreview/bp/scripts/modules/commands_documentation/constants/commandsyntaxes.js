@@ -636,9 +636,10 @@ ${command.dp}snapshot list`,
     "\\\\floor": `${command.dp}\\floor <blockPattern: BlockPattern> [mask: Mask]`,
     "\\\\hcube": `${command.dp}\\hcube <blockPattern: BlockPattern> [mask: Mask]`,
     "\\\\hreplace": `${command.dp}\\hreplace <blockPattern: BlockPattern> [mask: Mask]`,
+    "\\\\oreplace": `${command.dp}\\oreplace <blockPattern: BlockPattern> [mask: Mask]`,
     "\\\\replace": `${command.dp}\\replace <blockPattern: BlockPattern> [mask: Mask]`,
     "\\\\maze": `${command.dp}\\maze [wallBlockType: Block[?=minecraft:stone]] [airBlockType: Block[?=minecraft:air]] [entranceDirection: ({North}|{South}|{East}|{West})[?=North]] [exitDirection: ({North}|{South}|{East}|{West})[?=South]] [complexity: int[?=0]]`,
-    "\\\\regenerateblocks": `${command.dp}regenerateblocks [radiusAroundAreaToUseToDetermineGeneratedBlockType: float[?=5]]`,
+    "\\\\regenerateblocks": `${command.dp}\\regenerateblocks [-isabd] [radiusAroundAreaToUseToDetermineGeneratedBlockType: float[?=5]] [verticalDistancePriority: float[?=1.5]] [horizontalDistancePriority: float[?=1.2]] [randomization: float[?=0.2]] [airPriority: float[?=0.5]]`,
     "\\\\idtfill": `${command.dp}\\idtfill <integrity: float> <tileName: Block> {blockStates: block states} <ifillMode: replace|fill|cube|keep|walls|hollow|outline|pillars§c|floor|ceilling|diamond|hourglass§r> {replaceTileName: Block} {replaceBlockStates: block states} [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <tileName: Block|random> {blockStates: block states} [clearContainers: boolean]
 ${command.dp}\\idtfill <integrity: float> <skygridSize: float> <tileName: Block> <blockStates: block states> <mode: {skygrid}|{inverseskygrid}> <replaceTileName: Block> [replaceBlockStates: block states] [clearContainers: boolean]

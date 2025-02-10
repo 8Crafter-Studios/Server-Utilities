@@ -26,7 +26,7 @@ subscribedEvents.afterWorldInitialize =
             }
         }
         catch (e) { }
-        globalThis.initiallizeTick = system.currentTick;
+        globalThis.initializeTick = system.currentTick;
         if (config.system.allowConnectingToEntityScale) {
             try {
                 const r = await checkIfCompatibleEntityScaleIsActive(true, 5);

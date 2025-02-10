@@ -42,14 +42,14 @@ subscribedEvents.afterEntityHurt = world.afterEvents.entityHurt.subscribe((event
                     : `an entity of type ${event.damageSource?.damagingEntity
                         ?.typeId} with the ID ${event.damageSource?.damagingEntity
                         ?.id}${tryget(() => event.damageSource.damagingEntity
-                        .nameTag != ""
+                        ?.nameTag != ""
                         ? ' and the name tag "' +
                             event.damageSource
-                                .damagingEntity.nameTag +
+                                .damagingEntity?.nameTag +
                             '"'
                         : "")}`}${tryget(() => " in " +
                     dimensionTypeDisplayFormatting[event.damageSource.damagingEntity
-                        .dimension.id] +
+                        ?.dimension.id] +
                     " at " +
                     vTStr(event.damageSource.damagingEntity
                         .location))}`

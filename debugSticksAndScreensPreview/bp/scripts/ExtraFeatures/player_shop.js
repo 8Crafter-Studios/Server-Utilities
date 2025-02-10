@@ -1,4 +1,4 @@
-import { ItemStack, Player, world, Entity, StructureSaveMode, InvalidStructureError } from "@minecraft/server";
+import { ItemStack, Player, world, Entity, StructureSaveMode, InvalidStructureError, EntityInventoryComponent, Container } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { getPathInObject } from "modules/main/functions/getPathInObject";
 import { config } from "init/classes/config";
@@ -95,7 +95,8 @@ export class PlayerShop {
     async openShop(player, mode = (this.sellShop && this.buyShop) ? "both" : this.sellShop ? "sell" : this.buyShop ? "buy" : "none", showBackButton = true) {
         if (mode == "both") {
             const form = new ActionFormData;
-            form.title(this.title);
+            if (!!this.title)
+                form.title(this.title);
             form.body(`§6--------------------------------
 §aMoney: $${MoneySystem.get(player.id).money}
 §6--------------------------------
@@ -158,6 +159,7 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
                 if (r.selection == data.length + (+showBackButton)) {
                     return 0;
                 }
+                assertIsDefined(r.selection);
                 const item = data[r.selection];
                 if (item.type == "player_shop_item") {
                     if ((await this.sellItem(player, item, [mode], r.selection) /*.then(v=>{
@@ -176,6 +178,9 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
                     else {
                         return 0;
                     }
+                }
+                else {
+                    return 1;
                 }
             });
         }
@@ -203,6 +208,7 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
                 if (r.selection == data.length + (+showBackButton)) {
                     return 0;
                 }
+                assertIsDefined(r.selection);
                 const item = data[r.selection];
                 if (item.type == "player_shop_item") {
                     if ((await this.buyItem(player, item, [mode], r.selection) /*.then(v=>{
@@ -222,6 +228,7 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
                         return 0;
                     }
                 }
+                return 0;
             });
         }
         else if (mode == "none") {
@@ -232,6 +239,7 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
             form.button2("Cancel");
             return ((await forceShow(form, player)).selection != 1).toNumber();
         }
+        return 0;
     }
     async openShopPage(player, data, path) {
         const mode = path[0];
@@ -273,6 +281,7 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
                 if (r.selection == newData.length + 1) {
                     return 0;
                 }
+                assertIsDefined(r.selection);
                 const item = newData[r.selection];
                 if (item.type == "player_shop_item") {
                     if ((await this.sellItem(player, item, path, r.selection) /*.then(v=>{
@@ -292,6 +301,7 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
                         return 0;
                     }
                 }
+                return 0;
             });
         }
         else if (mode == "buy") {
@@ -332,6 +342,7 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
                 if (r.selection == newData.length + 1) {
                     return 0;
                 }
+                assertIsDefined(r.selection);
                 const item = newData[r.selection];
                 if (item.type == "player_shop_item") {
                     if ((await this.buyItem(player, item, path, r.selection) /*.then(v=>{
@@ -351,8 +362,10 @@ Shop Owner: ${this.playerName}${!!this?.mainPageBodyText ? "\n§r" + this.mainPa
                         return 0;
                     }
                 }
+                return 0;
             });
         }
+        return 0;
     }
     editShopElements(mode, data) {
         saveStringToDynamicProperties(JSON.stringify(data), mode + "Shop:" + this.id);
@@ -427,7 +440,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                 if (!!!entity) {
                     throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`);
                 }
-                const itemStack = entity.getComponent("inventory").container.getItem(0);
+                const itemStack = entity.getComponent("inventory")?.container?.getItem(0);
                 entity.remove();
                 const infoFormB = new ActionFormData;
                 infoFormB.title("Item Details");
@@ -444,9 +457,9 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
 §r§bCan Place On: §a${JSON.stringify(itemStack.getCanPlaceOn(), undefined, 1)}
 §r§bLock Mode: §a${itemStack.lockMode}
 §r§bKeep On Death: ${itemStack.keepOnDeath.toFormattedString()}
-§r§bDynamic Properties: §r${tryget(() => `${itemStack.getDynamicPropertyTotalByteCount()} Bytes: \n` + JSON.stringify(Object.fromEntries(itemStack.getDynamicPropertyIds().map(v => ["§r" + v, itemStack.getDynamicProperty(v)])), undefined, 1)) ?? "N/A"}${itemStack.hasComponent("durability") ? `\n§r§bDurability: ${itemStack.getComponent("durability").damage < (itemStack.getComponent("durability").maxDurability / 3) ? "§a" : itemStack.getComponent("durability").damage < (itemStack.getComponent("durability").maxDurability / 1.5) ? "§e" : "§c"}{itemStack.getComponent("durability").maxDurability-itemStack.getComponent("durability").damage}/${itemStack.getComponent("durability").maxDurability}` : ""}${itemStack.hasComponent("potion") ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion").potionEffectType.id}
-§r§bPotion Liquid Type: §9${itemStack.getComponent("potion").potionLiquidType.id}
-§r§bPotion Modifier Type: §e${itemStack.getComponent("potion").potionModifierType.id}` : ""}
+§r§bDynamic Properties: §r${tryget(() => `${itemStack.getDynamicPropertyTotalByteCount()} Bytes: \n` + JSON.stringify(Object.fromEntries(itemStack.getDynamicPropertyIds().map(v => ["§r" + v, itemStack.getDynamicProperty(v)])), undefined, 1)) ?? "N/A"}${itemStack.hasComponent("durability") ? `\n§r§bDurability: ${itemStack.getComponent("durability")?.damage < (itemStack.getComponent("durability")?.maxDurability / 3) ? "§a" : itemStack.getComponent("durability")?.damage < (itemStack.getComponent("durability")?.maxDurability / 1.5) ? "§e" : "§c"}${itemStack.getComponent("durability")?.maxDurability - itemStack.getComponent("durability")?.damage}/${itemStack.getComponent("durability")?.maxDurability}` : ""}${itemStack.hasComponent("potion") ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion")?.potionEffectType.id}
+§r§bPotion Liquid Type: §9${itemStack.getComponent("potion")?.potionLiquidType.id}
+§r§bPotion Modifier Type: §e${itemStack.getComponent("potion")?.potionModifierType.id}` : ""}
 §r§bEnchantments: ${item.itemDetails.enchantments instanceof Array ? "\n§d[" + item.itemDetails.enchantments.map(v => v.type.id + " " + v.level.toRomanNumerals()).join("\n") + "\n]" : item.itemDetails.enchantments}`);
                 infoFormB.button("Proceed to buy item");
                 infoFormB.button("Back");
@@ -466,9 +479,10 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             form.title("Buy " + item.title);
             form.slider(`§a${item.title}\n§r§gPrice: ${item.price}\n\n§fHow many would you like to buy?`, 0, item.remainingStock ?? 64, item.step ?? 1, item.step ?? 1);
             const r = await forceShow(form, player);
-            if (r.canceled == true || r.formValues[0] == 0) {
+            if (r.canceled == true || r.formValues?.[0] == 0) {
                 return 1;
             }
+            assertIsDefined(r.formValues);
             if (MoneySystem.get(player.id).money >= (item.price * r.formValues[0])) {
                 if (item.itemType == "player_shop_saved") {
                     world.structureManager.place(item.structureID, player.dimension, Vector.add(player.location, { x: 0, y: 10, z: 0 }), { includeBlocks: false, includeEntities: true });
@@ -476,9 +490,12 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`);
                     }
-                    const itemStack = entity.getComponent("inventory").container.getItem(0);
+                    const itemStack = entity.getComponent("inventory")?.container?.getItem(0);
+                    if (!!!itemStack) {
+                        throw new TypeError("The item stack was missing from the storage entity.");
+                    }
                     if (itemStack.amount == r.formValues[0]) {
-                        entity.getComponent("inventory").container.setItem(0);
+                        (entity.getComponent("inventory")?.container).setItem(0);
                     }
                     else if (itemStack.amount < r.formValues[0]) {
                         const form = new MessageFormData;
@@ -494,7 +511,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                         // this.openShop(player, "buy")
                     }
                     else {
-                        entity.getComponent("inventory").container.getSlot(0).amount -= r.formValues[0];
+                        (entity.getComponent("inventory")?.container).getSlot(0).amount -= r.formValues[0];
                     }
                     try {
                         world.structureManager.delete(item.structureID);
@@ -522,7 +539,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                         });
                         item.remainingStock -= r.formValues[0];
                         itemStack.amount = r.formValues[0];
-                        let b = player.getComponent("inventory").container.addItem(itemStack);
+                        let b = (player.getComponent("inventory")?.container).addItem(itemStack);
                         if (!!b) {
                             catchtry(() => player.dimension.spawnItem(b, player.location));
                         }
@@ -571,6 +588,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                     }
                     return 1;
                 }
+                throw new TypeError("Unexpected Item Type: " + JSON.stringify(item.itemType));
             }
             else {
                 // {"Block":{"name":"minecraft:blue_orchid","states": {},"version":7687},"Count":1b,"Damage":0s,"Name": "minecraft:blue_orchid","WasPickedUp":0b,"tag":{"PlantBlock":{"name":"minecraft:blue_orchid","states":{},"version":7687},"display":{"Lore":["(+DATA)"]}}}
@@ -591,6 +609,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
         }
         catch (e) {
             console.error(e, e.stack);
+            return ((await showMessage(player, "Error", e + e.stack, "Go Back", "Close Shop")).selection == 0).toNumber();
         }
     }
     async sellItem(player, item, path, itemIndex) {
@@ -690,10 +709,11 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             form.title("Sell " + item.title);
             form.slider(`§a${item.title}\n§gValue: ${item.value}${item.amountWanted <= 0 ? "\n§cThe owner of this shop is not accepting any more of this item." : ""}\n§fHow many would you like to sell?`, 0, Math.min(item.amountWanted ?? 64, 64 * (item.step ?? 1)), Math.min(item.step ?? 1, item.amountWanted), Math.min(item.step ?? 1, item.amountWanted));
             const r = await forceShow(form, player);
-            if (r.canceled == true || r.formValues[0] == 0) {
+            if (r.canceled == true || r.formValues?.[0] == 0) {
                 return 1;
             }
-            const items = containerToContainerSlotArray(player.getComponent("inventory").container)
+            assertIsDefined(r.formValues);
+            const items = containerToContainerSlotArray(player.getComponent("inventory")?.container)
                 .filter((v) => (v.hasItem() ? v?.typeId == item.itemID : false))
                 .filter((v) => !((v.lockMode == "inventory" &&
                 !config.shopSystem.player
@@ -749,9 +769,9 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                         throw new ReferenceError(`Unable to get the storage entity.`);
                     }
                     const testItemStack = new ItemStack(item.itemID);
-                    if (entity.getComponent("inventory").container.emptySlotsCount <= (r.formValues[0] / testItemStack.maxAmount)) {
-                        let availableSpace = entity.getComponent("inventory").container.emptySlotsCount * testItemStack.maxAmount;
-                        containerToItemStackArray(entity.getComponent("inventory").container).forEach(v => {
+                    if (entity.getComponent("inventory")?.container?.emptySlotsCount <= (r.formValues[0] / testItemStack.maxAmount)) {
+                        let availableSpace = entity.getComponent("inventory")?.container?.emptySlotsCount * testItemStack.maxAmount;
+                        containerToItemStackArray(entity.getComponent("inventory")?.container).forEach(v => {
                             try {
                                 if (!!!v) {
                                     return;
@@ -780,11 +800,11 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                     try {
                         for (let i = 0; (amountToRemove > 0) && (i < items.length); i++) {
                             try {
-                                const recievingItem = items[i].getItem();
+                                const recievingItem = items[i].getItem(); // This is fine because the try...catch statement will deal with when it is undefined.
                                 const iamount = items[i].amount;
                                 let amount = Math.min(amountToRemove, iamount);
                                 recievingItem.amount = amount;
-                                entity.getComponent("inventory").container.addItem(recievingItem);
+                                entity.getComponent("inventory")?.container?.addItem(recievingItem);
                                 if (amount == iamount) {
                                     items[i].setItem();
                                 }
@@ -881,6 +901,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                     return 1;
                     // this.openShop(player, "sell")
                 }
+                throw new TypeError("Unexpected Item Type: " + JSON.stringify(item.itemType));
             }
             else {
                 const form = new MessageFormData;
@@ -898,6 +919,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
         }
         catch (e) {
             console.error(e, e.stack);
+            return ((await showMessage(player, "Error", e + e.stack, "Go Back", "Close Shop")).selection == 0).toNumber();
         }
     }
     async createStorageEntity(player = world.getAllPlayers().find(v => v.id == this.playerID)) {
@@ -955,6 +977,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
      */
     static async openPublicShopsSelector(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         let form = new ActionFormData();
         form.title("Player Shops");
         const shopsList = (PlayerShop.getAll() ?? []).filter(s => s.publicShop == true);
@@ -983,6 +1006,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return 1;
+            assertIsDefined(r.selection);
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
@@ -1016,6 +1040,7 @@ ${item.itemDetails.enchantments instanceof Array ? item.itemDetails.enchantments
                     if ((await shopsList[response].openShop(sourceEntity)) != 0) {
                         return await PlayerShop.openPublicShopsSelector(sourceEntity);
                     }
+                    return 0;
             }
         }).catch(e => {
             console.error(e, e.stack);
@@ -1036,6 +1061,7 @@ export class PlayerShopManager {
      */
     static async playerShopSystemSettings(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         if (securityVariables.ultraSecurityModeEnabled) {
             if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessExtraFeaturesSettings") == false) {
                 const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permission to access this menu: andexdb.accessExtraFeaturesSettings", "Go Back", "Close");
@@ -1103,6 +1129,7 @@ export class PlayerShopManager {
     }
     static async playerShopSystemSettings_main(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         if (securityVariables.ultraSecurityModeEnabled) {
             if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessExtraFeaturesSettings") == false) {
                 const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permission to access this menu: andexdb.accessExtraFeaturesSettings", "Go Back", "Close");
@@ -1141,6 +1168,7 @@ export class PlayerShopManager {
     }
     static async managePlayerShops(sourceEntitya, all = false) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         let form = new ActionFormData();
         form.title("Manage Player Shops");
         form.body("The player shop system is " + (config.shopSystem.player.enabled ? "§aEnabled" : "§cDisabled"));
@@ -1158,7 +1186,8 @@ export class PlayerShopManager {
         return await forceShow(form, sourceEntity).then(async (r) => {
             // This will stop the code when the player closes the form
             if (r.canceled)
-                return;
+                return 1;
+            assertIsDefined(r.selection);
             let response = r.selection;
             switch (response) {
                 case shopsList.length:
@@ -1231,6 +1260,7 @@ export class PlayerShopManager {
     }
     static async addPlayerShop(sourceEntitya) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         let form2 = new ModalFormData();
         form2.title(`Player Shop System Settings`);
         form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop`, "myShop", "myShop");
@@ -1267,6 +1297,7 @@ export class PlayerShopManager {
     }
     static async addPlayerShopAsPlayer(sourceEntitya, targetPlayerID, targetPlayerName) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         let form2 = new ModalFormData();
         form2.title(`Player Shop System Settings`);
         form2.textField(`§l§fShop ID§r§c*§f\nThe ID of the shop`, "myShop", "myShop");
@@ -1303,6 +1334,7 @@ export class PlayerShopManager {
     }
     static async managePlayerShop(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         let form = new ActionFormData();
         form.title("Manage " + shop.title);
         form.body(`ID: ${shop.id}
@@ -1397,10 +1429,10 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     }
                     catch { }
                     try {
-                        containerToItemStackArray(entity.getComponent("inventory").container).forEach(v => tryrun(() => {
+                        containerToItemStackArray(entity.getComponent("inventory")?.container).forEach(v => tryrun(() => {
                             sourceEntity.dimension.spawnItem(v, sourceEntity.location);
                         }));
-                        entity.getComponent("inventory").container.clearAll();
+                        entity.getComponent("inventory")?.container?.clearAll();
                     }
                     catch { }
                     /**
@@ -1483,7 +1515,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     if (rd.canceled) {
                         return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     }
-                    let newData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    let newData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues?.[i])]));
                     shop.id = newData.id;
                     shop.title = newData.title;
                     shop.mainPageBodyText = newData.mainPageBodyText;
@@ -1505,16 +1537,16 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     if (re.canceled) {
                         return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     }
-                    let newDataB = JSON.parse(re.formValues[0]);
+                    let newDataB = JSON.parse(re.formValues?.[0]);
                     shop.id = newDataB.id;
                     shop.title = newDataB.title;
                     shop.mainPageBodyText = newDataB.mainPageBodyText;
                     shop.mainSellPageBodyText = newDataB.mainSellPageBodyText;
                     shop.mainBuyPageBodyText = newDataB.mainBuyPageBodyText;
                     shop.name = newDataB.name;
-                    shop.buyShop = newDataB.buyShop;
-                    shop.sellShop = newDataB.sellShop;
-                    shop.publicShop = newDataB.publicShop;
+                    shop.buyShop = newDataB.buyShop ?? true;
+                    shop.sellShop = newDataB.sellShop ?? true;
+                    shop.publicShop = newDataB.publicShop ?? true;
                     shop.playerID = newDataB.playerID;
                     shop.playerName = newDataB.playerName;
                     shop.save();
@@ -1536,7 +1568,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     if (rf.canceled) {
                         return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     }
-                    let newDataC = JSON.parse(rf.formValues[0]);
+                    let newDataC = JSON.parse(rf.formValues?.[0]);
                     shop.sellData = newDataC;
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
@@ -1556,7 +1588,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     if (rg.canceled) {
                         return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     }
-                    let newDataD = JSON.parse(rg.formValues[0]);
+                    let newDataD = JSON.parse(rg.formValues?.[0]);
                     shop.sellData = newDataD;
                     return await PlayerShopManager.managePlayerShop(sourceEntity, shop);
                     break;
@@ -1577,6 +1609,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
     }
     static async managePlayerShop_settings(sourceEntitya, shop) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         let form2 = new ModalFormData();
         form2.title(`${shop.title} Settings`);
         form2.textField(`§l§fButton Title§r§f\nThe title of the button for this shop`, "My Shop", JSON.stringify(shop.name ?? "").slice(1, -1).replaceAll("\\\"", "\""));
@@ -1616,6 +1649,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
     }
     static async managePlayerShop_contents(sourceEntitya, shop, mode = "buy") {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         let form = new ActionFormData();
         form.title(`Manage ${shop.title ?? ""} Contents`);
         if (!!shop.mainPageBodyText)
@@ -1631,6 +1665,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
         return await forceShow(form, sourceEntity).then(async (r) => {
             if (r.canceled)
                 return 1;
+            assertIsDefined(r.selection);
             let response = r.selection;
             switch (response) {
                 case shopData.length:
@@ -1662,7 +1697,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                         const entity = sourceEntity.dimension.spawnEntity("andexdb:saved_shop_item", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 10.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
                         const entityID = getSuperUniqueID();
                         entity.setDynamicProperty("andexdb:saved_player_shop_item_save_id", entityID);
-                        entity.getComponent("inventory").container.setItem(0, item.item.getItem());
+                        entity.getComponent("inventory")?.container?.setItem(0, item.item.getItem());
                         world.structureManager.createFromWorld("andexdbSavedPlayerShopItem:" + entityID, sourceEntity.dimension, {
                             x: Math.floor(sourceEntity.location.x),
                             y: Math.floor(sourceEntity.location.y) + 10,
@@ -1696,14 +1731,14 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                             entityID: entityID,
                             remainingStock: item.item.amount,
                             itemDetails: {
-                                damage: tryget(() => item.item.getItem().getComponent("durability").damage) ?? NaN,
-                                maxDurability: tryget(() => item.item.getItem().getComponent("durability").maxDurability) ?? NaN,
+                                damage: tryget(() => item.item.getItem()?.getComponent("durability")?.damage) ?? NaN,
+                                maxDurability: tryget(() => item.item.getItem()?.getComponent("durability")?.maxDurability) ?? NaN,
                                 keepOnDeath: item.item.keepOnDeath,
                                 lockMode: item.item.lockMode,
                                 loreLineCount: item.item.getLore().length,
                                 typeId: item.item.typeId,
                                 nameTag: item.item.nameTag,
-                                enchantments: tryget(() => item.item.getItem().getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                enchantments: tryget(() => item.item.getItem()?.getComponent("enchantable")?.getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
                             },
                             playerID: sourceEntity.id
                         };
@@ -1750,7 +1785,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
             }
         }).catch(async (e) => {
             try {
-                return (await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection == 0;
+                return ((await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection == 0).toNumber();
             }
             catch {
                 console.error(e, e.stack);
@@ -1761,6 +1796,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
     }
     static async managePlayerShop_manageItem(sourceEntitya, shop, item, itemIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const form = new ActionFormData;
         form.title("Manage " + item.title);
         form.body(`Type: ${item.itemType}
@@ -1800,6 +1836,9 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     const form2 = new ModalFormData;
                     form2.textField("New Position\nThe position is zero-indexed.", "index", String(itemIndex));
                     const r = await forceShow(form2, sourceEntity);
+                    if (r.canceled)
+                        return 1;
+                    assertIsDefined(r.formValues);
                     if (!Number.isNaN(Number(r.formValues[0]))) {
                         if (mode == "buy") {
                             let newData = shop.buyData;
@@ -1828,7 +1867,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                             world.structureManager.place(item.structureID, sourceEntity.dimension, sourceEntity.location, { includeBlocks: false, includeEntities: true });
                             const entity = sourceEntity.dimension.getEntitiesAtBlockLocation(sourceEntity.location).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == item.entityID);
                             if (!!entity) {
-                                const itemStack = entity.getComponent("inventory").container.getItem(0);
+                                const itemStack = entity.getComponent("inventory")?.container?.getItem(0);
                                 entity.remove();
                                 sourceEntity.dimension.spawnItem(itemStack, sourceEntity.location);
                             }
@@ -1864,7 +1903,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                         if (!!entity) {
                             const itemc = item;
                             const player = sourceEntity;
-                            const itemStack = entity.getComponent("inventory").container.getItem(0);
+                            const itemStack = entity.getComponent("inventory")?.container?.getItem(0);
                             entity.remove();
                             if (!!!itemStack) {
                                 if (((itemb?.item?.lockMode == "inventory" &&
@@ -1895,8 +1934,8 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                                     throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
                                 }
                                 // const itemStackC = itemb.item.getItem()
-                                const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
-                                const itemStackB = entity.getComponent("inventory").container.getItem(0);
+                                const leftOverItemStack = entity.getComponent("inventory")?.container?.addItem(itemb.item.getItem());
+                                const itemStackB = entity.getComponent("inventory")?.container?.getItem(0);
                                 itemb.item.setItem(leftOverItemStack);
                                 try {
                                     world.structureManager.delete(itemc.structureID);
@@ -1924,14 +1963,14 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                                     });
                                     itemc.remainingStock = itemStackB.amount;
                                     itemc.itemDetails = {
-                                        damage: tryget(() => itemStackB.getComponent("durability").damage) ?? NaN,
-                                        maxDurability: tryget(() => itemStackB.getComponent("durability").maxDurability) ?? NaN,
+                                        damage: tryget(() => itemStackB.getComponent("durability")?.damage) ?? NaN,
+                                        maxDurability: tryget(() => itemStackB.getComponent("durability")?.maxDurability) ?? NaN,
                                         keepOnDeath: itemStackB.keepOnDeath,
                                         lockMode: itemStackB.lockMode,
                                         loreLineCount: itemStackB.getLore().length,
                                         typeId: itemStackB.typeId,
-                                        nameTag: itemStackB.nameTag ?? null,
-                                        enchantments: tryget(() => itemStackB.getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                        nameTag: itemStackB.nameTag,
+                                        enchantments: tryget(() => itemStackB.getComponent("enchantable")?.getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
                                     };
                                     let newData = shop.buyData;
                                     newData.splice(itemIndex, 1, itemc);
@@ -1957,8 +1996,8 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                                 if (!!!entity) {
                                     throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
                                 }
-                                const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
-                                const itemStackB = entity.getComponent("inventory").container.getItem(0);
+                                const leftOverItemStack = entity.getComponent("inventory")?.container?.addItem(itemb.item.getItem());
+                                const itemStackB = entity.getComponent("inventory")?.container?.getItem(0);
                                 itemb.item.setItem(leftOverItemStack);
                                 try {
                                     world.structureManager.delete(itemc.structureID);
@@ -2021,7 +2060,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                                 return 0;
                             }
                         }
-                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                        // return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
                     }
                     break;
                 case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
@@ -2041,7 +2080,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     if (rd.canceled) {
                         return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     }
-                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues?.[i])]));
                     if (mode == "buy") {
                         let newData = shop.buyData;
                         newData.splice(itemIndex, 1, newItemData);
@@ -2062,7 +2101,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     if (re.canceled) {
                         return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                     }
-                    let newItemDataB = JSON.parse(re.formValues[0]);
+                    let newItemDataB = JSON.parse(re.formValues?.[0]);
                     if (mode == "buy") {
                         let newData = shop.buyData;
                         newData.splice(itemIndex, 1, newItemDataB);
@@ -2108,6 +2147,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
      */
     static async managePlayerShop_editItem(sourceEntitya, shop, item, itemIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const form = new ModalFormData;
         form.title("Edit " + item.title);
         if (item.itemType == "player_shop_saved") {
@@ -2173,6 +2213,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
      */
     static async managePlayerShop_editAdvancedItem(sourceEntitya, shop, item, itemIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const form = new ModalFormData;
         form.title("Edit " + item.title);
         if (item.itemType == "player_shop_sellable_advanced") {
@@ -2228,6 +2269,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
      */
     static async managePlayerShop_addItem(sourceEntitya, shop, type, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const form = new ModalFormData;
         form.title("Add Item");
         if (type == "player_shop_sellable") {
@@ -2244,6 +2286,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return r;
+            assertIsDefined(r.formValues);
             let item = undefined;
             let itemIndex = Number.isNaN(Number(r.formValues[2])) ? 10 : Number(r.formValues[2]);
             if (type == "player_shop_sellable") {
@@ -2276,6 +2319,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
     }
     static async managePlayerShop_managePage(sourceEntitya, shop, page, pageIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const form = new ActionFormData;
         form.title("Manage " + page.pageTitle);
         form.body(`Page Title: ${page.pageTitle}
@@ -2307,6 +2351,9 @@ Texture: ${page.texture}`);
                     const form2 = new ModalFormData;
                     form2.textField("New Position\nThe position is zero-indexed.", "index", String(pageIndex));
                     const r = await forceShow(form2, sourceEntity);
+                    if (r.canceled)
+                        return 1;
+                    assertIsDefined(r.formValues);
                     if (!Number.isNaN(Number(r.formValues[0]))) {
                         if (mode == "buy") {
                             let newData = shop.buyData;
@@ -2364,7 +2411,7 @@ Texture: ${page.texture}`);
                     if (rd.canceled) {
                         return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
                     }
-                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues?.[i])]));
                     if (mode == "buy") {
                         let newData = shop.buyData;
                         newData.splice(pageIndex, 1, newItemData);
@@ -2385,7 +2432,7 @@ Texture: ${page.texture}`);
                     if (re.canceled) {
                         return await PlayerShopManager.managePlayerShop_managePage(sourceEntity, shop, page, pageIndex, mode);
                     }
-                    let newItemDataB = JSON.parse(re.formValues[0]);
+                    let newItemDataB = JSON.parse(re.formValues?.[0]);
                     if (mode == "buy") {
                         let newData = shop.buyData;
                         newData.splice(pageIndex, 1, newItemDataB);
@@ -2412,6 +2459,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShop_editPage(sourceEntitya, shop, page, pageIndex, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const form = new ModalFormData;
         form.title("Edit Page");
         form.textField("§fPage Title§c*", "Category: Items", JSON.stringify(page.pageTitle).slice(1, -1).replaceAll("\\\"", "\""));
@@ -2442,6 +2490,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShop_addPage(sourceEntitya, shop, mode) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const form = new ModalFormData;
         form.title("Add Page");
         form.textField("§fPage Title§c*", "Category: Items");
@@ -2453,6 +2502,7 @@ Texture: ${page.texture}`);
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return 1;
+            assertIsDefined(r.formValues);
             let page = undefined;
             let pageIndex = Number.isNaN(Number(r.formValues[2])) ? 10 : Number(r.formValues[2]);
             let [pageTitle, pageBody, title, texture] = r.formValues;
@@ -2479,6 +2529,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShopPage_contents(sourceEntitya, shop, path) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const mode = path[0];
         let form = new ActionFormData();
         const shopDataA = tryget(() => { return getPathInObject(shop[mode + "Data"], path); }) ?? {};
@@ -2499,16 +2550,17 @@ Texture: ${page.texture}`);
         }
         catch (e) {
             try {
-                await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close");
+                return ((await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection != 0).toNumber();
             }
             catch {
                 console.error(e, e.stack);
             }
             ;
-            return;
+            return 0;
         }
         if (r.canceled)
             return 1;
+        assertIsDefined(r.selection);
         let response = r.selection;
         switch (response) {
             case shopData.length:
@@ -2540,7 +2592,7 @@ Texture: ${page.texture}`);
                     const entity = sourceEntity.dimension.spawnEntity("andexdb:saved_shop_item", { x: Math.floor(sourceEntity.location.x) + 0.5, y: Math.floor(sourceEntity.location.y) + 10.5, z: Math.floor(sourceEntity.location.z) + 0.5 });
                     const entityID = getSuperUniqueID();
                     entity.setDynamicProperty("andexdb:saved_player_shop_item_save_id", entityID);
-                    entity.getComponent("inventory").container.setItem(0, item.item.getItem());
+                    entity.getComponent("inventory")?.container?.setItem(0, item.item.getItem());
                     world.structureManager.createFromWorld("andexdbSavedPlayerShopItem:" + entityID, sourceEntity.dimension, {
                         x: Math.floor(sourceEntity.location.x),
                         y: Math.floor(sourceEntity.location.y) + 10,
@@ -2574,14 +2626,14 @@ Texture: ${page.texture}`);
                         entityID: entityID,
                         remainingStock: item.item.amount,
                         itemDetails: {
-                            damage: tryget(() => item.item.getItem().getComponent("durability").damage) ?? NaN,
-                            maxDurability: tryget(() => item.item.getItem().getComponent("durability").maxDurability) ?? NaN,
+                            damage: tryget(() => item.item.getItem()?.getComponent("durability")?.damage) ?? NaN,
+                            maxDurability: tryget(() => item.item.getItem()?.getComponent("durability")?.maxDurability) ?? NaN,
                             keepOnDeath: item.item.keepOnDeath,
                             lockMode: item.item.lockMode,
                             loreLineCount: item.item.getLore().length,
                             typeId: item.item.typeId,
                             nameTag: item.item.nameTag,
-                            enchantments: tryget(() => item.item.getItem().getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                            enchantments: tryget(() => item.item.getItem()?.getComponent("enchantable")?.getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
                         },
                         playerID: sourceEntity.id
                     };
@@ -2636,6 +2688,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShopPage_manageItem(sourceEntitya, shop, path, item, itemIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const mode = path[0];
         const form = new ActionFormData;
         form.title("Manage " + item.title);
@@ -2676,6 +2729,9 @@ Texture: ${page.texture}`);
                     const form2 = new ModalFormData;
                     form2.textField("New Position\nThe position is zero-indexed.", "index", String(itemIndex));
                     const r = await forceShow(form2, sourceEntity);
+                    if (r.canceled)
+                        return 1;
+                    assertIsDefined(r.formValues);
                     if (!Number.isNaN(Number(r.formValues[0]))) {
                         if (mode == "buy") {
                             let data = shop.buyData;
@@ -2706,7 +2762,7 @@ Texture: ${page.texture}`);
                             world.structureManager.place(item.structureID, sourceEntity.dimension, sourceEntity.location, { includeBlocks: false, includeEntities: true });
                             const entity = sourceEntity.dimension.getEntitiesAtBlockLocation(sourceEntity.location).find(v => tryget(() => String(v.getDynamicProperty("andexdb:saved_player_shop_item_save_id"))) == item.entityID);
                             if (!!entity) {
-                                const itemStack = entity.getComponent("inventory").container.getItem(0);
+                                const itemStack = entity.getComponent("inventory")?.container?.getItem(0);
                                 entity.remove();
                                 sourceEntity.dimension.spawnItem(itemStack, sourceEntity.location);
                             }
@@ -2744,7 +2800,7 @@ Texture: ${page.texture}`);
                         if (!!entity) {
                             const itemc = item;
                             const player = sourceEntity;
-                            const itemStack = entity.getComponent("inventory").container.getItem(0);
+                            const itemStack = entity.getComponent("inventory")?.container?.getItem(0);
                             entity.remove();
                             if (!!!itemStack) {
                                 if (((itemb?.item?.lockMode == "inventory" &&
@@ -2775,8 +2831,8 @@ Texture: ${page.texture}`);
                                     throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
                                 }
                                 // const itemStackC = itemb.item.getItem()
-                                const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
-                                const itemStackB = entity.getComponent("inventory").container.getItem(0);
+                                const leftOverItemStack = entity.getComponent("inventory")?.container?.addItem(itemb.item.getItem());
+                                const itemStackB = entity.getComponent("inventory")?.container?.getItem(0);
                                 itemb.item.setItem(leftOverItemStack);
                                 try {
                                     world.structureManager.delete(itemc.structureID);
@@ -2804,14 +2860,14 @@ Texture: ${page.texture}`);
                                     });
                                     itemc.remainingStock = itemStackB.amount;
                                     itemc.itemDetails = {
-                                        damage: tryget(() => itemStackB.getComponent("durability").damage) ?? NaN,
-                                        maxDurability: tryget(() => itemStackB.getComponent("durability").maxDurability) ?? NaN,
+                                        damage: tryget(() => itemStackB.getComponent("durability")?.damage) ?? NaN,
+                                        maxDurability: tryget(() => itemStackB.getComponent("durability")?.maxDurability) ?? NaN,
                                         keepOnDeath: itemStackB.keepOnDeath,
                                         lockMode: itemStackB.lockMode,
                                         loreLineCount: itemStackB.getLore().length,
                                         typeId: itemStackB.typeId,
-                                        nameTag: itemStackB.nameTag ?? null,
-                                        enchantments: tryget(() => itemStackB.getComponent("enchantable").getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
+                                        nameTag: itemStackB.nameTag,
+                                        enchantments: tryget(() => itemStackB.getComponent("enchantable")?.getEnchantments()) ?? "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable."
                                     };
                                     let data = shop.buyData;
                                     let newData = getPathInObject(data, path).data;
@@ -2838,8 +2894,8 @@ Texture: ${page.texture}`);
                                 if (!!!entity) {
                                     throw new ReferenceError(`No entity with a andexdb:saved_player_shop_item_save_id dynamic property set to ${itemc.entityID} was found inside of the specified structure.`);
                                 }
-                                const leftOverItemStack = entity.getComponent("inventory").container.addItem(itemb.item.getItem());
-                                const itemStackB = entity.getComponent("inventory").container.getItem(0);
+                                const leftOverItemStack = entity.getComponent("inventory")?.container?.addItem(itemb.item.getItem());
+                                const itemStackB = entity.getComponent("inventory")?.container?.getItem(0);
                                 itemb.item.setItem(leftOverItemStack);
                                 try {
                                     world.structureManager.delete(itemc.structureID);
@@ -2903,7 +2959,7 @@ Texture: ${page.texture}`);
                                 return 0;
                             }
                         }
-                        return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
+                        // return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode)
                     }
                     break;
                 case ((sourceEntity.hasTag("admin") && config.system.debugMode) ? 3 : -3) + (+((mode == "buy") && (item?.remainingStock < item?.maxStackSize))):
@@ -2923,7 +2979,7 @@ Texture: ${page.texture}`);
                     if (rd.canceled) {
                         return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     }
-                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues?.[i])]));
                     if (mode == "buy") {
                         let dataA = shop.buyData;
                         let newData = getPathInObject(dataA, path).data;
@@ -2946,7 +3002,7 @@ Texture: ${page.texture}`);
                     if (re.canceled) {
                         return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                     }
-                    let newItemDataB = JSON.parse(re.formValues[0]);
+                    let newItemDataB = JSON.parse(re.formValues?.[0]);
                     if (mode == "buy") {
                         let dataA = shop.buyData;
                         let newData = getPathInObject(dataA, path).data;
@@ -2984,6 +3040,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShopPage_editItem(sourceEntitya, shop, path, item, itemIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const mode = path[0];
         const form = new ModalFormData;
         form.title("Edit " + item.title);
@@ -3043,6 +3100,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShopPage_addItem(sourceEntitya, shop, path, type) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const mode = path[0];
         const form = new ModalFormData;
         form.title("Add Item");
@@ -3060,6 +3118,7 @@ Texture: ${page.texture}`);
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return 1;
+            assertIsDefined(r.formValues);
             let item = undefined;
             let itemIndex = Number.isNaN(Number(r.formValues[2])) ? 10 : Number(r.formValues[2]);
             if (type == "player_shop_sellable") {
@@ -3094,6 +3153,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShopPage_managePage(sourceEntitya, shop, path, page, pageIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const mode = path[0];
         const form = new ActionFormData;
         form.title("Manage " + page.pageTitle);
@@ -3126,6 +3186,9 @@ Texture: ${page.texture}`);
                     const form2 = new ModalFormData;
                     form2.textField("New Position\nThe position is zero-indexed.", "index", String(pageIndex));
                     const r = await forceShow(form2, sourceEntity);
+                    if (r.canceled)
+                        return 1;
+                    assertIsDefined(r.formValues);
                     if (!Number.isNaN(Number(r.formValues[0]))) {
                         if (mode == "buy") {
                             let newData = shop.buyData;
@@ -3183,7 +3246,7 @@ Texture: ${page.texture}`);
                     if (rd.canceled) {
                         return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
                     }
-                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues[i])]));
+                    let newItemData = Object.fromEntries(data.map((v, i) => [v[0], JSON.parse(rd.formValues?.[i])]));
                     if (mode == "buy") {
                         let dataA = shop.buyData;
                         let newData = getPathInObject(dataA, path).data;
@@ -3206,7 +3269,7 @@ Texture: ${page.texture}`);
                     if (re.canceled) {
                         return await PlayerShopManager.managePlayerShopPage_managePage(sourceEntity, shop, path, page, pageIndex);
                     }
-                    let newItemDataB = JSON.parse(re.formValues[0]);
+                    let newItemDataB = JSON.parse(re.formValues?.[0]);
                     if (mode == "buy") {
                         let dataA = shop.buyData;
                         let newData = getPathInObject(dataA, path).data;
@@ -3235,6 +3298,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShopPage_editPage(sourceEntitya, shop, path, page, pageIndex) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const mode = path[0];
         const form = new ModalFormData;
         form.title("Edit Page");
@@ -3268,6 +3332,7 @@ Texture: ${page.texture}`);
     }
     static async managePlayerShopPage_addPage(sourceEntitya, shop, path) {
         const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+        assertIsDefined(sourceEntity);
         const mode = path[0];
         const form = new ModalFormData;
         form.title("Add Page");
@@ -3280,6 +3345,7 @@ Texture: ${page.texture}`);
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return 1;
+            assertIsDefined(r.formValues);
             let page = undefined;
             let pageIndex = Number.isNaN(Number(r.formValues[2])) ? 10 : Number(r.formValues[2]);
             let [pageTitle, pageBody, title, texture] = r.formValues;

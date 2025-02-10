@@ -28,7 +28,7 @@ subscribedEvents.afterBlockExplode = world.afterEvents.blockExplode.subscribe((e
                         ? undefined
                         : event.source?.nameTag +
                             "<" +
-                            event.source.id +
+                            event.source?.id +
                             ">") ??
                     event.source?.typeId +
                         "<" +

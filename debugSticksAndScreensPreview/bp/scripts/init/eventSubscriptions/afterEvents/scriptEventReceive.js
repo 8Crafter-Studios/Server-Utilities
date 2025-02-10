@@ -1,5 +1,5 @@
 import { Vector3Utils } from "@minecraft/math.js";
-import { system, world, ItemStack, EntityInventoryComponent, EnchantmentTypes, ItemEnchantableComponent, Player, Entity, EquipmentSlot, EntityEquippableComponent, ItemDurabilityComponent, ItemLockMode, BlockInventoryComponent, BlockPermutation, SignSide, DyeColor, BlockTypes, Block, WeatherType, EntityMarkVariantComponent, EntityPushThroughComponent, EntityScaleComponent, EntitySkinIdComponent, EntityTameableComponent, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, ScriptEventSource, MolangVariableMap } from "@minecraft/server";
+import { system, world, ItemStack, EntityInventoryComponent, EnchantmentTypes, ItemEnchantableComponent, Player, Entity, EquipmentSlot, EntityEquippableComponent, ItemDurabilityComponent, ItemLockMode, BlockInventoryComponent, BlockPermutation, SignSide, DyeColor, BlockTypes, Block, WeatherType, EntityMarkVariantComponent, EntityPushThroughComponent, EntityScaleComponent, EntitySkinIdComponent, EntityTameableComponent, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, EntityGroundOffsetComponent, EntityHealthComponent, ScriptEventSource, MolangVariableMap, Effect } from "@minecraft/server";
 import { ModalFormData, ActionFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { chatMessage } from "modules/chat/functions/chatMessage";
 import { chatSend } from "modules/chat/functions/chatSend";
@@ -131,7 +131,7 @@ subscribedEvents.afterScriptEventReceive =
             }
             const inventory2 = players[0].getComponent("inventory");
             let itemb = inventory.container.getItem(0);
-            console.warn(String(Array(item.getComponent("enchantable").getEnchantments[0])));
+            console.warn(String(Array(item.getComponent("enchantable").getEnchantments()[0])));
             console.warn(item.getComponent("enchantable").isValid());
             console.warn(item.getComponent("enchantable").getEnchantments()[0]);
             item.setLore([
@@ -745,15 +745,15 @@ subscribedEvents.afterScriptEventReceive =
                 "0123456789".includes(message.charAt(message.length)) &&
                 message.includes("|")) {
                 let message2 = message.slice(8, message.length).split("|");
-                let playerViewerB = Number(message2)[0];
+                let playerViewerB = Number(message2[0]);
                 let selectionType = 0;
                 try {
-                    selectionType = Number(message2)[1];
+                    selectionType = Number(message2[1]);
                 }
                 catch (e) { }
                 let UUID;
                 try {
-                    UUID = Number(message2)[2];
+                    UUID = Number(message2[2]);
                 }
                 catch (e) { }
             }
@@ -3626,7 +3626,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
             let form2 = new ModalFormData();
             let playerList = world.getPlayers();
             let targetList = [playerList[0].nameTag];
-            let componentList = [playerList[0].getComponents[0]];
+            let componentList = [playerList[0].getComponents()[0]];
             let dimension = "";
             let spawnXPosition = "";
             let spawnYPosition = "";
@@ -4058,7 +4058,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
             let form2 = new ModalFormData();
             let playerList = world.getPlayers();
             let targetList = [playerList[0].nameTag];
-            let componentList = [playerList[0].getComponents[0]];
+            let componentList = [playerList[0].getComponents()[0]];
             let dimension = "";
             let spawnXPosition = "";
             let spawnYPosition = "";
@@ -4595,9 +4595,9 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                 message.slice(12).split("|").length == 4) {
                 allCoordinates = message.slice(12).split("|");
                 block2 = world.getDimension(allCoordinates[0]).getBlock({
-                    x: allCoordinates[1],
-                    y: allCoordinates[2],
-                    z: allCoordinates[3],
+                    x: allCoordinates[1].toNumber(),
+                    y: allCoordinates[2].toNumber(),
+                    z: allCoordinates[3].toNumber(),
                 });
             }
             form.title("Editor Stick");
@@ -6184,7 +6184,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             let form2 = new ModalFormData();
             let playerList = world.getPlayers();
             let targetList = [playerList[0].nameTag];
-            let componentList = [playerList[0].getComponents[0]];
+            let componentList = [playerList[0].getComponents()[0]];
             let entity2;
             try {
                 entity2 = playerList[0].getEntitiesFromViewDirection();
@@ -6564,9 +6564,9 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                             location: playerList[0].location,
                         })[0];
                         entity2 = playerList[Number(playerViewer)].dimension.getEntitiesFromRay({
-                            x: entity3[0].location.x,
-                            y: entity3[0].location.y + 1.0,
-                            z: entity3[0].location.z,
+                            x: entity3.location.x,
+                            y: entity3.location.y + 1.0,
+                            z: entity3.location.z,
                         }, { x: 0, y: -0.999999999999999, z: 0 });
                     }
                     else {
@@ -6678,7 +6678,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             let form2 = new ModalFormData();
             let playerList = world.getPlayers();
             let targetList = [playerList[0].nameTag];
-            let componentList = [playerList[0].getComponents[0]];
+            let componentList = [playerList[0].getComponents()[0]];
             let entity2 = playerList[0].getEntitiesFromViewDirection();
             let entity3 = undefined;
             try {

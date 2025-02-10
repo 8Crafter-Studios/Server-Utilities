@@ -8,6 +8,8 @@ import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
 export async function globalSettings(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
+    assertIsDefined(sourceEntity);
+    ;
     if (securityVariables.ultraSecurityModeEnabled) {
         if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessSettings") == false) {
             const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permission to access this menu: andexdb.accessSettings", "Back", "Cancel");

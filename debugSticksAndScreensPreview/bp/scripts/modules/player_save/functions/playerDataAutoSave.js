@@ -1,9 +1,9 @@
 import { world, system } from "@minecraft/server";
 import { config } from "init/classes/config";
 import { savedPlayer } from "modules/player_save/classes/savedPlayer";
-globalThis.lastPlayerDataAutoSaveRun = 0;
+let lastPlayerDataAutoSaveRun_local = 0;
 export async function playerDataAutoSaveAsyncInstance() {
-    globalThis.lastPlayerDataAutoSaveRun = Date.now();
+    lastPlayerDataAutoSaveRun_local = Date.now();
     try {
         const players = world.getAllPlayers();
         for await (const p of players) {
@@ -60,7 +60,7 @@ export async function startPlayerDataAutoSave() {
     }
     else {
         repeatingIntervals.playerDataAutoSave = system.runInterval(() => {
-            globalThis.lastPlayerDataAutoSaveRun = Date.now();
+            lastPlayerDataAutoSaveRun_local = Date.now();
             if (world.getDynamicProperty("andexdbSettings:autoSavePlayerData") ??
                 true == true) {
                 world.getAllPlayers().forEach((p) => {
@@ -84,4 +84,9 @@ export function stopPlayerDataAutoSave() {
         return 0;
     }
 }
+Object.defineProperty(globalThis, "lastPlayerDataAutoSaveRun", {
+    get: function lastPlayerDataAutoSaveRun() {
+        return lastPlayerDataAutoSaveRun_local;
+    }
+});
 //# sourceMappingURL=playerDataAutoSave.js.map

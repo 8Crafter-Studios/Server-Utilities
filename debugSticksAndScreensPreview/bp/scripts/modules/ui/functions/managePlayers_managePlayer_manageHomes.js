@@ -19,7 +19,7 @@ export async function managePlayers_managePlayer_manageHomes(sourceEntity, playe
     let form6 = new ActionFormData();
     form6.title(player.name);
     const homes = HomeSystem.getHomesForPlayer(player.id);
-    homes.forEach((h) => form6.button(`${h.name}\n${dimensionTypeDisplayFormattingE[dimensionse[dimensions.indexOf(h.location.dimension)]]}§r ${vTStr(Vector.floor(h.location))}`));
+    homes.forEach((h) => form6.button(`${h.name}\n${dimensionTypeDisplayFormatting[dimensionse[dimensions.indexOf(h.location.dimension)]]}§r ${vTStr(Vector.floor(h.location))}`));
     form6.button("Back", "textures/ui/arrow_left");
     form6.button("Close", "textures/ui/crossout");
     return (await forceShow(form6, sourceEntity)
@@ -28,6 +28,7 @@ export async function managePlayers_managePlayer_manageHomes(sourceEntity, playe
         if (g.canceled) {
             return 1;
         }
+        assertIsDefined(g.selection);
         switch (g.selection) {
             case homes.length:
                 return 1;
@@ -37,7 +38,7 @@ export async function managePlayers_managePlayer_manageHomes(sourceEntity, playe
                 break;
             default:
                 return await new ActionFormData()
-                    .body(`Home Name: ${homes[g.selection].name}\nLocation: ${dimensionTypeDisplayFormattingE[dimensionse[dimensions.indexOf(homes[g.selection].location
+                    .body(`Home Name: ${homes[g.selection].name}\nLocation: ${dimensionTypeDisplayFormatting[dimensionse[dimensions.indexOf(homes[g.selection].location
                     .dimension)]]}§r ${vTStr(homes[g.selection].location)}\nFormat Version: ${homes[g.selection].format_version}\nHome Format Version: ${homes[g.selection].home_format_version}`)
                     .button("Teleport")
                     .button("§cEdit")
@@ -50,6 +51,7 @@ export async function managePlayers_managePlayer_manageHomes(sourceEntity, playe
                         return 1;
                     }
                     if (h.selection == 0) {
+                        assertIsDefined(g.selection);
                         sourceEntity.teleport(homes[g.selection].location, {
                             dimension: homes[g.selection].location
                                 .dimension,
@@ -62,6 +64,7 @@ export async function managePlayers_managePlayer_manageHomes(sourceEntity, playe
                     }
                     if (h.selection == 2) {
                         if ((await showMessage(sourceEntity, "Are You Sure?", "Are you sure you want to delete this home!?\nThis action cannot be undone!", "Cancel", "Confirm")).selection == 1) {
+                            assertIsDefined(g.selection);
                             homes[g.selection].remove();
                         }
                         return 1;

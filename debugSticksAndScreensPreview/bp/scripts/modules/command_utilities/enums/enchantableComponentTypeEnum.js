@@ -10,7 +10,7 @@ export var enchantableComponentTypeEnum;
     enchantableComponentTypeEnum["minecraft:addEnchantments"] = "addEnchantments";
     enchantableComponentTypeEnum["remove"] = "removeEnchantment";
     enchantableComponentTypeEnum["minecraft:remove"] = "removeEnchantment";
-    enchantableComponentTypeEnum["removeEnchantments"] = "removeEnchantment";
+    enchantableComponentTypeEnum["removeEnchantment"] = "removeEnchantment";
     enchantableComponentTypeEnum["minecraft:removeEnchantments"] = "removeEnchantment";
     enchantableComponentTypeEnum["clear"] = "removeAllEnchantments";
     enchantableComponentTypeEnum["minecraft:clear"] = "removeAllEnchantments";

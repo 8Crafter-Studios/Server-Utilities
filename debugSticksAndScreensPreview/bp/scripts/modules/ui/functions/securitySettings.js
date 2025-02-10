@@ -145,7 +145,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
         let r = ra;
         // This will stop the code when the player closes the form
         if (r.canceled)
-            return;
+            return 1;
         let response = r.selection;
         switch (response) {
             case 0:
@@ -199,8 +199,15 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                 return 1;
         }
     })
-        .catch((e) => {
-        console.error(e, e.stack);
+        .catch(async (e) => {
+        try {
+            return ((await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection == 0).toNumber();
+        }
+        catch {
+            console.error(e, e.stack);
+            return 0;
+        }
+        ;
     });
 }
 export async function securitySettings_playersWithPermissions(sourceEntitya) {
@@ -232,7 +239,7 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
         let r = ra;
         // This will stop the code when the player closes the form
         if (r.canceled)
-            return;
+            return 1;
         let response = r.selection;
         switch (response) {
             case 0:
@@ -275,8 +282,15 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                 return 1;
         }
     })
-        .catch((e) => {
-        console.error(e, e.stack);
+        .catch(async (e) => {
+        try {
+            return ((await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection == 0).toNumber();
+        }
+        catch {
+            console.error(e, e.stack);
+            return 0;
+        }
+        ;
     });
 }
 export async function securitySettings_playersWithPermissions_permission(sourceEntitya, permission, pagen = 0, maxplayersperpage = config.ui.pages
@@ -531,8 +545,8 @@ form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
                 break;
         }
     })
-        .catch((e) => {
-        console.error(e, e.stack);
+        .catch(async (e) => {
+        return ((await showMessage(sourceEntity, "§cError", `§c${e} ${e.stack}`, "Back", "Close")).selection == 0).toNumber();
     });
 }
 export async function securitySettings_playersWithPermissions_permission_UltraSecurityMode(sourceEntitya, permission, pagen = 0, maxplayersperpage = config.ui.pages

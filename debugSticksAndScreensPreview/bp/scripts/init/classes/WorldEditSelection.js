@@ -4,38 +4,39 @@ export class WorldEditSelection {
     constructor(player) {
         this.player = player;
     }
+    /**
+     * The first corner of the current selection.
+     *
+     * It is stored in the player's `pos1` dynamic property.
+     */
     get pos1() {
         return this.player.getDynamicProperty("pos1");
     }
     set pos1(value) {
         this.player.setDynamicProperty("pos1", value);
     }
+    /**
+     * The second corner of the current selection.
+     *
+     * It is stored in the player's `pos2` dynamic property.
+     */
     get pos2() {
         return this.player.getDynamicProperty("pos2");
     }
     set pos2(value) {
         this.player.setDynamicProperty("pos2", value);
     }
+    /**
+     * The currently selected dimension.
+     *
+     * It is stored in the player's `posD` dynamic property.
+     */
     get dimension() {
         let value = this.player.getDynamicProperty("posD");
         if (!!!value) {
             return undefined;
         }
-        return world.getDimension(value);
-    }
-    get minPos() {
-        return {
-            x: Math.min(this.pos1.x, this.pos2.x),
-            y: Math.min(this.pos1.y, this.pos2.y),
-            z: Math.min(this.pos1.z, this.pos2.z),
-        };
-    }
-    get maxPos() {
-        return {
-            x: Math.max(this.pos1.x, this.pos2.x),
-            y: Math.max(this.pos1.y, this.pos2.y),
-            z: Math.max(this.pos1.z, this.pos2.z),
-        };
+        return tryget(() => world.getDimension(value)) ?? undefined;
     }
     set dimension(value) {
         let outValue = undefined;
@@ -56,11 +57,51 @@ export class WorldEditSelection {
         }
         this.player.setDynamicProperty("posD", outValue);
     }
+    /**
+     * The smallest corner of the selection.
+     *
+     * It gets the minimum values of each of the vectors of the `pos1` and `pos2` properties.
+     */
+    get minPos() {
+        const p1 = this.pos1;
+        const p2 = this.pos2;
+        if (p1 === undefined || p2 === undefined)
+            return undefined;
+        return {
+            x: Math.min(p1.x, p2.x),
+            y: Math.min(p1.y, p2.y),
+            z: Math.min(p1.z, p2.z),
+        };
+    }
+    /**
+     * The largest corner of the selection.
+     *
+     * It gets the maximum values of each of the vectors of the `pos1` and `pos2` properties.
+     */
+    get maxPos() {
+        const p1 = this.pos1;
+        const p2 = this.pos2;
+        if (p1 === undefined || p2 === undefined)
+            return undefined;
+        return {
+            x: Math.max(p1.x, p2.x),
+            y: Math.max(p1.y, p2.y),
+            z: Math.max(p1.z, p2.z),
+        };
+    }
     getSavedSelectionIds() {
         return this.player
             .getDynamicPropertyIds()
             .filter((v) => v.startsWith("savedSelection:"))
             .map((v) => v.slice(15));
+    }
+    getSavedSelections() {
+        return Object.fromEntries(cullUndefined(this.getSavedSelectionIds().map(selectionID => {
+            if (!!!this.player.getDynamicProperty("savedSelection:" + selectionID)) {
+                return undefined;
+            }
+            return [selectionID, JSON.parse(String(this.player.getDynamicProperty("savedSelection:" + selectionID)))];
+        })));
     }
     getSavedSelection(selectionID) {
         if (!!!this.player.getDynamicProperty("savedSelection:" + selectionID)) {
@@ -100,7 +141,14 @@ export class WorldEditSelection {
         this.player.setDynamicProperty("savedSelection:" + selectionID, JSON.stringify(value));
     }
     toJSON() {
-        return {};
+        return {
+            pos1: this.pos1,
+            pos2: this.pos2,
+            minPos: this.minPos,
+            maxPos: this.maxPos,
+            dimension: this.dimension.id,
+            savedSelections: this.getSavedSelections(),
+        };
     }
 }
 Object.defineProperties(Entity.prototype, {

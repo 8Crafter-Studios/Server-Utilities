@@ -64,9 +64,9 @@ globalThis.JSONParse = function JSONParse(JSONString, keepUndefined = true) {
             a = b;
             {
                 let b = a;
-                !!b.forEach((va, i) => {
+                b.forEach((va, i) => {
                     if (String(va).match(/^{{"{{(Infinity|NaN|-Infinity|undefined|\-?\d+n)}}"}}$/)) {
-                        b[i] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, "{{$1}}");
+                        b[Number(i)] = va.replace(/^(?:{{"{{)(Infinity|NaN|-Infinity|undefined|\-?\d+n)(?:}}"}})$/g, "{{$1}}");
                     }
                     a = b;
                 });

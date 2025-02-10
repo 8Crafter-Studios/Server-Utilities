@@ -22,7 +22,7 @@ subscribedEvents.beforeWorldInitialize =
                 }
             });
         }
-        globalThis.beforeInitiallizeTick = system.currentTick;
+        globalThis.beforeInitializeTick = system.currentTick;
         event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use_on", {
             onUseOn: (event) => { },
         });

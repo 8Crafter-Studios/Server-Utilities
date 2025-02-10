@@ -1,5 +1,5 @@
 export const commandflags = {
-    "butcher": `No Flags: Kill items and experience orbs.
+    butcher: `No Flags: Kill items and experience orbs.
 a: kill animals
 b: kill ambient mobs
 c: kill cloned players
@@ -17,7 +17,7 @@ r: kill armor stands
 t: allow killing of name tagged entities
 v: kill vehicles
 w: kill water mobs`,
-    "butcherdespawn": `No Flags: Kill items and experience orbs.
+    butcherdespawn: `No Flags: Kill items and experience orbs.
 a: despawn animals
 b: despawn ambient mobs
 c: despawn cloned players
@@ -49,14 +49,19 @@ z: mirror structure z axis
 h: makes the copied structure be pasted at your current location instead of the selected location`,
     "\\\\undo": `k: don't remove the undo save point after finishing the undo
 t: spawn in a ticking area before running the undo command`,
-    "execute": `f: sends the feedback of the commands to the source of the execute command instead of the targeted entity
+    execute: `f: sends the feedback of the commands to the source of the execute command instead of the targeted entity
 s: silences all command feedback
 q: runs the commands in silent mode so that each entity does not send a notification in the chat to players with the getAllChatCommands tag
 b: specifies that the command that will be run by the execute command is a built-in command, specifying this may reduce the lag caused by the command, if you are using this to run a built-in command in a repeating command block then this should be used
 c: specifies that the command that will be run by the execute command is a custom command, specifying this may reduce the lag caused by the command, if you are using this to run a custom command in a repeating command block then this should be used`,
-    "ground": `l: include liquid blocks in the list of blocks that count as ground blocks
+    ground: `l: include liquid blocks in the list of blocks that count as ground blocks
 p: include passable blocks in the list of blocks that count as ground blocks`,
-    "top": `l: include liquid blocks in the list of blocks that count as ground blocks
-p: include passable blocks in the list of blocks that count as ground blocks`
+    top: `l: include liquid blocks in the list of blocks that count as ground blocks
+p: include passable blocks in the list of blocks that count as ground blocks`,
+    "\\\\regenerateblocks": `i: Makes it so the command does not ignore air blocks when looking at the surrounding blocks to determine what type of block to generate.
+s: Allows the command to replace non-air blocks.
+a: Causes surrounding air blocks that are in the section that has yet to be generated to not affect the type of blocks generated.
+b: Causes all surrounding blocks that are in the section that has yet to be generated to not affect the type of blocks generated.
+d: Stops the command from prioritizing surrounding blocks that are closer to the block being generated when determining what type of block to generate.`,
 };
 //# sourceMappingURL=commandflags.js.map

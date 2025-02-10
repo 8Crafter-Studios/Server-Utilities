@@ -18,7 +18,8 @@ try {
                                 let block = playerList2[index].getBlockFromViewDirection({
                                     includeLiquidBlocks: true,
                                     includePassableBlocks: true,
-                                }).block;
+                                })?.block;
+                                assertIsDefined(block);
                                 let blockStates = Object.entries(block.permutation.getAllStates());
                                 let blockStatesB;
                                 blockStatesB = ["none"];
@@ -38,42 +39,42 @@ try {
 §l§eRedstone Power: §r§c${block.getRedstonePower()}${!!block.getComponent("inventory")
                                     ? `
 §l§eminecraft:inventory: §r§9{§eSlots Filled: §r§c${block.getComponent("inventory")
-                                        .container.size -
+                                        ?.container?.size -
                                         block.getComponent("inventory")
-                                            .container.emptySlotsCount}§b/§c${block.getComponent("inventory")
-                                        .container.size}§9}`
+                                            ?.container?.emptySlotsCount}§b/§c${block.getComponent("inventory")
+                                        ?.container?.size}§9}`
                                     : ""}${!!block.getComponent("piston")
                                     ? `
 §l§eminecraft:piston: §r§9{§eIs Moving: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("piston")
-                                        .isMoving)}§a, §eState: §r§u${block.getComponent("piston").state}§a, §eAttatched Block Count: §r§c${block
+                                        ?.isMoving)}§a, §eState: §r§u${block.getComponent("piston")?.state}§a, §eAttatched Block Count: §r§c${block
                                         .getComponent("piston")
-                                        .getAttachedBlocks().length}§9}`
+                                        ?.getAttachedBlocks().length}§9}`
                                     : ""}${!!block.getComponent("record_player")
                                     ? `
 §l§eminecraft:recordPlayer: §r§9{§eIs Playing: §r${((b) => (b ? "§2" : "§4") + String(b))(block
                                         .getComponent("record_player")
-                                        .isPlaying())}§9}`
+                                        ?.isPlaying())}§9}`
                                     : ""}${!!block.getComponent("sign")
                                     ? `
-§l§eminecraft:sign: §r§9{§eIs Waxed: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("sign").isWaxed)}§a, §eF Dye: §r§u${block
+§l§eminecraft:sign: §r§9{§eIs Waxed: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("sign")?.isWaxed)}§a, §eF Dye: §r§u${block
                                         .getComponent("sign")
-                                        .getTextDyeColor(SignSide.Front) ?? "null"}§a, §eB Dye: §r§u${block
+                                        ?.getTextDyeColor(SignSide.Front) ?? "null"}§a, §eB Dye: §r§u${block
                                         .getComponent("sign")
-                                        .getTextDyeColor(SignSide.Back) ?? "null"}§a, §eF Text Length: §r§c${block
+                                        ?.getTextDyeColor(SignSide.Back) ?? "null"}§a, §eF Text Length: §r§c${block
                                         .getComponent("sign")
-                                        .getText(SignSide.Front)
-                                        .length}§a, §eB Text Length: §r§c${block
+                                        ?.getText(SignSide.Front)
+                                        ?.length}§a, §eB Text Length: §r§c${block
                                         .getComponent("sign")
-                                        .getText(SignSide.Back).length}§a, §eF Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block
+                                        ?.getText(SignSide.Back)?.length}§a, §eF Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block
                                         .getComponent("sign")
-                                        .getRawText(SignSide.Front)))}§a, §eB Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block
+                                        ?.getRawText(SignSide.Front)))}§a, §eB Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block
                                         .getComponent("sign")
-                                        .getRawText(SignSide.Back)))}§9}`
+                                        ?.getRawText(SignSide.Back)))}§9}`
                                     : ""}${!!block.getComponent("fluidContainer")
                                     ? `
-§l§eminecraft:fluidContainer: §r§9{§eFill Level: §r§c${block.getComponent("fluidContainer").fillLevel}§a, §eFluid Type: §r§c§a${block
+§l§eminecraft:fluidContainer: §r§9{§eFill Level: §r§c${block.getComponent("fluidContainer")?.fillLevel}§a, §eFluid Type: §r§c§a${block
                                         .getComponent("fluidContainer")
-                                        .getFluidType()}, §eCustom Color: §r§c${JSON.stringify(block.getComponent("fluidContainer").fluidColor)}§9}`
+                                        ?.getFluidType()}, §eCustom Color: §r§c${JSON.stringify(block.getComponent("fluidContainer")?.fluidColor)}§9}`
                                     : ""}`;
                                 playerList2[index].onScreenDisplay.setActionBar(newActionBarText +
                                     "\n".repeat(Math.max(0, newActionBarText.split("\n")
@@ -325,17 +326,17 @@ try {
                                                 .find((t) => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
                                                 world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
                                                 "sudo:")))
-                                                .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
+                                                ?.slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
                                                 world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
-                                                "sudo:").length), nameGradientMode)
+                                                "sudo:").length) ?? "", nameGradientMode)
                                             : playerList2[index]
                                                 .getTags()
                                                 .find((t) => t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
                                                 world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
                                                 "sudo:")))
-                                                .slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
+                                                ?.slice(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ??
                                                 world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ??
-                                                "sudo:").length)
+                                                "sudo:").length) ?? ""
                                         : !!playerList2[index]
                                             .getTags()
                                             .find((t) => t.startsWith("nameTagSudo:"))
@@ -343,10 +344,10 @@ try {
                                                 ? evaluateChatColorType(tryget(() => playerList2[index]
                                                     .getTags()
                                                     .find((t) => t.startsWith("nameTagSudo:"))
-                                                    .slice(12)), nameGradientMode)
+                                                    ?.slice(12)) ?? "", nameGradientMode)
                                                 : tryget(() => playerList2[index]
                                                     .getTags()
-                                                    .find((t) => t.startsWith("nameTagSudo:"))
+                                                    .find((t) => t.startsWith("nameTagSudo:")) ?? ""
                                                     .slice(12))
                                             : playerList2[index].hasTag("chatHideNameTag")
                                                 ? ""
@@ -376,9 +377,9 @@ try {
                                         let tags = playerList2[indexb].getTags();
                                         rank = eval(`\`${String(world.getDynamicProperty("andexdbSettings:defaultRankTemplateString") ?? "")}\``);
                                     }
-                                    let dimension = dimensionTypeDisplayFormattingE[playerList2[index].dimension.id];
-                                    const currentHealth = playerList2[indexb].getComponent("health").currentValue;
-                                    const maxHealth = playerList2[indexb].getComponent("health").effectiveMax;
+                                    let dimension = dimensionTypeDisplayFormatting[playerList2[index].dimension.id];
+                                    const currentHealth = playerList2[indexb].getComponent("health")?.currentValue;
+                                    const maxHealth = playerList2[indexb].getComponent("health")?.effectiveMax;
                                     playerList2[indexb].nameTag = eval(`\`${config.chatRanks.nameTagTemplateString}\``); /*(
             playerList2[index].hasTag("nameTagUseSudo")?
             playerList2[index].getTags().find(t=>t.startsWith(String(playerList2[index].getDynamicProperty("andexdbPersonalSettings:chatSudoPrefix") ?? world.getDynamicProperty("andexdbSettings:chatSudoPrefix") ?? "sudo:")))

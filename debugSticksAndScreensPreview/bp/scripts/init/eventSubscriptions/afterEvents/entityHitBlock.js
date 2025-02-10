@@ -1,4 +1,4 @@
-import { world, EntityInventoryComponent, Player } from "@minecraft/server";
+import { world, EntityInventoryComponent, Player, Block } from "@minecraft/server";
 import { debugAction } from "modules/main/functions/debugAction";
 subscribedEvents.afterEntityHitBlock =
     world.afterEvents.entityHitBlock.subscribe((event) => {
@@ -13,13 +13,13 @@ subscribedEvents.afterEntityHitBlock =
                 }
             });
         }
-        if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlotIndex)?.typeId === "andexdb:debug_stick") {
+        if (event.damagingEntity.getComponent("minecraft:inventory").container?.getItem(event.damagingEntity.selectedSlotIndex)?.typeId === "andexdb:debug_stick") {
             debugAction(event.hitBlock, event.damagingEntity, 1, Number(event.damagingEntity.isSneaking));
         }
-        if (event.damagingEntity.getComponent("minecraft:inventory").container.getItem(event.damagingEntity.selectedSlotIndex)?.typeId === "andexdb:liquid_clipped_debug_stick") {
+        if (event.damagingEntity.getComponent("minecraft:inventory").container?.getItem(event.damagingEntity.selectedSlotIndex)?.typeId === "andexdb:liquid_clipped_debug_stick") {
             debugAction(event.damagingEntity.getBlockFromViewDirection({
                 includeLiquidBlocks: true,
-            }).block, event.damagingEntity, 1, Number(event.damagingEntity.isSneaking));
+            })?.block, event.damagingEntity, 1, Number(event.damagingEntity.isSneaking));
         }
         world
             .getAllPlayers()

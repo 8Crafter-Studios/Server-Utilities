@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import * as GameTest from "@minecraft/server-gametest";
-import { world, ItemStack, GameMode, Direction, } from "@minecraft/server";
+import { world, ItemStack, GameMode, Direction, ItemType, BlockType, PlayerBreakBlockAfterEvent, Block, PlayerPlaceBlockAfterEvent, BlockTypes, ItemTypes, } from "@minecraft/server";
 function registerBlockBreakTest(gameMode, blockType, blockBreakTicks) {
     GameTest.registerAsync("BlockEventTests", `block_break_event_${gameMode}_${blockType.id}`, async (test) => {
         const spawnLocation = { x: 1, y: 2, z: 3 };
@@ -12,7 +12,7 @@ function registerBlockBreakTest(gameMode, blockType, blockBreakTicks) {
         let blockDidBreak = false;
         const listener = (event) => {
             // Make sure it's our block that broke
-            const locationCorrect = event.block.location.equals(test.worldBlockLocation(blockLocation));
+            const locationCorrect = Vector.equals(event.block.location, test.worldBlockLocation(blockLocation));
             const blockTypeCorrect = event.brokenBlockPermutation.type.id == blockType.id;
             if (locationCorrect && blockTypeCorrect) {
                 blockDidBreak = true;
@@ -51,7 +51,7 @@ function registerBlockPlaceTest(itemType, belowBlock) {
             // Listen for block place
             let blockDidPlace = false;
             const listener = (event) => {
-                if (event.block.location.equals(test.worldBlockLocation(Vector.add(blockLocation, { x: 0, y: 1, z: 0 })))) {
+                if (Vector.equals(event.block.location, test.worldBlockLocation(Vector.add(blockLocation, { x: 0, y: 1, z: 0 })))) {
                     blockDidPlace = true;
                 }
             };
@@ -79,17 +79,17 @@ function registerBlockPlaceTest(itemType, belowBlock) {
     registerTest("creative");
 }
 // Break Block Tests
-registerBlockBreakTest("creative", "dirt", 20);
-registerBlockBreakTest("survival", "dirt", 100);
+registerBlockBreakTest("creative", BlockTypes.get("dirt"), 20);
+registerBlockBreakTest("survival", BlockTypes.get("dirt"), 100);
 // Place Block Tests
 // Note: These are fired in a bunch of
 //  different spots in the code, hence the different
 //  items I chose to test
-registerBlockPlaceTest("dirt");
-registerBlockPlaceTest("bamboo", "dirt");
-registerBlockPlaceTest("banner");
-registerBlockPlaceTest("bed");
-registerBlockPlaceTest("flowerPot");
-registerBlockPlaceTest("redstone");
-registerBlockPlaceTest("oakSign");
+registerBlockPlaceTest(ItemTypes.get("dirt"));
+registerBlockPlaceTest(ItemTypes.get("bamboo"), BlockTypes.get("dirt"));
+registerBlockPlaceTest(ItemTypes.get("banner"));
+registerBlockPlaceTest(ItemTypes.get("bed"));
+registerBlockPlaceTest(ItemTypes.get("flower_pot"));
+registerBlockPlaceTest(ItemTypes.get("redstone"));
+registerBlockPlaceTest(ItemTypes.get("oak_sign"));
 //# sourceMappingURL=BlockEventTests.js.map

@@ -210,6 +210,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .\\idtfill - §oFills all or parts of the selected area with a specific block, with no limits, also temporarily spawns a tickingarea to load in chunks around it, also allows specifying the integrity of the fill, can use any block type including NBT Editor only ones.§r
 .\\replace - §oReplaces the blocks between the selected area with the selected block type.§r
 .\\hreplace - §oReplaces the sides of the selected area with the selected block type. It just does a hollow fill. It is the same as \\\\replace except that the middle blocks are unaffected.§r
+.\\oreplace - §oReplaces the outline of the selected area with the selected block type. It just does an outline fill. It is the same as \\\\replace except that all the blocks except for the outline are unaffected.§r
 .\\walls - §oReplaces the walls of the selected area with the selected block type.§r
 .\\ceil - §oReplaces the ceiling of the selected area with the selected block type.§r
 .\\floor - §oReplaces the floor of the selected area with the selected block type.§r

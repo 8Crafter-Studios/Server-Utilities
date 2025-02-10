@@ -9,10 +9,7 @@ import { mainShopSystemSettings } from "ExtraFeatures/shop_main";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { fillBlocksCG } from "modules/main/functions/fillBlocksCG";
 import { fillBlocksC } from "modules/main/functions/fillBlocksC";
-import { fillBlocksHWFGB } from "modules/main/functions/fillBlocksHWFGB";
 import { fillBlocksHDFGB } from "modules/main/functions/fillBlocksHDFGB";
-import { fillBlocksHFFGB } from "modules/main/functions/fillBlocksHFFGB";
-import { fillBlocksHFGBM } from "modules/main/functions/fillBlocksHFGBM";
 import { fillBlocksHFGB } from "modules/main/functions/fillBlocksHFGB";
 import { fillBlocksHFG } from "modules/main/functions/fillBlocksHFG";
 import { fillBlocksHT } from "modules/main/functions/fillBlocksHT";
@@ -23,9 +20,6 @@ import { fillBlocksHHOG } from "modules/main/functions/fillBlocksHHOG";
 import { fillBlocksHDG } from "modules/main/functions/fillBlocksHDG";
 import { fillBlocksHHSG } from "modules/main/functions/fillBlocksHHSG";
 import { fillBlocksHSSG } from "modules/main/functions/fillBlocksHSSG";
-import { fillBlocksHCGB } from "modules/main/functions/fillBlocksHCGB";
-import { fillBlocksHHSGB } from "modules/main/functions/fillBlocksHHSGB";
-import { fillBlocksHSGB } from "modules/main/functions/fillBlocksHSGB";
 import { fillBlocksHSG } from "modules/main/functions/fillBlocksHSG";
 import { fillBlocksHC } from "modules/main/functions/fillBlocksHC";
 import { fillBlocksHP } from "modules/main/functions/fillBlocksHP";
@@ -9067,8 +9061,8 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                         let ovoidmode = false;
                         let hovoidmode = false;
                         let skygridmode = false;
-                        if (["circle"].includes(fillmodetypeenum[argsc[8] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["circle"].includes(fillmodetypeenum[(argsc[8] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             circlemode = true;
                         }
                         if ([
@@ -9081,8 +9075,8 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             "circlexyz",
                             "sphere",
                             "semisphere",
-                        ].includes(fillmodetypeenum[argse[7] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argse[7] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ccirclemode = true;
                         }
                         if ([
@@ -9095,24 +9089,24 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                             "cylinderxz",
                             "cylinderxyz",
                             "dome",
-                        ].includes(fillmodetypeenum[argsg[8] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argsg[8] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hspheremode = true;
                         }
-                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[9] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[(argsi[9] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             tunnelmode = true;
                         }
-                        if (["ovoid"].includes(fillmodetypeenum[argsm[12] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["ovoid"].includes(fillmodetypeenum[(argsm[12] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ovoidmode = true;
                         }
-                        if (["hollowovoid"].includes(fillmodetypeenum[argsk[13] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["hollowovoid"].includes(fillmodetypeenum[(argsk[13] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hovoidmode = true;
                         }
-                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[10] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[(argso[10] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             skygridmode = true;
                         }
                         let coordinatesa; /*
@@ -9205,7 +9199,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                 ? ["air"]
                                 : [sglastblockname, sglastblockstates]); /*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-                        switch (fillmodetypeenum[skygridmode
+                        switch (fillmodetypeenum[(skygridmode
                             ? sgmode
                             : hovoidmode
                                 ? homode
@@ -9219,7 +9213,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                                 ? cmode
                                                 : ccirclemode
                                                     ? ccmode
-                                                    : mode ?? ""]) {
+                                                    : mode ?? "")]) {
                             case "":
                                 system.run(() => {
                                     let ta;
@@ -10265,8 +10259,8 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                         let ovoidmode = false;
                         let hovoidmode = false;
                         let skygridmode = false;
-                        if (["circle"].includes(fillmodetypeenum[argsc[8] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["circle"].includes(fillmodetypeenum[(argsc[8] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             circlemode = true;
                         }
                         if ([
@@ -10279,8 +10273,8 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             "circlexyz",
                             "sphere",
                             "semisphere",
-                        ].includes(fillmodetypeenum[argse[7] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argse[7] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ccirclemode = true;
                         }
                         if ([
@@ -10293,24 +10287,24 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                             "cylinderxz",
                             "cylinderxyz",
                             "dome",
-                        ].includes(fillmodetypeenum[argsg[8] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argsg[8] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hspheremode = true;
                         }
-                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[9] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[(argsi[9] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             tunnelmode = true;
                         }
-                        if (["ovoid"].includes(fillmodetypeenum[argsm[12] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["ovoid"].includes(fillmodetypeenum[(argsm[12] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ovoidmode = true;
                         }
-                        if (["hollowovoid"].includes(fillmodetypeenum[argsk[13] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["hollowovoid"].includes(fillmodetypeenum[(argsk[13] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hovoidmode = true;
                         }
-                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[10] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[(argso[10] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             skygridmode = true;
                         }
                         let coordinatesa; /*
@@ -10403,7 +10397,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                 ? ["air"]
                                 : [sglastblockname, sglastblockstates]); /*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-                        switch (fillmodetypeenum[skygridmode
+                        switch (fillmodetypeenum[(skygridmode
                             ? sgmode
                             : hovoidmode
                                 ? homode
@@ -10417,7 +10411,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 ? cmode
                                                 : ccirclemode
                                                     ? ccmode
-                                                    : mode ?? ""]) {
+                                                    : mode ?? "")]) {
                             case "":
                                 system.run(() => {
                                     let ta;
@@ -12075,8 +12069,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                         let ovoidmode = false;
                         let hovoidmode = false;
                         let skygridmode = false;
-                        if (["circle"].includes(fillmodetypeenum[argsc[9] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["circle"].includes(fillmodetypeenum[(argsc[9] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             circlemode = true;
                         }
                         if ([
@@ -12089,8 +12083,8 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             "circlexyz",
                             "sphere",
                             "semisphere",
-                        ].includes(fillmodetypeenum[argse[8] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argse[8] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ccirclemode = true;
                         }
                         if ([
@@ -12103,24 +12097,24 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                             "cylinderxz",
                             "cylinderxyz",
                             "dome",
-                        ].includes(fillmodetypeenum[argsg[9] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argsg[9] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hspheremode = true;
                         }
-                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[10] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[(argsi[10] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             tunnelmode = true;
                         }
-                        if (["ovoid"].includes(fillmodetypeenum[argsm[13] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["ovoid"].includes(fillmodetypeenum[(argsm[13] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ovoidmode = true;
                         }
-                        if (["hollowovoid"].includes(fillmodetypeenum[argsk[14] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["hollowovoid"].includes(fillmodetypeenum[(argsk[14] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hovoidmode = true;
                         }
-                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[11] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[(argso[11] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             skygridmode = true;
                         }
                         let coordinatesa; /*
@@ -12217,7 +12211,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                 : [sglastblockname, sglastblockstates]);
                         const blocktypes = BlockTypes.getAll(); /*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-                        switch (fillmodetypeenum[skygridmode
+                        switch (fillmodetypeenum[(skygridmode
                             ? sgmode
                             : hovoidmode
                                 ? homode
@@ -12231,7 +12225,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 ? cmode
                                                 : ccirclemode
                                                     ? ccmode
-                                                    : mode ?? ""]) {
+                                                    : mode ?? "")]) {
                             case "":
                                 system.run(() => {
                                     let ta;
@@ -18914,28 +18908,22 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, [
                         "presetText",
+                        "f-isabd",
+                        "number",
+                        "number",
+                        "number",
+                        "number",
                         "number",
                     ]).args;
-                    const radius = args[1] ?? 5;
-                    const coordinatesa = player.getDynamicProperty("pos1");
-                    const coordinatesb = player.getDynamicProperty("pos2");
-                    const ca = {
-                        x: Math.min(coordinatesa.x, coordinatesb.x),
-                        y: Math.min(coordinatesa.y, coordinatesb.y),
-                        z: Math.min(coordinatesa.z, coordinatesb.z),
-                    };
-                    const cb = {
-                        x: Math.max(coordinatesa.x, coordinatesb.x),
-                        y: Math.max(coordinatesa.y, coordinatesb.y),
-                        z: Math.max(coordinatesa.z, coordinatesb.z),
-                    };
-                    const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
-                        player.dimension.id));
-                    if (!!!coordinatesa) {
+                    const radius = args[2] ?? 5;
+                    const ca = player.worldEditSelection.minPos;
+                    const cb = player.worldEditSelection.maxPos;
+                    const dimensiona = player.worldEditSelection.dimension;
+                    if (!!!ca) {
                         player.sendMessageB("§cError: pos1 is not set.");
                     }
                     else {
-                        if (!!!coordinatesb) {
+                        if (!!!cb) {
                             player.sendMessageB("§cError: pos2 is not set.");
                         }
                         else {
@@ -18961,7 +18949,17 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                             player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         try {
-                                            regenerateBlocksBasic(ca, cb, dimensiona, radius);
+                                            regenerateBlocksBasic(ca, cb, dimensiona, radius, {
+                                                ignoreAir: !args[1].i,
+                                                onlyReplaceAir: !args[1].s,
+                                                ignoreNotYetGeneratedAir: args[1].a,
+                                                ignoreNotYetGeneratedBlocks: args[1].b,
+                                                doDistanceBasedPriority: !args[1].d,
+                                                verticalDistancePriority: args[3],
+                                                horizontalDistancePriority: args[4],
+                                                randomization: args[5],
+                                                airPriority: args[6],
+                                            });
                                         }
                                         catch (e) {
                                             player.sendError("§c" + e + e.stack, true);
@@ -19416,6 +19414,106 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                         const blocktypes = BlockTypes.getAll();
                                         try {
                                             fillHollow(ca, cb, dimensiona, (l, i) => {
+                                                const b = firstblockpattern.generateBlock(i);
+                                                return b.type == "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length *
+                                                        Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: 2500,
+                                                replacemode: args[1].c,
+                                                integrity: 100,
+                                                liteMode: false,
+                                            }).then((a) => {
+                                                player.sendMessageB(`${a.counter == 0n
+                                                    ? "§c"
+                                                    : ""}${a.counter} blocks replaced in ${a.endTime -
+                                                    a.startTime} ms over ${a.endTick -
+                                                    a.startTick} tick${a.endTick -
+                                                    a.startTick ==
+                                                    1
+                                                    ? ""
+                                                    : "s"}${a.containsUnloadedChunks
+                                                    ? "; Some blocks were not generated because they were in unloaded chunks."
+                                                    : ""}`);
+                                            }, (e) => {
+                                                player.sendError("§c" + e + e.stack, true);
+                                            });
+                                        }
+                                        catch (e) {
+                                            player.sendError("§c" + e + e.stack, true);
+                                        }
+                                        finally {
+                                            tac.forEach((tab) => tab?.remove());
+                                        }
+                                    });
+                                }
+                                catch (e) {
+                                    player.sendError("§c" + e + e.stack, true);
+                                }
+                            });
+                        }
+                    }
+                }
+                break;
+            case !!switchTest.match(/^\\oreplace$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, [
+                        "presetText",
+                        "f-c",
+                        "blockPattern",
+                        "blockMask",
+                    ]).args;
+                    const firstblockpattern = args[2];
+                    const mask = args[3];
+                    const coordinatesa = player.getDynamicProperty("pos1");
+                    const coordinatesb = player.getDynamicProperty("pos2");
+                    const ca = {
+                        x: Math.min(coordinatesa.x, coordinatesb.x),
+                        y: Math.min(coordinatesa.y, coordinatesb.y),
+                        z: Math.min(coordinatesa.z, coordinatesb.z),
+                    };
+                    const cb = {
+                        x: Math.max(coordinatesa.x, coordinatesb.x),
+                        y: Math.max(coordinatesa.y, coordinatesb.y),
+                        z: Math.max(coordinatesa.z, coordinatesb.z),
+                    };
+                    const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
+                        player.dimension.id));
+                    if (!!!coordinatesa) {
+                        player.sendMessageB("§cError: pos1 is not set.");
+                    }
+                    else {
+                        if (!!!coordinatesb) {
+                            player.sendMessageB("§cError: pos2 is not set.");
+                        }
+                        else {
+                            system.run(() => {
+                                let ta;
+                                try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => {
+                                        let a = new CompoundBlockVolume();
+                                        a.pushVolume({
+                                            volume: new BlockVolume(ca, cb),
+                                        });
+                                        return a;
+                                    })(), dimensiona).then((tac) => {
+                                        ta = tac;
+                                        try {
+                                            undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), {
+                                                includeBlocks: true,
+                                                includeEntities: false,
+                                                saveMode: config.undoClipboardMode,
+                                            });
+                                        }
+                                        catch (e) {
+                                            player.sendMessageB("§c" + e + " " + e.stack);
+                                        }
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            fillOutline(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
                                                 return b.type == "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length *
@@ -21762,8 +21860,8 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                         let ovoidmode = false;
                         let hovoidmode = false;
                         let skygridmode = false;
-                        if (["circle"].includes(fillmodetypeenum[argsc[4] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["circle"].includes(fillmodetypeenum[(argsc[4] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             circlemode = true;
                         }
                         if ([
@@ -21776,8 +21874,8 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             "circlexyz",
                             "sphere",
                             "semisphere",
-                        ].includes(fillmodetypeenum[argse[3] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argse[3] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ccirclemode = true;
                         }
                         if ([
@@ -21790,24 +21888,24 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                             "cylinderxz",
                             "cylinderxyz",
                             "dome",
-                        ].includes(fillmodetypeenum[argsg[4] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argsg[4] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hspheremode = true;
                         }
-                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[5] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[(argsi[5] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             tunnelmode = true;
                         }
-                        if (["ovoid"].includes(fillmodetypeenum[argsm[6] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["ovoid"].includes(fillmodetypeenum[(argsm[6] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ovoidmode = true;
                         }
-                        if (["hollowovoid"].includes(fillmodetypeenum[argsk[7] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["hollowovoid"].includes(fillmodetypeenum[(argsk[7] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hovoidmode = true;
                         }
-                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[4] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[(argso[4] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             skygridmode = true;
                         }
                         let coordinatesa; /*
@@ -21910,7 +22008,7 @@ ${command.dp}\\itfill <offsetx: float> <offsety: float> <offsetz: float> <thickn
                                 ? ["air"]
                                 : [sglastblockname, sglastblockstates]; /*
 console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-                        switch (fillmodetypeenum[skygridmode
+                        switch (fillmodetypeenum[(skygridmode
                             ? sgmode
                             : hovoidmode
                                 ? homode
@@ -21924,7 +22022,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 ? cmode
                                                 : ccirclemode
                                                     ? ccmode
-                                                    : mode ?? ""]) {
+                                                    : mode ?? "")]) {
                             case "":
                                 system.run(() => {
                                     let ta;
@@ -23541,8 +23639,8 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                         let ovoidmode = false;
                         let hovoidmode = false;
                         let skygridmode = false;
-                        if (["circle"].includes(fillmodetypeenum[argsc[5] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["circle"].includes(fillmodetypeenum[(argsc[5] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             circlemode = true;
                         }
                         if ([
@@ -23555,8 +23653,8 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             "circlexyz",
                             "sphere",
                             "semisphere",
-                        ].includes(fillmodetypeenum[argse[4] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argse[4] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ccirclemode = true;
                         }
                         if ([
@@ -23569,24 +23667,24 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                             "cylinderxz",
                             "cylinderxyz",
                             "dome",
-                        ].includes(fillmodetypeenum[argsg[5] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        ].includes(fillmodetypeenum[(argsg[5] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hspheremode = true;
                         }
-                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[argsi[5] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["tunnel", "cylinder"].includes(fillmodetypeenum[(argsi[5] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             tunnelmode = true;
                         }
-                        if (["ovoid"].includes(fillmodetypeenum[argsm[7] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["ovoid"].includes(fillmodetypeenum[(argsm[7] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             ovoidmode = true;
                         }
-                        if (["hollowovoid"].includes(fillmodetypeenum[argsk[8] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["hollowovoid"].includes(fillmodetypeenum[(argsk[8] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             hovoidmode = true;
                         }
-                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[argso[5] ??
-                            "undefined"?.toLowerCase()?.trim()])) {
+                        if (["skygrid", "inverseskygrid"].includes(fillmodetypeenum[(argso[5] ??
+                            "undefined"?.toLowerCase()?.trim())])) {
                             skygridmode = true;
                         }
                         let coordinatesa; /*
@@ -23693,7 +23791,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                 : [sglastblockname, sglastblockstates];
                         const blocktypes = BlockTypes.getAll(); /*
             console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblocknameindex, reststringaftercoordinates, firstblockstates, lastblockname, somethingtest, lastblockstates, matchingblock}))*/
-                        switch (fillmodetypeenum[skygridmode
+                        switch (fillmodetypeenum[(skygridmode
                             ? sgmode
                             : hovoidmode
                                 ? homode
@@ -23707,7 +23805,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 ? cmode
                                                 : ccirclemode
                                                     ? ccmode
-                                                    : mode ?? ""]) {
+                                                    : mode ?? "")]) {
                             case "":
                                 system.run(() => {
                                     let ta;
@@ -26513,7 +26611,7 @@ ${command.dp}snapshot list`);
                 !!switchTest.match(/^seli$/):
                 {
                     eventData.cancel = true;
-                    player.sendMessageB(`Currently Selected Area Info: \npos1 x: ${player.getDynamicProperty("pos1")["x"]}\npos1 y: ${player.getDynamicProperty("pos1")["y"]}\npos1 z: ${player.getDynamicProperty("pos1")["z"]}\npos2 x: ${player.getDynamicProperty("pos2")["x"]}\npos2 y: ${player.getDynamicProperty("pos2")["y"]}\npos2 z: ${player.getDynamicProperty("pos2")["z"]}\nNext Selection Mode: ${player.getDynamicProperty("posM") ?? false
+                    player.sendMessageB(`Currently Selected Area Info: \npos1 x: ${player.worldEditSelection.pos1.x}\npos1 y: ${player.worldEditSelection.pos1.y}\npos1 z: ${player.worldEditSelection.pos1.z}\npos2 x: ${player.worldEditSelection.pos2.x}\npos2 y: ${player.worldEditSelection.pos2.y}\npos2 z: ${player.worldEditSelection.pos2.z}\nNext Selection Mode: ${player.getDynamicProperty("posM") ?? false
                         ? "pos2"
                         : "pos1"}`);
                 }

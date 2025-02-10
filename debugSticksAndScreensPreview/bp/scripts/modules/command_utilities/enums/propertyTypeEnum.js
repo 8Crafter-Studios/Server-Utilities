@@ -64,11 +64,11 @@ export var propertyTypeEnum;
     propertyTypeEnum["minecraft:cleardynamicproperties"] = "clearDynamicProperties";
     propertyTypeEnum["removeDynamicProperties"] = "removeDynamicProperties";
     propertyTypeEnum["minecraft:removeDynamicProperties"] = "removeDynamicProperties";
-    propertyTypeEnum["removedynamicproperties"] = "removedynamicproperties";
-    propertyTypeEnum["minecraft:removedynamicproperties"] = "removedynamicproperties";
+    propertyTypeEnum["removedynamicproperties"] = "removeDynamicProperties";
+    propertyTypeEnum["minecraft:removedynamicproperties"] = "removeDynamicProperties";
     propertyTypeEnum["removeDynamicProperty"] = "removeDynamicProperty";
     propertyTypeEnum["minecraft:removeDynamicProperty"] = "removeDynamicProperty";
-    propertyTypeEnum["removedynamicproperty"] = "removedynamicproperty";
-    propertyTypeEnum["minecraft:removedynamicproperty"] = "removedynamicproperty";
+    propertyTypeEnum["removedynamicproperty"] = "removeDynamicProperty";
+    propertyTypeEnum["minecraft:removedynamicproperty"] = "removeDynamicProperty";
 })(propertyTypeEnum || (propertyTypeEnum = {}));
 //# sourceMappingURL=propertyTypeEnum.js.map

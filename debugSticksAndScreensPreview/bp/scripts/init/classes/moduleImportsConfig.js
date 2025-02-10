@@ -70,7 +70,7 @@ export class moduleImportsConfig {
             "enableAll",
             "enableAllNonDeprecated",
         ].includes(option)
-            ? option
+            ? option ?? undefined
             : "none");
     }
     static get moduleOverrides() {
@@ -97,7 +97,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get block_generation_utilities() {
@@ -122,7 +122,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get chat() {
@@ -147,7 +147,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get command_utilities() {
@@ -172,7 +172,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get commands() {
@@ -197,7 +197,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get commands_documentation() {
@@ -222,7 +222,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get commands_list() {
@@ -247,7 +247,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get coordinates() {
@@ -272,7 +272,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get errors() {
@@ -297,7 +297,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get main() {
@@ -322,7 +322,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get player_save() {
@@ -347,7 +347,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get spawn_protection() {
@@ -372,7 +372,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get ui() {
@@ -397,7 +397,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
             get utilities() {
@@ -422,7 +422,7 @@ export class moduleImportsConfig {
                     "enableAll",
                     "enableAllNonDeprecated",
                 ].includes(option)
-                    ? option
+                    ? option ?? undefined
                     : "none");
             },
         };

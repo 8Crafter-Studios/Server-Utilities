@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import * as GameTest from "@minecraft/server-gametest";
-import { BlockTypes, Direction, } from "@minecraft/server";
+import { BlockType, BlockTypes, Direction, } from "@minecraft/server";
 import GameTestExtensions from "./GameTestExtensions.js";
 const TicksPerSecond = 20;
 const FiveSecondsInTicks = 5 * TicksPerSecond;
@@ -32,7 +32,7 @@ function testThatFallingSandPopsIntoItem(test) {
     const targetPos = { x: 1, y: 2, z: 1 };
     test.succeedWhen(() => {
         test.assertEntityPresentInArea("minecraft:item", true);
-        test.assertEntityPresent("minecraft:falling_block", targetPos, false);
+        test.assertEntityPresent("minecraft:falling_block", targetPos, 0, false);
     });
 }
 function testThatFallingSandReplaces(test) {
@@ -74,10 +74,10 @@ for (let i = 0; i < BLOCKS_THAT_POP_SAND.length; i++) {
     .tag(GameTest.Tags.suiteDefault);
 } */
 for (const block of BLOCKS_REPLACED_BY_SAND) {
-    const testName = "blocktests.falling_sand_replaces_" + block.id;
+    const testName = "blocktests.falling_sand_replaces_" + block?.id;
     GameTest.register("BlockTests", testName, (test) => {
         //SetBlock will fail if set a block to what it already is. Skip to call setblock() for test falling_sand_replaces_air because it's just air block in initial structure.
-        if (block.id != "minecraft:air") {
+        if (block?.id != "minecraft:air") {
             test.setBlockType(block, { x: 1, y: 2, z: 1 });
         }
         testThatFallingSandReplaces(test);
@@ -277,7 +277,7 @@ GameTest.register("BlockTests", "powder_snow_player_sink_and_freeze", (test) => 
     let healthComp = playerSim.getComponent("health");
     test
         .startSequence()
-        .thenExecuteAfter(180, () => test.assert(healthComp.currentValue < healthComp.currentValue, "no damage"))
+        .thenExecuteAfter(180, () => test.assert(healthComp?.currentValue < healthComp?.currentValue, "no damage"))
         .thenExecute(() => test.assertEntityInstancePresent(playerSim, { x: 1, y: 2, z: 1 }))
         .thenSucceed();
 })

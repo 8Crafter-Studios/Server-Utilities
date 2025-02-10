@@ -1,1 +1,0 @@
-testfor @p # This is just here to make the error go away.

@@ -66,7 +66,7 @@ export const JSONB = {};
         var mind = gap;
         var partial;
         var value = holder[key];
-        if (options.get) {
+        if (options?.get) {
             if (Object.hasOwn(holder, "__lookupGetter__") ? !!holder?.__lookupGetter__(key) : false) {
                 if (options.set) {
                     if (!!holder.__lookupSetter__(key)) {
@@ -86,7 +86,7 @@ export const JSONB = {};
                 }
             }
         }
-        else if (options.set) {
+        else if (options?.set) {
             if (Object.hasOwn(holder, "__lookupSetter__") ? !!holder.__lookupSetter__(key) : false) {
                 value = { set: holder.__lookupSetter__(key) };
             }
@@ -100,7 +100,7 @@ export const JSONB = {};
         // If we were called with a replacer function, then call the replacer to
         // obtain a replacement value.
         if (typeof rep === "function") {
-            value = rep.call(holder, key, value);
+            value = rep.call(holder, key.toString(), value);
         }
         // What happens next depends on the value's type.
         switch (typeof value) {
@@ -111,24 +111,24 @@ export const JSONB = {};
                 return (isFinite(value))
                     ? String(value)
                     : value == Infinity
-                        ? options.Infinity ?? true
+                        ? options?.Infinity ?? true
                             ? "Infinity"
                             : "null"
                         : value == -Infinity
-                            ? options.NegativeInfinity ?? true
+                            ? options?.NegativeInfinity ?? true
                                 ? "-Infinity"
                                 : "null"
                             : Number.isNaN(value)
-                                ? options.NaN ?? true
+                                ? options?.NaN ?? true
                                     ? "NaN"
                                     : "null"
                                 : "null";
             case "bigint":
-                return options.bigint ?? true ? String(value) + "n" : "null";
+                return options?.bigint ?? true ? String(value) + "n" : "null";
             case "undefined":
-                return options.undefined ?? true ? "undefined" : undefined;
+                return options?.undefined ?? true ? "undefined" : undefined;
             case "function":
-                return options.function ?? false ? value.toString() : undefined;
+                return options?.function ?? false ? value.toString() : undefined;
             case "boolean":
             // @ts-ignore
             case "null":
@@ -178,7 +178,7 @@ export const JSONB = {};
                             k = rep[i];
                             v = str(k, value, options);
                             if (v) {
-                                partial.push(quote(k) + ((gap)
+                                partial.push(quote(k.toString()) + ((gap)
                                     ? ": "
                                     : ":") + v);
                             }
@@ -260,6 +260,7 @@ export const JSONB = {};
             var j;
             var rx_three_b = RegExp(`"[^"\\\\\\n\\r]*"|true|false|null|${options.undefined ?? true ? "undefined|" : ""}${options.Infinity ?? true ? "Infinity|" : ""}${options.NegativeInfinity ?? true ? "-Infinity|" : ""}${options.NaN ?? true ? "NaN|" : ""}-?\\d+${options.bigint ?? true ? `(?:n|(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?)` : `(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?`}`, "g");
             function walk(holder, key) {
+                assertIsDefined(reviver);
                 // The walk method is used to recursively walk the resulting structure so
                 // that modifications can be made.
                 var k;
