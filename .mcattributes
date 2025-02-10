@@ -1,2 +1,3 @@
 
 diagnostic.disable.minecraft.manifest.version.invalid=true
+diagnostic.disable.behaviorpack.item.components.texture_not_found=true
