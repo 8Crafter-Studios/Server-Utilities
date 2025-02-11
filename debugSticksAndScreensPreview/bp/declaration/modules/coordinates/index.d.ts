@@ -103,4 +103,4 @@ export * from "./interfaces/DimensionVolumeArea";
 export * from "./interfaces/RotationLocation";
 export * from "./interfaces/Vector4";
 export * from "./interfaces/Vector5";
-export declare const exports_5603749806156139082470132985463298047098135609812364098: any;
+export declare const exports_5603749806156139082470132985463298047098135609812364098: undefined;

@@ -31,7 +31,6 @@ export declare function fillCone<LiteModeEnabled extends boolean = false>(center
     containsUnloadedChunks: boolean;
 } : {
     counter: bigint;
-    done: boolean;
     startTick: number;
     endTick: number;
     startTime: number;

@@ -314,7 +314,7 @@ export declare class ServerShopManager {
      * @param itemIndex
      * @returns
      */
-    static manageServerShopPage_manageItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, path: [mode, ...string[]], item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number): any;
+    static manageServerShopPage_manageItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, path: [mode, ...string[]], item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number): Promise<0 | 1>;
     /**
      * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_editItem}.

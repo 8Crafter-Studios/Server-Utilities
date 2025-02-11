@@ -36,7 +36,7 @@ export async function fillFlood(begin, end, dimension, options) {
                                     if (b.typeId == "minecraft:air") {
                                         b.setType("minecraft:water");
                                     }
-                                    else if (b.type.canBeWaterlogged == true && !b.isWaterlogged) {
+                                    else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true && !b.isWaterlogged) {
                                         b.setWaterlogged(true);
                                     }
                                 }
@@ -65,7 +65,7 @@ export async function fillFlood(begin, end, dimension, options) {
                                 if (b.typeId == "minecraft:air") {
                                     b.setType("minecraft:water");
                                 }
-                                else if (b.type.canBeWaterlogged == true && !b.isWaterlogged) {
+                                else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true && !b.isWaterlogged) {
                                     b.setWaterlogged(true);
                                 }
                             }
@@ -97,7 +97,7 @@ export async function fillFlood(begin, end, dimension, options) {
                                         if (b.typeId == "minecraft:air") {
                                             b.setType("minecraft:water");
                                         }
-                                        else if (b.type.canBeWaterlogged == true && !b.isWaterlogged) {
+                                        else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true && !b.isWaterlogged) {
                                             b.setWaterlogged(true);
                                         }
                                     }
@@ -128,7 +128,7 @@ export async function fillFlood(begin, end, dimension, options) {
                                     if (b.typeId == "minecraft:air") {
                                         b.setType("minecraft:water");
                                     }
-                                    else if (b.type.canBeWaterlogged == true && !b.isWaterlogged) {
+                                    else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true && !b.isWaterlogged) {
                                         b.setWaterlogged(true);
                                     }
                                 }
@@ -165,7 +165,7 @@ export async function fillFlood(begin, end, dimension, options) {
                                         b.setType("minecraft:water");
                                         counter++; // Increase the counter.
                                     }
-                                    else if (b.type.canBeWaterlogged == true && !b.isWaterlogged) {
+                                    else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true && !b.isWaterlogged) {
                                         b.setWaterlogged(true);
                                         counter++; // Increase the counter.
                                     }
@@ -196,7 +196,7 @@ export async function fillFlood(begin, end, dimension, options) {
                                     b.setType("minecraft:water");
                                     counter++; // Increase the counter.
                                 }
-                                else if (b.type.canBeWaterlogged == true && !b.isWaterlogged) {
+                                else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true && !b.isWaterlogged) {
                                     b.setWaterlogged(true);
                                     counter++; // Increase the counter.
                                 }
@@ -230,7 +230,7 @@ export async function fillFlood(begin, end, dimension, options) {
                                             b.setType("minecraft:water");
                                             counter++; // Increase the counter.
                                         }
-                                        else if (b.type.canBeWaterlogged == true && !b.isWaterlogged) {
+                                        else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true && !b.isWaterlogged) {
                                             b.setWaterlogged(true);
                                             counter++; // Increase the counter.
                                         }
@@ -263,7 +263,7 @@ export async function fillFlood(begin, end, dimension, options) {
                                         b.setType("minecraft:water");
                                         counter++; // Increase the counter.
                                     }
-                                    else if (b.type.canBeWaterlogged == true &&
+                                    else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                         !b.isWaterlogged) {
                                         b.setWaterlogged(true);
                                         counter++; // Increase the counter.

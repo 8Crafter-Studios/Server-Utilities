@@ -1,9 +1,9 @@
 {
-	"format_version": "1.21.40",
+	"format_version": "1.21.60",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:ultra_bundle",
-			"menu_category": {"category": "equipment", "group": "itemGroup.name.bundles"}
+			"menu_category": {"category": "equipment", "group": "minecraft:itemGroup.name.bundles"}
 		},
 		"components": {
 			"minecraft:hand_equipped": false,

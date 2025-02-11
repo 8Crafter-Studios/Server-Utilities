@@ -3,7 +3,7 @@ import type { RotationLocation } from "modules/coordinates/interfaces/RotationLo
 import type { PlayerNotifications } from "init/classes/PlayerNotifications";
 import type { PlayerPermissions } from "init/classes/PlayerPermissions";
 import type { WorldEditSelection } from "init/classes/WorldEditSelection";
-export declare const exports_5603749806156139082470132985463298047098135609812364098: any;
+export declare const exports_5603749806156139082470132985463298047098135609812364098: undefined;
 declare module "@minecraft/server" {
     interface Entity {
         /**

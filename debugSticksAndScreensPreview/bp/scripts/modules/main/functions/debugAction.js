@@ -8,7 +8,7 @@ export function debugAction(block, player, mode, direction) {
             player.getDynamicProperty("debugStickPropertyIndexName")) == -1 &&
             (player.getDynamicProperty("debugStickPropertyIndexName") !=
                 "waterlogged" ||
-                !block.type.canBeWaterlogged)) {
+                !block.canContainLiquid(modules.mcServer.LiquidType.Water))) {
             player.setDynamicProperty("debugStickPropertyIndex", 0);
             player.setDynamicProperty("debugStickPropertyIndexName", "");
         }
@@ -19,13 +19,13 @@ export function debugAction(block, player, mode, direction) {
     }
     else {
         if (Object.entries(block.permutation.getAllStates()).length +
-            Number(block.type.canBeWaterlogged) !=
+            Number(block.canContainLiquid(modules.mcServer.LiquidType.Water)) !=
             0) {
             if (mode == 1) {
                 if (direction == 1) {
                     player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo(Number(player.getDynamicProperty("debugStickPropertyIndex")) - 1, 0, Object.entries(block.permutation.getAllStates())
                         .length +
-                        Number(block.type.canBeWaterlogged))));
+                        Number(block.canContainLiquid(modules.mcServer.LiquidType.Water)))));
                     if (player.getDynamicProperty("debugStickPropertyIndex") ==
                         Object.entries(block.permutation.getAllStates()).length) {
                         player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
@@ -37,7 +37,7 @@ export function debugAction(block, player, mode, direction) {
                 else {
                     player.setDynamicProperty("debugStickPropertyIndex", Number(customModulo(Number(player.getDynamicProperty("debugStickPropertyIndex")) + 1, 0, Object.entries(block.permutation.getAllStates())
                         .length +
-                        Number(block.type.canBeWaterlogged))));
+                        Number(block.canContainLiquid(modules.mcServer.LiquidType.Water)))));
                     if (player.getDynamicProperty("debugStickPropertyIndex") ==
                         Object.entries(block.permutation.getAllStates()).length) {
                         player.setDynamicProperty("debugStickPropertyIndexName", "waterlogged");
@@ -64,12 +64,12 @@ export function debugAction(block, player, mode, direction) {
         }
     } /*BlockStates.getAll().forEach((stateb)=>{player.sendMessage(stateb.id + ": " + stateb.validValues)}); */ /*let test = Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]; console.warn(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))] + "\n" + String(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]) + "\n" + test + "\n" + BlockStates.getAll()[BlockStates.getAll().length-2].id + BlockStates.getAll().findIndex((statec)=>{console.warn("\"" + String(statec.id) + "\", \"" + String(Object.keys(block.permutation.getAllStates())[Number(player.getDynamicProperty("debugStickPropertyIndex"))]) + "\""); statec.id == test})); */
     if (Object.entries(block.permutation.getAllStates()).length +
-        Number(block.type.canBeWaterlogged) !=
+        Number(block.canContainLiquid(modules.mcServer.LiquidType.Water)) !=
         0) {
         if (mode == 0) {
             if (player.getDynamicProperty("debugStickPropertyIndexName") ==
                 "waterlogged" ||
-                (block.type.canBeWaterlogged &&
+                (block.canContainLiquid(modules.mcServer.LiquidType.Water) &&
                     Object.entries(block.permutation.getAllStates()).length ==
                         0)) {
                 system.run(() => {
@@ -117,7 +117,7 @@ export function debugAction(block, player, mode, direction) {
         }
     }
     if (Object.entries(block.permutation.getAllStates()).length +
-        Number(block.type.canBeWaterlogged) ==
+        Number(block.canContainLiquid(modules.mcServer.LiquidType.Water)) ==
         0) {
         system.run(() => {
             player.onScreenDisplay.setActionBar(`${block.typeId} has no properties`);

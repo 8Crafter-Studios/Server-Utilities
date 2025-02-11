@@ -8,4 +8,5 @@ export declare const commandflags: {
     execute: string;
     ground: string;
     top: string;
+    "\\\\regenerateblocks": string;
 };

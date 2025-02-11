@@ -1,4 +1,4 @@
-import { Player, type Vector3 } from "@minecraft/server";
+import { Player, type Vector3, type DimensionLocation } from "@minecraft/server";
 import { LandClaim } from "./LandClaim";
 export declare class LandClaimSystem {
     constructor();
@@ -10,7 +10,7 @@ export declare class LandClaimSystem {
     static getClaimIds(): string[];
     static getLandClaimIdsForPlayer(player: Player | string): string[];
     static getLandClaimsForPlayer(player: Player | string): LandClaim[];
-    static testIfPlayerCanDoActionInArea(action: "BreakBlock" | "PlaceBlock" | "InteractWithBlock" | "EnterArea" | "CreateExplosion", player: any, location: any): void;
+    static testIfPlayerCanDoActionInArea(action: "BreakBlock" | "PlaceBlock" | "InteractWithBlock" | "EnterArea" | "CreateExplosion", player: Player, location: DimensionLocation): void;
     static testIfClaimAreaIsAlreadyClaimed(area: {
         min: Vector3;
         max: Vector3;

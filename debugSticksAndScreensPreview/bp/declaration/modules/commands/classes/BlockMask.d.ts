@@ -1,5 +1,12 @@
 import { Block, BlockPermutation, BlockType } from "@minecraft/server";
 export declare const knownContainerTypes: readonly ["minecraft:yellow_shulker_box", "minecraft:beacon", "minecraft:lime_shulker_box", "minecraft:undyed_shulker_box", "minecraft:barrel", "minecraft:magenta_shulker_box", "minecraft:white_shulker_box", "minecraft:blast_furnace", "minecraft:chest", "minecraft:smoker", "minecraft:purple_shulker_box", "minecraft:orange_shulker_box", "minecraft:blue_shulker_box", "minecraft:brown_shulker_box", "minecraft:pink_shulker_box", "minecraft:red_shulker_box", "minecraft:jukebox", "minecraft:lit_furnace", "minecraft:gray_shulker_box", "minecraft:light_gray_shulker_box", "minecraft:trapped_chest", "minecraft:black_shulker_box", "minecraft:lit_blast_furnace", "minecraft:cyan_shulker_box", "minecraft:furnace", "minecraft:green_shulker_box", "minecraft:hopper", "minecraft:lectern", "minecraft:light_blue_shulker_box", "minecraft:dropper", "minecraft:brewing_stand", "minecraft:dispenser", "minecraft:lit_smoker"];
+export declare const customMaskGroupPresets: {
+    "preset:leaves": string[];
+    "preset:deforest": string[];
+    "preset:ores": string[];
+    "preset:ore_blocks": string[];
+    "preset:liquid": string[];
+};
 export declare class BlockMask {
     #private;
     /**

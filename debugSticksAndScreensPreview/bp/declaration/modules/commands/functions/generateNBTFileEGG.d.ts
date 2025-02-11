@@ -9,4 +9,4 @@ export declare function generateNBTFileEGG(location: DimensionLocation, nbt: {
     }[];
     size: [x: number, y: number, z: number];
     nbt_type: "cmprbnbt";
-}): Generator<any, number, unknown>;
+}): Generator<void, number, unknown>;

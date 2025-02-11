@@ -1,11 +1,11 @@
 {
-	"format_version": "1.21.10",
+	"format_version": "1.21.60",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:smithing_table_enchanted_book",
 			"menu_category": {
-				"category": "Items",
-				"group": "itemGroup.name.enchantedBook"
+				"category": "items",
+				"group": "minecraft:itemGroup.name.enchantedBook"
 			}
 		},
 		"components": {

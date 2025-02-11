@@ -584,8 +584,7 @@ subscribedEvents.afterScriptEventReceive =
                             "§9{ §btypeId§a: §u" +
                                 players[playerTargetB].getBlockFromViewDirection().block.typeId +
                                 "§a, §bcanBeWaterlogged§a: §u" +
-                                players[playerTargetB].getBlockFromViewDirection().block.type
-                                    .canBeWaterlogged +
+                                players[playerTargetB].getBlockFromViewDirection().block.canContainLiquid(modules.mcServer.LiquidType.Water) +
                                 "§9 }§a";
                     }
                     catch (e) {
@@ -896,8 +895,7 @@ subscribedEvents.afterScriptEventReceive =
                                 playerTargetB.getBlockFromViewDirection().block
                                     .typeId +
                                 "§a, §bcanBeWaterlogged§a: §u" +
-                                playerTargetB.getBlockFromViewDirection().block
-                                    .type.canBeWaterlogged +
+                                playerTargetB.getBlockFromViewDirection().block.canContainLiquid(modules.mcServer.LiquidType.Water) +
                                 "§9 }§a";
                     }
                     catch (e) {

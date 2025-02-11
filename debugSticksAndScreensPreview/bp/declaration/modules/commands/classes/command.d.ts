@@ -78,7 +78,7 @@ export declare class command<T extends "built-in" | "custom" | "unknown" = "unkn
     get releaseStage(): string;
     get regexp(): RegExp;
     get currentregexp(): RegExp;
-    get aliases(): {
+    get aliases(): T extends "built-in" ? {
         commandName: string;
         escregexp?: {
             v: string;
@@ -86,7 +86,7 @@ export declare class command<T extends "built-in" | "custom" | "unknown" = "unkn
         };
         regexp: RegExp;
         aliasTo?: string;
-    }[];
+    }[] : undefined;
     get settings(): commandSettings<T>;
     get ultraSecurityModeSecurityLevel(): "owner" | "headAdmin" | "admin" | "moderator" | "WorldEdit" | "everyone";
     get code(): string[];

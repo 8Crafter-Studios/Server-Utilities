@@ -103,7 +103,7 @@ export declare class PlayerShop {
     /**
      * The name of the player who owns this player shop.
      */
-    playerName?: string;
+    playerName?: string | null;
     constructor(config: playerShopConfig);
     save(): void;
     openShop(player: Player, mode?: "buy" | "sell" | "both" | "none", showBackButton?: boolean): Promise<0 | 1>;
@@ -148,7 +148,7 @@ export declare class PlayerShopManager {
     static managePlayerShop(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: PlayerShop): Promise<0 | 1>;
     static managePlayerShop_settings(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: PlayerShop): Promise<0 | 1>;
     static managePlayerShop_contents(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: PlayerShop, mode?: "buy" | "sell"): Promise<0 | 1>;
-    static managePlayerShop_manageItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: PlayerShop, item: (mode extends "buy" ? PlayerSavedShopItem : PlayerSellableShopItem), itemIndex: number, mode: mode): any;
+    static managePlayerShop_manageItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: PlayerShop, item: (mode extends "buy" ? PlayerSavedShopItem : PlayerSellableShopItem), itemIndex: number, mode: mode): Promise<0 | 1>;
     /**
      * Opens the UI for editing a player shop item.
      * @see {@link ServerShopManager.manageServerShop_editItem}

@@ -1,6 +1,6 @@
 import "init/functions/breakpoint";
-export declare const current_format_version = "1.29.0-preview.20+BUILD.1";
-export declare const current_supported_minecraft_version = "1.21.5x";
+export declare const current_format_version = "1.32.0-preview.20+BUILD.1";
+export declare const current_supported_minecraft_version = "1.21.6x";
 declare global {
     namespace globalThis {
         var tempSavedVariables: any[];
@@ -28,6 +28,8 @@ declare global {
             [intervalName: string]: number;
         };
         var entity_scale_format_version: string | null;
+        var bluemods_anticheat_format_version: string | null;
+        var multipleBlueModsAnticheatVersionsDetected: boolean;
         var multipleEntityScaleVersionsDetected: boolean;
         var errorLog: {
             playerDataAutoSave: {
@@ -39,5 +41,10 @@ declare global {
                 error: Error;
             }[];
         };
+        var blueModsAnticheatConfig: {
+            prefix?: string;
+            bmversion?: string;
+        };
+        var stopPlayerDataAutoSaveAsync: boolean | undefined;
     }
 }

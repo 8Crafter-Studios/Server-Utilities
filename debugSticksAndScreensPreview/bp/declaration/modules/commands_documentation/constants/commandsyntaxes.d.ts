@@ -256,6 +256,7 @@ export declare const commandsyntaxes: {
     "\\\\floor": string;
     "\\\\hcube": string;
     "\\\\hreplace": string;
+    "\\\\oreplace": string;
     "\\\\replace": string;
     "\\\\maze": string;
     "\\\\regenerateblocks": string;

@@ -1,0 +1,218 @@
+{
+    "format_version": "1.21.60",
+    "minecraft:crafting_items_catalog": {
+        "categories": [
+            {
+                "category_name": "items",
+                "groups": [/* 
+                    {
+                        "group_identifier": {
+                            // "icon": "minecraft:netherite_upgrade_smithing_template",
+                            "name": "minecraft:itemGroup.name.smithing_templates"
+                        },
+                        "items": [
+                            "andexdb:enchantment_transfer_smithing_template",
+                            "andexdb:diamond_downgrade_smithing_template"
+                        ]
+                    },
+                    {
+                        "group_identifier": {
+                            // "icon": "minecraft:board",
+                            "name": "minecraft:itemGroup.name.enchantedBook"
+                        },
+                        "items": ["andexdb:enchantment_transfer_smithing_template"]
+                    }, */
+                    {
+                        "group_identifier": {
+                            "icon": "minecraft:board",
+                            "name": "minecraft:itemGroup.name.chalkboard"
+                        },
+                        "items": ["minecraft:board", "minecraft:board:1", "minecraft:board:2"]
+                    },
+                    {
+                        "group_identifier": {
+                            "icon": "andexdb:debug_stick",
+                            "name": "andexdb:itemGroup.name.debug_sticks"
+                        },
+                        "items": [
+                            "andexdb:debug_stick",
+                            "andexdb:liquid_clipped_debug_stick",
+                            "andexdb:editor_stick",
+                            "andexdb:editor_stick_b",
+                            "andexdb:editor_stick_c",
+                            "andexdb:player_debug_stick",
+                            "andexdb:entity_debug_stick",
+                            "andexdb:player_controller",
+                            "andexdb:entity_controller",
+                            "andexdb:inventory_controller",
+                            "andexdb:command_runner",
+                            "andexdb:script_runner",
+                            "andexdb:debug_screen",
+                            "andexdb:pick_block_stick",
+                            "andexdb:liquid_clipped_pick_block_stick",
+                            "andexdb:data_pick_block_stick",
+                            "andexdb:liquid_clipped_data_pick_block_stick",
+                            "andexdb:main_menu"
+                        ]
+                    },
+                    {
+                        "items": ["andexdb:selection_tool"]
+                    },
+                    {
+                        "group_identifier": {
+                            "icon": "andexdb:brush_1",
+                            "name": "andexdb:itemGroup.name.worldedit_brushes"
+                        },
+                        "items": [
+                            "andexdb:brush_1",
+                            "andexdb:brush_2",
+                            "andexdb:brush_3",
+                            "andexdb:brush_4",
+                            "andexdb:orange_brush_1",
+                            "andexdb:orange_brush_2",
+                            "andexdb:orange_brush_3",
+                            "andexdb:orange_brush_4",
+                            "andexdb:blue_brush_1",
+                            "andexdb:blue_brush_2",
+                            "andexdb:blue_brush_3",
+                            "andexdb:blue_brush_4"
+                        ]
+                    },
+                    {
+                        // This will create a new group
+                        "group_identifier": {
+                            "icon": "andexdb:chargeable_item_1",
+                            // This is the name of your group which doubles as
+                            // the localization string. The namespace is required
+                            "name": "andexdb:itemGroup.name.programmable_items"
+                        },
+                        "items": [
+                            "andexdb:chargeable_item_1",
+                            "andexdb:chargeable_item_2",
+                            "andexdb:chargeable_item_3",
+                            "andexdb:chargeable_item_4",
+                            "andexdb:chargeable_item_5",
+                            "andexdb:chargeable_item_6",
+                            "andexdb:chargeable_item_7",
+                            "andexdb:chargeable_item_8",
+                            "andexdb:non_chargeable_item_1"
+                        ]
+                    } /* 
+                    {
+                        "group_identifier": {
+                            "icon": "minecraft:netherreactor",
+                            "name": "minecraft:itemGroup.name.unobtainable_items"
+                        },
+                        "items": [
+                            "minecraft:netherreactor",
+                            "minecraft:glowingobsidian",
+                            "minecraft:stonecutter",
+                            "minecraft:unknown",
+                            "minecraft:reserved6",
+                            "minecraft:info_update",
+                            "minecraft:info_update",
+                            "minecraft:info_update2",
+                            "minecraft:moving_block",
+                            "minecraft:invisiblebedrock",
+                            "minecraft:client_request_placeholder_block",
+                            "minecraft:powder_snow",
+                            "minecraft:lit_furnace",
+                            "minecraft:lit_blast_furnace",
+                            "minecraft:lit_smoker",
+                            "minecraft:portal",
+                            "minecraft:end_portal",
+                            "minecraft:end_gateway",
+                            "minecraft:camera",
+                            "minecraft:item.camera",
+                            "minecraft:board",
+                            "minecraft:board:1",
+                            "minecraft:board:2",
+                            "minecraft:board:3",
+                            "minecraft:board:4",
+                            "minecraft:chalkboard",
+                            "minecraft:item.frame",
+                            "minecraft:item.glow_frame",
+                            "minecraft:bubble_column",
+                            "minecraft:piston_head_collision",
+                            "minecraft:sticky_piston_head_collision",
+                            "minecraft:redstone_wire",
+                            "minecraft:powered_repeater",
+                            "minecraft:unpowered_repeater",
+                            "minecraft:fire",
+                            "minecraft:soul_fire",
+                            "minecraft:water",
+                            "minecraft:flowing_water",
+                            "minecraft:lava",
+                            "minecraft:flowing_lava",
+                            "minecraft:inverted_daylight_detector",
+                            "minecraft:item.door",
+                            "minecraft:item.iron_door",
+                            "minecraft:item.skull",
+                            "minecraft:item.cake"
+                        ]
+                    },
+                    {
+                        "group_identifier": {
+                            "icon": "minecraft:command_block",
+                            "name": "minecraft:itemGroup.name.operator_items"
+                        },
+                        "items": [
+                            "minecraft:command_block",
+                            "minecraft:chain_command_block",
+                            "minecraft:repeating_command_block",
+                            "minecraft:command_block_minecart",
+                            "minecraft:structure_block",
+                            "minecraft:structure_void",
+                            "minecraft:structure_void:1",
+                            "minecraft:barrier",
+                            "minecraft:border_block",
+                            "minecraft:deny",
+                            "minecraft:allow",
+                            "minecraft:light_block_0",
+                            "minecraft:light_block_1",
+                            "minecraft:light_block_2",
+                            "minecraft:light_block_3",
+                            "minecraft:light_block_4",
+                            "minecraft:light_block_5",
+                            "minecraft:light_block_6",
+                            "minecraft:light_block_7",
+                            "minecraft:light_block_8",
+                            "minecraft:light_block_9",
+                            "minecraft:light_block_10",
+                            "minecraft:light_block_11",
+                            "minecraft:light_block_12",
+                            "minecraft:light_block_13",
+                            "minecraft:light_block_14",
+                            "minecraft:light_block_15"
+                        ]
+                    }*/
+                ]
+            },
+            {
+                "category_name": "nature",
+                "groups": [
+                    {
+                        // This will create a new group
+                        "group_identifier": {
+                            "icon": "minecraft:chicken_spawn_egg",
+                            "name": "minecraft:itemGroup.name.mobEgg"
+                        },
+                        "items": [
+                            "minecraft:npc_spawn_egg",
+                            "andexdb:tickingarea_spawn_egg",
+                            "andexdb:tickingarea_2_spawn_egg",
+                            "andexdb:tickingarea_3_spawn_egg",
+                            "andexdb:tickingarea_4_spawn_egg",
+                            "andexdb:tickingarea_5_spawn_egg",
+                            "andexdb:tickingarea_6_spawn_egg",
+                            "andexdb:saved_shop_item_spawn_egg",
+                            "andexdb:player_shop_recieved_shop_items_storage_spawn_egg",
+                            "andexdb:player_inventory_save_storage_spawn_egg" /* ,
+                            "minecraft:agent_spawn_egg" */
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

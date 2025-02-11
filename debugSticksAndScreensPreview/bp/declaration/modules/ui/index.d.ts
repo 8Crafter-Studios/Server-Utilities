@@ -70,4 +70,4 @@ export * from "./functions/uiSettings";
 export * from "./functions/ui_format_version";
 export * from "./functions/worldBorderSettings";
 export * from "./functions/worldBorderSettingsDimensionSelector";
-export declare const exports_5603749806156139082470132985463298047098135609812364098: any;
+export declare const exports_5603749806156139082470132985463298047098135609812364098: undefined;

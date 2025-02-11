@@ -5,11 +5,11 @@ export declare function showCustomFormUI(UIId: String, player: Player): {
     customUI: {
         optionPropertyIds: string[];
         optionPropertyValues: string[];
-        optionElements: import("../../main").customFormUIElement[];
+        optionElements: import("../../main/classes/customFormUIElement").customFormUIElement[];
         codeIds: string[];
         codeValues: string[];
         code: string;
     };
-    optionElements: import("../../main").customFormUIElement[];
+    optionElements: import("../../main/classes/customFormUIElement").customFormUIElement[];
     formResponse: ActionFormResponse | MessageFormResponse | ModalFormResponse;
 };

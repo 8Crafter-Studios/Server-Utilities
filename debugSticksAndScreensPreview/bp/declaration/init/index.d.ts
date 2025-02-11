@@ -38,6 +38,8 @@ import "./classes/WorldEditSelection";
 import "./classes/Vector";
 import "./constants/dimensions";
 import "./constants/gt";
+import "./functions/assertIsDefined";
+import "./functions/assertIsTrue";
 import "./functions/asend";
 import "./functions/bcsend";
 import "./functions/breakpoint";

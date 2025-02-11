@@ -1,1 +1,1 @@
-export declare function parseExpressionBR(str: string): (wx: any, wy: any, wz: any, x: any, y: any, z: any, ax: any, ay: any, az: any, bx: any, by: any, bz: any, nx: any, ny: any, nz: any, px: any, py: any, pz: any) => any;
+export declare function parseExpressionBR(str: string): (wx: number, wy: number, wz: number, x: number, y: number, z: number, ax: number, ay: number, az: number, bx: number, by: number, bz: number, nx: number, ny: number, nz: number, px: number, py: number, pz: number) => any;

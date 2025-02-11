@@ -63,10 +63,10 @@ export declare enum propertyTypeEnum {
     "minecraft:cleardynamicproperties" = "clearDynamicProperties",
     "removeDynamicProperties" = "removeDynamicProperties",
     "minecraft:removeDynamicProperties" = "removeDynamicProperties",
-    "removedynamicproperties" = "removedynamicproperties",
-    "minecraft:removedynamicproperties" = "removedynamicproperties",
+    "removedynamicproperties" = "removeDynamicProperties",
+    "minecraft:removedynamicproperties" = "removeDynamicProperties",
     "removeDynamicProperty" = "removeDynamicProperty",
     "minecraft:removeDynamicProperty" = "removeDynamicProperty",
-    "removedynamicproperty" = "removedynamicproperty",
-    "minecraft:removedynamicproperty" = "removedynamicproperty"
+    "removedynamicproperty" = "removeDynamicProperty",
+    "minecraft:removedynamicproperty" = "removeDynamicProperty"
 }
