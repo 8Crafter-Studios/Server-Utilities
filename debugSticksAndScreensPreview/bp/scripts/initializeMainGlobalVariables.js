@@ -1,7 +1,7 @@
 import { system } from "@minecraft/server";
 import "init/functions/breakpoint";
 globalThis.beforeScriptStartTick = system.currentTick;
-export const current_format_version = "1.32.0";
+export const current_format_version = "1.32.1";
 globalThis.format_version = current_format_version;
 export const current_supported_minecraft_version = "1.21.6x";
 globalThis.supported_minecraft_version = current_supported_minecraft_version;
