@@ -20,7 +20,7 @@
             "localRoot": "${workspaceFolder}/BP/src",
             "generatedSourceRoot": "${workspaceFolder}/BP/scripts",
             "sourceMapRoot": "${workspaceFolder}/BP/scripts",
-            "host": "localhost",
+            "host": "ftp-gang.mc.gg",
             "port": 19144,
             "targetModuleUuid": "df6d1955-6175-46b0-be8b-fa11fde32b13"
         },
