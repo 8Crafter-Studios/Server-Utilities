@@ -1,0 +1,171 @@
+/**
+ * $0
+ *
+ * @param {loosePlayerType} sourceEntity - The player accessing the menu.
+ * @param {number} [pagen] - The page of the menu to go to. Defaults to 0.
+ * @param {number} [maxentriesperpage] - How many entries to show per page. Defaults to the value of {@linkcode config.ui.pages.maxPlayersPerManagePlayersPage}.
+ * @returns {Promise<0 | 1>} A promise that resolves to `0` if the previous menu should be closed, or `1` if the previous menu should be reopened.
+ * @throws {TypeError} If sourceEntity is not an instance of the Player class or an instance of the executeCommandPlayerW class with a Player linked to it.
+ */
+export async function $1(
+    sourceEntity: loosePlayerType,
+    pagen: number = 0,
+    maxentriesperpage: number = config.ui.pages.maxPlayersPerManagePlayersPage ?? 9,
+    search?: {
+        value: string;
+        caseSensitive?: boolean;
+    },
+    cachedEntries?: $2[]
+): Promise<0 | 1> {
+    const player = extractPlayerFromLooseEntityType(sourceEntity);
+    [].sort;
+    var currentParameters = {
+        player,
+        pagen,
+        maxentriesperpage,
+        search,
+        cachedEntries,
+    };
+    while (true) {
+        const { player, pagen, maxentriesperpage, search, cachedEntries } = currentParameters;
+        let form = new ActionFormData();
+        const page = Math.max(0, pagen);
+        let displayEntries: $2[] = cachedEntries ?? [];
+        if (cachedEntries === undefined) {
+            let entries = $3
+                .filter((v) =>
+                    !!search
+                        ? search.caseSensitive == true
+                            ? v.${4:name}.includes(search.value)
+                            : v.$4.toLowerCase().includes(search.value.toLowerCase())
+                        : true
+                )
+                .sort((a: $2, b: $2) => (a.$4 > b.$4 ? 1 : a.$4 < b.$4 ? -1 : 0));
+        }
+        const numentries = displayEntries.length;
+        form.title(
+            `${customFormUICodes.action.titles.formStyles.gridMenu}${!!search ? "Search Results" : "$5"} ${Math.min(
+                numentries,
+                page * maxentriesperpage + 1
+            )}-${Math.min(numentries, (page + 1) * maxentriesperpage)} of \${numentries}`
+        );
+        const numpages = Math.ceil(numentries / maxentriesperpage);
+        if (!!search) {
+            form.body(`$6\nSearching for: ${JSON.stringify(search.value)}\nCase Sensitive: ${JSON.stringify(search.caseSensitive ?? false)}`);
+        } else {
+            form.body(`$6`);
+        }
+        // Navigation and Filters
+        form.button(customFormUICodes.action.buttons.positions.left_side_only + "Search", "textures/ui/spyglass_flat");
+        form.button(
+            customFormUICodes.action.buttons.positions.left_side_only +
+                (page != 0 ? "" : customFormUICodes.action.buttons.options.disabled + "§8") +
+                "Previous Page",
+            "textures/ui/arrow_left"
+        );
+        form.button(
+            customFormUICodes.action.buttons.positions.left_side_only +
+                (numpages > 1 ? "" : customFormUICodes.action.buttons.options.disabled + "§8") +
+                "Go To Page",
+            "textures/ui/page"
+        );
+        form.button(
+            customFormUICodes.action.buttons.positions.left_side_only +
+                (page < numpages - 1 ? "" : customFormUICodes.action.buttons.options.disabled + "§8") +
+                "Next Page",
+            "textures/ui/arrow_right"
+        );
+        // Padding
+        form.button("");
+        form.button("");
+        // Entries
+        let displayEntriesB = displayEntries.slice(page * maxentriesperpage, (page + 1) * maxentriesperpage);
+        displayEntriesB.forEach((v) => {
+            form.button(customFormUICodes.action.buttons.positions.main_only + v.$4, ${7:"loading_spinner"});
+        });
+        form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+        form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
+        form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Refresh", "textures/ui/refresh");
+        try {
+            const r = await forceShow(form, player);
+            if (r.canceled) return 1;
+
+            switch (
+                (["search", "previous", "go", "next", "", ""] as const)[r.selection] ??
+                (!!displayEntriesB[r.selection - 6] ? "entry" : undefined) ??
+                (["back", "close", "refresh"] as const)[r.selection - displayEntriesB.length - 6]
+            ) {
+                case "search":
+                    {
+                        const r = await tryget(
+                            async () =>
+                                await new ModalFormData()
+                                    .title("Search")
+                                    .textField("", "Search", search?.value ?? "")
+                                    .toggle("Case Sensitive", search?.caseSensitive ?? false)
+                                    .submitButton("Search")
+                                    .forceShow(player)
+                        );
+                        if (!!!r || r.canceled == true) {
+                            continue;
+                        }
+                        currentParameters = {
+                            player,
+                            pagen: undefined,
+                            maxentriesperpage,
+                            search: {
+                                value: r.formValues[0] as string,
+                                caseSensitive: r.formValues[1] as boolean,
+                            },
+                            cachedEntries: undefined,
+                        };
+                    }
+                    continue;
+                case "previous":
+                    currentParameters = { player, pagen: Math.max(0, page - 1), maxentriesperpage, search, cachedEntries };
+                    continue;
+                case "go": {
+                    const r = await tryget(
+                        async () =>
+                            await new ModalFormData()
+                                .title("Go To Page")
+                                .textField(`Current Page: ${page + 1}\nPage # (Between 1 and \${numpages})`, "Page #")
+                                .submitButton("Go To Page")
+                                .forceShow(player)
+                    );
+                    currentParameters = {
+                        player,
+                        pagen: Math.max(1, Math.min(numpages, (r.formValues?.[0] as string)?.toNumber() ?? page + 1)) - 1,
+                        maxentriesperpage,
+                        search,
+                        cachedEntries: displayEntries,
+                    };
+                    continue;
+                }
+                case "next":
+                    currentParameters = { player, pagen: Math.min(numpages - 1, page + 1), maxentriesperpage, search, cachedEntries: displayEntries };
+                    continue;
+                case "entry":
+                    if ((await $8(player, displayEntriesB[r.selection - 6])) === 1) {
+                        currentParameters = { player, pagen: page, maxentriesperpage, search, cachedEntries: displayEntries };
+                        continue;
+                    } else {
+                        return 0;
+                    }
+                case "refresh":
+                    currentParameters = { player, pagen: page, maxentriesperpage, search, cachedEntries: undefined };
+                    continue;
+                case "back":
+                    return 1;
+                case "close":
+                    return 0;
+                default:
+                    throw new Error(`Invalid selection: ${r.selection}`);
+            }
+        } catch (e) {
+            console.error(e, e.stack);
+            // Present the error to the user, and return 1 if they select "Back", and 0 if they select "Close".
+            return ((await showMessage(player, "An Error occurred", `An error occurred: \${e}${e?.stack}`, "Back", "Close")).selection !== 1).toNumber();
+        }
+    }
+}
