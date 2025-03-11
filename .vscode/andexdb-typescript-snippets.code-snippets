@@ -131,7 +131,7 @@
             "\t\t\tform.button(customFormUICodes.action.buttons.positions.title_bar_only + \"Close\", \"textures/ui/crossout\");",
             "\t\t\tconst r = await form.forceShow(player);",
             "\t\t\tif (r.canceled) return 1 as const;",
-            "\t\t\tswitch (([\"button\", \"back\", \"close\", \"refresh\"] as const)[r.selection]) {",
+            "\t\t\tswitch (([\"button\", \"back\", \"close\"] as const)[r.selection]) {",
             "\t\t\t\tcase \"button\":",
             "\t\t\t\t\t$0;",
             "\t\t\t\t\tcontinue;",
@@ -139,6 +139,8 @@
             "\t\t\t\t\treturn 1;",
             "\t\t\t\tcase \"close\":",
             "\t\t\t\t\treturn 0;",
+            "\t\t\t\tdefault:",
+            "\t\t\t\t\tthrow new Error(\"Invalid selection: \" + r.selection);",
             "\t\t\t}",
             "\t\t}catch(e){",
             "\t\t\tconsole.error(e, e.stack);",
@@ -330,7 +332,7 @@
     },
 	"Back and Close Buttons": {
         "scope": "typescript",
-        "prefix": "bCBttns",
+        "prefix": ["bCBttns", "bcbttns"],
         "body": [
             "form.button(customFormUICodes.action.buttons.positions.title_bar_only + \"Back\", \"textures/ui/arrow_left\");",
             "form.button(customFormUICodes.action.buttons.positions.title_bar_only + \"Close\", \"textures/ui/crossout\");"
@@ -379,7 +381,7 @@
     },
 	"Button Position Code": {
         "scope": "typescript",
-        "prefix": "bttnPosCode",
+        "prefix": ["bttnPosCode", "bpc"],
         "body": [
             "customFormUICodes.action.buttons.positions.$1 + $0"
         ],
@@ -387,7 +389,7 @@
     },
 	"Button Disabled Code": {
         "scope": "typescript",
-        "prefix": "bttnDisabledCode",
+        "prefix": ["bttnDisabledCode", "bdc"],
         "body": [
             "customFormUICodes.action.buttons.options.disabled + "
         ],
@@ -395,7 +397,7 @@
     },
 	"ActionFormData Style Title Code": {
         "scope": "typescript",
-        "prefix": "aFDSTC",
+        "prefix": ["aFDSTC", "afdstc"],
         "body": [
             "customFormUICodes.action.titles.formStyles.$1 + $0"
         ],
@@ -403,7 +405,7 @@
     },
 	"ModalFormData Style Title Code": {
         "scope": "typescript",
-        "prefix": "mFDSTC",
+        "prefix": ["mFDSTC", "mfdstc"],
         "body": [
             "customFormUICodes.modal.titles.formStyles.$1 + $0"
         ],
