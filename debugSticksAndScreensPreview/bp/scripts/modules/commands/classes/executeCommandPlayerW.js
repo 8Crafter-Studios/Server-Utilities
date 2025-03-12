@@ -8,6 +8,7 @@ import { chatCommands } from "modules/commands/functions/chatCommands";
 import { WorldPosition } from "modules/coordinates/classes/WorldPosition";
 import { anglesToDirectionVectorDeg } from "modules/coordinates/functions/anglesToDirectionVectorDeg";
 import { getChunkIndexD } from "modules/coordinates/functions/getChunkIndexD";
+import { deleteStringFromEntityDynamicProperties } from "modules/utilities/functions/deleteStringFromEntityDynamicProperties";
 import { getStringFromEntityDynamicProperties } from "modules/utilities/functions/getStringFromEntityDynamicProperties";
 import { saveStringToEntityDynamicProperties } from "modules/utilities/functions/saveStringToEntityDynamicProperties";
 export class executeCommandPlayerW {
@@ -462,6 +463,9 @@ export class executeCommandPlayerW {
     extinguishFire(useEffects) {
         return this.player?.extinguishFire(useEffects);
     }
+    getAimAssist() {
+        return this.player?.getAimAssist();
+    }
     getBlockFromViewDirection(options) {
         return this.player?.getBlockFromViewDirection(options);
     }
@@ -541,6 +545,9 @@ export class executeCommandPlayerW {
     setDynamicProperty(identifier, value) {
         return this.player?.setDynamicProperty(identifier, value);
     }
+    setDynamicProperties(values) {
+        return this.player?.setDynamicProperties(values);
+    }
     setOnFire(seconds, useEffects) {
         return this.player?.setOnFire(seconds, useEffects);
     }
@@ -560,10 +567,13 @@ export class executeCommandPlayerW {
         return this.player?.tryTeleport(location, teleportOptions);
     }
     saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) {
-        return saveStringToEntityDynamicProperties(this.player, string, propertyName, clearOldProperties, chunkSize);
+        saveStringToEntityDynamicProperties(this.player, string, propertyName, clearOldProperties, chunkSize);
     }
     getStringFromDynamicProperties(propertyName, zeroLengthPlaceholder = "") {
         return getStringFromEntityDynamicProperties(this.player, propertyName, zeroLengthPlaceholder);
+    }
+    deleteStringFromDynamicProperties(propertyName) {
+        deleteStringFromEntityDynamicProperties(this.player, propertyName);
     }
 }
 //# sourceMappingURL=executeCommandPlayerW.js.map

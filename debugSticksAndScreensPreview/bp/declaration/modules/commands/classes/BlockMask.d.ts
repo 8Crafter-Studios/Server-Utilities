@@ -20,6 +20,7 @@ export declare class BlockMask {
             [id: string]: string | number | boolean;
         };
         get raw(): string;
+        get rawsb(): string;
         get rawns(): string;
     }[];
     set blocks(blocks: {
@@ -30,13 +31,15 @@ export declare class BlockMask {
     }[]);
     get includesStates(): boolean;
     get blockTypes(): string[];
+    get raw(): string;
+    toString(): string;
     evaluateIds(): void;
     constructor(blocks?: {
         type: string;
         states?: {
             [id: string]: string | number | boolean;
         };
-    }[], type?: "include" | "exclude");
+    }[], type?: "include" | "exclude", rawMatch?: string);
     push(...blocks: {
         type: string;
         states?: {
@@ -50,14 +53,14 @@ export declare class BlockMask {
     static testForStatesMatch(states: Record<string, boolean | number | string>, statesMask: Record<string, boolean | number | string>): boolean;
     static parse(): void;
     static extractRaw(str: string): string | null;
-    static extract(str: string, extraIdParsingEnabled?: boolean): BlockMask;
-    static extractWRaw(str: string, extraIdParsingEnabled?: boolean): {
+    static extract(str: string, extraIdParsingEnabled?: boolean, modeOverride?: "include" | "exclude"): BlockMask;
+    static extractWRaw(str: string, extraIdParsingEnabled?: boolean, modeOverride?: "include" | "exclude"): {
         raw: string;
         parsed: BlockMask;
     };
     static extractAllRaw(str: string): string[] | null;
-    static extractAll(str: string, extraIdParsingEnabled?: boolean): BlockMask[];
-    static extractAllWRaw(str: string, extraIdParsingEnabled?: boolean): {
+    static extractAll(str: string, extraIdParsingEnabled?: boolean, modeOverride?: "include" | "exclude"): BlockMask[];
+    static extractAllWRaw(str: string, extraIdParsingEnabled?: boolean, modeOverride?: "include" | "exclude"): {
         raw: string[];
         parsed: BlockMask[];
     };

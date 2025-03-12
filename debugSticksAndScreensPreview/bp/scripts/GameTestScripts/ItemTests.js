@@ -31,13 +31,13 @@ GameTest.register("ItemTests", "item_use_event", (test) => {
         let afterUseHealth = blazeHealth.current;
         blaze.kill();
         test.assert(eventReceived, "Should have received itemUse event");
-        test.assert(afterUseHealth < initialHealth, `Blaze was not hurt after snowball throw should have been cancelled: before-> ${initialHealth} after-> ${afterUseHealth}`);
+        test.assert(afterUseHealth < initialHealth, `Blaze was not hurt after snowball throw should have been canceled: before-> ${initialHealth} after-> ${afterUseHealth}`);
     })
         .thenSucceed();
 })
     .structureName("SimulatedPlayerTests:use_item")
     .tag(GameTest.Tags.suiteDefault);
-GameTest.register("ItemTests", "item_use_event_cancelled", (test) => {
+GameTest.register("ItemTests", "item_use_event_canceled", (test) => {
     const player = test.spawnSimulatedPlayer(new BlockLocationIterator(0, 2, 0));
     const snowball = new ItemStack(MinecraftItemTypes.snowball, 1);
     let eventReceived = false;
@@ -71,7 +71,7 @@ GameTest.register("ItemTests", "item_use_event_cancelled", (test) => {
 })
     .structureName("ComponentTests:platform")
     .tag(GameTest.Tags.suiteDefault);
-GameTest.register("ItemTests", "item_use_event_cancelled_stops_action", (test) => {
+GameTest.register("ItemTests", "item_use_event_canceled_stops_action", (test) => {
     const player = test.spawnSimulatedPlayer(new BlockLocationIterator(1, 2, 1));
     const blaze = test.spawn("blaze", new BlockLocationIterator(1, 2, 3));
     test.assert(blaze != undefined, "Failed to initialize Blaze");
@@ -111,7 +111,7 @@ GameTest.register("ItemTests", "item_use_event_cancelled_stops_action", (test) =
         test.assert(eventReceived == false, "Should not have received itemUse event");
         let actualAmount = inventoryContainer.getItem(slot).amount;
         test.assert(actualAmount === snowballCount, `Player should have ${snowballCount} snowballs but has ${actualAmount}`);
-        test.assert(afterUseHealth === initialHealth, `Blaze was hurt after snowball throw should have been cancelled: before-> ${initialHealth} after-> ${afterUseHealth}`);
+        test.assert(afterUseHealth === initialHealth, `Blaze was hurt after snowball throw should have been canceled: before-> ${initialHealth} after-> ${afterUseHealth}`);
     })
         .thenSucceed();
 })
@@ -141,7 +141,7 @@ GameTest.register("ItemTests", "item_use_on_event", (test) => {
 })
     .structureName("ComponentTests:platform")
     .tag(GameTest.Tags.suiteDefault);
-GameTest.register("ItemTests", "item_use_on_event_cancelled_stops_action", (test) => {
+GameTest.register("ItemTests", "item_use_on_event_canceled_stops_action", (test) => {
     const player = test.spawnSimulatedPlayer(new BlockLocationIterator(0, 2, 0));
     const dirtLoc = new BlockLocationIterator(2, 1, 1);
     const dirt = new ItemStack(MinecraftItemTypes.dirt);

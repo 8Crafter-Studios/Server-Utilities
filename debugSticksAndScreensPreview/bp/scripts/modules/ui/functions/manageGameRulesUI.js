@@ -4,6 +4,7 @@ import { forceShow } from "modules/ui/functions/forceShow";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { securityVariables } from "security/ultraSecurityModeUtils";
+import { customFormUICodes } from "../constants/customFormUICodes";
 /**
  * Manages the game rules UI for a given source entity.
  *
@@ -43,7 +44,7 @@ export async function manageGameRulesUI(sourceEntitya) {
         .sort((a, b) => -+(typeof world.gameRules[a] != typeof world.gameRules[b]) *
         (2 * +(typeof world.gameRules[a] == "number") - 1));
     const ruleValues = world.gameRules;
-    form2.title("Manage Game Rules");
+    form2.title(customFormUICodes.modal.titles.formStyles.fullscreen + "Manage Game Rules");
     ruleNames.forEach((r) => {
         if (typeof ruleValues[r] == "number") {
             form2.textField(r, "number", String(ruleValues[r]));

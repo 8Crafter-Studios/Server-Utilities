@@ -9,6 +9,8 @@ declare global {
         toFormattedStringIOB(): "§2ON" | "§4OFF";
         toFormattedStringIOL(): "§aOn" | "§cOff";
         toFormattedStringIOLB(): "§2On" | "§4Off";
+        toFormattedStringYN(): "§aYes" | "§cNo";
+        toFormattedStringYNB(): "§2Yes" | "§4No";
         /** Returns a number representation of an object. */
         toNumber(): 0 | 1;
         /** Returns a number representation of an object. */

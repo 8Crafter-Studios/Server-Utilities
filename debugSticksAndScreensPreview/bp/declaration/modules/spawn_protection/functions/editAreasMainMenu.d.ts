@@ -1,2 +1,3 @@
-import type { Entity, Player } from "@minecraft/server";
-export declare function editAreasMainMenu(sourceEntity: Entity | Player): void;
+import { Player, type Entity } from "@minecraft/server";
+import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
+export declare function editAreasMainMenu(sourceEntitya: executeCommandPlayerW | Entity | Player): Promise<0 | 1>;

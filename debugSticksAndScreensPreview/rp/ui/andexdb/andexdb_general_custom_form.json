@@ -1,0 +1,184 @@
+{
+    "namespace": "andexdb_general_custom_form",
+    "panel": {
+        "type": "panel",
+        "size": ["100%", "100%"],
+        "anchor_from": "center",
+        "anchor_to": "center",
+        "controls": [
+            {
+                "fullscreen_panel": {
+                    "type": "panel",
+                    "size": ["100%", "100%"],
+                    "anchor_from": "center",
+                    "anchor_to": "center",
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_fullscreen_custom_form_code) = ('a' + #title_text)))", // ( and ((('a' + #title_text) - $andexdb_fullscreen_status_bar_long_form_code) = ('a' + #title_text)))
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "medium_panel": {
+                    "type": "panel",
+                    "size": [345, 230],
+                    "anchor_from": "center",
+                    "anchor_to": "center",
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_medium_custom_form_code) = ('a' + #title_text)))", // ( and ((('a' + #title_text) - $andexdb_medium_status_bar_long_form_code) = ('a' + #title_text)))
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "wide_panel": {
+                    "type": "panel",
+                    "size": [450, 200],
+                    "anchor_from": "center",
+                    "anchor_to": "center",
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_wide_custom_form_code) = ('a' + #title_text)))", // ( and ((('a' + #title_text) - $andexdb_wide_status_bar_long_form_code) = ('a' + #title_text)))
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "general_panel": {
+                    "type": "panel",
+                    "size": [225, 200],
+                    "anchor_from": "center",
+                    "anchor_to": "center",
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_general_custom_form_code) = ('a' + #title_text)))", // ( and ((('a' + #title_text) - $andexdb_general_status_bar_form_code) = ('a' + #title_text)))
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "custom_form@andexdb_general_custom_form.custom_form": {
+                    "$form_size": ["100%sm", "100%sm"]
+                }
+            }
+        ]
+    },
+
+    "custom_form@common_dialogs.main_panel_no_buttons": {
+        "$title_panel": "andexdb_common.standard_title_label",
+        "$title_size": ["100% - 14px", 10],
+        // "size": [225, 200],
+        "size": "$form_size",
+        "$text_name": "#title_text",
+        "$title_text_binding_type": "none",
+        "$child_control": "andexdb_general_custom_form.custom_form_panel",
+        "layer": 2
+    },
+
+    "custom_form_panel@common.scrolling_panel": {
+        "anchor_to": "top_left",
+        "anchor_from": "top_left",
+        "$show_background": false,
+        "size": ["100%", "100%"],
+        "$scrolling_content": "andexdb_general_custom_form.custom_form_scrolling_content",
+        "$scroll_size": [5, "100% - 4px"],
+        "$scrolling_pane_size": ["100% - 4px", "100% - 2px"],
+        "$scrolling_pane_offset": [2, 0],
+        "$scroll_bar_right_padding_size": [0, 0]
+    },
+
+    "generated_contents": {
+        "type": "stack_panel",
+        "size": ["100%", "100%c"],
+        "orientation": "vertical",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+
+        "factory": {
+            "name": "buttons",
+            "control_ids": {
+                "label": "@server_form.custom_label",
+                "toggle": "@server_form.custom_toggle",
+                "slider": "@server_form.custom_slider",
+                "step_slider": "@server_form.custom_step_slider",
+                "dropdown": "@server_form.custom_dropdown",
+                "input": "@server_form.custom_input"
+            }
+        },
+
+        "collection_name": "custom_form",
+        "bindings": [
+            {
+                "binding_name": "#custom_form_length",
+                "binding_name_override": "#collection_length"
+            }
+        ]
+    },
+
+    "custom_form_scrolling_content": {
+        "type": "stack_panel",
+        "size": ["100% - 4px", "100%c"],
+        "offset": [2, 0],
+        "orientation": "vertical",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+
+        "controls": [
+            {
+                "generated_form@andexdb_general_custom_form.generated_contents": {}
+            },
+            {
+                "submit_button@common_buttons.light_text_button_b": {
+                    "$pressed_button_name": "button.submit_custom_form",
+                    "anchor_from": "top_left",
+                    "anchor_to": "top_left",
+                    "size": ["100%", 32],
+                    "$button_text": "#submit_text",
+                    "$button_text_binding_type": "global",
+                    "$button_binding_condition": "once",
+
+                    "bindings": [
+                        {
+                            "binding_name": "#submit_button_visible",
+                            "binding_name_override": "#visible"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

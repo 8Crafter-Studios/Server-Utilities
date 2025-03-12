@@ -30,5 +30,5 @@ export declare class AreaBackup {
         y: number;
         z: number;
     }): void;
-    rollback(saveTime?: number, clearSave?: boolean, options?: StructurePlaceOptions, sizes?: Vector3): 0 | 1;
+    rollback(saveTime?: number, clearSave?: boolean, options?: StructurePlaceOptions, sizes?: Vector3): 1 | 0;
 }

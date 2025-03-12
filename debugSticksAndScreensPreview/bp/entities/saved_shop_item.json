@@ -46,7 +46,10 @@
         "radius": 2
       },
       "minecraft:type_family": {
-        "family": [ "saved_shop_item" ]
+        "family": [
+          "saved_shop_item",
+          "inanimate"
+        ]
       },
       "minecraft:pushable":{
           "is_pushable": false,

@@ -18,5 +18,5 @@ export declare class undoClipboard {
         y: number;
         z: number;
     }): void;
-    static undo(saveTime?: number, options?: StructurePlaceOptions, clearSave?: boolean, sizes?: Vector3): 0 | 1;
+    static undo(saveTime?: number, options?: StructurePlaceOptions, clearSave?: boolean, sizes?: Vector3): 1 | 0;
 }

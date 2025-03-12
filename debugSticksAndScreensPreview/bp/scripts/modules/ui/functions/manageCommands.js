@@ -11,6 +11,7 @@ import { commandCategoriesDisplay } from "./commandCategoriesDisplay";
 import { command } from "modules/commands/classes/command";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { securityVariables } from "security/ultraSecurityModeUtils";
+import { customFormUICodes } from "../constants/customFormUICodes";
 /**
  * Manages the commands UI for a given source entity.
  *
@@ -62,7 +63,7 @@ export async function manageCommands(sourceEntitya) {
             case commandCategories.length:
                 mainMenu(sourceEntity);
                 break;
-            default:
+            default: {
                 let category = commandCategories[r.selection];
                 let categoryDisplay = commandCategories[r.selection];
                 // pbsend(player, command.getCustomCommands().find((v) => v.commandName == "tpmenu").settings);
@@ -73,20 +74,21 @@ export async function manageCommands(sourceEntitya) {
                         : category == "custom"
                             ? customCommands
                             : command.getDefaultCommandsOfCategory(category);
-                let formB = new ActionFormData();
-                formB.title(`Manage ${categoryDisplay}§r Commands`);
+                let form = new ActionFormData();
+                form.title(`${customFormUICodes.action.titles.formStyles.medium}Manage ${categoryDisplay}§r Commands`);
                 commandsListB.forEach((p) => {
-                    formB.button(`${p.formatting_code + p.commandName}\n${p.type +
+                    form.button(`${customFormUICodes.action.buttons.positions.main_only}${p.formatting_code + p.commandName}\n${p.type +
                         ": " +
                         (p.settings.enabled ? "enabled" : "disabled") +
                         "; " +
                         p.command_version}` /*, "textures/ui/online"*/);
                 });
                 if (category == "custom" || category == "all") {
-                    formB.button("Add Custom Command");
+                    form.button(customFormUICodes.action.buttons.positions.main_only + "Add Custom Command");
                 }
-                formB.button("Back");
-                forceShow(formB, sourceEntity)
+                form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+                form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
+                forceShow(form, sourceEntity)
                     .then((ra) => {
                     let r = ra;
                     if (r.canceled) {
@@ -180,6 +182,11 @@ export async function manageCommands(sourceEntitya) {
                                 category != "all"):
                             manageCommands(sourceEntity);
                             break;
+                        case commandsListB.length +
+                            2 -
+                            +(category != "custom" &&
+                                category != "all"):
+                            return 0;
                         default:
                             let commandsItem = commandsListB[r.selection];
                             let form2 = new ActionFormData();
@@ -693,6 +700,7 @@ export async function manageCommands(sourceEntitya) {
                         return e;
                     });
                 });
+            }
         }
     })
         .catch((e) => {

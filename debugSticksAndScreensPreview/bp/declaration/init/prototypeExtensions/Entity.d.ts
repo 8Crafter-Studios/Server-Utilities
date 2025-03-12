@@ -101,5 +101,14 @@ declare module "@minecraft/server" {
          * @throws {TypeError} If the propertyName is not a string.
          */
         getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
+        /**
+         * Deletes a string from an entity's dynamic properties.
+         *
+         * @param {Entity} entity - The entity from which the string will be deleted.
+         * @param {string} propertyName - The name of the property the string is saved under.
+         *
+         * @throws {TypeError} If `propertyName` is not a string.
+         */
+        deleteStringFromDynamicProperties(propertyName: string): void;
     }
 }

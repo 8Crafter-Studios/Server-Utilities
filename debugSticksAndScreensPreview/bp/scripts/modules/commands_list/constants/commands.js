@@ -1502,6 +1502,37 @@ export const commands = [
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
         formatting_code: "§r§f",
+        commandName: "clearchat",
+        escregexp: {
+            v: "^clearchat$",
+        },
+        aliases: [
+            {
+                commandName: "cc",
+                escregexp: {
+                    v: "^cc$",
+                },
+            },
+        ],
+        formats: [
+            {
+                format: "clearchat",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["uis"],
+        commandSettingsId: "built-inCommandSettings:clearchat",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true,
+        ultraSecurityModeSecurityLevel: "moderator",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
         commandName: "chatcommandui",
         escregexp: {
             v: "^chatcommandui$",
@@ -4471,6 +4502,43 @@ export const commands = [
         hidden: false,
         enabled: true,
         ultraSecurityModeSecurityLevel: "admin",
+    },
+    {
+        type: "built-in",
+        requiredTags: [],
+        formatting_code: "§r§f",
+        commandName: "playermenu",
+        escregexp: {
+            v: "^playermenu$",
+        },
+        aliases: [
+            {
+                commandName: "pmenu",
+                escregexp: {
+                    v: "^pmenu$",
+                },
+            },
+            {
+                commandName: "pm",
+                escregexp: {
+                    v: "^pm$",
+                },
+            },
+        ],
+        formats: [
+            {
+                format: "playermenu",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["uis"],
+        commandSettingsId: "built-inCommandSettings:playermenu",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true,
+        ultraSecurityModeSecurityLevel: "everyone",
     },
     {
         type: "built-in",

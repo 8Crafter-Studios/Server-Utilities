@@ -90,9 +90,24 @@ export const JSONB = {};
             if (Object.hasOwn(holder, "__lookupSetter__") ? !!holder.__lookupSetter__(key) : false) {
                 value = { set: holder.__lookupSetter__(key) };
             }
-        }
-        // If the value has a toJSON method, call it to obtain a replacement value.
+        } /*
+
+// If the value is an instance of the Decimal or Decimal2 class, convert it to decimal type.
+
+        if (
+            value
+            && typeof value === "object"
+            && typeof value.toJSONB === "function"
+        ) {
+            value = value.toJSONB(key);
+        } */
+        // If the value has a toJSONB or toJSON method, call it to obtain a replacement value.
         if (value
+            && typeof value === "object"
+            && typeof value.toJSONB === "function") {
+            value = value.toJSONB(key);
+        }
+        else if (value
             && typeof value === "object"
             && typeof value.toJSON === "function") {
             value = value.toJSON(key);
@@ -303,10 +318,12 @@ export const JSONB = {};
             // open brackets that follow a colon or comma or that begin the text. Finally,
             // we look to see that the remaining characters are only whitespace or "]" or
             // "," or ":" or "{" or "}". If that is so, then the text is safe for eval.
-            console.log(text
-                .replace(rx_two, "@")
-                .replace(rx_three_b, "]")
-                .replace(rx_four, ""));
+            /* console.log(
+                text
+                    .replace(rx_two, "@")
+                    .replace(rx_three_b, "]")
+                    .replace(rx_four, "")
+            ) */
             if (rx_one.test(text
                 .replace(rx_two, "@")
                 .replace(rx_three_b, "]")

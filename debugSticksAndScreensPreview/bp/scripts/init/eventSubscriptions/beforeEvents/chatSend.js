@@ -1,5 +1,6 @@
 import { world } from "@minecraft/server";
 import { srun } from "init/functions/srun";
+import { ProtectedAreaTester } from "init/variables/protectedAreaVariables";
 import { chatMessage } from "modules/chat/functions/chatMessage";
 import { getPlayersWithAnyOfTags } from "modules/commands/functions/getPlayersWithAnyOfTags";
 subscribedEvents.beforeChatSend = world.beforeEvents.chatSend.subscribe((eventData) => {

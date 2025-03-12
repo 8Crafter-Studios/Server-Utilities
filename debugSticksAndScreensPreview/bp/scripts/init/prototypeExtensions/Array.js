@@ -41,6 +41,14 @@ Object.defineProperties(Array.prototype, {
         enumerable: false,
         writable: false,
     },
+    randomElement: {
+        value: function randomElement() {
+            return this[Math.floor(Math.random() * this.length)];
+        },
+        configurable: true,
+        enumerable: false,
+        writable: false,
+    },
 });
 export const exports_5603749806156139082470132985463298047098135609812364098 = undefined;
 //# sourceMappingURL=Array.js.map

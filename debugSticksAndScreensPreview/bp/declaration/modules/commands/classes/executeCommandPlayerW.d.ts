@@ -112,6 +112,7 @@ export declare class executeCommandPlayerW {
     clearDynamicProperties(): void;
     clearVelocity(): void;
     extinguishFire(useEffects?: boolean): boolean;
+    getAimAssist(): import("@minecraft/server").PlayerAimAssist;
     getBlockFromViewDirection(options?: BlockRaycastOptions): import("@minecraft/server").BlockRaycastHit;
     getComponent<T extends keyof EntityComponentTypeMap>(componentId: T): EntityComponentTypeMap[T] | undefined;
     getComponent<T extends keyof BlockComponentTypeMap>(componentId: T): BlockComponentTypeMap[T] | undefined;
@@ -139,6 +140,7 @@ export declare class executeCommandPlayerW {
     runCommand(commandString: string): import("@minecraft/server").CommandResult;
     runCommandAsync(commandString: string): Promise<import("@minecraft/server").CommandResult>;
     setDynamicProperty(identifier: string, value?: string | number | boolean | Vector3): void;
+    setDynamicProperties(values: Record<string, boolean | number | string | Vector3>): void;
     setOnFire(seconds: number, useEffects?: boolean): boolean;
     setProperty(identifier: string, value: string | number | boolean): void;
     setRotation(rotation: Vector2): void;
@@ -147,4 +149,5 @@ export declare class executeCommandPlayerW {
     tryTeleport(location: Vector3, teleportOptions?: TeleportOptions): boolean;
     saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
     getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
+    deleteStringFromDynamicProperties(propertyName: string): void;
 }

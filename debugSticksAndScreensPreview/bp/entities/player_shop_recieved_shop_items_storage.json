@@ -42,7 +42,10 @@
         "radius": 2
       },
       "minecraft:type_family": {
-        "family": [ "player_shop_recieved_shop_items_storage" ]
+        "family": [
+          "player_shop_recieved_shop_items_storage",
+          "inanimate"
+        ]
       },
       "minecraft:pushable":{
           "is_pushable": false,

@@ -1,6 +1,6 @@
 import { VECTOR3_ZERO, Vector3Utils } from "@minecraft/math.js";
 import { world, Player } from "@minecraft/server";
-import { protectedAreaVariables } from "init/variables/protectedAreaVariables";
+import { ProtectedAreaTester, protectedAreaVariables } from "init/variables/protectedAreaVariables";
 import { disconnectingPlayers } from "modules/commands/constants/disconnectingPlayers";
 import { getPlayersWithAnyOfTags } from "modules/commands/functions/getPlayersWithAnyOfTags";
 import { vTStr } from "modules/commands/functions/vTStr";
@@ -57,7 +57,7 @@ eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
                     "]"
                 : ""} ${!!event.source
                 ? "Triggered explosion"
-                : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0
+                : "Explosion occurred"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length == 0
                 ? ""
                 : " around " +
                     vTStr((() => {
@@ -90,12 +90,36 @@ eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
     //world.getAllPlayers().filter((player) => ( player.hasTag("getExplosionEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("Location: [ " + event.source.location.x+", "+event.source.location.y+", "+event.source.location.z + " ], Dimension: " + event.dimension.id) });
     if (!!!event.source?.location
         ? false
-        : ((testIsWithinRanges(protectedAreaVariables.noExplosionAreas.positive.filter((v) => v.dimension == dimensions.indexOf(event.dimension)), event.source.location) ?? false) == true &&
-            (testIsWithinRanges(protectedAreaVariables.noExplosionAreas.negative.filter((v) => v.dimension ==
-                dimensions.indexOf(event.dimension)), event.source.location) ?? false) == false) ||
-            ((testIsWithinRanges(protectedAreaVariables.protectedAreas.positive.filter((v) => v.dimension == dimensions.indexOf(event.dimension)), event.source.location) ?? false) == true &&
-                (testIsWithinRanges(protectedAreaVariables.protectedAreas.negative.filter((v) => v.dimension ==
-                    dimensions.indexOf(event.dimension)), event.source.location) ?? false) == false)) {
+        : new ProtectedAreaTester("explosion").testIsInArea(event, event.source.location, event.source.dimension) /* ((testIsWithinRanges(
+          protectedAreaVariables.noExplosionAreas.positive.filter(
+              (v) =>
+                  v.dimension == dimensions.indexOf(event.dimension)
+          ),
+          event.source.location
+      ) ?? false) == true &&
+          (testIsWithinRanges(
+              protectedAreaVariables.noExplosionAreas.negative.filter(
+                  (v) =>
+                      v.dimension ==
+                      dimensions.indexOf(event.dimension)
+              ),
+              event.source.location
+          ) ?? false) == false) ||
+      ((testIsWithinRanges(
+          protectedAreaVariables.protectedAreas.positive.filter(
+              (v) =>
+                  v.dimension == dimensions.indexOf(event.dimension)
+          ),
+          event.source.location
+      ) ?? false) == true &&
+          (testIsWithinRanges(
+              protectedAreaVariables.protectedAreas.negative.filter(
+                  (v) =>
+                      v.dimension ==
+                      dimensions.indexOf(event.dimension)
+              ),
+              event.source.location
+          ) ?? false) == false) */) {
         event.cancel = true; /*
     console.warn(event.isExpanding);
     console.warn(event.block.x, event.block.y, event.block.z);
@@ -104,14 +128,40 @@ eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
     }
     else {
         //console.warn("before set: "+JSONStringify(event.getImpactedBlocks(), true))
-        event.setImpactedBlocks(event.getImpactedBlocks().filter((blockselected) => !(((testIsWithinRanges(protectedAreaVariables.noExplosionAreas.positive.filter((v) => v.dimension ==
-            dimensions.indexOf(event.dimension)), blockselected.location) ?? false) == true &&
-            (testIsWithinRanges(protectedAreaVariables.noExplosionAreas.negative.filter((v) => v.dimension ==
-                dimensions.indexOf(event.dimension)), blockselected.location) ?? false) == false) ||
-            ((testIsWithinRanges(protectedAreaVariables.protectedAreas.positive.filter((v) => v.dimension ==
-                dimensions.indexOf(event.dimension)), blockselected.location) ?? false) == true &&
-                (testIsWithinRanges(protectedAreaVariables.protectedAreas.negative.filter((v) => v.dimension ==
-                    dimensions.indexOf(event.dimension)), blockselected.location) ?? false) == false))));
+        event.setImpactedBlocks(event.getImpactedBlocks().filter((blockselected) => !new ProtectedAreaTester("explosion").testIsInArea(event, blockselected.location, event.dimension, { block: blockselected }) /* (
+            ((testIsWithinRanges(
+                protectedAreaVariables.noExplosionAreas.positive.filter(
+                    (v) =>
+                        v.dimension ==
+                        dimensions.indexOf(event.dimension)
+                ),
+                blockselected.location
+            ) ?? false) == true &&
+                (testIsWithinRanges(
+                    protectedAreaVariables.noExplosionAreas.negative.filter(
+                        (v) =>
+                            v.dimension ==
+                            dimensions.indexOf(event.dimension)
+                    ),
+                    blockselected.location
+                ) ?? false) == false) ||
+            ((testIsWithinRanges(
+                protectedAreaVariables.protectedAreas.positive.filter(
+                    (v) =>
+                        v.dimension ==
+                        dimensions.indexOf(event.dimension)
+                ),
+                blockselected.location
+            ) ?? false) == true &&
+                (testIsWithinRanges(
+                    protectedAreaVariables.protectedAreas.negative.filter(
+                        (v) =>
+                            v.dimension ==
+                            dimensions.indexOf(event.dimension)
+                    ),
+                    blockselected.location
+                ) ?? false) == false)
+        ) */));
     }
     //console.warn("after set: "+JSONStringify(event.getImpactedBlocks(), true))
 });

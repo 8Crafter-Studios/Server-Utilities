@@ -143,7 +143,10 @@
         "radius": 2
       },
       "minecraft:type_family": {
-        "family": [ "player_inventory_save_storage" ]
+        "family": [
+          "player_inventory_save_storage",
+          "inanimate"
+        ]
       },
       "minecraft:pushable":{
           "is_pushable": false,

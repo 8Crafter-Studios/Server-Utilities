@@ -1,3 +1,2 @@
-import { Entity, Player } from "@minecraft/server";
-import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
-export declare function mainMenu(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<0 | 1>;
+import type { loosePlayerType } from "modules/utilities/types/loosePlayerType";
+export declare function mainMenu(sourceEntity: loosePlayerType): Promise<0 | 1>;

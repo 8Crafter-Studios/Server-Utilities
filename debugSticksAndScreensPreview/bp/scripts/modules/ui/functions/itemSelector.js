@@ -2,12 +2,13 @@ import { Entity, Player, EquipmentSlot, ContainerSlot } from "@minecraft/server"
 import { ActionFormData, MessageFormData } from "@minecraft/server-ui";
 import { forceShow } from "modules/ui/functions/forceShow";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
+import { customFormUICodes } from "../constants/customFormUICodes";
 export async function itemSelector(sourceEntitya, targetPlayer, backFunction, ...functionargs) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
         ? sourceEntitya.player
         : sourceEntitya;
     let form = new ActionFormData();
-    form.title("Select Item");
+    form.title(customFormUICodes.action.titles.formStyles.fullscreen + "Select Item");
     let itemsList = [];
     for (let i = 0; i < targetPlayer.getComponent("inventory").inventorySize; i++) {
         itemsList.push({
@@ -41,13 +42,13 @@ export async function itemSelector(sourceEntitya, targetPlayer, backFunction, ..
     let slotsList = equipmentList.concat(itemsList);
     slotsList.forEach((p) => {
         if (p.item.hasItem()) {
-            form.button(`${p?.slot}: ${p?.item?.typeId}\n${p?.item?.amount}; ${p?.item?.nameTag}` /*, "textures/ui/online"*/);
+            form.button(`${customFormUICodes.action.buttons.positions.main_only}${p?.slot}: ${p?.item?.typeId}\n${p?.item?.amount}; ${p?.item?.nameTag}` /*, "textures/ui/online"*/);
         }
         else {
-            form.button(`${p?.slot}: empty\n0; ` /*, "textures/ui/online"*/);
+            form.button(`${customFormUICodes.action.buttons.positions.main_only}${p?.slot}: empty\n0; ` /*, "textures/ui/online"*/);
         }
     });
-    form.button("Back");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back");
     let r = await forceShow(form, sourceEntity);
     try {
         if (r.canceled) {

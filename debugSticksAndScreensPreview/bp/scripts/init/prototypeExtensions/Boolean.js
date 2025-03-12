@@ -96,6 +96,22 @@ Object.defineProperties(Boolean.prototype, {
         enumerable: true,
         writable: true,
     },
+    toFormattedStringYN: {
+        value: function () {
+            return this.valueOf() ? "§aYes" : "§cNo";
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true,
+    },
+    toFormattedStringYNB: {
+        value: function () {
+            return this.valueOf() ? "§2Yes" : "§4No";
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true,
+    },
 });
 export const exports_5603749806156139082470132985463298047098135609812364098 = undefined;
 //# sourceMappingURL=Boolean.js.map

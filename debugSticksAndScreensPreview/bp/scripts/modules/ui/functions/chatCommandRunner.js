@@ -3,6 +3,7 @@ import { ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { forceShow } from "modules/ui/functions/forceShow";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { chatCommands } from "modules/commands/functions/chatCommands";
+import { customFormUICodes } from "../constants/customFormUICodes";
 export function chatCommandRunner(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
         ? sourceEntitya.player
@@ -10,7 +11,7 @@ export function chatCommandRunner(sourceEntitya) {
     system.run(() => {
         let form = new ModalFormData();
         let playerList = world.getAllPlayers();
-        form.title("Chat Command Runner");
+        form.title(customFormUICodes.modal.titles.formStyles.fullscreen + "Chat Command Runner");
         form.textField("Chat Command", "Chat Command");
         form.dropdown("As Player", playerList.map((p) => p.name), playerList.indexOf(sourceEntity));
         form.submitButton("Run Chat Command");

@@ -73,9 +73,9 @@ declare global {
         class InternalError extends Error {
         }
         function tfsa(sdsa284f83kd_38pqnv_38_f_0_vmewd_19mvndifekod_f8ufv4m3ddm1c0nvh289cmfue8hd9mjf3: unknown): unknown;
-        function cullNull<T extends any[]>(array: T): any[];
-        function cullUndefined<T extends any[]>(array: T): any[];
-        function cullEmpty<T extends any[]>(array: T): any[];
+        function cullNull<T extends any[]>(array: T): T[number][];
+        function cullUndefined<T extends any[]>(array: T): T[number][];
+        function cullEmpty<T extends any[]>(array: T): T[number][];
         function tryget<T>(callbackfn: () => T): T;
         function tryrun(callbackfn: () => any): void;
         function catchtry(trycallbackfn: () => any, catchcallbackfn?: (e: Error) => any, finallycallbackfn?: (v: any) => any): any;
@@ -253,8 +253,6 @@ declare global {
         }>;
         function waitTick(): Promise<void>;
         function waitTicks(ticks?: number): Promise<void>;
-        function testForObjectExtension(objectToTest: object, base: object): boolean;
-        function testForObjectTypeExtension(objectToTest: object, base: object): boolean;
         function twoWayModulo(number: number, modulo: number): number;
         function clamp24HoursTo12Hours(hours: number): number;
         /**
@@ -267,8 +265,12 @@ declare global {
          * Formats a date object to a date time string formatted as 07/21/2024, 12:37:01 PM, or if includeMs is set to true, 07/21/2024, 12:37:01.572 PM.
          * @since 1.18.2-development.10
          * @version 1.1.1
+         * @param {Date} date - The date object to format.
+         * @param {number} [timeZoneOffset=0] - The time zone offset in minutes. Default is 0 (UTC).
+         * @param {boolean} [includeMs=false] - Whether to include milliseconds in the formatted string. Default is false.
+         * @returns {string} The formatted date time string.
          */
-        function formatDateTime<includeMs extends boolean>(date: Date, timeZoneOffset?: number, includeMs?: includeMs): includeMs extends unknown ? `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint} ${"A" | "P"}M` : includeMs extends false ? `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint} ${"A" | "P"}M` : `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint}.${bigint} ${"A" | "P"}M`;
+        function formatDateTime<includeMs extends boolean = false>(date: Date, timeZoneOffset?: number, includeMs?: includeMs): includeMs extends unknown ? `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint} ${"A" | "P"}M` : includeMs extends false ? `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint} ${"A" | "P"}M` : `${bigint}/${bigint}/${bigint}, ${bigint}:${bigint}:${bigint}.${bigint} ${"A" | "P"}M`;
         /**
          * Formats a date object to a date string formatted as 07/21/2024.
          * @since 1.26.0-preview.20+BUILD.2
@@ -531,7 +533,6 @@ declare global {
         static get gt(): typeof globalThis;
         /**
          * This is an alias of {@link system.run}.
-         * @see {@link modules.main.srun}
          * @remarks
          * Runs a specified function at the next available future time.
          * This is frequently used to implement delayed behaviors and
@@ -567,17 +568,17 @@ declare global {
          * printEveryMinute();
          * ```
          */
-        static get srun(): typeof import("init/functions/srun").srun;
+        static get srun(): typeof import("./init/functions/srun").srun;
         /**
          * A class containing the configuration information for the add-on.
          * @see {@link modules.main.config}
          */
-        static get config(): typeof import("init/classes/config").config;
+        static get config(): typeof import("./init/classes/config").config;
         /**
          * A class containing configuration detailing which functions, classes, and constants from the modules to import into their respective properties on the global modules object.
          * @see {@link modules.main.moduleImportsConfig}
          */
-        static get moduleImportsConfig(): typeof import("init/classes/moduleImportsConfig").moduleImportsConfig;
+        static get moduleImportsConfig(): typeof import("./init/classes/moduleImportsConfig").moduleImportsConfig;
         /**
          * If this is set to true it will stop all instances of {@link modules.playersave.playerDataAutoSaveAsync}.
          */

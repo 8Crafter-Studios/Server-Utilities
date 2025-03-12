@@ -166,11 +166,13 @@ import "./eventSubscriptions/beforeEvents/worldInitialize";
 import "./eventSubscriptions/events/scriptInitialize";
 import "./intervals/debugSticksCooldownCounter";
 import "./intervals/everyTickAutoEval";
+import "./intervals/playerMenuItemNameSetter";
 import "./intervals/rankNameTags_editorStickActionbar_artificialLagMS";
 import "./intervals/worldBorderSystem";
 import "./systems/ban_checker";
 import "./systems/player_data_auto_save";
-import "./systems/protected_areas_refresher";
+// import "./systems/protected_areas_refresher";
+import "./systems/zone_actions_interval";
 import "./types";
 import "./variables/protectedAreaVariables";
 import "modules/errors/index";
@@ -212,7 +214,7 @@ try {
         },
         stack: {
             get: function stack() {
-                return new Error().stack;
+                return new Error().stack.split("\n").slice(1).join("\n");
             },
             configurable: true,
             enumerable: true,

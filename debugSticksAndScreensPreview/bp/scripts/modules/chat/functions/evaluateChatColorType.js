@@ -4,7 +4,7 @@ export function evaluateChatColorType(text, type) {
     let ib = -1n;
     //    let value = "hi§r§btest s§# a zs§# x vc §r§ksazx"; 
     let stop = false;
-    return text.split("").map((v, i, a) => { if (a[i - 1] == "§" && v == "!") {
+    return text.split("").map((v, i, a) => { if (a[i - 1] == "§" && (v == "!" || "0123456789abcdefghijmnpqstuv".includes(v))) {
         stop = true;
         return v;
     }
@@ -12,7 +12,7 @@ export function evaluateChatColorType(text, type) {
         stop = !stop;
         return v;
     }
-    else if (a[i - 1] == "§" && v == "#") {
+    else if (a[i - 1] == "§" && "#r".includes(v)) {
         stop = false;
         return v;
     }

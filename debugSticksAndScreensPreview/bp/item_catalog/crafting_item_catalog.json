@@ -56,7 +56,7 @@
                         ]
                     },
                     {
-                        "items": ["andexdb:selection_tool"]
+                        "items": ["andexdb:player_menu", "andexdb:selection_tool"]
                     },
                     {
                         "group_identifier": {

@@ -1,10 +1,10 @@
-import { Entity, Player } from "@minecraft/server";
-import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
-export declare function managePlayers(sourceEntitya: Entity | executeCommandPlayerW | Player, pagen?: number, maxplayersperpage?: number, search?: {
+import { savedPlayer } from "modules/player_save/classes/savedPlayer";
+import type { loosePlayerType } from "modules/utilities/types/loosePlayerType";
+export declare function managePlayers(sourceEntity: loosePlayerType, pagen?: number, maxplayersperpage?: number, search?: {
     value: string;
     caseSensitive?: boolean;
     searchLastOnlineDates?: boolean;
     searchLastOnlineTimes?: boolean;
     searchNames?: boolean;
     searchIds?: boolean;
-}): Promise<0 | 1>;
+}, cachedPlayers?: [online: savedPlayer[], offline: savedPlayer[], banned: savedPlayer[]]): Promise<0 | 1>;

@@ -1,14 +1,13 @@
-import type { Entity, Player } from "@minecraft/server";
-import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
+import type { loosePlayerType } from "modules/utilities/types/loosePlayerType";
 /**
- * Configures and displays the anti-spam settings form to the specified player or entity.
+ * Configures and displays the anti-spam settings form to the specified player.
  *
- * @param sourceEntitya - The entity or player requesting the anti-spam settings. Can be of type `Entity`, `executeCommandPlayerW`, or `Player`.
- * @returns A promise that resolves to:
- * - `1` if the form was successfully shown and handled.
- * - `0` if the user canceled the form.
- * - `-2` if an error occurred.
+ * @async
+ * @param {loosePlayerType} sourceEntity - The player viewing the UI.
+ * @returns {Promise<0 | 1>} A promise that resolves to `0` if the previous menu should be closed, or `1` if the previous menu should be reopened.
+ * @throws {TypeError} If sourceEntity is not an instance of the Player class or an instance of the executeCommandPlayerW class with a Player linked to it.
  *
+ * @remarks
  * The function performs the following steps:
  * 1. Checks if ultra security mode is enabled and if the player has the required permission to access the settings.
  * 2. If the player lacks permission, shows an access denied message.
@@ -23,4 +22,4 @@ import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPl
  * - Text field for setting the maximum time between messages to trigger anti-spam.
  * - Slider for setting the message count to trigger anti-spam.
  */
-export declare function antispamSettings(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<1 | -2 | 0>;
+export declare function antispamSettings(sourceEntity: loosePlayerType): Promise<0 | 1>;

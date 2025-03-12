@@ -2,6 +2,27 @@
 	"resource_pack_name": "andexdb",
 	"texture_name": "atlas.items",
 	"texture_data": {
+		"stick": {
+			"textures": "textures/items/stick"
+		},
+		"crossbow_standby": {
+		  "textures": "textures/items/crossbow_standby"
+		},
+		"book_enchanted": {
+		  "textures": "textures/items/book_enchanted"
+		},
+		"axe": {
+		  "textures": [
+			"textures/items/wood_axe",
+			"textures/items/stone_axe",
+			"textures/items/iron_axe",
+			"textures/items/gold_axe",
+			"textures/items/diamond_axe"
+		  ]
+		},
+		"player_menu": {
+			"textures": [ "textures/items/player_menu_1" ]
+		},
 		"blue_brush": {
 			"textures": [ "textures/items/blue_brush.png" ]
 		},

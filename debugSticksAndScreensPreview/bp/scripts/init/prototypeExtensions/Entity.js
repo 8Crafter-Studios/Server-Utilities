@@ -1,9 +1,10 @@
-import { Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot } from "@minecraft/server";
+import { Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { anglesToDirectionVectorDeg } from "modules/coordinates/functions/anglesToDirectionVectorDeg";
 import { getChunkIndexD } from "modules/coordinates/functions/getChunkIndexD";
 import { saveStringToEntityDynamicProperties } from "modules/utilities/functions/saveStringToEntityDynamicProperties";
 import { getStringFromEntityDynamicProperties } from "modules/utilities/functions/getStringFromEntityDynamicProperties";
+import { deleteStringFromEntityDynamicProperties } from "modules/utilities/functions/deleteStringFromEntityDynamicProperties";
 Object.defineProperties(Entity.prototype, {
     inventory: {
         get: function inventory() {
@@ -32,9 +33,7 @@ Object.defineProperties(Entity.prototype, {
                 return undefined;
             }
             else {
-                return this
-                    .getComponent("equippable")
-                    .getEquipment(EquipmentSlot.Mainhand);
+                return this.getComponent("equippable").getEquipment(EquipmentSlot.Mainhand);
             }
         },
         configurable: true,
@@ -46,9 +45,7 @@ Object.defineProperties(Entity.prototype, {
                 return undefined;
             }
             else {
-                return this
-                    .getComponent("equippable")
-                    .getEquipmentSlot(EquipmentSlot.Mainhand);
+                return this.getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand);
             }
         },
         configurable: true,
@@ -158,10 +155,7 @@ Object.defineProperties(Entity.prototype, {
     },
     timeZone: {
         get: function timeZone() {
-            return (this.getDynamicProperty("andexdbPersonalSettings:timeZone") ??
-                config.system.timeZone)
-                .toString()
-                .toNumber();
+            return (this.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? config.system.timeZone).toString().toNumber();
         },
         set: function timeZone(timezone) {
             this.setDynamicProperty("andexdbPersonalSettings:timeZone", !!timezone ? timezone.toString() : undefined);
@@ -184,13 +178,25 @@ Object.defineProperties(Entity.prototype, {
         enumerable: true,
     },
     saveStringToDynamicProperties: {
-        value: function saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) { return saveStringToEntityDynamicProperties(this, string, propertyName, clearOldProperties, chunkSize); },
+        value: function saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) {
+            return saveStringToEntityDynamicProperties(this, string, propertyName, clearOldProperties, chunkSize);
+        },
         configurable: false,
         enumerable: true,
         writable: true,
     },
     getStringFromDynamicProperties: {
-        value: function getStringFromDynamicProperties(propertyName, zeroLengthPlaceholder = "") { return getStringFromEntityDynamicProperties(this, propertyName, zeroLengthPlaceholder); },
+        value: function getStringFromDynamicProperties(propertyName, zeroLengthPlaceholder = "") {
+            return getStringFromEntityDynamicProperties(this, propertyName, zeroLengthPlaceholder);
+        },
+        configurable: false,
+        enumerable: true,
+        writable: true,
+    },
+    deleteStringFromDynamicProperties: {
+        value: function deleteStringFromDynamicProperties(propertyName) {
+            return deleteStringFromEntityDynamicProperties(this, propertyName);
+        },
         configurable: false,
         enumerable: true,
         writable: true,

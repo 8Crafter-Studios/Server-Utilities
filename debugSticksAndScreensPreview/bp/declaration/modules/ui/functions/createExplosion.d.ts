@@ -8,4 +8,4 @@ export declare function createExplosion(sourceEntitya: Entity | executeCommandPl
     radius?: number;
     explosionOptions?: ExplosionOptions;
     source?: string;
-}): void;
+}): Promise<0 | 1>;

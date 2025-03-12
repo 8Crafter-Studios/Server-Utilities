@@ -104,6 +104,22 @@ declare const permissionTypes: Readonly<{
         }];
     };
     /**
+     * Allows the player to use head admin-level custom commands, which includes most of the custom commands.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * @danger This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.
+     */
+    readonly "andexdb.useHeadAdminLevelCommands": {
+        readonly id: "andexdb.useHeadAdminLevelCommands";
+        readonly default: false;
+        readonly includedInPermissions: ["andexdb.useOwnerLevelCommands"];
+        readonly description: "Allows the player to use head admin-level custom commands.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.useOwnerLevelCommands' permission.\n    §cDANGER!: This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.";
+        readonly additionalPrompts: [{
+            readonly title: "§l§cWARNING!";
+            readonly prompt: "Are you sure you want to give this player the ability to use ALL HEAD ADMIN-LEVEL COMMANDS?";
+            readonly default: false;
+        }];
+    };
+    /**
      * Allows the player to use admin-level custom commands, which includes most of the custom commands.
      * This permission is included in the `andexdb.headAdmin` permission.
      * This permission is included in the `andexdb.admin` permission.
@@ -112,8 +128,8 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.useAdminLevelCommands": {
         readonly id: "andexdb.useAdminLevelCommands";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.useOwnerLevelCommands"];
-        readonly description: "Allows the player to use moderator-level custom commands.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.useOwnerLevelCommands' permission.\n    §cDANGER!: This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.";
+        readonly includedInPermissions: ["andexdb.useHeadAdminLevelCommands", "andexdb.useOwnerLevelCommands"];
+        readonly description: "Allows the player to use admin-level custom commands.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.useHeadAdminLevelCommands' permission.\n    This permission is included in the 'andexdb.useOwnerLevelCommands' permission.\n    §cDANGER!: This permission should only be given to trusted staff members. It is DANGEROUS to give this permission to anyone else.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
             readonly prompt: "Are you sure you want to give this player the ability to use ALL ADMIN-LEVEL COMMANDS?";
@@ -129,8 +145,8 @@ declare const permissionTypes: Readonly<{
     readonly "andexdb.useModeratorLevelCommands": {
         readonly id: "andexdb.useModeratorLevelCommands";
         readonly default: false;
-        readonly includedInPermissions: ["andexdb.useAdminLevelCommands", "andexdb.useOwnerLevelCommands"];
-        readonly description: "Allows the player to use moderator-level custom commands.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.\n    This permission is included in the 'andexdb.useOwnerLevelCommands' permission.\n    This permission is included in the 'andexdb.useAdminLevelCommands' permission.";
+        readonly includedInPermissions: ["andexdb.useAdminLevelCommands", "andexdb.useHeadAdminLevelCommands", "andexdb.useOwnerLevelCommands"];
+        readonly description: "Allows the player to use moderator-level custom commands.\n    This permission is included in the 'andexdb.moderator' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.useAdminLevelCommands' permission.\n    This permission is included in the 'andexdb.useHeadAdminLevelCommands' permission.\n    This permission is included in the 'andexdb.useOwnerLevelCommands' permission.";
         readonly additionalPrompts: [{
             readonly title: "§l§cWARNING!";
             readonly prompt: "Are you sure you want to give this player the ability to use ALL MODERATOR-LEVEL COMMANDS?";
@@ -322,6 +338,32 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
         readonly additionalPrompts: [];
     };
     /**
+     * Allows the player to access the manage warps UI.
+     * This allows the player to add, remove, and reorder the warps that are in the Warps section of the player menu.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * This permission is included in the `andexdb.admin` permission.
+     */
+    readonly "andexdb.accessManageWarpsUI": {
+        readonly id: "andexdb.accessManageWarpsUI";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to access the manage warps UI.\n    This allows the player to add, remove, and reorder the warps that are in the Warps section of the player menu.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
+        readonly additionalPrompts: [];
+    };
+    /**
+     * Allows the player to access the manage redeemable codes UI.
+     * This allows the player to add, remove, and reorder the redeemable codes that are in the redeemable codes section of the player menu.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * This permission is included in the `andexdb.admin` permission.
+     */
+    readonly "andexdb.accessManageRedeemableCodesUI": {
+        readonly id: "andexdb.accessManageRedeemableCodesUI";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to access the manage redeemable codes UI.\n    This allows the player to add, remove, and reorder the redeemable codes that are in the redeemable codes section of the player menu.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
+        readonly additionalPrompts: [];
+    };
+    /**
      * Allows the player to access the manage players UI.
      * Note: This permission SHOULD be given to moderators that you want to be able to ban people, because it is a lot easier to ban players through this UI.
      * This permission is included in the `andexdb.headAdmin` permission.
@@ -370,6 +412,51 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
             readonly prompt: "Are you sure you want to give this player the ability to delete saved player data? This is very dangerous!";
             readonly default: false;
         }];
+    };
+    /**
+     * Allows the player to manage protected areas.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * This permission is included in the `andexdb.admin` permission.
+     */
+    readonly "andexdb.manageProtectedAreas": {
+        readonly id: "andexdb.manageProtectedAreas";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to manage protected areas.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
+        readonly additionalPrompts: [];
+    };
+    /**
+     * Allows the player to create new custom protected area categories.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     */
+    readonly "andexdb.createCustomProtectedAreaCategories": {
+        readonly id: "andexdb.createCustomProtectedAreaCategories";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to create new custom protected area categories.\n    This permission is included in the 'andexdb.headAdmin' permission.";
+        readonly additionalPrompts: [];
+    };
+    /**
+     * Allows the player to edit existing custom protected area categories.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     */
+    readonly "andexdb.editCustomProtectedAreaCategories": {
+        readonly id: "andexdb.editCustomProtectedAreaCategories";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to edit existing custom protected area categories.\n    This permission is included in the 'andexdb.headAdmin' permission.";
+        readonly additionalPrompts: [];
+    };
+    /**
+     * Allows the player to delete custom protected area categories.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     */
+    readonly "andexdb.deleteCustomProtectedAreaCategories": {
+        readonly id: "andexdb.deleteCustomProtectedAreaCategories";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to delete custom protected area categories.\n    This permission is included in the 'andexdb.headAdmin' permission.";
+        readonly additionalPrompts: [];
     };
     /**
      * Allows the player to use the Debug Stick.
@@ -539,15 +626,15 @@ export declare class securityVariables {
     static testOfflinePlayerForPermission(playerId: string, permission: permissionType): boolean;
 }
 export declare function editPermissionForPlayerUI(player: Player, targetPlayerId: LooseAutocomplete<"everyone" | typeof permissionPresetMap[keyof typeof permissionPresetMap]>): Promise<-403 | 1 | 0>;
-export declare function selectSecurityMode(player: Player): Promise<1 | -403 | -424>;
-export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor(player: Player): Promise<0 | 1 | -403 | -423>;
-export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_categories(player: Player): Promise<0 | 1 | -403 | -423>;
+export declare function selectSecurityMode(player: Player): Promise<-424 | -403 | 0 | 1>;
+export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor(player: Player): Promise<1 | 0 | -403 | -423>;
+export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_categories(player: Player): Promise<1 | 0 | -403 | -423>;
 export declare function selectCommandsUltraSecurityModeSecurityLevelOverrides_category(player: Player, category: commandCategory): Promise<1 | -403 | -423>;
-export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_commands(player: Player): Promise<0 | 1 | -403 | -423>;
-export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_commands_category(player: Player, category: commandCategory): Promise<0 | 1 | -403 | -423>;
+export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_commands(player: Player): Promise<1 | 0 | -403 | -423>;
+export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_commands_category(player: Player, category: commandCategory): Promise<1 | 0 | -403 | -423>;
 export declare function selectCommandsUltraSecurityModeSecurityLevelOverrides_command_builtIn(player: Player, command: command<"built-in">): Promise<1 | -403 | -423>;
 export declare function selectCommandsUltraSecurityModeSecurityLevelOverrides_command_custom(player: Player, command: command<"custom">): Promise<1 | -403 | -423>;
 export declare function ultraSecurityModeDebug(player: Player): Promise<1 | -403 | -423>;
 export declare function resetPlayerPermissionsUI(player: Player): Promise<1 | -403 | -423>;
-export declare function managePermissionsPresets(player: Player): Promise<0 | 1 | -403 | -423>;
+export declare function managePermissionsPresets(player: Player): Promise<1 | 0 | -403 | -423>;
 export {};

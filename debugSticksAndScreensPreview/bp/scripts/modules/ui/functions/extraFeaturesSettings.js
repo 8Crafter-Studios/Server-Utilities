@@ -5,6 +5,7 @@ import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPl
 import { worldBorderSettingsDimensionSelector } from "./worldBorderSettingsDimensionSelector";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
+import { customFormUICodes } from "../constants/customFormUICodes";
 /**
  * Displays the Extra Features Settings menu to the specified player or entity.
  *
@@ -32,12 +33,12 @@ export async function extraFeaturesSettings(sourceEntitya) {
         }
     }
     let form = new ActionFormData();
-    form.title("Extra Features Settings");
+    form.title(customFormUICodes.action.titles.formStyles.gridMenu + "Extra Features Settings");
     form.body("Extra features are optional features that can be enabled but are disabled by default.");
-    form.button("World Border System", "textures/ui/worldsIcon");
-    form.button("Shop System", "textures/ui/store_home_icon");
-    form.button("Back", "textures/ui/arrow_left");
-    form.button("Close", "textures/ui/crossout"); /*
+    form.button(customFormUICodes.action.buttons.positions.main_only + "World Border System", "textures/ui/worldsIcon");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "Shop System", "textures/ui/store_home_icon");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"); /*
     form.button("Debug Screen", "textures/ui/ui_debug_glyph_color");*/
     return await forceShow(form, sourceEntity)
         .then(async (ra) => {

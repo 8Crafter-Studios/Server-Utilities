@@ -3,10 +3,8 @@ import { ModalFormData, ModalFormResponse, MessageFormData } from "@minecraft/se
 import { forceShow } from "modules/ui/functions/forceShow";
 import { targetSelectorAllListC } from "modules/command_utilities/functions/targetSelectorAllListC";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
-export function createExplosion(sourceEntitya, parameterDefaults) {
-    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
-        ? sourceEntitya.player
-        : sourceEntitya;
+export async function createExplosion(sourceEntitya, parameterDefaults) {
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     form.title("Create Explosion");
     form.textField("x", "number", String(parameterDefaults?.x ?? sourceEntity.location.x));
@@ -19,17 +17,15 @@ export function createExplosion(sourceEntitya, parameterDefaults) {
     form.toggle("breaksBlocks", parameterDefaults?.explosionOptions?.breaksBlocks ?? true);
     form.toggle("causesFire", parameterDefaults?.explosionOptions?.causesFire ?? false);
     form.submitButton("Create");
-    forceShow(form, sourceEntity)
+    return await forceShow(form, sourceEntity)
         .then((ra) => {
         let r = ra;
         if (r.canceled) {
-            return;
+            return 1;
         }
-        let [x, y, z, dimension, radius, source, allowUnderwater, breaksBlocks, causesFire,] = r.formValues;
+        let [x, y, z, dimension, radius, source, allowUnderwater, breaksBlocks, causesFire] = r.formValues;
         try {
-            world
-                .getDimension(String(dimension))
-                .createExplosion({ x: Number(x), y: Number(y), z: Number(z) }, Number(radius), {
+            world.getDimension(String(dimension)).createExplosion({ x: Number(x), y: Number(y), z: Number(z) }, Number(radius), {
                 allowUnderwater: Boolean(allowUnderwater),
                 breaksBlocks: Boolean(breaksBlocks),
                 causesFire: Boolean(causesFire),
@@ -41,14 +37,16 @@ export function createExplosion(sourceEntitya, parameterDefaults) {
         catch (e) {
             console.error(e, e.stack);
         }
+        return 1;
     })
-        .catch((e) => {
+        .catch(async (e) => {
         let formError = new MessageFormData();
         formError.body(e + e.stack);
         formError.title("Error");
-        formError.button1("Done");
-        forceShow(formError, sourceEntity).then(() => {
-            return e;
+        formError.button1("Back");
+        formError.button2("Close");
+        return await forceShow(formError, sourceEntity).then((r) => {
+            return (1 - r.selection);
         });
     });
 }

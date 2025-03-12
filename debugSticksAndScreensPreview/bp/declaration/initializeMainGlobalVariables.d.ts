@@ -1,5 +1,5 @@
 import "init/functions/breakpoint";
-export declare const current_format_version = "1.32.0-preview.20+BUILD.1";
+export declare const current_format_version = "1.33.0";
 export declare const current_supported_minecraft_version = "1.21.6x";
 declare global {
     namespace globalThis {

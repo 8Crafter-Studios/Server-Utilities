@@ -1,5 +1,5 @@
 import { Player, Entity, ItemLockMode, ItemStack, ItemEnchantableComponent, ItemDurabilityComponent } from "@minecraft/server";
-import { ActionFormData } from "@minecraft/server-ui";
+import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { forceShow } from "modules/ui/functions/forceShow";
 import { config } from "init/classes/config";
@@ -7,6 +7,8 @@ import { showMessage } from "modules/utilities/functions/showMessage";
 import { ServerShopManager } from "./server_shop";
 import { PlayerShopManager } from "./player_shop";
 import { securityVariables } from "security/ultraSecurityModeUtils";
+import { customFormUICodes } from "modules/ui/constants/customFormUICodes";
+import { texturePresets } from "Assets/constants/texturePresets";
 /**
  * Main function to handle the shop system settings interface.
  *
@@ -43,19 +45,20 @@ export async function mainShopSystemSettings(sourceEntitya) {
         }
     }
     let form = new ActionFormData();
-    form.title("Shop Sytem Settings");
-    form.button("Server Shop\n" + (config.shopSystem.server.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/servers");
-    form.button("Player Shop\n" + (config.shopSystem.player.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/icon_multiplayer");
-    form.button("§cSign Shop\n" + (config.shopSystem.sign.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/icon_sign");
-    form.button("Back", "textures/ui/arrow_left");
-    form.button("Close", "textures/ui/crossout");
-    return await forceShow(form, sourceEntity).then(async (r) => {
+    form.title(customFormUICodes.action.titles.formStyles.gridMenu + "Shop Sytem Settings");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "Server Shop\n" + (config.shopSystem.server.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/servers");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "Player Shop\n" + (config.shopSystem.player.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/icon_multiplayer");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cSign Shop\n" + (config.shopSystem.sign.enabled ? "§aEnabled" : "§cDisabled"), "textures/ui/icon_sign");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
+    return await forceShow(form, sourceEntity)
+        .then(async (r) => {
         if (r.canceled)
             return 1;
         let response = r.selection;
         switch (response) {
             case 0:
-                if ((await ServerShopManager.serverShopSystemSettings(sourceEntity)) == 1) {
+                if ((await ServerShopManager.serverShopSystemSettings(sourceEntity)) === 1) {
                     return await mainShopSystemSettings(sourceEntity);
                 }
                 else {
@@ -63,7 +66,7 @@ export async function mainShopSystemSettings(sourceEntitya) {
                 }
                 break;
             case 1:
-                if ((await PlayerShopManager.playerShopSystemSettings(sourceEntity)) == 1) {
+                if ((await PlayerShopManager.playerShopSystemSettings(sourceEntity)) === 1) {
                     return await mainShopSystemSettings(sourceEntity);
                 }
                 else {
@@ -72,7 +75,7 @@ export async function mainShopSystemSettings(sourceEntitya) {
                 break;
             case 2:
                 return await showMessage(sourceEntity, undefined, "§cSorry, the sign shop system does not exist yet.", "Back", "Close").then(async (r) => {
-                    if (r.selection == 0) {
+                    if (r.selection !== 1) {
                         return await mainShopSystemSettings(sourceEntity);
                     }
                     else {
@@ -90,7 +93,8 @@ export async function mainShopSystemSettings(sourceEntitya) {
             default:
                 return 1;
         }
-    }).catch(e => {
+    })
+        .catch((e) => {
         console.error(e, e.stack);
         return -2;
     });

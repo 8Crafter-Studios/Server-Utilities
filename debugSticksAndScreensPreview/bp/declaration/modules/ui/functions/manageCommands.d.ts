@@ -14,4 +14,4 @@ import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPl
  * - Provides detailed information and settings for each command.
  * - Handles various user interactions with the UI, such as confirming deletions and saving changes.
  */
-export declare function manageCommands(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<0 | 1>;
+export declare function manageCommands(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<1 | 0>;

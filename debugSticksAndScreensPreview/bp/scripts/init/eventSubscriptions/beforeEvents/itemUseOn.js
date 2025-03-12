@@ -1,5 +1,5 @@
 import { world } from "@minecraft/server";
-import { protectedAreaVariables } from "init/variables/protectedAreaVariables";
+import { ProtectedAreaTester, protectedAreaVariables } from "init/variables/protectedAreaVariables";
 import { testIsWithinRanges } from "modules/spawn_protection/functions/testIsWithinRanges";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 subscribedEvents.beforeItemUseOn = world.beforeEvents.itemUseOn.subscribe((event) => {
@@ -73,13 +73,33 @@ try {
             event.source.name);
     });
     if ((securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(event.source, permissionType["andexdb.bypassProtectedAreas"]) : event.source.hasTag("canBypassProtectedAreas")) != true &&
-        (((testIsWithinRanges(protectedAreaVariables.noBlockInteractAreas.positive.filter((v) => v.dimension == dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true &&
-            (testIsWithinRanges(protectedAreaVariables.noBlockInteractAreas.negative.filter((v) => v.dimension ==
-                dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false) ||
-            ((testIsWithinRanges(protectedAreaVariables.noInteractAreas.positive.filter((v) => v.dimension ==
-                dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == true &&
-                (testIsWithinRanges(protectedAreaVariables.noInteractAreas.negative.filter((v) => v.dimension ==
-                    dimensions.indexOf(event.block.dimension)), event.block.location) ?? false) == false))) {
+        new ProtectedAreaTester("itemUseOn").testIsInArea(event, event.block.location, event.block.dimension) /* (((testIsWithinRanges(
+        protectedAreaVariables.noBlockInteractAreas.positive.filter(
+            (v) => v.dimension == dimensions.indexOf(event.block.dimension)
+        ),
+        event.block.location
+    ) ?? false) == true &&
+        (testIsWithinRanges(
+            protectedAreaVariables.noBlockInteractAreas.negative.filter(
+                (v) => v.dimension ==
+                    dimensions.indexOf(event.block.dimension)
+            ),
+            event.block.location
+        ) ?? false) == false) ||
+        ((testIsWithinRanges(
+            protectedAreaVariables.noInteractAreas.positive.filter(
+                (v) => v.dimension ==
+                    dimensions.indexOf(event.block.dimension)
+            ),
+            event.block.location
+        ) ?? false) == true &&
+            (testIsWithinRanges(
+                protectedAreaVariables.noInteractAreas.negative.filter(
+                    (v) => v.dimension ==
+                        dimensions.indexOf(event.block.dimension)
+                ),
+                event.block.location
+            ) ?? false) == false)) */) {
         event.cancel = true;
     }
     else {

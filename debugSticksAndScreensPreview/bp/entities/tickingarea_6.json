@@ -35,7 +35,8 @@
       "minecraft:type_family": {
         "family": [
           "tickingarea",
-          "tickingarea_6"
+          "tickingarea_6",
+          "inanimate"
         ]
       },
       "minecraft:fire_immune": {},

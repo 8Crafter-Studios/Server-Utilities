@@ -4,7 +4,7 @@ import { type SellableShopElement, type BuyableShopElement, type ShopItem, type 
 /**
  * @see {@link playerShopConfig}
  */
-export type serverShopConfig = {
+export interface serverShopConfig {
     /**
      * The id of the server shop.
      */
@@ -43,7 +43,7 @@ export type serverShopConfig = {
      * Whether or not this shop can be accessed by any player through the use of the \viewservershops command.
      */
     publicShop?: boolean | null;
-};
+}
 /**
  * @todo Convert the functions to async functions that return Promise<0|1>.
  * @see {@link PlayerShop}
@@ -107,7 +107,7 @@ export declare class ServerShop {
      * @param path The path to this page of the shop.
      * @returns {Promise<0|1>} A promise that will resolve with either a 0 or a 1, a 0 meaning that the previous UI should not be re-opened, and a 1 meaning that it should.
      */
-    openShopPage<mode extends "buy" | "sell">(player: Player, data: (mode extends "buy" ? BuyableShopElement[] : SellableShopElement[]), path: [mode, ...string[]]): Promise<0 | 1>;
+    openShopPage<mode extends "buy" | "sell">(player: Player, data: mode extends "buy" ? BuyableShopElement[] : SellableShopElement[], path: [mode, ...string[]]): Promise<0 | 1>;
     editShopElements<T extends "buy" | "sell">(mode: T, data: (T extends "buy" ? BuyableShopElement : SellableShopElement)[]): void;
     get buyData(): BuyableShopElement[];
     set buyData(data: BuyableShopElement[]);
@@ -134,13 +134,13 @@ export declare class ServerShop {
      * @param item
      * @returns
      */
-    sellItem(player: Player, item: SellableShopItem): Promise<0 | 1>;
+    sellItem(player: Player, item: SellableShopItem): Promise<1 | 0>;
     /**
      * @todo Make an async function with return type of Promise<0|1>.
      * @see {@link PlayerShop.openPublicShopsSelector}
      * @param sourceEntitya
      */
-    static openPublicShopsSelector(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<0 | 1>;
+    static openPublicShopsSelector(sourceEntitya: Entity | executeCommandPlayerW | Player, showBackButton?: boolean): Promise<0 | 1>;
 }
 export declare class LinkedServerShopCommands {
     static get LinkedCommands(): [string, `shop:${string}`][];
@@ -183,26 +183,45 @@ export declare class ServerShopManager {
      */
     static get serverShopPageTextureHint(): string;
     /**
-     * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings}.
+     * Handles the server shop system settings interface and its interactions.
+     *
      * @see {@link PlayerShopManager.playerShopSystemSettings}
-     * @param sourceEntitya
+     *
+     * @param sourceEntitya - The entity that initiated the request. It can be an `Entity`, `executeCommandPlayerW`, or `Player`.
+     * @returns A promise that resolves to `0` or `1` based on the user's interaction with the interface.
+     *
+     * - `0`: Indicates that the user chose to close the interface.
+     * - `1`: Indicates that the user chose to go back or an action was completed successfully.
+     *
+     * The function performs the following steps:
+     * 1. Checks if the `sourceEntitya` is an instance of `executeCommandPlayerW` and extracts the player.
+     * 2. Asserts that the `sourceEntity` is defined.
+     * 3. If `ultraSecurityModeEnabled` is true, checks if the player has the required permission to access the settings.
+     *    - If the player lacks permission, shows an "Access Denied" message and returns based on the user's choice.
+     * 4. Creates an `ActionFormData` form with options to manage shops, main settings, and shop item settings.
+     * 5. Displays the form to the player and handles the user's selection:
+     *    - `manageShops`: Calls `ServerShopManager.manageServerShops` and recursively calls `serverShopSystemSettings` if needed.
+     *    - `mainSettings`: Calls `ServerShopManager.serverShopSystemSettings_main` and recursively calls `serverShopSystemSettings` if needed.
+     *    - `shopItemSettings`: Shows a message indicating that the shop item does not exist yet and recursively calls `serverShopSystemSettings` if needed.
+     *    - `back`: Returns `1`.
+     *    - `close`: Returns `0`.
+     * 6. Catches any errors that occur during the process, logs them, and shows an error message to the player.
      */
     static serverShopSystemSettings(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<0 | 1>;
     /**
-     * @todo Copy over the updated code from {@link PlayerShopManager.playerShopSystemSettings_main}.
      * @see {@link PlayerShopManager.playerShopSystemSettings_main}
      * @param sourceEntitya
      */
-    static serverShopSystemSettings_main(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<1>;
+    static serverShopSystemSettings_main(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<0 | 1>;
     /**
-     * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShops}.
+     * @todo Add pages to this menu.
      * @param sourceEntitya
      */
     static manageServerShops(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<0 | 1>;
     /**
-     * @todo Make an async function with return type of Promise<0|1>.
-     * @todo Copy over the updated code from {@link PlayerShopManager.addPlayerShop}.
-     * @param sourceEntitya
+     * Opens the UI for creating a new server shop.
+     * @param sourceEntitya The player creating the shop.
+     * @returns {Promise<1>} returns a promise that resolves with a value of one when the player closes the UI, either by clicking the x button or saving the new shop they created.
      */
     static addServerShop(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<1>;
     /**
@@ -247,7 +266,7 @@ export declare class ServerShopManager {
      * @param mode
      * @returns
      */
-    static manageServerShop_manageItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number, mode: mode): Promise<0 | 1>;
+    static manageServerShop_manageItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, item: mode extends "buy" ? ShopItem : SellableShopItem, itemIndex: number, mode: mode): Promise<0 | 1>;
     /**
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_editItem}.
      * @param sourceEntitya
@@ -257,7 +276,7 @@ export declare class ServerShopManager {
      * @param mode
      * @returns
      */
-    static manageServerShop_editItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number, mode: mode): Promise<1>;
+    static manageServerShop_editItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, item: mode extends "buy" ? ShopItem : SellableShopItem, itemIndex: number, mode: mode): Promise<1>;
     /**
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShop_addItem}.
      * @param sourceEntitya
@@ -314,7 +333,7 @@ export declare class ServerShopManager {
      * @param itemIndex
      * @returns
      */
-    static manageServerShopPage_manageItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, path: [mode, ...string[]], item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number): Promise<0 | 1>;
+    static manageServerShopPage_manageItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, path: [mode, ...string[]], item: mode extends "buy" ? ShopItem : SellableShopItem, itemIndex: number): Promise<0 | 1>;
     /**
      * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_editItem}.
@@ -325,7 +344,7 @@ export declare class ServerShopManager {
      * @param itemIndex
      * @returns
      */
-    static manageServerShopPage_editItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, path: [mode, ...string[]], item: (mode extends "buy" ? ShopItem : SellableShopItem), itemIndex: number): Promise<0 | 1>;
+    static manageServerShopPage_editItem<mode extends "buy" | "sell">(sourceEntitya: Entity | executeCommandPlayerW | Player, shop: ServerShop, path: [mode, ...string[]], item: mode extends "buy" ? ShopItem : SellableShopItem, itemIndex: number): Promise<0 | 1>;
     /**
      * @todo Make an async function with return type of Promise<0|1>.
      * @todo Copy over the updated code from {@link PlayerShopManager.managePlayerShopPage_addItem}.

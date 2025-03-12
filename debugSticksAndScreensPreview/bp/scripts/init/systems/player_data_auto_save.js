@@ -1,3 +1,5 @@
 import { startPlayerDataAutoSave } from "modules/player_save/functions/playerDataAutoSave";
-startPlayerDataAutoSave();
+if (config.system.autoSavePlayerData === true) {
+    startPlayerDataAutoSave();
+}
 //# sourceMappingURL=player_data_auto_save.js.map

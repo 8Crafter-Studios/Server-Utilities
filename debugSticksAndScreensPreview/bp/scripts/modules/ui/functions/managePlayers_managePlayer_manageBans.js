@@ -5,6 +5,7 @@ import { ban_format_version } from "modules/ban/constants/ban_format_version";
 import { ban } from "modules/ban/classes/ban";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
+import { customFormUICodes } from "../constants/customFormUICodes";
 export async function managePlayers_managePlayer_manageBans(sourceEntity, player) {
     if (securityVariables.ultraSecurityModeEnabled) {
         if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessManageBansUI") == false) {
@@ -17,25 +18,25 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity, player
             }
         }
     }
-    let form6 = new ActionFormData();
-    form6.title(player.name);
+    let form = new ActionFormData();
+    form.title(customFormUICodes.action.titles.formStyles.gridMenu + player.name);
     player.idBans.valid.forEach((p) => {
-        form6.button(`${p.playerId}\nValid`, "textures/ui/online");
+        form.button(`${customFormUICodes.action.buttons.positions.main_only}${p.originalPlayerName ?? p.playerId}\nValid - ID Ban`, "textures/ui/online");
     });
     player.idBans.expired.forEach((p) => {
-        form6.button(`${p.playerId}\nExpired`, "textures/ui/Ping_Offline_Red");
+        form.button(`${customFormUICodes.action.buttons.positions.main_only}${p.originalPlayerName ?? p.playerId}\nExpired - ID Ban`, "textures/ui/Ping_Offline_Red");
     });
     player.nameBans.valid.forEach((p) => {
-        form6.button(`${p.playerName}\nValid`, "textures/ui/online");
+        form.button(`${customFormUICodes.action.buttons.positions.main_only}${p.playerName}\nValid - Name Ban`, "textures/ui/online");
     });
     player.nameBans.expired.forEach((p) => {
-        form6.button(`${p.playerName}\nExpired`, "textures/ui/Ping_Offline_Red");
+        form.button(`${customFormUICodes.action.buttons.positions.main_only}${p.playerName}\nExpired - Name Ban`, "textures/ui/Ping_Offline_Red");
     });
     let banList = player.idBans.valid
         .concat(player.idBans.expired)
         .concat(player.nameBans.valid)
         .concat(player.nameBans.expired);
-    form6.body(`UUID: ${player.id}\n${player.isOnline
+    form.body(`UUID: ${player.id}\n${player.isOnline
         ? "Online"
         : "Last Online: " +
             new Date(Number(player.lastOnline) +
@@ -47,11 +48,13 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity, player
         : ban.testForIdBannedPlayer(player)
             ? "\n\nNAME BANNED"
             : ""}`);
-    form6.button("Add ID Ban");
-    form6.button("Add Name Ban");
-    form6.button("Back", "textures/ui/arrow_left");
-    form6.button("Close", "textures/ui/crossout");
-    return (await forceShow(form6, sourceEntity)
+    if (banList.length === 0)
+        form.body("There are currently no bans.");
+    form.button(customFormUICodes.action.buttons.positions.left_side_only + customFormUICodes.action.buttons.styles.display_icon_as_text + "Add ID Ban", "textures/ui/hammer_l_id_ban");
+    form.button(customFormUICodes.action.buttons.positions.left_side_only + customFormUICodes.action.buttons.styles.display_icon_as_text + "Add Name Ban", "textures/ui/hammer_l_name_ban");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
+    return (await forceShow(form, sourceEntity)
         .then(async (ga) => {
         let g = ga;
         if (g.canceled) {
@@ -179,9 +182,9 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity, player
                 let ba = banList[g.selection];
                 let timeRemaining = ba.timeRemaining;
                 form4.body(`§bformat_version: §e${ba.format_version}\n§r§bban_format_version: §e${ba.ban_format_version}\n§r§bbanId: §6${ba.banId}\n§r§btype: §a${ba.type}\ntimeRemaining: ${timeRemaining.days}d, ${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s ${timeRemaining.milliseconds}ms\n§r§bbanDate: §q${new Date(ba.banDate).formatDateTime(sourceEntity.timeZone) +
-                    (sourceEntity.timeZone < 0 ? " GMT" : " GMT+") +
+                    (sourceEntity.timeZone < 0 ? " UTC" : " UTC+") +
                     sourceEntity.timeZone}\n§r§bunbanDate: §q${new Date(ba.unbanDate).formatDateTime(sourceEntity.timeZone) +
-                    (sourceEntity.timeZone < 0 ? " GMT" : " GMT+") +
+                    (sourceEntity.timeZone < 0 ? " UTC" : " UTC+") +
                     sourceEntity.timeZone}\n§r§b${ba.type == "id" ? "playerId" : "originalPlayerId"}: §6${ba.type == "id" ? ba.playerId : ba.originalPlayerId}\n§r§b${ba.type == "id"
                     ? "originalPlayerName"
                     : "playerName"}: §6${ba.type == "id"

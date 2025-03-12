@@ -44,7 +44,7 @@ subscribedEvents.afterExplosion = world.afterEvents.explosion.subscribe((event) 
                     "]"
                 : ""} ${!!event.source
                 ? "Triggered explosion"
-                : "Explosion occured"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0
+                : "Explosion occurred"} in ${dimensionTypeDisplayFormatting[event.dimension.id]}${event.getImpactedBlocks().length != 0
                 ? " around "
                 : ""}${event.getImpactedBlocks().length == 0
                 ? ""

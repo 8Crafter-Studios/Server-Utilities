@@ -35,10 +35,17 @@ export const knownContainerTypes = [
     "minecraft:lit_smoker",
 ];
 export const customMaskGroupPresets = {
-    "preset:leaves": BlockTypes.getAll().map(v => v.id).filter(v => v.includes("leaves")),
-    "preset:deforest": [...new Set([
-            ...BlockTypes.getAll().map(v => v.id).filter(v => v.includes("leaves")),
-            ...BlockTypes.getAll().map(v => v.id).filter(v => v.includes("sapling")),
+    "preset:leaves": BlockTypes.getAll()
+        .map((v) => v.id)
+        .filter((v) => v.includes("leaves")),
+    "preset:deforest": [
+        ...new Set([
+            ...BlockTypes.getAll()
+                .map((v) => v.id)
+                .filter((v) => v.includes("leaves")),
+            ...BlockTypes.getAll()
+                .map((v) => v.id)
+                .filter((v) => v.includes("sapling")),
             "tag:log",
             "tag:plant",
             "short_grass",
@@ -51,13 +58,19 @@ export const customMaskGroupPresets = {
             "mushroom_stem",
             "crimson_roots",
             "warped_roots",
-            "bee_nest" // TO-DO
-        ])],
-    "preset:ores": [...new Set([
-            ...BlockTypes.getAll().map(v => v.id).filter(v => v.includes("ore")),
+            "bee_nest", // TO-DO
+        ]),
+    ],
+    "preset:ores": [
+        ...new Set([
+            ...BlockTypes.getAll()
+                .map((v) => v.id)
+                .filter((v) => v.includes("ore")),
             "ancient_debris",
-        ])],
-    "preset:ore_blocks": [...new Set([
+        ]),
+    ],
+    "preset:ore_blocks": [
+        ...new Set([
             "coal_block",
             "copper_block",
             "exposed_copper",
@@ -77,13 +90,9 @@ export const customMaskGroupPresets = {
             "raw_copper_block",
             "raw_iron_block",
             "raw_gold_block",
-        ])],
-    "preset:liquid": [...new Set([
-            "water",
-            "flowing_water",
-            "lava",
-            "flowing_lava"
-        ])],
+        ]),
+    ],
+    "preset:liquid": [...new Set(["water", "flowing_water", "lava", "flowing_lava"])],
 };
 /* export const customMaskGroupPresetsB = {
     "preset:leaves": new Set([
@@ -120,6 +129,13 @@ export class BlockMask {
             get raw() {
                 return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`;
             },
+            get rawsb() {
+                return `${this.type}${!!this.states
+                    ? `[${Object.entries(this.states)
+                        .map(([k, v]) => JSON.stringify(k) + "=" + JSON.stringify(v))
+                        .join(",")}]`
+                    : ""}`;
+            },
             get rawns() {
                 return `${this.type}`;
             },
@@ -133,6 +149,12 @@ export class BlockMask {
     get blockTypes() {
         return this.#blockTypeIds;
     }
+    get raw() {
+        return (this.type === "exclude" ? "e:" : "i:") + (this.#blocksList.length === 0 ? "none" : this.#blocksList.map((v) => v.rawsb).join(","));
+    }
+    toString() {
+        return this.raw;
+    }
     evaluateIds() {
         this.#blocksList = cullEmpty(this.#blocksList.map((v) => v.type == "none"
             ? undefined
@@ -144,17 +166,31 @@ export class BlockMask {
                     get raw() {
                         return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`;
                     },
+                    get rawsb() {
+                        return `${this.type}${!!this.states
+                            ? `[${Object.entries(this.states)
+                                .map(([k, v]) => JSON.stringify(k) + "=" + JSON.stringify(v))
+                                .join(",")}]`
+                            : ""}`;
+                    },
                     get rawns() {
                         return `${this.type}`;
                     },
                 }));
     }
-    constructor(blocks = [], type = "include") {
+    constructor(blocks = [], type = "include", rawMatch) {
         this.#blocksList = blocks.map((v) => ({
             type: v.type,
             states: v.states,
             get raw() {
                 return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`;
+            },
+            get rawsb() {
+                return `${this.type}${!!this.states
+                    ? `[${Object.entries(this.states)
+                        .map(([k, v]) => JSON.stringify(k) + "=" + JSON.stringify(v))
+                        .join(",")}]`
+                    : ""}`;
             },
             get rawns() {
                 return `${this.type}`;
@@ -173,6 +209,13 @@ export class BlockMask {
             get raw() {
                 return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`;
             },
+            get rawsb() {
+                return `${this.type}${!!this.states
+                    ? `[${Object.entries(this.states)
+                        .map(([k, v]) => JSON.stringify(k) + "=" + JSON.stringify(v))
+                        .join(",")}]`
+                    : ""}`;
+            },
             get rawns() {
                 return `${this.type}`;
             },
@@ -183,7 +226,11 @@ export class BlockMask {
             return true;
         }
         if (block instanceof Block) {
-            let resultFound = this.#blocksList.flatMap(v => v.type in customMaskGroupPresets ? customMaskGroupPresets[v.type].map(s => ({ type: s, rawns: v.rawns, raw: v.raw })) : v).find((b) => {
+            let resultFound = this.#blocksList
+                .flatMap((v) => v.type in customMaskGroupPresets
+                ? customMaskGroupPresets[v.type].map((s) => ({ type: s, rawns: v.rawns, raw: v.raw }))
+                : v)
+                .find((b) => {
                 switch (b.type) {
                     case "isAir":
                         if (block.isAir) {
@@ -306,7 +353,11 @@ export class BlockMask {
             return mode == "exclude" ? !resultFound : resultFound;
         }
         if (block instanceof BlockPermutation) {
-            let resultFound = this.#blocksList.flatMap(v => v.type in customMaskGroupPresets ? customMaskGroupPresets[v.type].map(s => ({ type: s, rawns: v.rawns, raw: v.raw })) : v).find((b) => {
+            let resultFound = this.#blocksList
+                .flatMap((v) => v.type in customMaskGroupPresets
+                ? customMaskGroupPresets[v.type].map((s) => ({ type: s, rawns: v.rawns, raw: v.raw }))
+                : v)
+                .find((b) => {
                 switch (b.type) {
                     // only works for the regular vanilla air block when using a BlockPermutation as the parameter
                     case "isAir":
@@ -408,7 +459,11 @@ export class BlockMask {
             return mode == "exclude" ? !resultFound : resultFound;
         }
         if (block instanceof BlockType) {
-            let resultFound = this.#blocksList.flatMap(v => v.type in customMaskGroupPresets ? customMaskGroupPresets[v.type].map(s => ({ type: s, rawns: v.rawns, raw: v.raw })) : v).find((b) => {
+            let resultFound = this.#blocksList
+                .flatMap((v) => v.type in customMaskGroupPresets
+                ? customMaskGroupPresets[v.type].map((s) => ({ type: s, rawns: v.rawns, raw: v.raw }))
+                : v)
+                .find((b) => {
                 switch (b.type) {
                     // only works for the regular vanilla air block when using a BlockType as the parameter
                     case "isAir":
@@ -480,7 +535,11 @@ export class BlockMask {
             return mode == "exclude" ? !resultFound : resultFound;
         }
         if (typeof block == "string") {
-            let resultFound = this.#blocksList.flatMap(v => v.type in customMaskGroupPresets ? customMaskGroupPresets[v.type].map(s => ({ type: s, rawns: v.rawns, raw: v.raw })) : v).find((b) => {
+            let resultFound = this.#blocksList
+                .flatMap((v) => v.type in customMaskGroupPresets
+                ? customMaskGroupPresets[v.type].map((s) => ({ type: s, rawns: v.rawns, raw: v.raw }))
+                : v)
+                .find((b) => {
                 switch (b.type) {
                     // only works for the regular vanilla air block when using a BlockType as the parameter
                     case "isAir":
@@ -511,7 +570,8 @@ export class BlockMask {
                     case "canBeWaterlogged":
                     case "isWaterloggable":
                     case "waterloggable":
-                        if (tryget(() => BlockPermutation.resolve(BlockTypes.get(block).id).canContainLiquid(modules.mcServer.LiquidType.Water)) ?? false) {
+                        if (tryget(() => BlockPermutation.resolve(BlockTypes.get(block).id).canContainLiquid(modules.mcServer.LiquidType.Water)) ??
+                            false) {
                             return true;
                         }
                         else {
@@ -553,7 +613,11 @@ export class BlockMask {
             return mode == "exclude" ? !resultFound : resultFound;
         }
         if (typeof block == "object") {
-            let resultFound = this.#blocksList.flatMap(v => v.type in customMaskGroupPresets ? customMaskGroupPresets[v.type].map(s => ({ type: s, rawns: v.rawns, raw: v.raw })) : v).find((b) => {
+            let resultFound = this.#blocksList
+                .flatMap((v) => v.type in customMaskGroupPresets
+                ? customMaskGroupPresets[v.type].map((s) => ({ type: s, rawns: v.rawns, raw: v.raw }))
+                : v)
+                .find((b) => {
                 switch (b.type) {
                     // only works for the regular vanilla air block when using a BlockPermutation as the parameter
                     case "isAir":
@@ -593,7 +657,10 @@ export class BlockMask {
                     case "canBeWaterlogged":
                     case "isWaterloggable":
                     case "waterloggable":
-                        if (tryget(() => block.type instanceof BlockType ? BlockPermutation.resolve(block.type.id).canContainLiquid(modules.mcServer.LiquidType.Water) : BlockPermutation.resolve(BlockTypes.get(block.type).id).canContainLiquid(modules.mcServer.LiquidType.Water)) ?? false) {
+                        if (tryget(() => block.type instanceof BlockType
+                            ? BlockPermutation.resolve(block.type.id).canContainLiquid(modules.mcServer.LiquidType.Water)
+                            : BlockPermutation.resolve(BlockTypes.get(block.type).id).canContainLiquid(modules.mcServer.LiquidType.Water)) ??
+                            false) {
                             if (b.states != undefined && block.states != undefined) {
                                 return BlockMask.testForStatesMatch(block.states, b.states);
                             }
@@ -660,9 +727,9 @@ export class BlockMask {
     }
     static parse() { }
     static extractRaw(str) {
-        return str.match(/(?<=\s|^)([ie]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0];
+        return str.match(/(?<=\s|^)([ie]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)?.[0];
     }
-    static extract(str, extraIdParsingEnabled = true) {
+    static extract(str, extraIdParsingEnabled = true, modeOverride) {
         if (extraIdParsingEnabled) {
             const result = extractCustomMaskType(str);
             const out = cullEmpty(result.map((v) => v.type == "none"
@@ -673,16 +740,17 @@ export class BlockMask {
                         type: v.type == "keep" ? "air" : v.type,
                         states: v.states,
                     }));
-            return new BlockMask(out, result.mode);
+            return new BlockMask(out, modeOverride ?? result.mode);
         }
         else {
             const result = extractCustomMaskType(str);
-            return new BlockMask(result, result.mode);
+            return new BlockMask(result, modeOverride ?? result.mode);
         }
     }
-    static extractWRaw(str, extraIdParsingEnabled = true) {
+    static extractWRaw(str, extraIdParsingEnabled = true, modeOverride) {
         let result;
         let mode = "include";
+        let rawMatch;
         if (extraIdParsingEnabled) {
             const r = extractCustomMaskType(str);
             result = cullEmpty(r.map((v) => v.type == "none"
@@ -702,18 +770,25 @@ export class BlockMask {
         }
         return {
             raw: str.match(/(?<=\s|^)([ie]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)[0],
-            parsed: extraIdParsingEnabled
-                ? new BlockMask(result, mode)
-                : new BlockMask(result, mode),
+            parsed: extraIdParsingEnabled ? new BlockMask(result, modeOverride ?? mode) : new BlockMask(result, modeOverride ?? mode),
         };
     }
     static extractAllRaw(str) {
         return str.match(/(?<=\s|^)([ie]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g);
     }
-    static extractAll(str, extraIdParsingEnabled = true) {
-        return extractCustomMaskTypes(str).map((v) => new BlockMask(v, v.mode));
+    static extractAll(str, extraIdParsingEnabled = true, modeOverride) {
+        return extractCustomMaskTypes(str).map((v) => new BlockMask(extraIdParsingEnabled
+            ? cullEmpty(v.map((v) => v.type == "none"
+                ? undefined
+                : v.type == "any"
+                    ? undefined
+                    : {
+                        type: v.type == "keep" ? "air" : v.type,
+                        states: v.states,
+                    }))
+            : v, modeOverride ?? v.mode));
     }
-    static extractAllWRaw(str, extraIdParsingEnabled = true) {
+    static extractAllWRaw(str, extraIdParsingEnabled = true, modeOverride) {
         return {
             raw: str.match(/(?<=\s|^)([ie]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/g),
             parsed: extractCustomMaskTypes(str).map((v) => new BlockMask(extraIdParsingEnabled
@@ -725,7 +800,7 @@ export class BlockMask {
                             type: v.type == "keep" ? "air" : v.type,
                             states: v.states,
                         }))
-                : v, v.mode)),
+                : v, modeOverride ?? v.mode)),
         };
     }
 }
@@ -733,7 +808,8 @@ function extractCustomMaskType(str) {
     const maskTypes = [];
     const regex = /(?<=\s|^)([ie]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
     const regexb = /([ie]:)?(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:(?:[a-zA-Z0-9_\-\.]+:)?)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
-    const matches = str.match(regex)[0].match(regexb);
+    const rawMatch = str.match(regex)[0];
+    const matches = rawMatch.match(regexb);
     let mode = "include";
     if (matches) {
         matches.forEach((match, index) => {
@@ -788,7 +864,7 @@ function extractCustomMaskType(str) {
             });
         });
     }
-    return Object.assign(maskTypes, { mode });
+    return Object.assign(maskTypes, { mode, rawMatch });
 }
 function extractCustomMaskTypes(str) {
     const masks = [];
@@ -851,7 +927,7 @@ function extractCustomMaskTypes(str) {
                     states,
                 });
             });
-            masks.push(Object.assign(maskTypes, { mode: mode }));
+            masks.push(Object.assign(maskTypes, { mode: mode, rawMatch: m }));
         }
     });
     return masks;

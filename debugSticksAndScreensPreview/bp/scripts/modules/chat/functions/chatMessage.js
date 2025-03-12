@@ -9,6 +9,7 @@ import { commands } from "modules/commands_list/constants/commands";
 import { chatSend } from "./chatSend";
 import { cmdsEval } from "../../../Main/commands";
 import { securityVariables } from "security/ultraSecurityModeUtils";
+import { ProtectedAreaTester } from "init/variables/protectedAreaVariables";
 export function chatMessage(eventData, bypassChatInputRequests = false) {
     if (!bypassChatInputRequests &&
         Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).length != 0) {
@@ -302,6 +303,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     if (Boolean(runreturn) == true) {
         return;
     }
+    const noChat = new ProtectedAreaTester("chatSend").testIsInArea(eventData, eventData.sender.location, eventData.sender.dimension);
     if (config.chatCommandsEnabled != false &&
         (newMessage.startsWith(config.chatCommandPrefix) /* && player.hasTag('canUseChatCommands')*/ ||
             !!commanda) /* && (eventData.message.startsWith(".give") || eventData.message.startsWith(".giveb") || eventData.message.startsWith(".h1") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".playersettings") || eventData.message.startsWith(".run") || eventData.message.startsWith(".setitem") || eventData.message.startsWith(".invsee") || eventData.message.startsWith(".settings") || eventData.message.startsWith(".help") || eventData.message.startsWith(".h1 ") || eventData.message.startsWith(".h2") || eventData.message.startsWith(".h3") || eventData.message.startsWith(".h4") || eventData.message.startsWith(".h5") || eventData.message.startsWith(".w1") || eventData.message.startsWith(".w2") || eventData.message.startsWith(".debugstick") || eventData.message.startsWith(".playercontroller") || eventData.message.startsWith(".setslot") || eventData.message.startsWith(".worlddebug") || eventData.message.startsWith(".gmc") || eventData.message.startsWith(".gms") || eventData.message.startsWith(".gma") || eventData.message.startsWith(".gmd") || eventData.message.startsWith(".gmp") || eventData.message.startsWith(".spawn") || eventData.message.startsWith(".warp") || eventData.message.startsWith(".home") || eventData.message.startsWith(".all") || eventData.message.startsWith(".getEntityUUIDSelector"))*/) {
@@ -314,13 +316,17 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
                             ? "\\" + switchTest
                             : switchTest}§r§c. Please check that the command exists and that you have permission to use it.`))
                     : config.invalidChatCommandAction == 1
-                        ? chatSend({
-                            returnBeforeChatSend,
-                            player,
-                            eventData,
-                            event,
-                            newMessage,
-                        })
+                        ? (() => {
+                            if (!noChat) {
+                                chatSend({
+                                    returnBeforeChatSend,
+                                    player,
+                                    eventData,
+                                    event,
+                                    newMessage,
+                                });
+                            }
+                        })()
                         : undefined
             : chatCommands({
                 returnBeforeChatSend,
@@ -332,20 +338,26 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     }
     else {
         if ((world.getDynamicProperty("andexdbSettings:disableCustomChatMessages") ?? false) != true) {
-            if (world.getDynamicProperty("andexdbSettings:chatCommandsEnbaled") != false &&
+            if (world.getDynamicProperty("andexdbSettings:chatCommandsEnabled") != false &&
                 newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\")) &&
                 player.hasTag("canUseChatCommands") &&
                 (world.getDynamicProperty("andexdbSettings:sendMessageOnInvalidChatCommand") ?? false) == false) {
             }
             else {
-                chatSend({
-                    returnBeforeChatSend,
-                    player,
-                    eventData,
-                    event,
-                    newMessage,
-                });
+                if (!noChat) {
+                    chatSend({
+                        returnBeforeChatSend,
+                        player,
+                        eventData,
+                        event,
+                        newMessage,
+                    });
+                }
             }
+        }
+        if (noChat) {
+            event.cancel = true;
+            return;
         }
     }
 }

@@ -1,13 +1,11 @@
-import type { Entity, Player } from "@minecraft/server";
-import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
+import type { loosePlayerType } from "modules/utilities/types/loosePlayerType";
 /**
  * Displays and handles the TPA System Settings form for the given entity.
  *
- * @param sourceEntitya - The entity for which the settings form is displayed. It can be an instance of `Entity`, `executeCommandPlayerW`, or `Player`.
- * @returns A promise that resolves to:
- * - `1` if the form was successfully handled or canceled.
- * - `0` if the user does not have permission to access the settings.
- * - `-2` if an error occurred while handling the form.
+ * @async
+ * @param {loosePlayerType} sourceEntity - The player viewing the UI.
+ * @returns {Promise<0 | 1>} A promise that resolves to `0` if the previous menu should be closed, or `1` if the previous menu should be reopened.
+ * @throws {TypeError} If sourceEntity is not an instance of the Player class or an instance of the executeCommandPlayerW class with a Player linked to it.
  *
  * @remarks
  * If `ultraSecurityModeEnabled` is true, the function checks if the player has the `andexdb.accessSettings` permission. If the player lacks this permission, an access denied message is shown.
@@ -16,14 +14,11 @@ import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPl
  *
  * @example
  * ```typescript
- * const result = await tpaSettings(player);
- * if (result === 1) {
- *     console.log("Settings updated or form canceled.");
- * } else if (result === 0) {
- *     console.log("Access denied.");
- * } else {
- *     console.error("An error occurred.");
- * }
+ * if((await tpaSettings(player)) === 1){
+ *     continue;
+ * }else{
+ *     return 0;
+ * };
  * ```
  */
-export declare function tpaSettings(sourceEntitya: Entity | executeCommandPlayerW | Player): Promise<1 | 0 | -2>;
+export declare function tpaSettings(sourceEntity: loosePlayerType): Promise<0 | 1>;

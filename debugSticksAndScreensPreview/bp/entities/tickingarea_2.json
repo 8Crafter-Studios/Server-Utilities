@@ -26,7 +26,11 @@
         "radius": 2
       },
       "minecraft:type_family": {
-        "family": [ "tickingarea", "tickingarea_2" ]
+        "family": [
+          "tickingarea",
+          "tickingarea_2",
+          "inanimate"
+        ]
       },
       "minecraft:fire_immune":{
       },

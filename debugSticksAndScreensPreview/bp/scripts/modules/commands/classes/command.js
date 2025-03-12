@@ -198,22 +198,22 @@ export class command {
         }
         if (securityVariables.ultraSecurityModeEnabled) {
             if ((securityVariables.commandsUltraSecurityModeSecurityLevelOverrides[this.type == "custom" ? "customCommandOverrides" : "commandOverrides"][this.commandName] ?? securityVariables.commandsUltraSecurityModeSecurityLevelOverrides["categoryOverrides"][this.categories?.find(c => !!securityVariables.commandsUltraSecurityModeSecurityLevelOverrides["categoryOverrides"][c])] ?? (this.type == "built-in" ? commands.find(c => c.commandName == this.commandName)?.ultraSecurityModeSecurityLevel : undefined)) == "owner") {
-                if (!securityVariables.testPlayerForPermission(playerE, "andexdb.fullControl")) {
+                if (!securityVariables.testPlayerForPermission(playerE, "andexdb.fullControl") && !securityVariables.testPlayerForPermission(playerE, "andexdb.useOwnerLevelCommands")) {
                     return false;
                 }
             }
             else if ((securityVariables.commandsUltraSecurityModeSecurityLevelOverrides[this.type == "custom" ? "customCommandOverrides" : "commandOverrides"][this.commandName] ?? securityVariables.commandsUltraSecurityModeSecurityLevelOverrides["categoryOverrides"][this.categories?.find(c => !!securityVariables.commandsUltraSecurityModeSecurityLevelOverrides["categoryOverrides"][c])] ?? (this.type == "built-in" ? commands.find(c => c.commandName == this.commandName)?.ultraSecurityModeSecurityLevel : undefined)) == "headAdmin") {
-                if (!securityVariables.testPlayerForPermission(playerE, "andexdb.headAdmin")) {
+                if (!securityVariables.testPlayerForPermission(playerE, "andexdb.headAdmin") && !securityVariables.testPlayerForPermission(playerE, "andexdb.useHeadAdminLevelCommands")) {
                     return false;
                 }
             }
             else if ((securityVariables.commandsUltraSecurityModeSecurityLevelOverrides[this.type == "custom" ? "customCommandOverrides" : "commandOverrides"][this.commandName] ?? securityVariables.commandsUltraSecurityModeSecurityLevelOverrides["categoryOverrides"][this.categories?.find(c => !!securityVariables.commandsUltraSecurityModeSecurityLevelOverrides["categoryOverrides"][c])] ?? (this.type == "built-in" ? commands.find(c => c.commandName == this.commandName)?.ultraSecurityModeSecurityLevel : undefined)) == "admin") {
-                if (!securityVariables.testPlayerForPermission(playerE, "andexdb.admin")) {
+                if (!securityVariables.testPlayerForPermission(playerE, "andexdb.admin") && !securityVariables.testPlayerForPermission(playerE, "andexdb.useAdminLevelCommands")) {
                     return false;
                 }
             }
             else if ((securityVariables.commandsUltraSecurityModeSecurityLevelOverrides[this.type == "custom" ? "customCommandOverrides" : "commandOverrides"][this.commandName] ?? securityVariables.commandsUltraSecurityModeSecurityLevelOverrides["categoryOverrides"][this.categories?.find(c => !!securityVariables.commandsUltraSecurityModeSecurityLevelOverrides["categoryOverrides"][c])] ?? (this.type == "built-in" ? commands.find(c => c.commandName == this.commandName)?.ultraSecurityModeSecurityLevel : undefined)) == "moderator") {
-                if (!securityVariables.testPlayerForPermission(playerE, "andexdb.moderator")) {
+                if (!securityVariables.testPlayerForPermission(playerE, "andexdb.moderator") && !securityVariables.testPlayerForPermission(playerE, "andexdb.useModeratorLevelCommands")) {
                     return false;
                 }
             }
@@ -324,6 +324,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             }
             else {
                 return commands
+                    .slice()
                     .sort((a, b) => (a.commandName < b.commandName ? -1 : a.commandName > b.commandName ? 1 : 0))
                     .map((v) => new command({
                     type: "built-in",

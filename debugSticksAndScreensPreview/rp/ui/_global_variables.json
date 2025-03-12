@@ -1,0 +1,35 @@
+{
+  // # ActionFormData Button Codes
+  "$andexdb_disabled_button_code": "§a§n§d§e§x§d§b§_§d§i§s§a§b§l§e§d§r",
+  "$andexdb_title_bar_only_code": "§a§n§d§e§x§d§b§_§t§i§t§l§e§_§b§a§r",
+  "$andexdb_left_side_only_code": "§a§n§d§e§x§d§b§_§l§s§o§r",
+  "$andexdb_main_only_code": "§a§n§d§e§x§d§b§_§m§o§r",
+  "$andexdb_right_side_only_code": "§a§n§d§e§x§d§b§_§r§s§o§r",
+  "$andexdb_status_bar_left_only_code": "§a§n§d§e§x§d§b§_§s§t§a§t§u§s§_§b§a§r§_§l§e§f§t§r",
+  "$andexdb_status_bar_only_code": "§a§n§d§e§x§d§b§_§s§t§a§t§u§s§_§b§a§r§r",
+  "$andexdb_status_bar_right_only_code": "§a§n§d§e§x§d§b§_§s§t§a§t§u§s§_§b§a§r§_§r§i§g§h§t§r",
+  "$andexdb_hidden_button_code": "§a§n§d§e§x§d§b§_§h§i§d§d§e§n§_§b§u§t§t§o§n§r",
+  "$andexdb_display_as_plain_text_code": "§a§n§d§e§x§d§b§_§p§l§a§i§n§_§t§e§x§t§r",
+  "$andexdb_display_icon_as_text_code": "§a§n§d§e§x§d§b§_§i§c§o§n§_§t§e§x§t§r",
+  "$andexdb_start_selected_code": "§a§n§d§e§x§d§b§_§s§t§a§r§t§_§s§e§l§e§c§t§e§d§r",
+  // # ActionFormData Title Codes
+  // ## Form Styles
+  "$andexdb_general_form_code": "§a§n§d§e§x§d§b§_§g§e§n§e§r§a§l§-§r",
+  "$andexdb_general_status_bar_form_code": "§a§n§d§e§x§d§b§_§g§e§n§e§r§a§l§_§s§t§a§t§u§s§_§b§a§r§r",
+  "$andexdb_grid_menu_form_code": "§a§n§d§e§x§d§b§_§g§r§i§d§_§m§e§n§u§r",
+  "$andexdb_grid_menu_status_bar_form_code": "§a§n§d§e§x§d§b§_§g§r§i§d§_§m§e§n§u§_§s§t§a§t§u§s§_§b§a§r§r",
+  "$andexdb_wide_long_form_code": "§a§n§d§e§x§d§b§_§w§i§d§e§_§l§o§n§g§_§f§o§r§m§r",
+  "$andexdb_wide_status_bar_long_form_code": "§a§n§d§e§x§d§b§_§w§i§d§e§_§l§o§n§g§_§f§o§r§m§_§s§t§a§t§u§s§_§b§a§r§r",
+  "$andexdb_medium_long_form_code": "§a§n§d§e§x§d§b§_§m§e§d§i§u§m§_§l§o§n§g§_§f§o§r§m§r",
+  "$andexdb_medium_status_bar_long_form_code": "§a§n§d§e§x§d§b§_§m§e§d§i§u§m§_§l§o§n§g§_§f§o§r§m§_§s§t§a§t§u§s§_§b§a§r§r",
+  "$andexdb_fullscreen_long_form_code": "§a§n§d§e§x§d§b§_§f§u§l§l§s§c§r§e§e§n§_§l§o§n§g§_§f§o§r§m§r",
+  "$andexdb_fullscreen_status_bar_long_form_code": "§a§n§d§e§x§d§b§_§f§u§l§l§s§c§r§e§e§n§_§l§o§n§g§_§f§o§r§m§_§s§t§a§t§u§s§_§b§a§r§r",
+  // ## Options
+  "$andexdb_remove_x_button_code": "§a§n§d§e§x§d§b§_§n§o§_§x§r",
+  // # ModalFormData Title Codes
+  // ## Form Styles
+  "$andexdb_general_custom_form_code": "§a§n§d§e§x§d§b§_§g§e§n§e§r§a§l§_§c§u§s§t§o§m§r",
+  "$andexdb_wide_custom_form_code": "§a§n§d§e§x§d§b§_§w§i§d§e§_§l§o§n§g§_§f§o§r§m§r",
+  "$andexdb_medium_custom_form_code": "§a§n§d§e§x§d§b§_§m§e§d§i§u§m§_§l§o§n§g§_§f§o§r§m§r",
+  "$andexdb_fullscreen_custom_form_code": "§a§n§d§e§x§d§b§_§f§u§l§l§s§c§r§e§e§n§_§l§o§n§g§_§f§o§r§m§r"
+}

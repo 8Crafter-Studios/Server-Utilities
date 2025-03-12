@@ -1,7 +1,8 @@
 import { EquipmentSlot, type Enchantment, type Vector3, Dimension, type Vector2, type DimensionLocation, GameMode, MemoryTier, PlatformType, Player, ItemStack } from "@minecraft/server";
 import type { PlayerPermissions } from "init/classes/PlayerPermissions";
 import { ban } from "modules/ban/classes/ban";
-export type SavedPlayerOnJoinAction = SavedPlayerOnJoinAction_add_tag | SavedPlayerOnJoinAction_remove_tag | SavedPlayerOnJoinAction_add_tags | SavedPlayerOnJoinAction_remove_tags | SavedPlayerOnJoinAction_remove_item_in_slot | SavedPlayerOnJoinAction_clear_inventory | SavedPlayerOnJoinAction_set_permission<keyof ReturnType<PlayerPermissions["toJSON"]>>;
+export type PlayerDataSaveMode = "full" | "medium" | "lite";
+export type SavedPlayerOnJoinAction = SavedPlayerOnJoinAction_add_tag | SavedPlayerOnJoinAction_remove_tag | SavedPlayerOnJoinAction_add_tags | SavedPlayerOnJoinAction_remove_tags | SavedPlayerOnJoinAction_remove_item_in_slot | SavedPlayerOnJoinAction_clear_inventory | SavedPlayerOnJoinAction_set_permission<keyof ReturnType<PlayerPermissions["toJSON"]>> | SavedPlayerOnJoinAction_send_message;
 export interface SavedPlayerOnJoinAction_add_tag {
     type: "add_tag";
     tag: string;
@@ -30,6 +31,10 @@ export interface SavedPlayerOnJoinAction_set_permission<P extends keyof ReturnTy
     permission: P;
     value: ReturnType<PlayerPermissions["toJSON"]>[P];
 }
+export interface SavedPlayerOnJoinAction_send_message {
+    type: "send_message";
+    message: string;
+}
 export type SavedPlayerOnJoinActions = SavedPlayerOnJoinAction[];
 export interface savedItem {
     id?: string;
@@ -38,10 +43,7 @@ export interface savedItem {
     name?: string;
     lore?: string[];
     enchants?: Enchantment[];
-    properties?: [
-        id: string,
-        value: string | number | Boolean | Vector3 | undefined
-    ][];
+    properties?: [id: string, value: string | number | Boolean | Vector3 | undefined][];
 }
 export interface savedPlayerData {
     name: string;
@@ -53,10 +55,7 @@ export interface savedPlayerData {
         equipment: savedItem[] | undefined;
         ender_chest: savedItem[] | undefined;
     };
-    properties?: [
-        id: string | undefined,
-        value: string | number | Boolean | Vector3 | undefined
-    ][];
+    properties?: [id: string | undefined, value: string | number | Boolean | Vector3 | undefined][];
     lastOnline: number;
     firstJoined?: number;
     location?: Vector3;
@@ -66,6 +65,7 @@ export interface savedPlayerData {
     spawnPoint?: DimensionLocation;
     gameMode?: GameMode | string;
     selectedSlotIndex?: number;
+    scoreboardIdentity?: number;
     format_version?: string;
     player_save_format_version?: string;
     saveId?: string;
@@ -113,6 +113,11 @@ export interface savedPlayerData {
      * @since v1.28.0-preview.20+BUILD.1
      */
     onJoinActions?: SavedPlayerOnJoinActions;
+    /**
+     * @since format version 1.6.0
+     * @since v1.33.0-preview.20+BUILD.4
+     */
+    saveMode?: PlayerDataSaveMode;
 }
 export declare class savedPlayer {
     name: string;
@@ -124,10 +129,7 @@ export declare class savedPlayer {
         equipment: savedItem[] | undefined;
         ender_chest: savedItem[] | undefined;
     };
-    properties?: [
-        id: string | undefined,
-        value: string | number | Boolean | Vector3 | undefined
-    ][];
+    properties?: [id: string | undefined, value: string | number | Boolean | Vector3 | undefined][];
     lastOnline: number;
     firstJoined: number;
     location?: Vector3;
@@ -163,6 +165,7 @@ export declare class savedPlayer {
      * @since v1.28.0-preview.20+BUILD.1
      */
     onJoinActions: SavedPlayerOnJoinActions;
+    saveMode: PlayerDataSaveMode;
     constructor(data: savedPlayerData);
     save(): void;
     remove(): void;
@@ -211,6 +214,9 @@ export declare class savedPlayer {
         34?: ItemStack | undefined;
         35?: ItemStack | undefined;
     };
+    addOnJoinAction(action: SavedPlayerOnJoinAction): this;
+    addOnJoinActions(actions: SavedPlayerOnJoinActions): this;
+    removeOnJoinActionsOfType(type: SavedPlayerOnJoinAction["type"]): this;
     executeOnJoinActions(): Promise<void>;
     get isOnline(): boolean;
     get isBanned(): boolean;
@@ -231,6 +237,11 @@ export declare class savedPlayer {
         valid: ban[];
         expired: ban[];
     };
+    /**
+     * Returns true if the player's saved inventory data is using the legacy pre-1.5.0 format, this would be the case if the player's inventory was saved before the 1.5.0 player save format version, or the {@linkcode config.system.useLegacyPlayerInventoryDataSaveSystem} option was set to true when the player's inventory was saved.
+     */
+    get hasLegacyInventorySave(): boolean;
+    get hasModernInventorySave(): boolean;
     static getSavedPlayerIds(): string[];
     static savePlayerData(savedPlayerData: savedPlayerData): string;
     static saveInventoryAsync(player: Player, options?: {
@@ -289,9 +300,9 @@ export declare class savedPlayer {
         34?: ItemStack | undefined;
         35?: ItemStack | undefined;
     };
-    static savePlayer(player: Player): string;
-    static savePlayerAsync(player: Player): Promise<string>;
-    static getSavedPlayer(savedPlayerId: string): savedPlayer;
+    static savePlayer(player: Player): string | undefined;
+    static savePlayerAsync(player: Player): Promise<string | undefined>;
+    static getSavedPlayer(savedPlayerId: string): savedPlayer | undefined;
     static getSavedPlayers(): savedPlayer[];
     static getSavedPlayersAlphabeticalOrder(): savedPlayer[];
 }

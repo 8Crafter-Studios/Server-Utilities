@@ -20,5 +20,10 @@ declare global {
          * @async
          */
         awaitEach(): Promise<Awaited<T>[]>;
+        /**
+         * Returns a random element from the array.
+         * @returns {T[number]} The random element.
+         */
+        randomElement(): T;
     }
 }
