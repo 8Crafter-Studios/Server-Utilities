@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "copy-paste": "^1.5.3"
+    "adm-zip": "^0.5.16",
+    "copy-paste": "^1.5.3",
+    "progress": "^2.0.3"
   }
 }
