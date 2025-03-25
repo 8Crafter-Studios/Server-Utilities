@@ -3,7 +3,7 @@ import { readdirSync } from "fs";
 import path from "path";
 import ProgressBar from 'progress';
 
-const inputDir = "./debugSticksAndScreensPreview";
+const inputDir = "./Release Files";
 const outputDir = "./packVersionComparisons";
 const inputFileExtensions = [".mcaddon", ".mcpack"];
 
