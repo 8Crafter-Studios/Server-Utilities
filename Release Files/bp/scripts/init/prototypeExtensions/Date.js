@@ -1,10 +1,10 @@
 /**
- *
+ * init/prototypeExtensions/Date.ts
  * This requires that {@link module:init/prototypeExtensions/Number} be imported first.
  * @requires init/prototypeExtensions/Number
- * @file
+ * @module
+ * @description This file adds some useful functions and properties to the `Date` prototype.
  */
-const a = 1;
 import { world } from "@minecraft/server";
 await (async () => {
     if (!("toNumber" in Number.prototype)) {
@@ -13,10 +13,7 @@ await (async () => {
 })();
 Object.defineProperties(Date.prototype, {
     timezone: {
-        value: typeof world.getDynamicProperty("andexdbSettings:timeZone") ==
-            "object"
-            ? 0
-            : (world.getDynamicProperty("andexdbSettings:timeZone") ?? 0).toNumber() ?? 0,
+        value: config.system.timeZone,
         configurable: true,
         enumerable: true,
         writable: true,

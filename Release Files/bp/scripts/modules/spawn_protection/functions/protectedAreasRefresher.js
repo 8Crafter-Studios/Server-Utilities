@@ -1,5 +1,5 @@
 import { system } from "@minecraft/server";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { protectedAreaVariables } from "../../../init/variables/protectedAreaVariables";
 import { getAreas } from "./getAreas";
 /**

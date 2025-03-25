@@ -3,7 +3,7 @@ import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
 import { WorldEditSelection } from "init/classes/WorldEditSelection";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { chatCommands } from "modules/commands/functions/chatCommands";
 import { WorldPosition } from "modules/coordinates/classes/WorldPosition";
 import { anglesToDirectionVectorDeg } from "modules/coordinates/functions/anglesToDirectionVectorDeg";

@@ -1,4 +1,9 @@
-import { Entity, Scoreboard, ScoreboardIdentity, ScoreboardObjective, world } from "@minecraft/server";
+/**
+ * ExtraFeatures/money.ts
+ * @module
+ * @description This file contains classes related to the money system.
+ */
+import { Entity, ScoreboardIdentity, ScoreboardObjective, world } from "@minecraft/server";
 import { savedPlayer } from "modules/player_save/classes/savedPlayer";
 import * as ipc from "ipc";
 export class MoneySystem {

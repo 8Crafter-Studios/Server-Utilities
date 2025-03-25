@@ -1,14 +1,18 @@
+/**
+ * ExtraFeatures/shop_main.ts
+ * @module
+ * @description This file contains functions and types related to the shop system..
+ */
 import { Player, Entity, ItemLockMode, ItemStack, ItemEnchantableComponent, ItemDurabilityComponent } from "@minecraft/server";
-import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
+import { ActionFormData } from "@minecraft/server-ui";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { forceShow } from "modules/ui/functions/forceShow";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { ServerShopManager } from "./server_shop";
 import { PlayerShopManager } from "./player_shop";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { customFormUICodes } from "modules/ui/constants/customFormUICodes";
-import { texturePresets } from "Assets/constants/texturePresets";
 /**
  * Main function to handle the shop system settings interface.
  *

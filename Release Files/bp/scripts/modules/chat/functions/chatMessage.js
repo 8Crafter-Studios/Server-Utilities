@@ -62,11 +62,9 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     ///scriptevent andexdb:scriptEval world.setDynamicProperty("evalBeforeEvents:chatSend", `if(!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<10000)){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]\>\=4){returnBeforeChatCommandsOrChatSend=true; returnBeforeChatSend=true; runreturn=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }`)
     let newMessage = eventData.message;
     let switchTest = newMessage
-        .slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ??
-        "\\").length)
+        .slice(config.chatCommandPrefix.length)
         .split(" ")[0];
-    let switchTestB = newMessage.slice(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ??
-        "\\").length);
+    let switchTestB = newMessage.slice(config.chatCommandPrefix.length);
     let commanda = undefined;
     if (newMessage.startsWith(config.chatCommandPrefix)) {
         commanda =
@@ -163,17 +161,14 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         });
     }
     catch { }
-    if (world.getDynamicProperty("andexdbSettings:autoEscapeChatMessages") ==
-        true) {
+    if (config.chatRanks.autoEscapeChatMessages) {
         newMessage = newMessage.escapeCharacters(true);
     }
-    if (world.getDynamicProperty("andexdbSettings:autoURIEscapeChatMessages") ==
-        true) {
+    if (config.chatRanks.autoURIEscapeChatMessages) {
         newMessage = newMessage.escapeCharacters(false, false, 0, true);
     }
     if (player.hasTag("canUseChatEscapeCodes") ||
-        world.getDynamicProperty("andexdbSettings:allowChatEscapeCodes") !=
-            false) {
+        config.chatRanks.allowChatEscapeCodes) {
         if (newMessage.includes("${ea}")) {
             newMessage = newMessage.replace("${ea}", "");
             newMessage = newMessage.escapeCharacters(true);

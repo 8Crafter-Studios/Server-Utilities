@@ -34,7 +34,7 @@ import { fillBlocksH } from "modules/main/functions/fillBlocksH";
 import { fillBlocksB } from "modules/main/functions/fillBlocksB";
 import { clearAllContainerBlocks } from "modules/main/functions/clearAllContainerBlocks";
 import { scanForContainerBlocks } from "modules/main/functions/scanForContainerBlocks";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { srun } from "init/functions/srun";
 import { getTopSolidBlock } from "modules/main/functions/getTopSolidBlock";
 import { command } from "modules/commands/classes/command";
@@ -825,7 +825,7 @@ break; */
                     });
                 }
                 break;
-            case !!switchTest.match(/^invsee$$/):
+            case !!switchTest.match(/^invsee$/):
                 eventData.cancel = true;
                 system.run(() => {
                     const playerB = world
@@ -954,7 +954,7 @@ break; */
                     }
                 });
                 break;
-            case !!switchTest.match(/^invseep$$/):
+            case !!switchTest.match(/^invseep$/):
                 eventData.cancel = true;
                 system.run(() => {
                     const playerB = world
@@ -1141,7 +1141,7 @@ break; */
                     }
                 });
                 break;
-            case !!switchTest.match(/^offlineinfo$$/):
+            case !!switchTest.match(/^offlineinfo$/):
                 eventData.cancel = true;
                 try {
                     let players = savedPlayer
@@ -1183,7 +1183,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineuuidinfo$$/):
+            case !!switchTest.match(/^offlineuuidinfo$/):
                 eventData.cancel = true;
                 try {
                     let players = savedPlayer
@@ -1214,7 +1214,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineinforaw$$/):
+            case !!switchTest.match(/^offlineinforaw$/):
                 eventData.cancel = true;
                 try {
                     let players = savedPlayer
@@ -1256,7 +1256,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineuuidinforaw$$/):
+            case !!switchTest.match(/^offlineuuidinforaw$/):
                 eventData.cancel = true;
                 try {
                     let players = savedPlayer
@@ -1287,7 +1287,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineinfourl$$/):
+            case !!switchTest.match(/^offlineinfourl$/):
                 eventData.cancel = true;
                 try {
                     let players = savedPlayer
@@ -1329,7 +1329,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineuuidinfourl$$/):
+            case !!switchTest.match(/^offlineuuidinfourl$/):
                 eventData.cancel = true;
                 try {
                     let players = savedPlayer
@@ -1360,7 +1360,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineinfoescaped$$/):
+            case !!switchTest.match(/^offlineinfoescaped$/):
                 eventData.cancel = true;
                 try {
                     let players = savedPlayer
@@ -1402,7 +1402,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineuuidinfoescaped$$/):
+            case !!switchTest.match(/^offlineuuidinfoescaped$/):
                 eventData.cancel = true;
                 try {
                     let players = savedPlayer
@@ -1433,7 +1433,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineinvsee$$/):
+            case !!switchTest.match(/^offlineinvsee$/):
                 eventData.cancel = true;
                 try {
                     (async () => {
@@ -1537,7 +1537,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^offlineuuidinvsee$$/):
+            case !!switchTest.match(/^offlineuuidinvsee$/):
                 eventData.cancel = true;
                 try {
                     (async () => {
@@ -1629,7 +1629,7 @@ break; */
                     player.sendError("§c" + e + e.stack, true);
                 }
                 break;
-            case !!switchTest.match(/^binvsee$$/):
+            case !!switchTest.match(/^binvsee$/):
                 eventData.cancel = true;
                 system.run(() => {
                     /*
@@ -1706,7 +1706,7 @@ break; */
                     }
                 });
                 break;
-            case !!switchTest.match(/^einvseeb$$/):
+            case !!switchTest.match(/^einvseeb$/):
                 eventData.cancel = true;
                 system.run(() => {
                     const inventoryd2 = world
@@ -1768,7 +1768,7 @@ break; */
                     }
                 });
                 break;
-            case !!switchTest.match(/^einvsee$$/):
+            case !!switchTest.match(/^einvsee$/):
                 eventData.cancel = true;
                 system.run(() => {
                     const inventoryd2 = world
@@ -3687,7 +3687,7 @@ potionModifierType: ${d.potionModifierType.id}`)(item.getComponent("potion"))
                     }
                 }
                 break;
-            case !!switchTest.match(/^block$$/):
+            case !!switchTest.match(/^block$/):
                 eventData.cancel = true;
                 if (switchTestB.trim().split(" ").length == 1) {
                     player.sendMessageB(`block command format: 
@@ -7389,10 +7389,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                                 player.sendMessageB("§eStand still for " + standStillTime + " seconds to teleport.");
                                                 await waitTicks(20);
                                             }
-                                            const playerPosition = player.location;
+                                            const playerPosition = player.player.location;
                                             let successful = true;
                                             for (let i = 0; i < standStillTime; i++) {
-                                                if (!Vector.equals(player.location, playerPosition)) {
+                                                if (!Vector.equals(player.player.location, playerPosition)) {
                                                     successful = false;
                                                     break;
                                                 }
@@ -7482,10 +7482,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                         player.sendMessageB("§eStand still for " + standStillTime + " seconds to teleport.");
                                         await waitTicks(20);
                                     }
-                                    const playerPosition = player.location;
+                                    const playerPosition = player.player.location;
                                     let successful = true;
                                     for (let i = 0; i < standStillTime; i++) {
-                                        if (!Vector.equals(player.location, playerPosition)) {
+                                        if (!Vector.equals(player.player.location, playerPosition)) {
                                             successful = false;
                                             break;
                                         }
@@ -7554,10 +7554,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 player.sendMessageB("§eStand still for " + standStillTime + " seconds to teleport.");
                                 await waitTicks(20);
                             }
-                            const playerPosition = player.location;
+                            const playerPosition = player.player.location;
                             let successful = true;
                             for (let i = 0; i < standStillTime; i++) {
-                                if (!Vector.equals(player.location, playerPosition)) {
+                                if (!Vector.equals(player.player.location, playerPosition)) {
                                     successful = false;
                                     break;
                                 }
@@ -7693,10 +7693,10 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                                 if (!successfulWaitForStandStill) {
                                                     return 0;
                                                 }
-                                                const playerPosition = player.location;
+                                                const playerPosition = player.player.location;
                                                 let successful = true;
                                                 for (let i = 0; i < standStillTime; i++) {
-                                                    if (!Vector.equals(player.location, playerPosition)) {
+                                                    if (!Vector.equals(player.player.location, playerPosition)) {
                                                         successful = false;
                                                         break;
                                                     }

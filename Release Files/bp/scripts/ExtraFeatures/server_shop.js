@@ -1,7 +1,12 @@
+/**
+ * ExtraFeatures/server_shop.ts
+ * @module
+ * @description This file contains functions and types related to the server shop system.
+ */
 import { ItemLockMode, ItemStack, Player, world, Entity, StructureSaveMode } from "@minecraft/server";
 import { ActionFormData, ActionFormResponse, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { getPathInObject } from "modules/main/functions/getPathInObject";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { containerToContainerSlotArray } from "modules/command_utilities/functions/containerToContainerSlotArray";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { itemSelector } from "modules/ui/functions/itemSelector";

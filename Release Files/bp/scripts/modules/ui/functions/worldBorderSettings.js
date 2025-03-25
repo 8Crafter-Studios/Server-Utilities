@@ -1,5 +1,5 @@
 import { ModalFormData } from "@minecraft/server-ui";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { forceShow } from "modules/ui/functions/forceShow";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { securityVariables } from "security/ultraSecurityModeUtils";

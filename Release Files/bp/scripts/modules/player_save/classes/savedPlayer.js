@@ -1,5 +1,5 @@
 import { EquipmentSlot, Dimension, GameMode, MemoryTier, PlatformType, PlayerInputPermissions, world, Player, StructureSaveMode, ItemStack, InputPermissionCategory, PlayerCursorInventoryComponent, ContainerSlot, } from "@minecraft/server";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { ban } from "modules/ban/classes/ban";
 import { getSlotFromParsedSlot } from "modules/command_utilities/functions/getSlotFromParsedSlot";
 import { EquipmentSlots } from "modules/command_utilities/constants/EquipmentSlots";

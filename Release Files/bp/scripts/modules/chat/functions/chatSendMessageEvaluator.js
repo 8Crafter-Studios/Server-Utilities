@@ -1,5 +1,5 @@
 import { ButtonState, GameMode, InputMode, PlatformType, Player, world } from "@minecraft/server";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { patternColors } from "modules/chat/constants/patternColors";
 import { patternColorsMap } from "modules/chat/constants/patternColorsMap";
 import { patternFunctionList } from "modules/chat/constants/patternFunctionList";

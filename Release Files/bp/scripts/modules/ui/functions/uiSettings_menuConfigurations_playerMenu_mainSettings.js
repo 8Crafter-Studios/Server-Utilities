@@ -1,5 +1,5 @@
 import { ModalFormData } from "@minecraft/server-ui";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { extractPlayerFromLooseEntityType } from "modules/utilities/functions/extractPlayerFromLooseEntityType";

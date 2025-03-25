@@ -12,11 +12,17 @@ import { extractPlayerFromLooseEntityType } from "modules/utilities/functions/ex
 import { customFormUICodes } from "../constants/customFormUICodes";
 import { manageBansOnPlayer } from "./manageBans";
 /**
+ * Shows the player a menu for managing a player.
+ *
+ * This menu is the menu that is opened when the player clicks on a player in the manage players menu.
  *
  * @todo Split each of the cases in the switch function into separate functions.
- * @param player
- * @param targetPlayer
- * @returns
+ *
+ * @async
+ * @param {loosePlayerType} sourceEntity - The player viewing the UI.
+ * @param {savedPlayer} targetPlayer - The player to manage.
+ * @returns {Promise<0 | 1>} A promise that resolves to `0` if the previous menu should be closed, or `1` if the previous menu should be reopened.
+ * @throws {TypeError} If sourceEntity is not an instance of the Player class or an instance of the executeCommandPlayerW class with a Player linked to it.
  */
 export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
     const player = extractPlayerFromLooseEntityType(sourceEntity);

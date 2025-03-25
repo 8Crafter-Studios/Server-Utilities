@@ -1,6 +1,6 @@
 import { Player, world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { rankModes } from "../../chat/constants/rankModes";
 import { rankModesArray } from "../../chat/constants/rankModesArray";
 import { securityVariables } from "security/ultraSecurityModeUtils";
@@ -44,7 +44,7 @@ export async function chatRanksSettings_chatStyleSettings(sourceEntity) {
                 ]
                 : []),
             rankMode === "custom_simple" || rankMode === "custom_advanced" ? "rankDisplaySeparator" : undefined,
-            ...(rankMode === "custom_simple" ? ["rankTemplateString", "messageTemplateString"] : []),
+            ...(rankMode === "custom_advanced" ? ["rankTemplateString", "messageTemplateString"] : []),
             // "defaultRank",
             "defaultMessageFormatting",
             "defaultNameFormatting",

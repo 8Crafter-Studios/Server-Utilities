@@ -1,5 +1,5 @@
 import { world, Dimension } from "@minecraft/server";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { splitArea } from "modules/coordinates/functions/splitArea";
 export class undoClipboard {
     static get ids() {

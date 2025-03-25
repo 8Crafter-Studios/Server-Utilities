@@ -1,12 +1,18 @@
+/**
+ * index.ts
+ * @module index
+ * @description This file is the main file of the project.
+ * @mergeModuleWith <project>
+ */
 import { system, world } from "@minecraft/server";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
-import * as mcServerUi from "@minecraft/server-ui"; /*
-import * as mcServerAdmin from "@minecraft/server-admin";*/ /*
+import * as mcServerUi from "@minecraft/server-ui";
+import * as mcServerAdmin from "@minecraft/server-admin"; /*
 import * as mcServerNet from "@minecraft/server-net";*/ /*
-import * as mcDebugUtilities from "@minecraft/debug-utilities";*/ /*
-import * as mcCommon from "@minecraft/common";*/ /*
-import * as mcVanillaData from "@minecraft/vanilla-data";*/
+import * as mcDebugUtilities from "@minecraft/debug-utilities";*/
+import * as mcCommon from "@minecraft/common";
+import * as mcVanillaData from "@minecraft/vanilla-data.js";
 import "initializeMainGlobalVariables";
 import "Assets/classes/JSONB";
 import "Global";
@@ -65,7 +71,7 @@ import "legacyModuleAliases/errors.js";
 import "legacyModuleAliases/utilities.js"; */
 import "@minecraft/math.js";
 import "GlobalDecorators";
-import mcMath from "@minecraft/math.js";
+import * as mcMath from "@minecraft/math.js";
 import colorCore, { Color } from "color-core";
 import Decimal from "decimal.js";
 import * as semver from "semver";
@@ -97,7 +103,7 @@ Object.defineProperties(globalThis, {
         configurable: false,
         enumerable: true,
         writable: false,
-    }
+    },
 });
 // semver
 // import * as main from "legacyModuleAliases/Main";
@@ -150,85 +156,358 @@ const errors = await moduleImportsConfig.import("errors");
 // const playershop = {};
 // const moneysystem = {};
 // const mcMath = {};
-export const modulesMap = {
-    mcServer: mcServer,
-    mcServerUi,
-    GameTest /*
-    mcServerAdmin,
-    mcDebugUtilities,
-    mcCommon,
-    mcVanillaData,*/,
-    main,
+/**
+ * @see {@link modules}
+ * @ignore
+ */
+const modulesMap = {
     /**
-     * This is an alias of {@link modules.assets.constants.transformrecipes}
+     * The `@minecraft/server` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server}
+     * @namespace
+     */
+    mcServer: mcServer,
+    /**
+     * The `@minecraft/server-ui` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-ui}
+     * @namespace
+     */
+    mcServerUi,
+    /**
+     * The `@minecraft/server-gametest` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-gametest}
+     * @namespace
+     */
+    GameTest,
+    /**
+     * The `@minecraft/server-admin` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-admin}
+     * @namespace
+     */
+    mcServerAdmin,
+    /**
+     * The `@minecraft/server-net` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-net}
+     * @namespace
+     */
+    // mcServerNet,
+    /**
+     * The `@minecraft/debug-utilities` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/debug-utilities}
+     * @namespace
+     */
+    // mcDebugUtilities,
+    /**
+     * The `@minecraft/diagnostics` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/diagnostics}
+     * @namespace
+     */
+    // mcDiagnostics,
+    /**
+     * The `@minecraft/common` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/common}
+     * @namespace
+     */
+    mcCommon,
+    /**
+     * The `@minecraft/vanilla-data` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/vanilla-data}
+     * @namespace
+     */
+    mcVanillaData,
+    /**
+     * This module contains the main classes, constants, and functions of the add-one, as well as other miscellaneous classes, constants, and functions.
+     * @namespace
+     */
+    main: main,
+    /**
+     * This is an alias of {@link modules.assets.constants.transformrecipes}.
+     * @see {@link modules.assets.constants.transformrecipes}
+     * @namespace
      */
     transformrecipes,
-    coords,
-    cmds,
-    bans,
-    uis,
-    playersave,
-    spawnprot,
+    /**
+     * This module contains classes, constants, functions, and interfaces for working with coordinates.
+     * @namespace
+     * @path `modules/coordinates/`
+     */
+    coords: coords,
+    /**
+     * This module contains classes, constants, functions, and types for working with commands.
+     * @namespace
+     * @path `modules/commands/`
+     */
+    cmds: cmds,
+    /**
+     * This module contains classes, constants, functions, and types for working with the ban system.
+     * @namespace
+     * @path `modules/ban/`
+     */
+    bans: bans,
+    /**
+     * This module contains constants, functions, and types for working with the UI system.
+     * @namespace
+     * @path `modules/ui/`
+     * @primaryExport
+     */
+    uis: uis,
+    /**
+     * This module contains classes, constants, and functions for working with the player data save system.
+     * @namespace
+     * @path `modules/player_save/`
+     */
+    playersave: playersave,
+    /**
+     * This module contains constants and functions for working with the spawn protection system.
+     * @namespace
+     * @path `modules/spawn_protection/`
+     */
+    spawnprot: spawnprot,
+    /**
+     * The `@minecraft/math` module.
+     * @see {@link https://www.npmjs.com/package/@minecraft/math}
+     * @namespace
+     */
     mcMath,
+    /**
+     * The `color-core` module.
+     * @see {@link https://www.npmjs.com/package/color-core}
+     * @namespace
+     */
     colorCore,
+    /**
+     * The Color class of the `color-core` module.
+     * @see {@link modules.colorCore.Color}
+     * @kindOverride Namespace
+     */
     Color,
+    /**
+     * The `decimal.js` module.
+     * @see {@link https://www.npmjs.com/package/decimal.js}
+     * @namespace
+     */
     Decimal,
+    /**
+     * The `semver` module.
+     * @see {@link https://www.npmjs.com/package/semver}
+     * @namespace
+     */
     semver,
+    /**
+     * The `mcbe-ipc` module.
+     * @see {@link https://www.npmjs.com/package/mcbe-ipc}
+     * @namespace
+     */
     ipc,
+    /**
+     * The `moment` module.
+     * @see {@link https://momentjs.com/}
+     * @see {@link https://www.npmjs.com/package/moment}
+     * @namespace
+     */
     moment,
+    /**
+     * The `@minecraft/server` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server}
+     * @namespace
+     */
     ["@minecraft/server"]: mcServer,
+    /**
+     * The `@minecraft/server-ui` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-ui}
+     * @namespace
+     */
     ["@minecraft/server-ui"]: mcServerUi,
-    ["@minecraft/server-gametest"]: GameTest /*
+    /**
+     * The `@minecraft/server-gametest` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-gametest}
+     * @namespace
+     */
+    ["@minecraft/server-gametest"]: GameTest,
+    /**
+     * The `@minecraft/common` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/common}
+     * @namespace
+     */
     ["@minecraft/common"]: mcCommon,
+    /**
+     * The `@minecraft/server-admin` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-admin}
+     * @namespace
+     */
     ["@minecraft/server-admin"]: mcServerAdmin,
-    ["@minecraft/server-net"]: mcServerNet
-    ["@minecraft/debug-utilities"]: mcDebugUtilities
-    ["@minecraft/vanilla-data"]: mcVanillaData,*/,
+    /**
+     * The `@minecraft/server-net` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-net}
+     * @namespace
+     */
+    // ["@minecraft/server-net"]: mcServerNet
+    /**
+     * The `@minecraft/debug-utilities` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/debug-utilities}
+     * @namespace
+     */
+    // ["@minecraft/debug-utilities"]: mcDebugUtilities
+    /**
+     * The `@minecraft/diagnostics` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/diagnostics}
+     * @namespace
+     */
+    // ["@minecraft/diagnostics"]: mcDiagnostics
+    /**
+     * The `@minecraft/vanilla-data` module.
+     * @see {@link https://www.npmjs.com/package/@minecraft/vanilla-data}
+     * @namespace
+     */
+    ["@minecraft/vanilla-data"]: mcVanillaData,
+    /**
+     * The `@minecraft/math` module.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/math}
+     * @namespace
+     */
     ["@minecraft/math"]: mcMath,
-    chat,
-    cmdutils,
-    cmdslist,
-    cmdsdocs,
-    utils,
-    errors,
+    /**
+     * This module contains constants and functions for working with chat.
+     * @namespace
+     * @path `modules/chat/`
+     */
+    chat: chat,
+    /**
+     * This module contains utility constants, enums, and functions for working with commands.
+     * @namespace
+     * @path `modules/command_utilities/`
+     */
+    cmdutils: cmdutils,
+    /**
+     * This module contains the list of commands.
+     * @namespace
+     * @path `modules/commands_list/`
+     */
+    cmdslist: cmdslist,
+    /**
+     * This module contains documentation for commands.
+     * @namespace
+     * @path `modules/commands_documentation/`
+     */
+    cmdsdocs: cmdsdocs,
+    /**
+     * This module contains utility classes, functions, and types.
+     * @namespace
+     * @path `modules/utilities/`
+     */
+    utils: utils,
+    /**
+     * This module contains error classes.
+     * @namespace
+     * @path `modules/errors/`
+     */
+    errors: errors,
+    /**
+     * This module contains functions and types for working with the shop system.
+     * @namespace
+     * @path `ExtraFeatures/shop_main`
+     */
     shopmain,
+    /**
+     * This module contains classes, functions, and types for working with the server shop system.
+     * @namespace
+     * @path `ExtraFeatures/server_shop`
+     */
     servershop,
+    /**
+     * This module contains classes, functions, and types for working with the player shop system.
+     * @namespace
+     * @path `ExtraFeatures/player_shop`
+     */
     playershop,
+    /**
+     * This module contains classes for working with the money system.
+     * @namespace
+     * @path `ExtraFeatures/money`
+     */
     moneysystem,
+    /**
+     * This module contains miscellaneous classes, constants, functions, types, and interfaces.
+     * @namespace
+     * @path `Assets/`
+     */
     assets: {
+        /**
+         * This module contains miscellaneous classes.
+         * @namespace
+         * @path `Assets/classes/`
+         */
         classes: {
+            /**
+             * An intrinsic object that provides functions to convert JavaScript values to and from the JavaScript Object Notation (JSON) format.
+             * @see {@link JSONB}
+             * @path `Assets/classes/JSONB`
+             */
             JSONB,
         },
+        /**
+         * This module contains miscellaneous constants.
+         * @namespace
+         * @path `Assets/constants/`
+         */
         constants: {
+            /**
+             * This module contains constants containing character maps.
+             * @namespace
+             * @path `Assets/constants/charMaps`
+             */
             charMaps: await import("Assets/constants/charMaps"),
+            /**
+             * This module contians mappings for structures for the `\enchantmentbarrels` command.
+             * @namespace
+             * @path `Assets/constants/structure_mappings`
+             */
             structuremappings,
+            /**
+             * This module contains constants and types for texture presets.
+             * @namespace
+             * @path `Assets/constants/texturePresets`
+             */
+            texturePresets: await import("Assets/constants/texturePresets"),
+            /**
+             * This module contains mappings for recipes for the `\gettransformsmithingtemplate` command.
+             * @namespace
+             * @path `Assets/constants/transformrecipes`
+             */
             transformrecipes,
         },
     },
 };
 globalThis.modules = modulesMap;
+/**
+ * This is an alias of {@link globalThis}.
+ * @namespace
+ * @see {@link Globals}
+ * @hideconstructor
+ * @readonly
+ */
+// export const gt = globalThis;
 // import "Main";
 import { undoClipboard } from "modules/coordinates/classes/undoClipboard";
 globalThis.scriptStartTick = system.currentTick;
 world.setDynamicProperty("format_version", format_version);
 system.runTimeout(() => undoClipboard.cullItemsMissingStructure(), 50);
-// ${se}srun(async()=>console.log(JSON.stringify(Object.fromEntries((await import("directoryTree")).scripts.filter(s=>!!s.match(/^BP\/scripts\/modules\/[^\/]+\/.+\/[^\/]+\.js$/)).map(s=>[s, 0])), undefined, 4)))
-// ${se}srun(async()=>console.log("{"+(await import("directoryTree")).scripts.filter(s=>!!s.match(/^BP\/scripts\/modules\/[^\/]+\/.+\/[^\/]+\.js$/)).map(v=>`\n    ${JSON.stringify(v)}: typeof import("./${JSON.stringify(v.slice(11, -3)).slice(1)})`)+"\n}"))
-/*
-${se}srun(async()=>{console.log(JSON.stringify(Object.fromEntries(await [
-    "ban",
-    "chat",
-    "command_utilities",
-    "commands",
-    "commands_documentation",
-    "commands_list",
-    "coordinates",
-    "errors",
-    "main",
-    "player_save",
-    "spawn_protection",
-    "ui",
-    "utilities",
-].mapAsync(async v=>[v, (await import("directoryTree")).optionalModuleObjectImportFilePaths.filter(f=>f.startsWith(`BP/scripts/modules/${v}/`))])), undefined, 4))})
-*/
 //# sourceMappingURL=index.js.map

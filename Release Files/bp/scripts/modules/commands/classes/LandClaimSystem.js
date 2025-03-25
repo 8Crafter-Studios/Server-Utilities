@@ -1,6 +1,11 @@
 import { world, Player } from "@minecraft/server";
 import { doBoundingBoxesIntersect } from "modules/coordinates/functions/doBoundingBoxesIntersect";
 import { LandClaim } from "./LandClaim";
+/**
+ * This class is used for managing land claims.
+ * @alpha
+ * @deprecated This class is not functional yet.
+ */
 export class LandClaimSystem {
     constructor() { }
     get warnAboutDeniedPermissions() {

@@ -1,6 +1,6 @@
 import { Player, world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { rankModes } from "../../chat/constants/rankModes";
 import { rankModesArray } from "../../chat/constants/rankModesArray";
 import { securityVariables } from "security/ultraSecurityModeUtils";

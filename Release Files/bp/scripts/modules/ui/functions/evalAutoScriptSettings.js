@@ -4,8 +4,11 @@ import { forceShow } from "modules/ui/functions/forceShow";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
+import { customFormUICodes } from "../constants/customFormUICodes";
 /**
  * Evaluates and displays the auto script settings form to the specified entity.
+ *
+ * @todo Replace this menu with an action form with buttons for each of the script dynamic properties, allowing the player to edit them directly.
  *
  * @param sourceEntitya - The entity that will receive the form. It can be an instance of `Entity`, `executeCommandPlayerW`, or `Player`.
  * @returns A promise that resolves to:
@@ -47,7 +50,7 @@ export async function evalAutoScriptSettings(sourceEntitya) {
             ]).split(",");
         }
     }
-    form2.title("§r§0Eval Auto Script Settings (§nDEPRECATED§r§0)");
+    form2.title(customFormUICodes.modal.titles.formStyles.fullscreen + "§r§0Eval Auto Script Settings (§nDEPRECATED§r§0)");
     form2.textField("evalBeforeEvents:chatSend", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:chatSend") ?? ""));
     form2.textField("evalBeforeEvents:dataDrivenEntityTrggerEvent", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:dataDrivenEntityTriggerEvent") ?? ""));
     form2.textField("evalBeforeEvents:effectAdd", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:effectAdd") ?? ""));

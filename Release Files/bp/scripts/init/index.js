@@ -1,4 +1,9 @@
 /**
+ * init/index.ts
+ * @module
+ * @description This file imports many files that initialize the add-on.
+ */
+/**
  * Order for the imports
  * 1. polyfills
  * 2. prototypeExtensions

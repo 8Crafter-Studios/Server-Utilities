@@ -1,5 +1,5 @@
 import { system } from "@minecraft/server";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { savedPlayer } from "modules/player_save/classes/savedPlayer";
 import { ban } from "../classes/ban";
 import moment from "moment";
@@ -13,7 +13,7 @@ export function startCheckingForBannedPlayers() {
         stopCheckingForBannedPlayers();
     } // this prevents multiple instances of the banned players checker running simultaneously.
     bannedPlayersCheckerIntervalID = system.runInterval(() => {
-        if (config.banSystem.enabled) {
+        if (config.moderation.bans.enabled) {
             ban.executeOnBannedPlayers(async (p) => {
                 await waitTicks(20); // So the reason message will actually appear.
                 let success = false;

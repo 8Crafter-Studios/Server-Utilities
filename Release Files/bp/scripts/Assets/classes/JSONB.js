@@ -1,3 +1,14 @@
+/**
+ * Assets/classes/JSONB.ts
+ * An improved version of {@link JSON}
+ * @module
+ * @description This file contains the `JSONB` class.
+ */
+/**
+ * An intrinsic object that provides functions to convert JavaScript values to and from the JavaScript Object Notation (JSON) format.
+ *
+ * This is an improved version of {@link JSON}.
+ */
 export const JSONB = {};
 (function () {
     "use strict";

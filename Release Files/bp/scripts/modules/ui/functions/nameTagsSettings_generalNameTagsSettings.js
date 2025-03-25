@@ -1,6 +1,6 @@
 import { Player, world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { rankModes } from "../../chat/constants/rankModes";
 import { rankModesArray } from "../../chat/constants/rankModesArray";
 import { securityVariables } from "security/ultraSecurityModeUtils";
@@ -83,6 +83,7 @@ export async function nameTagsSettings_generalNameTagsSettings(sourceEntity) {
             nameTagTemplateString: () => form.textField('§l§fName Tag Template String§r§f\n§r§fThe format for the name tags, it is a javascript template string, for example "${rank} ${nameFormatting}${name}${(showHealth ? `§r§f [${currentHealth}/${maxHealth}]` : "")}"\nLeave this text box blank to reset this option to its default value.', "JavaScript template string", config.chatRanks.nameTagTemplateString),
             showHealthOnPlayerNameTags: () => form.toggle("§l§fShow Health On Player Name Tags§r§f\nSets whether or not to show players health on their name tags, default is false", config.chatRanks.showHealthOnPlayerNameTags),
             showRanksOnPlayerNameTags: () => form.toggle("§l§fShow Ranks On Player Name Tags§r§f\nSets whether or not to show players ranks on their name tags, default is false", config.chatRanks.showRanksOnPlayerNameTags),
+            playerNameTagHealthPrecision: () => form.slider("§l§fPlayer Name Tag Health Precision§r§f\nThe maximum number of decimal places to display on the health display on player name tags. Must be between 0 and 20 (inclusive), default is 1", 0, 20, 1, config.chatRanks.playerNameTagHealthPrecision),
         };
         includedOptions.forEach((o) => formOptionsMap[o]());
         //⌠⌡÷≈≡±≥≤»
@@ -165,6 +166,9 @@ export async function nameTagsSettings_generalNameTagsSettings(sourceEntity) {
                     break;
                 case "showRanksOnPlayerNameTags":
                     config.chatRanks.showRanksOnPlayerNameTags = options[v];
+                    break;
+                case "playerNameTagHealthPrecision":
+                    config.chatRanks.playerNameTagHealthPrecision = options[v];
                     break;
                 default:
                     throw new Error(`Save action for setting ${JSON.stringify(v)} was not defined.`);

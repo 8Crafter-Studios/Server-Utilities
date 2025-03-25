@@ -78,8 +78,8 @@ import { world } from "@minecraft/server";
  * }
  * ```
  */
-export function swdp(propertyId, newValue) {
-    return world.setDynamicProperty(propertyId, newValue);
+export function swdp(identifier, value) {
+    return world.setDynamicProperty(identifier, value);
 }
 Object.defineProperty(globalThis, "swdp", {
     value: swdp,

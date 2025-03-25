@@ -1,5 +1,5 @@
 import { ButtonState, GameMode, InputMode, PlatformType, Player } from "@minecraft/server";
-import { config } from "init/classes/config";
+import "init/classes/config";
 import { patternColors } from "modules/chat/constants/patternColors";
 import { patternColorsMap } from "modules/chat/constants/patternColorsMap";
 import { patternFunctionList } from "modules/chat/constants/patternFunctionList";
@@ -13,8 +13,8 @@ export function rankNameTagEvaluator_prePlayers(displayName, options) {
     let nameFormatting = options?.nameFormatting ?? "";
     let nameGradientMode = options?.nameGradientMode ?? undefined;
     let showHealth = options?.showHealth || config.chatRanks.showHealthOnPlayerNameTags;
-    let currentHealth = options?.currentHealth ?? player?.getComponent("health")?.currentValue;
-    let maxHealth = options?.maxHealth ?? player?.getComponent("health")?.effectiveMax;
+    let currentHealth = (options?.currentHealth ?? player?.getComponent("health")?.currentValue)?.toFixed(config.chatRanks.playerNameTagHealthPrecision)?.toNumber();
+    let maxHealth = (options?.maxHealth ?? player?.getComponent("health")?.effectiveMax)?.toFixed(config.chatRanks.playerNameTagHealthPrecision)?.toNumber();
     if (nameFormatting == "") {
         nameFormatting = options?.playerPersonalSettings?.defaultNameFormatting ?? config.chatRanks.defaultNameFormatting;
     }
