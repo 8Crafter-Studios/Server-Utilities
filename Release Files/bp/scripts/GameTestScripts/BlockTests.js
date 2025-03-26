@@ -292,7 +292,7 @@ GameTest.register("BlockTests", "powder_snow_leather_boots_walk", (test) => {
     test
         .startSequence()
         .thenExecuteAfter(5, () => {
-        playerSim.dimension.runCommandAsync("replaceitem entity playerSim_snow slot.armor.feet 0 leather_boots");
+        system.run(() => playerSim.dimension.runCommand("replaceitem entity playerSim_snow slot.armor.feet 0 leather_boots"));
     })
         .thenExecuteAfter(10, () => playerSim.moveToLocation({ x: 1, y: 3, z: 2.5 }))
         .thenExecuteAfter(40, () => test.assertEntityPresent("player", { x: 1, y: 4, z: 2 }))

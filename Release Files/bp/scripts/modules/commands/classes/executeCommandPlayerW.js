@@ -370,6 +370,12 @@ export class executeCommandPlayerW {
     get inputInfo() {
         return this.player?.inputInfo;
     }
+    get graphicsMode() {
+        return this.player?.graphicsMode;
+    }
+    get isValid() {
+        return this.player?.isValid;
+    }
     addEffect(effectType, duration, options) {
         return this.player?.addEffect(effectType, duration, options);
     }
@@ -451,8 +457,8 @@ export class executeCommandPlayerW {
     applyImpulse(vector) {
         return this.player?.applyImpulse(vector);
     }
-    applyKnockback(directionX, directionZ, horizontalStrength, verticalStrength) {
-        return this.player?.applyKnockback(directionX, directionZ, horizontalStrength, verticalStrength);
+    applyKnockback(horizontalForce, verticalStrength) {
+        return this.player?.applyKnockback(horizontalForce, verticalStrength);
     }
     clearDynamicProperties() {
         return this.player?.clearDynamicProperties();
@@ -512,9 +518,6 @@ export class executeCommandPlayerW {
     hasTag(tag) {
         return this.player?.hasTag(tag);
     }
-    isValid() {
-        return this.player?.isValid();
-    }
     kill() {
         return this.player?.kill();
     }
@@ -539,9 +542,6 @@ export class executeCommandPlayerW {
     runCommand(commandString) {
         return this.player?.runCommand(commandString);
     }
-    runCommandAsync(commandString) {
-        return this.player?.runCommandAsync(commandString);
-    }
     setDynamicProperty(identifier, value) {
         return this.player?.setDynamicProperty(identifier, value);
     }
@@ -565,6 +565,15 @@ export class executeCommandPlayerW {
     }
     tryTeleport(location, teleportOptions) {
         return this.player?.tryTeleport(location, teleportOptions);
+    }
+    setPropertyOverrideForEntity(targetEntity, identifier, value) {
+        return this.player?.setPropertyOverrideForEntity(targetEntity, identifier, value);
+    }
+    removePropertyOverrideForEntity(targetEntity, identifier) {
+        return this.player?.removePropertyOverrideForEntity(targetEntity, identifier);
+    }
+    clearPropertyOverridesForEntity(targetEntity) {
+        return this.player?.clearPropertyOverridesForEntity(targetEntity);
     }
     saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) {
         saveStringToEntityDynamicProperties(this.player, string, propertyName, clearOldProperties, chunkSize);

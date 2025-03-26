@@ -32,7 +32,7 @@ subscribedEvents.afterEntityHurt = world.afterEvents.entityHurt.subscribe((event
                 event.damageSource?.damagingProjectile?.id,
         ]).forEach((p) => {
             psend(p, `§r§f[§l§dServer§r§f]${world.getDynamicProperty("serverNotificationSpacer") ??
-                ""}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid() ?? false)
+                ""}[§eentityHurt§r] Entity of type ${event.hurtEntity?.typeId} with the id ${event.hurtEntity?.id} took ${event.damage} damage of type "${event.damageSource?.cause}" in ${tryget(() => dimensionTypeDisplayFormatting[event.hurtEntity?.dimension?.id]) ?? "an unknown dimension"} at ${(event.hurtEntity?.isValid ?? false)
                 ? vTStr(event.hurtEntity?.location)
                 : "an unknown location"}${!!event.damageSource?.damagingEntity
                 ? `, the entity was damaged by ${event.damageSource?.damagingEntity?.typeId ==

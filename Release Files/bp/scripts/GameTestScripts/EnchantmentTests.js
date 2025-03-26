@@ -32,7 +32,7 @@ GameTest.register("EnchantmentTests", "spectator_with_frostwalker_doesnt_freeze_
         .startSequence()
         .thenIdle(60) //Frostwalker boots added here through a dispenser
         .thenExecute(() => {
-        player.runCommandAsync("gamemode spectator");
+        system.run(() => player.runCommand("gamemode spectator"));
         player.move(-1, 0);
     })
         .thenIdle(10)

@@ -429,7 +429,7 @@ export function chatSend(params) {
                 p.sendMessage(messageOutput);
             }
             else {
-                p.runCommandAsync(`/tellraw @s ${JSON.stringify({ "rawtext": [{ "text": messageOutput }] })}`);
+                srun(() => p.runCommand(`/tellraw @s ${JSON.stringify({ "rawtext": [{ "text": messageOutput }] })}`));
             }
         });
     } /*

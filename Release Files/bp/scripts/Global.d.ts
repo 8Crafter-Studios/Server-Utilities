@@ -505,19 +505,19 @@ declare global {
          * @remarks The overworld dimension object.
          */
         static readonly overworld: Dimension & {
-            typeId: "minecraft:overworld";
+            id: "minecraft:overworld";
         };
         /**
          * @remarks The nether dimension object.
          */
         static readonly nether: Dimension & {
-            typeId: "minecraft:nether";
+            id: "minecraft:nether";
         };
         /**
          * @remarks The end dimension object.
          */
         static readonly the_end: Dimension & {
-            typeId: "minecraft:the_end";
+            id: "minecraft:the_end";
         };
         /**
          * A global getter that returns object containing all of the online players.

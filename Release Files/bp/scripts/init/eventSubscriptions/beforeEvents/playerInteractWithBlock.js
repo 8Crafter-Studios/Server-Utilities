@@ -1,15 +1,20 @@
 import { world, ItemStack } from "@minecraft/server";
 import { srun } from "init/functions/srun";
-import { ProtectedAreaTester, protectedAreaVariables } from "init/variables/protectedAreaVariables";
+import { ProtectedAreaTester } from "init/variables/protectedAreaVariables";
 import { rangeToIntArray } from "modules/command_utilities/functions/rangeToIntArray";
 import { interactable_blockb } from "modules/main/classes/interactable_blockb";
 import { debugAction } from "modules/main/functions/debugAction";
-import { testIsWithinRanges } from "modules/spawn_protection/functions/testIsWithinRanges";
 import { editorStick } from "modules/ui/functions/editorStick";
 import { editorStickB } from "modules/ui/functions/editorStickB";
 import { editorStickC } from "modules/ui/functions/editorStickC";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
+    Object.defineProperty(event, "source", {
+        value: event.player,
+        writable: false,
+        enumerable: true,
+        configurable: true
+    });
     if (event.player.hasTag("debugStickDyingMode") && event.block.typeId == "minecraft:cauldron") {
         event.cancel = false;
         srun(async () => {
@@ -28,6 +33,19 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
         event.cancel = true;
         // console.log(1);
         return;
+    }
+    if (!!event?.itemStack?.getDynamicProperty("itemUseOnCode")) {
+        try {
+            eval(String(event?.itemStack?.getDynamicProperty("itemUseOnCode")));
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => {
+                if (currentplayer.hasTag("itemUseOnCodeDebugErrors")) {
+                    currentplayer.sendMessage(e + e.stack);
+                }
+            });
+        }
     }
     if (!!event?.itemStack?.getDynamicProperty("playerInteractWithBlockCode")) {
         try {

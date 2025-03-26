@@ -36,7 +36,7 @@ eval(String(world.getDynamicProperty("scriptEvalBeforeEventsExplosion")))*/
                 ? !p.hasTag("excludeBeforeExplosionNotificationsType:" +
                     event.source?.typeId)
                 : true) &&
-            (!!event.source && (event.source?.isValid() ?? true)
+            (!!event.source && (event.source?.isValid ?? true)
                 ? !p.hasTag("excludeBeforeExplosionNotificationsBy:" +
                     (event.source?.name ??
                         tryget(() => event.source?.nameTag))) &&

@@ -242,7 +242,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             }
         }
         let playerHasBecomeInvalid = false;
-        if (!player.isValid()) {
+        if (!player.isValid) {
             console.warn(`Async player inventory save canceled for ${player.id} because the player is no longer valid, likely because they left during the save process.`);
             return;
         }
@@ -260,7 +260,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             for (let i = 0; i < player.inventory.inventorySize; i++) {
                 if (Date.now() - t > 0) {
                     await waitTick();
-                    if (!player.isValid()) {
+                    if (!player.isValid) {
                         playerHasBecomeInvalid = true;
                         break;
                     }
@@ -275,7 +275,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                 for (let i = 0; i < 6; i++) {
                     if (Date.now() - t > 0) {
                         await waitTick();
-                        if (!player.isValid()) {
+                        if (!player.isValid) {
                             playerHasBecomeInvalid = true;
                             break;
                         }
@@ -296,7 +296,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         }
         catch (e) { }
         try {
-            if (!player.isValid()) {
+            if (!player.isValid) {
                 playerHasBecomeInvalid = true;
             }
             if (!playerHasBecomeInvalid) {
@@ -363,7 +363,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                 throw new SyntaxError(`Invalid value passed to the player parameter (args[0]), expected Player but got ${typeof player == "object" ? player?.constructor?.name ?? tryget(() => JSON.stringify(player)) ?? "?" : typeof player}} instead.`);
             }
         }
-        if (!player.isValid()) {
+        if (!player.isValid) {
             console.warn(`Player inventory save canceled for ${player.id} because the player is no longer valid, likely because they left during the save process.`);
             return;
         }
@@ -533,7 +533,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         return items;
     }
     static savePlayer(player) {
-        if (!player.isValid()) {
+        if (!player.isValid) {
             console.warn(`Player data save canceled for ${player.id} because the player is no longer valid, likely because they left during the save process.`);
             return undefined;
         } /*
@@ -810,7 +810,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
     }
     static async savePlayerAsync(player) {
         // let t1 = Date.now();
-        if (!player.isValid()) {
+        if (!player.isValid) {
             console.warn(`Player data save canceled for ${player.id} because the player is no longer valid, likely because they left during the save process.`);
             return undefined;
         } /*
@@ -1077,7 +1077,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
             else if (!config.system.useLegacyPlayerInventoryDataSaveSystem &&
                 semver.satisfies(savedPlayerData.player_save_format_version ?? "0.0.0", ">=1.5.0", { includePrerelease: true })) {
                 await waitTick();
-                if (!player.isValid()) {
+                if (!player.isValid) {
                     console.warn(`Player data save canceled for ${player.id} because the player is no longer valid, likely because they left during the save process.`);
                     return undefined;
                 }
@@ -1087,7 +1087,7 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
                 });
             }
         }
-        if (!player.isValid()) {
+        if (!player.isValid) {
             console.warn(`Player data save canceled for ${player.id} because the player is no longer valid, likely because they left during the save process.`);
             return undefined;
         }

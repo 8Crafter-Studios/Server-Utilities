@@ -90,10 +90,10 @@ if (Number(index) != 0) {*/ /*
     form.toggle("Clear Velocity", false)*/
     form.toggle("Debug", false);
     try {
-        if (block2.getComponent("fluidContainer") != undefined) {
-            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("fluidContainer").fluidColor.red}\n§aGreen: §g${block2.getComponent("fluidContainer").fluidColor.green}\n§bBlue: §g${block2.getComponent("fluidContainer").fluidColor.blue}\n§dAlpha: §g${block2.getComponent("fluidContainer").fluidColor.alpha}`, `red: 0-1, green: 0-1, blue: 0-1, alpha: 0-1`, `${block2.getComponent("fluidContainer").fluidColor.red}, ${block2.getComponent("fluidContainer").fluidColor.green}, ${block2.getComponent("fluidContainer").fluidColor.blue}, ${block2.getComponent("fluidContainer").fluidColor.alpha}`);
-            form.slider(`Cauldron Fill Level\nFill Level: §g${block2.getComponent("fluidContainer").fillLevel}`, 0, 6, 1, block2.getComponent("fluidContainer").fillLevel);
-            form.textField(`Cauldron Potion Type Contents\nHas Potion: §g${block2.getComponent("fluidContainer").getFluidType() ==
+        if (block2.getComponent("fluid_container") != undefined) {
+            form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("fluid_container").fluidColor.red}\n§aGreen: §g${block2.getComponent("fluid_container").fluidColor.green}\n§bBlue: §g${block2.getComponent("fluid_container").fluidColor.blue}\n§dAlpha: §g${block2.getComponent("fluid_container").fluidColor.alpha}`, `red: 0-1, green: 0-1, blue: 0-1, alpha: 0-1`, `${block2.getComponent("fluid_container").fluidColor.red}, ${block2.getComponent("fluid_container").fluidColor.green}, ${block2.getComponent("fluid_container").fluidColor.blue}, ${block2.getComponent("fluid_container").fluidColor.alpha}`);
+            form.slider(`Cauldron Fill Level\nFill Level: §g${block2.getComponent("fluid_container").fillLevel}`, 0, 6, 1, block2.getComponent("fluid_container").fillLevel);
+            form.textField(`Cauldron Potion Type Contents\nHas Potion: §g${block2.getComponent("fluid_container").getFluidType() ==
                 "Potion"}`, `item type`);
         }
         else {
@@ -170,13 +170,13 @@ selectedSlotIndex*/, isWaterlogged /*,
         let blockPropertyValueArray;
         blockPropertyValueArray = String(blockPropertyValue).split(", ");
         let blockPropertyValueLength = String(blockPropertyIdentifier).split(", ").length;
-        if (block2.getComponent("fluidContainer") != undefined) {
-            if (((c) => `${c.red},${c.green},${c.blue},${c.alpha}`)(block2.getComponent("fluidContainer").fluidColor) !=
+        if (block2.getComponent("fluid_container") != undefined) {
+            if (((c) => `${c.red},${c.green},${c.blue},${c.alpha}`)(block2.getComponent("fluid_container").fluidColor) !=
                 fluidContainerColor
                     .split(",")
                     .map((v) => v.trim())
                     .join()) {
-                block2.getComponent("fluidContainer").fluidColor = {
+                block2.getComponent("fluid_container").fluidColor = {
                     red: fluidContainerColor.split(",")[0].toNumber(),
                     green: fluidContainerColor.split(",")[1].toNumber(),
                     blue: fluidContainerColor.split(",")[2].toNumber(),
@@ -184,13 +184,13 @@ selectedSlotIndex*/, isWaterlogged /*,
                 };
             }
             if (fluidContainerFillLevel !=
-                block2.getComponent("fluidContainer").fillLevel) {
-                block2.getComponent("fluidContainer").fillLevel =
+                block2.getComponent("fluid_container").fillLevel) {
+                block2.getComponent("fluid_container").fillLevel =
                     fluidContainerFillLevel;
             }
             if (potionType != "") {
                 block2
-                    .getComponent("fluidContainer")
+                    .getComponent("fluid_container")
                     .setPotion(new ItemStack(potionType, 255));
             }
         }

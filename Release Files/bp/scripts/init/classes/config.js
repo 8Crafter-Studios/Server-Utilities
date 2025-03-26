@@ -2453,17 +2453,17 @@ var exports;
          */
         static toJSON() {
             // modules.utils.filterProperties(modules.utils.filterProperties(config, ["addCommaSeparators", "spawnCommandAllowCrossDimensionalTeleport", "allowWatchdogTerminationCrash", "spawnCommandLocation", "allowChatEscapeCodes"], {}), ["toJSON"], {}).antiSpamSystem.antispamEnabled;
-            return Object.fromEntries(Object.getOwnPropertyNames(this).map((key) => {
+            return Object.fromEntries(cullUndefined(Object.getOwnPropertyNames(this).map((key) => {
                 const descriptor = Object.getOwnPropertyDescriptor(this, key);
                 if (descriptor?.get && descriptor.set) {
                     return [key, descriptor.get()];
                 }
-                else if (descriptor?.get) {
+                else if (descriptor?.get && typeof descriptor.get() === "function" && descriptor.get()?.name?.startsWith("config")) {
                     return [key, config.toJSON.call(descriptor.get())];
                 }
                 // return [key, this[key as keyof typeof config]];
                 return undefined;
-            })); /*
+            }))); /*
                 Object.getOwnPropertyNames(config)
                     .filter(
                         (n) =>

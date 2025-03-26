@@ -31,7 +31,7 @@ subscribedEvents.afterPlayerDimensionChange =
                 !p.hasTag("excludeBeforeChatSendNotificationsBy:" +
                     event.player.name))
                 .forEach((p) => {
-                psend(p, `§r§f[§l§dServer§r§f]${world.getDynamicProperty("serverNotificationSpacer") ?? ""}[§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)} from ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)}. `);
+                psend(p, `§r§f[§l§dServer§r§f]${world.getDynamicProperty("serverNotificationSpacer") ?? ""}[§eplayerDimensionChange§r][${event.player.name}] Entered ${dimensionTypeDisplayFormatting[event.toDimension.id]} at ${vTStr(event.toLocation)} from ${dimensionTypeDisplayFormatting[event.fromDimension.id]} at ${vTStr(event.fromLocation)}. `);
                 let pn = new PlayerNotifications(p);
                 srun(() => p.playSound(pn
                     .getPlayerDimensionChangeNotificationsNotificationSound

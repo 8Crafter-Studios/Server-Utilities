@@ -46,7 +46,6 @@ Icon Path: ${category.icon_path ?? "None"}`)
                 .button(`${customFormUICodes.action.buttons.positions.main_only}${category.enabled ? "" : customFormUICodes.action.buttons.options.disabled}Block Interaction Prevention\n${!!category.playerInteractWithBlock && category.playerInteractWithBlock.enabled !== false ? "§aEnabled" : "§cDisabled"}`, "textures/ui/pencil_edit_icon")
                 .button(`${customFormUICodes.action.buttons.positions.main_only}Entity Interaction Prevention\n${!!category.playerInteractWithEntity && category.playerInteractWithEntity.enabled !== false ? "§aEnabled" : "§cDisabled"}`, "textures/ui/pencil_edit_icon")
                 .button(`${customFormUICodes.action.buttons.positions.main_only}Item Use Prevention\n${!!category.itemUse && category.itemUse.enabled !== false ? "§aEnabled" : "§cDisabled"}`, "textures/ui/pencil_edit_icon")
-                .button(`${customFormUICodes.action.buttons.positions.main_only}Item Use On Prevention\n${!!category.itemUseOn && category.itemUseOn.enabled !== false ? "§aEnabled" : "§cDisabled"}`, "textures/ui/pencil_edit_icon")
                 .button(`${customFormUICodes.action.buttons.positions.main_only}${category.enabled ? "" : customFormUICodes.action.buttons.options.disabled}Explosion Prevention\n${!!category.explosion && category.explosion.enabled !== false ? "§aEnabled" : "§cDisabled"}`, "textures/ui/pencil_edit_icon")
                 .button(`${customFormUICodes.action.buttons.positions.main_only}${category.enabled ? "" : customFormUICodes.action.buttons.options.disabled}Entity Effect Add Prevention\n${!!category.effectAdd && category.effectAdd.enabled !== false ? "§aEnabled" : "§cDisabled"}`, "textures/ui/pencil_edit_icon")
                 .button(`${customFormUICodes.action.buttons.positions.main_only}${category.enabled ? "" : customFormUICodes.action.buttons.options.disabled}Player Chat Message Send Prevention\n${!!category.chatSend && category.chatSend.enabled !== false ? "§aEnabled" : "§cDisabled"}`, "textures/ui/pencil_edit_icon")
@@ -141,13 +140,6 @@ Icon Path: ${category.icon_path ?? "None"}`)
                     }
                 case "itemUse":
                     if ((await editCustomAreaCategorySetting(player, categoryID, "itemUse")) === 1) {
-                        continue;
-                    }
-                    else {
-                        return 0;
-                    }
-                case "itemUseOn":
-                    if ((await editCustomAreaCategorySetting(player, categoryID, "itemUseOn")) === 1) {
                         continue;
                     }
                     else {
@@ -528,26 +520,6 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                             ? `1 item ${option.heldItemFilters.mode ?? "exclude"}d`
                             : `${option.heldItemFilters.items.length} items ${option.heldItemFilters.mode ?? "exclude"}d`
                         : `0 items excluded`}`, "textures/ui/pencil_edit_icon");
-                    break;
-                }
-                case "itemUseOn": {
-                    optionsList = ["allowedBypassTags", "heldItemFilters", "mask"];
-                    const option = category[setting];
-                    form.button(`${customFormUICodes.action.buttons.positions.main_only}${!!option && option.enabled ? "" : customFormUICodes.action.buttons.options.disabled}Allowed Bypass Tags\n${!!option && !!option.allowedBypassTags
-                        ? option.allowedBypassTags.length === 1
-                            ? "1 tag"
-                            : `${option.allowedBypassTags.length} tags`
-                        : "0 tags"}`, "textures/ui/pencil_edit_icon");
-                    form.button(`${customFormUICodes.action.buttons.positions.main_only}${!!option && option.enabled ? "" : customFormUICodes.action.buttons.options.disabled}Held Item Filters\n${!!option && !!option.heldItemFilters
-                        ? option.heldItemFilters.items.length === 1
-                            ? `1 item ${option.heldItemFilters.mode ?? "exclude"}d`
-                            : `${option.heldItemFilters.items.length} items ${option.heldItemFilters.mode ?? "exclude"}d`
-                        : `0 items excluded`}`, "textures/ui/pencil_edit_icon");
-                    form.button(`${customFormUICodes.action.buttons.positions.main_only}${!!option && option.enabled ? "" : customFormUICodes.action.buttons.options.disabled}Block Mask\n${!!option && !!option.mask && option.mask.blocks.length !== 0
-                        ? option.mask.blocks.length === 1
-                            ? `1 block permutation ${option.mode ?? "exclude"}d`
-                            : `${option.mask.blocks.length} blocks ${option.mode ?? "exclude"}d`
-                        : `All Blocks`}`, "textures/ui/pencil_edit_icon");
                     break;
                 }
                 case "explosion": {

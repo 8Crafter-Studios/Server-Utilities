@@ -240,7 +240,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useCommandsRunningEscapeSequence"]) : (player.isOp() == true || player.playerPermissions.canUseCommands))) {
         newMessage = newMessage.replace("${r}", "");
         eventData.cancel = true;
-        player.runCommandAsync(newMessage);
+        srun(() => player.runCommand(newMessage));
         return;
     }
     if (newMessage.includes("${scripteval}") &&
@@ -273,7 +273,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useCommandsRunningEscapeSequence"]) : (player.isOp() == true || player.playerPermissions.canUseCommands))) {
         newMessage = newMessage.replace("${run}", "");
         eventData.cancel = true;
-        player.runCommandAsync(newMessage);
+        srun(() => player.runCommand(newMessage));
         return;
     }
     /*${scripteval}world.getAllPlayers().forEach((t)=>{t.setDynamicProperty("canUseScriptEval", true)}); */

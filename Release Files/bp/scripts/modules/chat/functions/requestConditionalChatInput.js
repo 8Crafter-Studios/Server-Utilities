@@ -8,7 +8,7 @@ export async function requestConditionalChatInput(player, conditions = () => tru
     !!!currentlyRequestedChatInput[player.id] ? currentlyRequestedChatInput[player.id] = { anyInput: {}, conditionalInput: { [id]: { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: expireTime, expireConditions: options.expireConditions ?? (() => false) } } } : currentlyRequestedChatInput[player.id].conditionalInput[id] = { time: Date.now(), id: id, request: options.requestMessage, conditions: conditions ?? (() => true), expireTime: Date.now() + (options.expireMs ?? Infinity), expireConditions: options.expireConditions ?? (() => false) };
     return new Promise((resolve, reject) => {
         function a() {
-            if (!player.isValid()) {
+            if (!player.isValid) {
                 delete currentlyRequestedChatInput[player.id];
                 reject(new ReferenceError("The player that the input was requested from is no longer valid, most likely the have left the game."));
                 return;

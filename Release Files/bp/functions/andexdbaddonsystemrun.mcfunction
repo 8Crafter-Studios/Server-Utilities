@@ -1,0 +1,1 @@
+testfor @p # To get rid of the empty function error.

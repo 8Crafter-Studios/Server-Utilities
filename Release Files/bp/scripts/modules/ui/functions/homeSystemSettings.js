@@ -4,6 +4,7 @@ import { forceShow } from "modules/ui/functions/forceShow";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
+import { customFormUICodes } from "../constants/customFormUICodes";
 /**
  * Displays the Home System Settings UI and handles user interactions.
  *
@@ -29,7 +30,7 @@ export async function homeSystemSettings(sourceEntitya) {
         }
     }
     let form2 = new ModalFormData();
-    form2.title("Home System Settings [§cExperimental§r]");
+    form2.title(customFormUICodes.modal.titles.formStyles.medium + "Home System Settings [§cExperimental§r]");
     form2.toggle("§l§fHome System Enabled§r§f", config.homeSystem.homeSystemEnabled);
     form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.homeSystem.maxHomesPerPlayer));
     form2.submitButton("Save");

@@ -48,11 +48,11 @@ try {
                                 : ""}${!!block.getComponent("sign")
                                 ? `
 §l§eminecraft:sign: §r§9{§eIs Waxed: §r${((b) => (b ? "§2" : "§4") + String(b))(block.getComponent("sign")?.isWaxed)}§a, §eF Dye: §r§u${block.getComponent("sign")?.getTextDyeColor(SignSide.Front) ?? "null"}§a, §eB Dye: §r§u${block.getComponent("sign")?.getTextDyeColor(SignSide.Back) ?? "null"}§a, §eF Text Length: §r§c${block.getComponent("sign")?.getText(SignSide.Front)?.length}§a, §eB Text Length: §r§c${block.getComponent("sign")?.getText(SignSide.Back)?.length}§a, §eF Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign")?.getRawText(SignSide.Front)))}§a, §eB Is Raw Text: §r${((b) => (b ? "§2" : "§4") + String(b))(!!tryget(() => block.getComponent("sign")?.getRawText(SignSide.Back)))}§9}`
-                                : ""}${!!block.getComponent("fluidContainer")
+                                : ""}${!!block.getComponent("fluid_container")
                                 ? `
-§l§eminecraft:fluidContainer: §r§9{§eFill Level: §r§c${block.getComponent("fluidContainer")?.fillLevel}§a, §eFluid Type: §r§c§a${block
-                                    .getComponent("fluidContainer")
-                                    ?.getFluidType()}, §eCustom Color: §r§c${JSON.stringify(block.getComponent("fluidContainer")?.fluidColor)}§9}`
+§l§eminecraft:fluid_container: §r§9{§eFill Level: §r§c${block.getComponent("fluid_container")?.fillLevel}§a, §eFluid Type: §r§c§a${block
+                                    .getComponent("fluid_container")
+                                    ?.getFluidType()}, §eCustom Color: §r§c${JSON.stringify(block.getComponent("fluid_container")?.fluidColor)}§9}`
                                 : ""}`;
                             playerList2[index].onScreenDisplay.setActionBar(newActionBarText + "\n".repeat(Math.max(0, newActionBarText.split("\n").length - 12)));
                         }

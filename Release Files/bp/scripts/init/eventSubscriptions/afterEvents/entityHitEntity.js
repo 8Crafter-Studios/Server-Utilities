@@ -23,7 +23,7 @@ subscribedEvents.afterEntityHitEntity =
                     (tryget(() => event.hitEntity?.dimension) ??
                         "unknown")) &&
                     (!!event.damagingEntity &&
-                        (event.damagingEntity?.isValid() ?? true)
+                        (event.damagingEntity?.isValid ?? true)
                         ? !p.hasTag("excludeHitEntityTriggerExplosionNotificationsBy:" +
                             (event.damagingEntity
                                 ?.name ??
@@ -41,17 +41,17 @@ subscribedEvents.afterEntityHitEntity =
                         event.damagingEntity?.nameTag ??
                         event.damagingEntity?.typeId} hit exploding entity of type "${event.hitEntity?.typeId}"`
                     : `Exploding entity of type "${event.hitEntity?.typeId}" was hit`}${!!tryget(() => event.hitEntity?.dimension) &&
-                    (event.hitEntity?.isValid() ?? true)
+                    (event.hitEntity?.isValid ?? true)
                     ? ` in ${dimensionTypeDisplayFormatting[tryget(() => event.hitEntity?.dimension
                         ?.id)] ?? "an unknown dimension"} at ${!!tryget(() => event.hitEntity?.location) &&
-                        (event.hitEntity?.isValid() ?? true)
+                        (event.hitEntity?.isValid ?? true)
                         ? vTStr(event.hitEntity?.location)
                         : "an unknwon location"}`
                     : !!event.damagingEntity.dimension &&
-                        (event.damagingEntity?.isValid() ?? true)
+                        (event.damagingEntity?.isValid ?? true)
                         ? `, the entity/player who hit the explosive entity is in ${dimensionTypeDisplayFormatting[tryget(() => event.damagingEntity
                             ?.dimension?.id)] ?? "an unknown dimension"} at ${!!tryget(() => event.damagingEntity?.location) &&
-                            (event.damagingEntity?.isValid() ??
+                            (event.damagingEntity?.isValid ??
                                 true)
                             ? vTStr(Vector3Utils.floor(event.damagingEntity
                                 ?.location))

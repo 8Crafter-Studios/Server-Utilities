@@ -80,7 +80,7 @@ debugAction(event.source.getBlockFromViewDirection().block, event.source, 0)
                     return;
                 }
             }
-            event.source.runCommandAsync(String("/scriptevent andexdb:itemLoreInventoryModifier hisw"));
+            srun(() => event.source.runCommand(String("/scriptevent andexdb:itemLoreInventoryModifier hisw")));
         }
         catch (e) {
             // Do something
@@ -220,7 +220,7 @@ console.error(e, e.stack);
                     return;
                 }
             }
-            event.source.runCommandAsync(String("/scriptevent andexdb:itemLoreInventoryModifier hisw"));
+            srun(() => event.source.runCommand(String("/scriptevent andexdb:itemLoreInventoryModifier hisw")));
         }
         catch (e) {
             // Do something
@@ -452,7 +452,7 @@ console.error(e, e.stack);
             }
         }
         try {
-            event.source.runCommandAsync(String("/scriptevent andexdb:playerDebug saqw"));
+            srun(() => event.source.runCommand(String("/scriptevent andexdb:playerDebug saqw")));
         }
         catch (e) {
             // Do something
@@ -470,7 +470,7 @@ console.error(e, e.stack);
             }
         }
         try {
-            event.source.runCommandAsync(String("/scriptevent andexdb:playerController asdw"));
+            srun(() => event.source.runCommand(String("/scriptevent andexdb:playerController asdw")));
         }
         catch (e) {
             // Do something
@@ -488,7 +488,7 @@ console.error(e, e.stack);
             }
         }
         try {
-            event.source.runCommandAsync(String("/scriptevent andexdb:debugScreen sdaq"));
+            srun(() => event.source.runCommand(String("/scriptevent andexdb:debugScreen sdaq")));
         }
         catch (e) {
             // Do something
@@ -506,7 +506,7 @@ console.error(e, e.stack);
             }
         }
         try {
-            event.source.runCommandAsync(String("/scriptevent andexdb:entityController nsaz"));
+            srun(() => event.source.runCommand(String("/scriptevent andexdb:entityController nsaz")));
         }
         catch (e) {
             // Do something
@@ -524,7 +524,7 @@ console.error(e, e.stack);
             }
         }
         try {
-            event.source.runCommandAsync(String("/scriptevent andexdb:entityDebug saop"));
+            srun(() => event.source.runCommand(String("/scriptevent andexdb:entityDebug saop")));
         }
         catch (e) {
             // Do something

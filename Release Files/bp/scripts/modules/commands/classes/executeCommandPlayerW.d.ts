@@ -1,4 +1,4 @@
-import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, InputInfo } from "@minecraft/server";
+import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, InputInfo, type EntityComponentReturnType } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -82,6 +82,8 @@ export declare class executeCommandPlayerW {
     get inputPermissions(): import("@minecraft/server").PlayerInputPermissions;
     get clientSystemInfo(): import("@minecraft/server").ClientSystemInfo;
     get inputInfo(): InputInfo;
+    get graphicsMode(): import("@minecraft/server").GraphicsMode;
+    get isValid(): boolean;
     addEffect(effectType: string | EffectType, duration: number, options?: EntityEffectOptions): import("@minecraft/server").Effect;
     addExperience(amount: number): number;
     getRotation(): Vector2;
@@ -109,7 +111,7 @@ export declare class executeCommandPlayerW {
     addTag(tag: string): boolean;
     applyDamage(amount: number, options?: EntityApplyDamageByProjectileOptions | EntityApplyDamageOptions): boolean;
     applyImpulse(vector: Vector3): void;
-    applyKnockback(directionX: number, directionZ: number, horizontalStrength: number, verticalStrength: number): void;
+    applyKnockback(horizontalForce: VectorXZ, verticalStrength: number): void;
     clearDynamicProperties(): void;
     clearVelocity(): void;
     extinguishFire(useEffects?: boolean): boolean;
@@ -117,6 +119,7 @@ export declare class executeCommandPlayerW {
     getBlockFromViewDirection(options?: BlockRaycastOptions): import("@minecraft/server").BlockRaycastHit;
     getComponent<T extends keyof EntityComponentTypeMap>(componentId: T): EntityComponentTypeMap[T] | undefined;
     getComponent<T extends keyof BlockComponentTypeMap>(componentId: T): BlockComponentTypeMap[T] | undefined;
+    getComponent<T extends string>(componentId: T): EntityComponentReturnType<T> | undefined;
     getComponents(): import("@minecraft/server").EntityComponent[];
     getDynamicProperty(identifier: string): string | number | boolean | Vector3;
     getDynamicPropertyIds(): string[];
@@ -130,7 +133,6 @@ export declare class executeCommandPlayerW {
     getVelocity(): Vector3;
     hasComponent(componentId: string): boolean;
     hasTag(tag: string): boolean;
-    isValid(): boolean;
     kill(): boolean;
     matches(options: EntityQueryOptions): boolean;
     playAnimation(animationName: string, options?: PlayAnimationOptions): void;
@@ -139,7 +141,6 @@ export declare class executeCommandPlayerW {
     removeTag(tag: string): boolean;
     resetProperty(identifier: string): string | number | boolean;
     runCommand(commandString: string): import("@minecraft/server").CommandResult;
-    runCommandAsync(commandString: string): Promise<import("@minecraft/server").CommandResult>;
     setDynamicProperty(identifier: string, value?: string | number | boolean | Vector3): void;
     setDynamicProperties(values: Record<string, boolean | number | string | Vector3>): void;
     setOnFire(seconds: number, useEffects?: boolean): boolean;
@@ -148,6 +149,9 @@ export declare class executeCommandPlayerW {
     teleport(location: Vector3, teleportOptions?: TeleportOptions): void;
     triggerEvent(eventName: string): void;
     tryTeleport(location: Vector3, teleportOptions?: TeleportOptions): boolean;
+    setPropertyOverrideForEntity(targetEntity: Entity, identifier: string, value: boolean | number | string): void;
+    removePropertyOverrideForEntity(targetEntity: Entity, identifier: string): void;
+    clearPropertyOverridesForEntity(targetEntity: Entity): void;
     saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
     getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
     deleteStringFromDynamicProperties(propertyName: string): void;

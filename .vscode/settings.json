@@ -9,5 +9,8 @@
   }*/,
   "files.exclude": {
     "**/.git": false
-  }
+  },
+  "java.project.referencedLibraries": [
+    "BP/json-20250107.jar"
+  ]
 }

@@ -1,4 +1,4 @@
-import { Dimension, EntityTypes, ExplosionBeforeEvent, ItemTypes, ItemUseBeforeEvent, ItemUseOnBeforeEvent, PlayerBreakBlockBeforeEvent, PlayerGameModeChangeBeforeEvent, PlayerInteractWithBlockBeforeEvent, PlayerInteractWithEntityBeforeEvent, PlayerPlaceBlockBeforeEvent, } from "@minecraft/server";
+import { Dimension, EntityTypes, ExplosionBeforeEvent, ItemTypes, ItemUseBeforeEvent, PlayerBreakBlockBeforeEvent, PlayerGameModeChangeBeforeEvent, PlayerInteractWithBlockBeforeEvent, PlayerInteractWithEntityBeforeEvent, PlayerPlaceBlockBeforeEvent, } from "@minecraft/server";
 import { BlockMask } from "modules/commands/classes/BlockMask";
 import { testIsWithinRanges } from "modules/spawn_protection/functions/testIsWithinRanges";
 /**
@@ -130,17 +130,6 @@ export const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults = makeMutab
             items: [],
         },
     },
-    itemUseOn: {
-        enabled: true,
-        allowedBypassTags: [],
-        heldItemFilters: {
-            mode: "exclude",
-            items: [],
-        },
-        mask: new BlockMask([], "exclude"),
-        rawmask: "none",
-        mode: "exclude",
-    },
     noPVPZone: {
         enabled: true,
     },
@@ -260,16 +249,6 @@ export const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSON = make
             mode: "exclude",
             items: [],
         },
-    },
-    itemUseOn: {
-        enabled: true,
-        allowedBypassTags: [],
-        heldItemFilters: {
-            mode: "exclude",
-            items: [],
-        },
-        mask: "none",
-        mode: "exclude",
     },
     noPVPZone: {
         enabled: true,
@@ -612,13 +591,6 @@ const preventableEventMap = {
         builtInCategories: [],
         advancedCategoryProperty: "itemUse",
     },
-    itemUseOn: {
-        builtInCategories: [
-            "noBlockInteractArea" /* ,
-            "noInteractArea" */,
-        ],
-        advancedCategoryProperty: "itemUseOn",
-    },
     playerGameModeChange: {
         builtInCategories: [],
         advancedCategoryProperty: "playerGameModeChange",
@@ -646,7 +618,6 @@ export const advancedCategoryPropertyDisplayNames = {
     explosion: "Explosion Prevention",
     playerInteractWithEntity: "Entity Interaction Prevention",
     itemUse: "Item Use Prevention",
-    itemUseOn: "Item Use On Prevention",
     playerGameModeChange: "Game Mode Change Prevention",
     chatSend: "Player Chat Message Send Prevention",
     effectAdd: "Entity Effect Add Prevention",
@@ -656,7 +627,7 @@ export const advancedCategoryPropertyDisplayNames = {
 /**
  * The `ProtectedAreaTester` class is used to test if certain events occur within a protected area.
  *
- * @template {T extends "playerPlaceBlock" | "playerBreakBlock" | "playerInteractWithBlock" | "explosion" | "playerInteractWithEntity" | "itemUse" | "itemUseOn" | "playerGameModeChange" | "chatSend" | "effectAdd"} T
+ * @template {T extends "playerPlaceBlock" | "playerBreakBlock" | "playerInteractWithBlock" | "explosion" | "playerInteractWithEntity" | "itemUse" | "playerGameModeChange" | "chatSend" | "effectAdd"} T
  * The type of event that can be prevented. It can be one of the following:
  * - "playerPlaceBlock"
  * - "playerBreakBlock"
@@ -664,7 +635,6 @@ export const advancedCategoryPropertyDisplayNames = {
  * - "explosion"
  * - "playerInteractWithEntity"
  * - "itemUse"
- * - "itemUseOn"
  * - "playerGameModeChange"
  * - "chatSend"
  * - "effectAdd"
@@ -771,19 +741,6 @@ export class ProtectedAreaTester {
                                             ? prop.heldItemFilters.items.some((item) => data.itemStack?.typeId === (ItemTypes.get(item)?.id ?? item))
                                             : !prop.heldItemFilters.items.some((item) => data.itemStack?.typeId === (ItemTypes.get(item)?.id ?? item))
                                         : true);
-                            break;
-                        }
-                        case "itemUseOn": {
-                            const prop = category.itemUseOn;
-                            const data = event;
-                            success =
-                                !prop.allowedBypassTags.some((tag) => data.source.hasTag(tag)) &&
-                                    (prop.heldItemFilters !== false
-                                        ? prop.heldItemFilters.mode === "include"
-                                            ? prop.heldItemFilters.items.some((item) => data.itemStack?.typeId === (ItemTypes.get(item)?.id ?? item))
-                                            : !prop.heldItemFilters.items.some((item) => data.itemStack?.typeId === (ItemTypes.get(item)?.id ?? item))
-                                        : true) &&
-                                    prop.mask.testIfMatches(data.block, prop.mode);
                             break;
                         }
                         case "explosion": {

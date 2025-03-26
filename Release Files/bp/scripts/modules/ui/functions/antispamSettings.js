@@ -3,6 +3,7 @@ import "init/classes/config";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { extractPlayerFromLooseEntityType } from "modules/utilities/functions/extractPlayerFromLooseEntityType";
+import { customFormUICodes } from "../constants/customFormUICodes";
 /**
  * Configures and displays the anti-spam settings form to the specified player.
  *
@@ -41,7 +42,7 @@ export async function antispamSettings(sourceEntity) {
             }
         }
         let form = new ModalFormData();
-        form.title("Anti-Spam Settings [§cExperimental§r]");
+        form.title(customFormUICodes.modal.titles.formStyles.medium + "Anti-Spam Settings [§cExperimental§r]");
         form.toggle("§l§fAnti-Spam Enabled§r§f", config.antiSpamSystem.antispamEnabled);
         form.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute);
         form.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", String(config.antiSpamSystem.waitTimeAfterAntispamActivation));

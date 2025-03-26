@@ -445,34 +445,13 @@
          "path" : "node_modules/@minecraft/math/package.json"
       },
       {
-         "path" : "node_modules/@minecraft/server-admin/.eslintrc.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-admin/README.md"
       },
       {
          "path" : "node_modules/@minecraft/server-admin/index.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/server-admin/node_modules/@minecraft/server/.eslintrc.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-admin/node_modules/@minecraft/server/README.md"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-admin/node_modules/@minecraft/server/index.d.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-admin/node_modules/@minecraft/server/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-admin/node_modules/@minecraft/server/tsconfig.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-admin/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-admin/tsconfig.json"
       },
       {
          "path" : "node_modules/@minecraft/server-editor/.eslintrc.json"
@@ -499,37 +478,13 @@
          "path" : "node_modules/@minecraft/server-editor/tsconfig.json"
       },
       {
-         "path" : "node_modules/@minecraft/server-gametest/.eslintrc.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-gametest/README.md"
       },
       {
          "path" : "node_modules/@minecraft/server-gametest/index.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/.eslintrc.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/README.md"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/index.d.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-gametest/node_modules/@minecraft/server/tsconfig.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-gametest/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-gametest/tests.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-gametest/tsconfig.json"
       },
       {
          "path" : "node_modules/@minecraft/server-net/.eslintrc.json"
@@ -580,37 +535,13 @@
          "path" : "node_modules/@minecraft/server-net/tsconfig.json"
       },
       {
-         "path" : "node_modules/@minecraft/server-ui/.eslintrc.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-ui/README.md"
       },
       {
          "path" : "node_modules/@minecraft/server-ui/index.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/.eslintrc.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/README.md"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/index.d.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/node_modules/@minecraft/server/tsconfig.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-ui/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-ui/tsconfig.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server/.eslintrc.json"
       },
       {
          "path" : "node_modules/@minecraft/server/README.md"
@@ -620,9 +551,6 @@
       },
       {
          "path" : "node_modules/@minecraft/server/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server/tsconfig.json"
       },
       {
          "path" : "node_modules/@minecraft/vanilla-data/README.md"
@@ -674,9 +602,6 @@
       },
       {
          "path" : "node_modules/@minecraft/vanilla-data/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/vanilla-data/tsconfig.json"
       },
       {
          "path" : "node_modules/@types/semver/LICENSE"
@@ -11611,6 +11536,15 @@
          "path" : "scripts/index.js.map"
       },
       {
+         "path" : "scripts/init.d.ts"
+      },
+      {
+         "path" : "scripts/init.js"
+      },
+      {
+         "path" : "scripts/init.js.map"
+      },
+      {
          "path" : "scripts/init/classes/PlayerNotifications.d.ts"
       },
       {
@@ -11881,15 +11815,6 @@
          "path" : "scripts/init/eventSubscriptions/afterEvents/itemUse.js.map"
       },
       {
-         "path" : "scripts/init/eventSubscriptions/afterEvents/itemUseOn.d.ts"
-      },
-      {
-         "path" : "scripts/init/eventSubscriptions/afterEvents/itemUseOn.js"
-      },
-      {
-         "path" : "scripts/init/eventSubscriptions/afterEvents/itemUseOn.js.map"
-      },
-      {
          "path" : "scripts/init/eventSubscriptions/afterEvents/leverAction.d.ts"
       },
       {
@@ -12070,13 +11995,13 @@
          "path" : "scripts/init/eventSubscriptions/afterEvents/weatherChange.js.map"
       },
       {
-         "path" : "scripts/init/eventSubscriptions/afterEvents/worldInitialize.d.ts"
+         "path" : "scripts/init/eventSubscriptions/afterEvents/worldLoad.d.ts"
       },
       {
-         "path" : "scripts/init/eventSubscriptions/afterEvents/worldInitialize.js"
+         "path" : "scripts/init/eventSubscriptions/afterEvents/worldLoad.js"
       },
       {
-         "path" : "scripts/init/eventSubscriptions/afterEvents/worldInitialize.js.map"
+         "path" : "scripts/init/eventSubscriptions/afterEvents/worldLoad.js.map"
       },
       {
          "path" : "scripts/init/eventSubscriptions/beforeEvents/chatSend.d.ts"
@@ -12122,15 +12047,6 @@
       },
       {
          "path" : "scripts/init/eventSubscriptions/beforeEvents/itemUse.js.map"
-      },
-      {
-         "path" : "scripts/init/eventSubscriptions/beforeEvents/itemUseOn.d.ts"
-      },
-      {
-         "path" : "scripts/init/eventSubscriptions/beforeEvents/itemUseOn.js"
-      },
-      {
-         "path" : "scripts/init/eventSubscriptions/beforeEvents/itemUseOn.js.map"
       },
       {
          "path" : "scripts/init/eventSubscriptions/beforeEvents/playerBreakBlock.d.ts"
@@ -12203,15 +12119,6 @@
       },
       {
          "path" : "scripts/init/eventSubscriptions/beforeEvents/weatherChange.js.map"
-      },
-      {
-         "path" : "scripts/init/eventSubscriptions/beforeEvents/worldInitialize.d.ts"
-      },
-      {
-         "path" : "scripts/init/eventSubscriptions/beforeEvents/worldInitialize.js"
-      },
-      {
-         "path" : "scripts/init/eventSubscriptions/beforeEvents/worldInitialize.js.map"
       },
       {
          "path" : "scripts/init/eventSubscriptions/events/scriptInitialize.d.ts"
@@ -18166,6 +18073,15 @@
          "path" : "scripts/moment.js"
       },
       {
+         "path" : "scripts/preInit/eventSubscriptions/beforeEvents/startup.d.ts"
+      },
+      {
+         "path" : "scripts/preInit/eventSubscriptions/beforeEvents/startup.js"
+      },
+      {
+         "path" : "scripts/preInit/eventSubscriptions/beforeEvents/startup.js.map"
+      },
+      {
          "path" : "scripts/security/ultraSecurityModeUtils.d.ts"
       },
       {
@@ -18391,6 +18307,9 @@
          "path" : "src/index.ts"
       },
       {
+         "path" : "src/init.ts"
+      },
+      {
          "path" : "src/init/classes/PlayerNotifications.ts"
       },
       {
@@ -18481,9 +18400,6 @@
          "path" : "src/init/eventSubscriptions/afterEvents/itemUse.ts"
       },
       {
-         "path" : "src/init/eventSubscriptions/afterEvents/itemUseOn.ts"
-      },
-      {
          "path" : "src/init/eventSubscriptions/afterEvents/leverAction.ts"
       },
       {
@@ -18544,7 +18460,7 @@
          "path" : "src/init/eventSubscriptions/afterEvents/weatherChange.ts"
       },
       {
-         "path" : "src/init/eventSubscriptions/afterEvents/worldInitialize.ts"
+         "path" : "src/init/eventSubscriptions/afterEvents/worldLoad.ts"
       },
       {
          "path" : "src/init/eventSubscriptions/beforeEvents/chatSend.ts"
@@ -18560,9 +18476,6 @@
       },
       {
          "path" : "src/init/eventSubscriptions/beforeEvents/itemUse.ts"
-      },
-      {
-         "path" : "src/init/eventSubscriptions/beforeEvents/itemUseOn.ts"
       },
       {
          "path" : "src/init/eventSubscriptions/beforeEvents/playerBreakBlock.ts"
@@ -18587,9 +18500,6 @@
       },
       {
          "path" : "src/init/eventSubscriptions/beforeEvents/weatherChange.ts"
-      },
-      {
-         "path" : "src/init/eventSubscriptions/beforeEvents/worldInitialize.ts"
       },
       {
          "path" : "src/init/eventSubscriptions/events/scriptInitialize.ts"
@@ -20570,6 +20480,9 @@
       },
       {
          "path" : "src/modules/utilities/types/loosePlayerType.ts"
+      },
+      {
+         "path" : "src/preInit/eventSubscriptions/beforeEvents/startup.ts"
       },
       {
          "path" : "src/security/oldPermissionTypesList.txt"

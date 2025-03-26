@@ -135,7 +135,7 @@ subscribedEvents.afterScriptEventReceive =
             const inventory2 = players[0].getComponent("inventory");
             let itemb = inventory.container.getItem(0);
             console.warn(String(Array(item.getComponent("enchantable").getEnchantments()[0])));
-            console.warn(item.getComponent("enchantable").isValid());
+            console.warn(item.getComponent("enchantable").isValid);
             console.warn(item.getComponent("enchantable").getEnchantments()[0]);
             item.setLore([
                 "§c§lDiamond Sword of Awesome§r",
@@ -3814,7 +3814,10 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     }
                     if (Boolean(applyKnockback) == true) {
                         try {
-                            playerList[playerTargetB].applyKnockback(Number(kockbackDirectionX), Number(knockbackDirectionZ), Number(knockbackHorizontalStrength), Number(knockbackVerticalStrength));
+                            playerList[playerTargetB].applyKnockback({
+                                x: Number(kockbackDirectionX) * Number(knockbackHorizontalStrength),
+                                z: Number(knockbackDirectionZ) * Number(knockbackHorizontalStrength),
+                            }, Number(knockbackVerticalStrength));
                         }
                         catch (e) {
                             console.error(e, e.stack);
@@ -4239,7 +4242,10 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     }
                     if (Boolean(applyKnockback) == true) {
                         try {
-                            playerList[playerTargetB].applyKnockback(Number(kockbackDirectionX), Number(knockbackDirectionZ), Number(knockbackHorizontalStrength), Number(knockbackVerticalStrength));
+                            playerList[playerTargetB].applyKnockback({
+                                x: Number(kockbackDirectionX) * Number(knockbackHorizontalStrength),
+                                z: Number(knockbackDirectionZ) * Number(knockbackHorizontalStrength),
+                            }, Number(knockbackVerticalStrength));
                         }
                         catch (e) {
                             console.error(e, e.stack);
@@ -4992,17 +4998,17 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
             form.toggle("Debug", false);
             form.toggle("setWaterContainerProperties Enabled", false);
             try {
-                if (block2.getComponent("fluidContainer") != undefined) {
-                    form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("fluidContainer").fluidColor.red}\n§aGreen: §g${block2.getComponent("fluidContainer").fluidColor
-                        .green}\n§bBlue: §g${block2.getComponent("fluidContainer").fluidColor
-                        .blue}\n§dAlpha: §g${block2.getComponent("fluidContainer").fluidColor
-                        .alpha}`, `red: 0-1, green: 0-1, blue: 0-1, alpha: 0-1`, `${block2.getComponent("fluidContainer").fluidColor.red}, ${block2.getComponent("fluidContainer").fluidColor
-                        .green}, ${block2.getComponent("fluidContainer").fluidColor
-                        .blue}, ${block2.getComponent("fluidContainer").fluidColor
+                if (block2.getComponent("fluid_container") != undefined) {
+                    form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("fluid_container").fluidColor.red}\n§aGreen: §g${block2.getComponent("fluid_container").fluidColor
+                        .green}\n§bBlue: §g${block2.getComponent("fluid_container").fluidColor
+                        .blue}\n§dAlpha: §g${block2.getComponent("fluid_container").fluidColor
+                        .alpha}`, `red: 0-1, green: 0-1, blue: 0-1, alpha: 0-1`, `${block2.getComponent("fluid_container").fluidColor.red}, ${block2.getComponent("fluid_container").fluidColor
+                        .green}, ${block2.getComponent("fluid_container").fluidColor
+                        .blue}, ${block2.getComponent("fluid_container").fluidColor
                         .alpha}`);
-                    form.slider(`Cauldron Fill Level\nFill Level: §g${block2.getComponent("fluidContainer").fillLevel}`, 0, 6, 1, block2.getComponent("fluidContainer").fillLevel);
+                    form.slider(`Cauldron Fill Level\nFill Level: §g${block2.getComponent("fluid_container").fillLevel}`, 0, 6, 1, block2.getComponent("fluid_container").fillLevel);
                     form.textField(`Cauldron Potion Type Contents\nHas Potion: §g${block2
-                        .getComponent("fluidContainer")
+                        .getComponent("fluid_container")
                         .getFluidType() == "Potion"}`, `item type`);
                 }
                 else {
@@ -5080,13 +5086,13 @@ selectedSlotIndex*/, isWaterlogged /*,
                 blockPropertyValueArray =
                     String(blockPropertyValue).split(", ");
                 let blockPropertyValueLength = String(blockPropertyIdentifier).split(", ").length;
-                if (block2.getComponent("fluidContainer") != undefined) {
-                    if (((c) => `${c.red},${c.green},${c.blue},${c.alpha}`)(block2.getComponent("fluidContainer").fluidColor) !=
+                if (block2.getComponent("fluid_container") != undefined) {
+                    if (((c) => `${c.red},${c.green},${c.blue},${c.alpha}`)(block2.getComponent("fluid_container").fluidColor) !=
                         fluidContainerColor
                             .split(",")
                             .map((v) => v.trim())
                             .join()) {
-                        block2.getComponent("fluidContainer").fluidColor = {
+                        block2.getComponent("fluid_container").fluidColor = {
                             red: fluidContainerColor
                                 .split(",")[0]
                                 .toNumber(),
@@ -5102,13 +5108,13 @@ selectedSlotIndex*/, isWaterlogged /*,
                         };
                     }
                     if (fluidContainerFillLevel !=
-                        block2.getComponent("fluidContainer").fillLevel) {
-                        block2.getComponent("fluidContainer").fillLevel =
+                        block2.getComponent("fluid_container").fillLevel) {
+                        block2.getComponent("fluid_container").fillLevel =
                             fluidContainerFillLevel;
                     }
                     if (potionType != "") {
                         block2
-                            .getComponent("fluidContainer")
+                            .getComponent("fluid_container")
                             .setPotion(new ItemStack(potionType, 255));
                     }
                 }
@@ -5465,7 +5471,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                     "\nIsFalling: " +
                     playerTargetB.isFalling +
                     "\nIsValid: " +
-                    playerTargetB.isValid() +
+                    playerTargetB.isValid +
                     "\nTarget: " +
                     playerTargetB.target +
                     "\nX: " +
@@ -5586,7 +5592,10 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                     }
                     if (Boolean(applyKnockback) == true) {
                         try {
-                            playerTargetB.applyKnockback(Number(kockbackDirectionX), Number(knockbackDirectionZ), Number(knockbackHorizontalStrength), Number(knockbackVerticalStrength));
+                            playerTargetB.applyKnockback({
+                                x: Number(kockbackDirectionX) * Number(knockbackHorizontalStrength),
+                                z: Number(knockbackDirectionZ) * Number(knockbackHorizontalStrength),
+                            }, Number(knockbackVerticalStrength));
                         }
                         catch (e) {
                             console.error(e, e.stack);
@@ -5905,7 +5914,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         
         if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug")) {
           system.runInterval( () => {
-          players[0].onScreenDisplay.setActionBar("dimension: " + entity[0].entity.dimension + "\nfallDistance: " + entity[0].entity.fallDistance + "\nid: entity[0].entity.id: " + entity[0].entity.id + "\nisClimbing: " + entity[0].entity.isClimbing + "\nisFalling: " + entity[0].entity.isFalling + "\nisInWater: " + entity[0].entity.isInWater + "\nisOnGround: " + entity[0].entity.isOnGround + "\nisSleeping: " + entity[0].entity.isSleeping + "\nisSneaking: " + entity[0].entity.isSneaking + "\nisSprinting: " + entity[0].entity.isSprinting + "\nisSwimming: " + entity[0].entity.isSwimming + "\nlifetimeState: " + entity[0].entity.lifetimeState + "\nlocation: " + entity[0].entity.location + "\nnameTag: " + entity[0].entity.nameTag + "\nscoreboardIdentity(or_the_actor_id_very_long_complicated_number): " + entity[0].entity.scoreboardIdentity + "\ntarget: " + entity[0].entity.target + "\ntypeId: " + entity[0].entity.typeId + "\ngetBlockFromViewDirection(): " + entity[0].entity.getBlockFromViewDirection() + "\ngetComponents(): " + entity[0].entity.getComponents() + "\ngetEffects(): " + entity[0].entity.getEffects() + "\ngetEntitiesFromViewDirection(): " + entity[0].entity.getEntitiesFromViewDirection() + "\ngetHeadLocation(): " + entity[0].entity.getHeadLocation() + "\ngetRotation(): " + entity[0].entity.getRotation() + "\ngetTags(): " + entity[0].entity.getTags() + "\ngetVelocity(): " + entity[0].entity.getVelocity() + "\ngetViewDirection(): " + entity[0].entity.getViewDirection + "\nisValid(): " + entity[0].entity.isValid());
+          players[0].onScreenDisplay.setActionBar("dimension: " + entity[0].entity.dimension + "\nfallDistance: " + entity[0].entity.fallDistance + "\nid: entity[0].entity.id: " + entity[0].entity.id + "\nisClimbing: " + entity[0].entity.isClimbing + "\nisFalling: " + entity[0].entity.isFalling + "\nisInWater: " + entity[0].entity.isInWater + "\nisOnGround: " + entity[0].entity.isOnGround + "\nisSleeping: " + entity[0].entity.isSleeping + "\nisSneaking: " + entity[0].entity.isSneaking + "\nisSprinting: " + entity[0].entity.isSprinting + "\nisSwimming: " + entity[0].entity.isSwimming + "\nlifetimeState: " + entity[0].entity.lifetimeState + "\nlocation: " + entity[0].entity.location + "\nnameTag: " + entity[0].entity.nameTag + "\nscoreboardIdentity(or_the_actor_id_very_long_complicated_number): " + entity[0].entity.scoreboardIdentity + "\ntarget: " + entity[0].entity.target + "\ntypeId: " + entity[0].entity.typeId + "\ngetBlockFromViewDirection(): " + entity[0].entity.getBlockFromViewDirection() + "\ngetComponents(): " + entity[0].entity.getComponents() + "\ngetEffects(): " + entity[0].entity.getEffects() + "\ngetEntitiesFromViewDirection(): " + entity[0].entity.getEntitiesFromViewDirection() + "\ngetHeadLocation(): " + entity[0].entity.getHeadLocation() + "\ngetRotation(): " + entity[0].entity.getRotation() + "\ngetTags(): " + entity[0].entity.getTags() + "\ngetVelocity(): " + entity[0].entity.getVelocity() + "\ngetViewDirection(): " + entity[0].entity.getViewDirection + "\nisValid(): " + entity[0].entity.isValid);
           if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug") == false) {
           return
           }
@@ -6516,8 +6525,11 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                                 }
                                 break;
                             case "setScale":
+                                if (entity_scale_format_version === null) {
+                                    throw new Error("8Crafter's Entity Scale Add-On v1.18.0 or newer is required to use setScale.");
+                                }
                                 try {
-                                    targets[l].getComponent("scale").value = Number(playerName.slice(1)[i].split(":")[1]);
+                                    targets[l].runCommand("/scriptevent andexsa:setScale " + playerName.slice(1)[i].split(":")[1]);
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);
@@ -7170,7 +7182,12 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                                 break;
                             case "applyKnockback":
                                 try {
-                                    targets[l].applyKnockback(Number(playerName.slice(1)[i].split(":")[1]), Number(playerName.slice(1)[i].split(":")[2]), Number(playerName.slice(1)[i].split(":")[3]), Number(playerName.slice(1)[i].split(":")[4]));
+                                    targets[l].applyKnockback({
+                                        x: Number(playerName.slice(1)[i].split(":")[1]) *
+                                            Number(playerName.slice(1)[i].split(":")[3]),
+                                        z: Number(playerName.slice(1)[i].split(":")[2]) *
+                                            Number(playerName.slice(1)[i].split(":")[3]),
+                                    }, Number(playerName.slice(1)[i].split(":")[4]));
                                 }
                                 catch (e) {
                                     console.error(e, e.stack);

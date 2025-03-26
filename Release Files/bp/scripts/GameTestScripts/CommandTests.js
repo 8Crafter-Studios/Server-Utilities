@@ -11,7 +11,7 @@ GameTest.registerAsync("CommandTests", "commands_api_player_teleport", async (te
     test.assertEntityInstancePresent(player, startLoc);
     await test.idle(20);
     const endLocAbs = test.worldBlockLocation(endLoc);
-    player.runCommandAsync(`teleport ${endLocAbs.x} ${endLocAbs.y} ${endLocAbs.z}`);
+    srun(() => player.runCommand(`teleport ${endLocAbs.x} ${endLocAbs.y} ${endLocAbs.z}`));
     await test.idle(20);
     test.assertEntityInstancePresent(player, endLoc);
     test.succeed();
@@ -26,7 +26,7 @@ GameTest.registerAsync("CommandTests", "commands_api_pig_teleport", async (test)
     test.assertEntityInstancePresent(entity, startLoc);
     await test.idle(20);
     const endLocAbs = test.worldBlockLocation(endLoc);
-    entity.runCommandAsync(`teleport ${endLocAbs.x} ${endLocAbs.y} ${endLocAbs.z}`);
+    srun(() => entity.runCommand(`teleport ${endLocAbs.x} ${endLocAbs.y} ${endLocAbs.z}`));
     await test.idle(20);
     test.assertEntityInstancePresent(entity, endLoc);
     test.succeed();
@@ -36,7 +36,7 @@ GameTest.registerAsync("CommandTests", "commands_api_pig_teleport", async (test)
 GameTest.registerAsync("CommandTests", "commands_api_dimension_spawn_pig", async (test) => {
     const spawnLoc = { x: 6, y: 2, z: 1 };
     const absSpawnLoc = test.worldBlockLocation({ x: 6, y: 2, z: 1 });
-    test.getDimension().runCommandAsync(`summon minecraft:pig ${absSpawnLoc.x} ${absSpawnLoc.y} ${absSpawnLoc.z}`);
+    srun(() => test.getDimension().runCommand(`summon minecraft:pig ${absSpawnLoc.x} ${absSpawnLoc.y} ${absSpawnLoc.z}`));
     await test.idle(20);
     test.assertEntityPresent("minecraft:pig", spawnLoc);
     test.succeed();
@@ -52,8 +52,8 @@ GameTest.registerAsync("CommandTests", "commands_api_execute_vs_player", async (
     const player2 = test.spawnSimulatedPlayer(spawnLoc2, playerName2);
     // Spawn blocks
     await test.idle(20);
-    test.getDimension().runCommandAsync(`execute "${playerName1}" ~ ~ ~ setblock ~ ~2 ~ stone`);
-    player2.runCommandAsync(`setblock ~ ~2 ~ stone`);
+    srun(() => test.getDimension().runCommand(`execute "${playerName1}" ~ ~ ~ setblock ~ ~2 ~ stone`));
+    srun(() => player2.runCommand(`setblock ~ ~2 ~ stone`));
     // Test for blocks
     await test.idle(40);
     test.assert(test.getBlock({ x: 1, y: 4, z: 1 }).typeId == "minecraft:stone", `Expected Stone block above ${playerName1}.`);
@@ -73,7 +73,8 @@ GameTest.registerAsync("CommandTests", "async_commands_api_player_teleport", asy
     test.assertEntityInstancePresent(player, startLoc);
     await test.idle(20);
     const endLocAbs = test.worldBlockLocation(endLoc);
-    let result = await player.runCommandAsync(`teleport ${endLocAbs.x} ${endLocAbs.y} ${endLocAbs.z}`);
+    await system.waitTicks(1);
+    let result = player.runCommand(`teleport ${endLocAbs.x} ${endLocAbs.y} ${endLocAbs.z}`);
     test.assert(result.successCount > 0, `Expected successCount > 0, ${result.successCount}`);
     await test.idle(20);
     test.assertEntityInstancePresent(player, endLoc);
@@ -84,9 +85,10 @@ GameTest.registerAsync("CommandTests", "async_commands_api_player_teleport", asy
 GameTest.registerAsync("CommandTests", "async_commands_api_dimension_spawn_pig", async (test) => {
     const spawnLoc = { x: 6, y: 2, z: 1 };
     const absSpawnLoc = test.worldBlockLocation({ x: 6, y: 2, z: 1 });
-    let result = await test
+    await system.waitTicks(1);
+    let result = test
         .getDimension()
-        .runCommandAsync(`summon minecraft:pig ${absSpawnLoc.x} ${absSpawnLoc.y} ${absSpawnLoc.z}`);
+        .runCommand(`summon minecraft:pig ${absSpawnLoc.x} ${absSpawnLoc.y} ${absSpawnLoc.z}`);
     test.assert(result.successCount > 0, `Expected successCount > 0, ${result.successCount}`);
     await test.idle(20);
     test.assertEntityPresent("minecraft:pig", spawnLoc);
@@ -103,9 +105,11 @@ GameTest.registerAsync("CommandTests", "async_commands_api_execute_vs_player", a
     const player2 = test.spawnSimulatedPlayer(spawnLoc2, playerName2);
     // Spawn blocks
     await test.idle(20);
-    let result = await test.getDimension().runCommandAsync(`execute "${playerName1}" ~ ~ ~ setblock ~ ~2 ~ stone`);
+    await system.waitTicks(1);
+    let result = test.getDimension().runCommand(`execute "${playerName1}" ~ ~ ~ setblock ~ ~2 ~ stone`);
     test.assert(result.successCount > 0, `Expected successCount > 0, ${result.successCount}`);
-    player2.runCommandAsync(`setblock ~ ~2 ~ stone`);
+    await system.waitTicks(1);
+    player2.runCommand(`setblock ~ ~2 ~ stone`);
     // Test for blocks
     await test.idle(40);
     test.assert(test.getBlock({ x: 1, y: 4, z: 1 }).typeId == "minecraft:stone", `Expected Stone block above ${playerName1}.`);

@@ -92,6 +92,7 @@ export async function generalSettings(sourceEntity) {
             switch (v) {
                 case "autoSavePlayerData":
                     if (options[v] !== config.system.autoSavePlayerData) {
+                        config.system.autoSavePlayerData = options[v];
                         optionsRequiringRestartToApplyProperly.push("autoSavePlayerData");
                     }
                     config.system.autoSavePlayerData = options[v];
@@ -119,7 +120,10 @@ export async function generalSettings(sourceEntity) {
                     config.invalidChatCommandAction = options[v];
                     break;
                 case "playerInventoryDataSaveSystemEnabled":
-                    config.system.playerInventoryDataSaveSystemEnabled = options[v];
+                    if (options[v] !== config.system.playerInventoryDataSaveSystemEnabled) {
+                        config.system.playerInventoryDataSaveSystemEnabled = options[v];
+                        optionsRequiringRestartToApplyProperly.push("playerInventoryDataSaveSystemEnabled");
+                    }
                     break;
                 case "spawnCommandDimension":
                     config.spawnCommandLocation = { ...config.spawnCommandLocation, dimension: dimensions[options[v]] };
@@ -134,8 +138,10 @@ export async function generalSettings(sourceEntity) {
                     break;
                 case "useLegacyPlayerInventoryDataSaveSystem":
                     if (debugModeEnabled) {
-                        config.system.useLegacyPlayerInventoryDataSaveSystem = options[v];
-                        optionsRequiringRestartToApplyProperly.push("useLegacyPlayerInventoryDataSaveSystem");
+                        if (options[v] !== config.system.useLegacyPlayerInventoryDataSaveSystem) {
+                            config.system.useLegacyPlayerInventoryDataSaveSystem = options[v];
+                            optionsRequiringRestartToApplyProperly.push("useLegacyPlayerInventoryDataSaveSystem");
+                        }
                     }
                     else {
                         throw new Error(`The useLegacyPlayerInventoryDataSaveSystem setting can is only supposed to be changed in debug mode.`);

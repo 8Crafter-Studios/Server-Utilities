@@ -1,5 +1,5 @@
 import type { Block, ChatSendBeforeEvent, EffectAddBeforeEvent, GameMode } from "@minecraft/server";
-import { Dimension, ExplosionBeforeEvent, ItemUseBeforeEvent, ItemUseOnBeforeEvent, PlayerBreakBlockBeforeEvent, PlayerGameModeChangeBeforeEvent, PlayerInteractWithBlockBeforeEvent, PlayerInteractWithEntityBeforeEvent, PlayerPlaceBlockBeforeEvent, type Vector3 } from "@minecraft/server";
+import { Dimension, ExplosionBeforeEvent, ItemUseBeforeEvent, PlayerBreakBlockBeforeEvent, PlayerGameModeChangeBeforeEvent, PlayerInteractWithBlockBeforeEvent, PlayerInteractWithEntityBeforeEvent, PlayerPlaceBlockBeforeEvent, type Vector3 } from "@minecraft/server";
 import { BlockMask } from "modules/commands/classes/BlockMask";
 /**
  * A class that contains variables that are used for the spawn protection system.
@@ -332,47 +332,6 @@ export interface AdvancedProtectedAreaCategory<JSONMode extends boolean = false>
          * @default true
          */
         enabled?: boolean;
-        /**
-         * A list of tags that allow players to bypass this area type.
-         */
-        allowedBypassTags: string[];
-        /**
-         * Filters for held items that determine whether or not this area type will affect that player.
-         */
-        heldItemFilters: false | {
-            /**
-             * If the mode is set to `include`, then only players holding one of the specified items will be affected by this area type.
-             *
-             * If the mode is set to `exclude`, then players holding one of the specified items will not be affected by this area type.
-             */
-            mode: "exclude" | "include";
-            /**
-             * The item types to allow or block.
-             */
-            items: string[];
-        };
-    };
-    itemUseOn?: false | {
-        /**
-         * Whether or not this area effect is enabled.
-         *
-         * @default true
-         */
-        enabled?: boolean;
-        /**
-         * If the mode is set to `include`, then only blocks matching the specified block mask will be allowed to be broken by players.
-         *
-         * If the mode is set to `exclude`, then blocks matching the specified block mask will be blocked from being broken by players.
-         */
-        mode: "exclude" | "include";
-        /**
-         * The block types to allow or block.
-         */
-        mask: JSONMode extends true ? string : BlockMask;
-        /**
-         * The raw string for the block mask. When saved as JSON, this is the value stored in the mask property.
-         */
-        rawmask?: JSONMode extends true ? undefined : string;
         /**
          * A list of tags that allow players to bypass this area type.
          */
@@ -738,17 +697,6 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults: Mu
             readonly items: [];
         };
     };
-    readonly itemUseOn: {
-        readonly enabled: true;
-        readonly allowedBypassTags: [];
-        readonly heldItemFilters: {
-            readonly mode: "exclude";
-            readonly items: [];
-        };
-        readonly mask: BlockMask;
-        readonly rawmask: "none";
-        readonly mode: "exclude";
-    };
     readonly noPVPZone: {
         readonly enabled: true;
     };
@@ -868,16 +816,6 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSO
             readonly mode: "exclude";
             readonly items: [];
         };
-    };
-    readonly itemUseOn: {
-        readonly enabled: true;
-        readonly allowedBypassTags: [];
-        readonly heldItemFilters: {
-            readonly mode: "exclude";
-            readonly items: [];
-        };
-        readonly mask: "none";
-        readonly mode: "exclude";
     };
     readonly noPVPZone: {
         readonly enabled: true;
@@ -1101,7 +1039,6 @@ export declare class ProtectedAreas {
  * @property {ExplosionBeforeEvent} explosion - Event triggered before an explosion occurs.
  * @property {PlayerInteractWithEntityBeforeEvent} playerInteractWithEntity - Event triggered before a player interacts with an entity.
  * @property {ItemUseBeforeEvent} itemUse - Event triggered before an item is used.
- * @property {ItemUseOnBeforeEvent} itemUseOn - Event triggered before an item is used on a block.
  * @property {PlayerGameModeChangeBeforeEvent} playerGameModeChange - Event triggered before a player's game mode is changed.
  * @property {ChatSendBeforeEvent} chatSend - Event triggered before a chat message is sent.
  * @property {EffectAddBeforeEvent} effectAdd - Event triggered before an effect is added to an entity.
@@ -1113,7 +1050,6 @@ interface preventableEventTypeMap {
     explosion: ExplosionBeforeEvent;
     playerInteractWithEntity: PlayerInteractWithEntityBeforeEvent;
     itemUse: ItemUseBeforeEvent;
-    itemUseOn: ItemUseOnBeforeEvent;
     playerGameModeChange: PlayerGameModeChangeBeforeEvent;
     chatSend: ChatSendBeforeEvent;
     effectAdd: EffectAddBeforeEvent;
@@ -1132,7 +1068,6 @@ export declare const advancedCategoryPropertyDisplayNames: {
     readonly explosion: "Explosion Prevention";
     readonly playerInteractWithEntity: "Entity Interaction Prevention";
     readonly itemUse: "Item Use Prevention";
-    readonly itemUseOn: "Item Use On Prevention";
     readonly playerGameModeChange: "Game Mode Change Prevention";
     readonly chatSend: "Player Chat Message Send Prevention";
     readonly effectAdd: "Entity Effect Add Prevention";
@@ -1142,7 +1077,7 @@ export declare const advancedCategoryPropertyDisplayNames: {
 /**
  * The `ProtectedAreaTester` class is used to test if certain events occur within a protected area.
  *
- * @template {T extends "playerPlaceBlock" | "playerBreakBlock" | "playerInteractWithBlock" | "explosion" | "playerInteractWithEntity" | "itemUse" | "itemUseOn" | "playerGameModeChange" | "chatSend" | "effectAdd"} T
+ * @template {T extends "playerPlaceBlock" | "playerBreakBlock" | "playerInteractWithBlock" | "explosion" | "playerInteractWithEntity" | "itemUse" | "playerGameModeChange" | "chatSend" | "effectAdd"} T
  * The type of event that can be prevented. It can be one of the following:
  * - "playerPlaceBlock"
  * - "playerBreakBlock"
@@ -1150,12 +1085,11 @@ export declare const advancedCategoryPropertyDisplayNames: {
  * - "explosion"
  * - "playerInteractWithEntity"
  * - "itemUse"
- * - "itemUseOn"
  * - "playerGameModeChange"
  * - "chatSend"
  * - "effectAdd"
  */
-export declare class ProtectedAreaTester<T extends "playerPlaceBlock" | "playerBreakBlock" | "playerInteractWithBlock" | "explosion" | "playerInteractWithEntity" | "itemUse" | "itemUseOn" | "playerGameModeChange" | "chatSend" | "effectAdd"> {
+export declare class ProtectedAreaTester<T extends "playerPlaceBlock" | "playerBreakBlock" | "playerInteractWithBlock" | "explosion" | "playerInteractWithEntity" | "itemUse" | "playerGameModeChange" | "chatSend" | "effectAdd"> {
     /**
      * Represents an event that can be prevented.
      *

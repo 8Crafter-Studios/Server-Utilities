@@ -11,7 +11,7 @@ export async function playerDataAutoSaveAsyncInstance() {
                 // globalThis.stopPlayerDataAutoSaveAsync = false;
                 return;
             }
-            if (!p.isValid()) {
+            if (!p.isValid) {
                 console.warn(`Player inventory save skipped for ${p.id} because the player is no longer valid, likely because they left during the save process.`);
                 continue;
             }

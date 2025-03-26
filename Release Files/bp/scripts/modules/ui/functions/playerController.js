@@ -194,7 +194,10 @@ export function playerController(sourceEntitya, message = "") {
             }
             if (Boolean(applyKnockback) == true) {
                 try {
-                    playerList[playerTargetB].applyKnockback(Number(kockbackDirectionX), Number(knockbackDirectionZ), Number(knockbackHorizontalStrength), Number(knockbackVerticalStrength));
+                    playerList[playerTargetB].applyKnockback({
+                        x: Number(kockbackDirectionX) * Number(knockbackHorizontalStrength),
+                        z: Number(knockbackDirectionZ) * Number(knockbackHorizontalStrength),
+                    }, Number(knockbackVerticalStrength));
                 }
                 catch (e) {
                     console.error(e, e.stack);

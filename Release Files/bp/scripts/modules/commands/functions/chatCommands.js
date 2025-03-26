@@ -3760,7 +3760,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                         switch (argsb.args[1].toLowerCase()) {
                                             case "color":
                                                 {
-                                                    if (!!!block.block.getComponent("fluidContainer")) {
+                                                    if (!!!block.block.getComponent("fluid_container")) {
                                                         throw new Error(`This block does not have a waterContainer component.`);
                                                     }
                                                     const argsc = evaluateParameters(argsb.extra, [
@@ -3775,7 +3775,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "hex":
                                                                     case "hexadecimal":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             player.sendMessageB(`#${(currentColor.red *
                                                                                 255)
                                                                                 .toString(16)
@@ -3797,7 +3797,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "frac":
                                                                     case "fractional":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             player.sendMessageB(`Red: ${currentColor.red}, Green: ${currentColor.green}, Blue: ${currentColor.blue}, Alpha: ${currentColor.alpha}`);
                                                                         }
                                                                         break;
@@ -3808,7 +3808,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "dec":
                                                                     case "decimal":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             player.sendMessageB(`Red: ${(currentColor.red *
                                                                                 255).round()}, Green: ${(currentColor.green *
                                                                                 255).round()}, Blue: ${(currentColor.blue *
@@ -3823,7 +3823,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "decr":
                                                                     case "decimalr":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             player.sendMessageB(`Red: ${currentColor.red *
                                                                                 255}, Green: ${currentColor.green *
                                                                                 255}, Blue: ${currentColor.blue *
@@ -3865,7 +3865,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "hex":
                                                                     case "hexadecimal":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             player.sendMessageB(`#${(currentColor.red *
                                                                                 255)
                                                                                 .toString(16)
@@ -3884,7 +3884,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "frac":
                                                                     case "fractional":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             player.sendMessageB(`Red: ${currentColor.red}, Green: ${currentColor.green}, Blue: ${currentColor.blue}`);
                                                                         }
                                                                         break;
@@ -3895,7 +3895,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "dec":
                                                                     case "decimal":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             player.sendMessageB(`Red: ${(currentColor.red *
                                                                                 255).round()}, Green: ${(currentColor.green *
                                                                                 255).round()}, Blue: ${(currentColor.blue *
@@ -3909,7 +3909,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     case "decr":
                                                                     case "decimalr":
                                                                         {
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             player.sendMessageB(`Red: ${currentColor.red *
                                                                                 255}, Green: ${currentColor.green *
                                                                                 255}, Blue: ${currentColor.blue *
@@ -3945,7 +3945,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                             break;
                                                         case "hsl":
                                                             {
-                                                                const currentColor = rgbToHsl(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = rgbToHsl(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h
                                                                     .toPrecision(10)
@@ -3958,7 +3958,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                             break;
                                                         case "hsluv":
                                                             {
-                                                                const currentColor = rgbToHSLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = rgbToHSLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h
                                                                     .toPrecision(10)
@@ -3971,7 +3971,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                             break;
                                                         case "hsv":
                                                             {
-                                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h
                                                                     .toPrecision(10)
@@ -3984,7 +3984,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                             break;
                                                         case "hsb":
                                                             {
-                                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = rgbToHsv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h
                                                                     .toPrecision(10)
@@ -3997,7 +3997,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                             break;
                                                         case "hsi":
                                                             {
-                                                                const currentColor = rgbToHsi(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = rgbToHsi(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h
                                                                     .toPrecision(10)
@@ -4010,7 +4010,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                             break;
                                                         case "hpluv":
                                                             {
-                                                                const currentColor = rgbToHPLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = rgbToHPLuv(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor));
                                                                 player.sendMessageB(`Hue: ${currentColor.h
                                                                     .toPrecision(10)
@@ -4023,28 +4023,28 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                             break;
                                                         case "adobergb":
                                                             {
-                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor)).toAdobeRGB();
                                                                 player.sendMessageB(`Red: ${currentColor.ar}, Green: ${currentColor.ag}, Blue: ${currentColor.ab}`);
                                                             }
                                                             break;
                                                         case "cieluv":
                                                             {
-                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor)).toCIELuv();
                                                                 player.sendMessageB(`Lightness: ${currentColor.L}, Chromaticity u: ${currentColor.u}, Chromaticity v: ${currentColor.v}`);
                                                             }
                                                             break;
                                                         case "ciexyy":
                                                             {
-                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = new Color(mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor)).toCIExyY();
                                                                 player.sendMessageB(`Chromaticity x: ${currentColor.x}, Chromaticity y: ${currentColor.y}, Luminance: ${currentColor.Y}`);
                                                             }
                                                             break;
                                                         case "rawcolorcorergb":
                                                             {
-                                                                const currentColor = mcRGBAToColorCoreRGB(block?.block.getComponent("fluidContainer")
+                                                                const currentColor = mcRGBAToColorCoreRGB(block?.block.getComponent("fluid_container")
                                                                     .fluidColor);
                                                                 player.sendMessageB(JSONB.stringify(currentColor));
                                                             }
@@ -4075,7 +4075,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                 }
                                                 break;
                                             case "filllevel":
-                                                player.sendMessageB(`Fill Level: ${block?.block.getComponent("fluidContainer").fillLevel}`);
+                                                player.sendMessageB(`Fill Level: ${block?.block.getComponent("fluid_container").fillLevel}`);
                                                 break;
                                             case "liquidtype":
                                                 /**
@@ -4101,7 +4101,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                         switch (argsb.args[1].toLowerCase()) {
                                             case "color":
                                                 {
-                                                    if (!!!block.block.getComponent("fluidContainer")) {
+                                                    if (!!!block.block.getComponent("fluid_container")) {
                                                         throw new Error(`This block does not have a waterContainer component.`);
                                                     }
                                                     const argsc = evaluateParameters(argsb.extra, [
@@ -4165,7 +4165,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                 4
                                                                                 ? 1
                                                                                 : 2;
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             const red = rgba
                                                                                 .slice(0 *
                                                                                 rangeScale, 1 *
@@ -4206,7 +4206,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     rangeScale, 4 *
                                                                                     rangeScale), 16) /
                                                                                     denominator;
-                                                                            block.block.getComponent("fluidContainer").fluidColor =
+                                                                            block.block.getComponent("fluid_container").fluidColor =
                                                                                 {
                                                                                     red,
                                                                                     green,
@@ -4258,7 +4258,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                 true
                                                             )
                                                         }*/
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             const red = (rgba[0].trim() ==
                                                                                 "~"
                                                                                 ? currentColor.red
@@ -4275,7 +4275,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                 "~"
                                                                                 ? currentColor.alpha
                                                                                 : rgba[3]).toNumber();
-                                                                            block.block.getComponent("fluidContainer").fluidColor =
+                                                                            block.block.getComponent("fluid_container").fluidColor =
                                                                                 {
                                                                                     red,
                                                                                     green,
@@ -4328,7 +4328,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                 true
                                                             )
                                                         }*/
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             const red = rgba[0].trim() ==
                                                                                 "~"
                                                                                 ? currentColor.red
@@ -4357,7 +4357,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     .toNumber()
                                                                                     .round() /
                                                                                     255;
-                                                                            block.block.getComponent("fluidContainer").fluidColor =
+                                                                            block.block.getComponent("fluid_container").fluidColor =
                                                                                 {
                                                                                     red,
                                                                                     green,
@@ -4410,7 +4410,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                 true
                                                             )
                                                         }*/
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             const red = rgba[0].trim() ==
                                                                                 "~"
                                                                                 ? currentColor.red
@@ -4431,7 +4431,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                 ? currentColor.alpha
                                                                                 : rgba[3].toNumber() /
                                                                                     255;
-                                                                            block.block.getComponent("fluidContainer").fluidColor =
+                                                                            block.block.getComponent("fluid_container").fluidColor =
                                                                                 {
                                                                                     red,
                                                                                     green,
@@ -4498,7 +4498,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                 3
                                                                                 ? 1
                                                                                 : 2;
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             const red = rgb
                                                                                 .slice(0 *
                                                                                 rangeScale, 1 *
@@ -4529,7 +4529,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     rangeScale, 3 *
                                                                                     rangeScale), 16) /
                                                                                     denominator;
-                                                                            block.block.getComponent("fluidContainer").fluidColor =
+                                                                            block.block.getComponent("fluid_container").fluidColor =
                                                                                 {
                                                                                     red,
                                                                                     green,
@@ -4579,7 +4579,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                 true
                                                             )
                                                         }*/
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             const red = (rgba[0].trim() ==
                                                                                 "~"
                                                                                 ? currentColor.red
@@ -4592,7 +4592,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                 "~"
                                                                                 ? currentColor.blue
                                                                                 : rgba[2]).toNumber();
-                                                                            block.block.getComponent("fluidContainer").fluidColor =
+                                                                            block.block.getComponent("fluid_container").fluidColor =
                                                                                 {
                                                                                     red,
                                                                                     green,
@@ -4643,7 +4643,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                 true
                                                             )
                                                         }*/
-                                                                            const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                            const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                             const red = rgba[0].trim() ==
                                                                                 "~"
                                                                                 ? currentColor.red
@@ -4665,7 +4665,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                                     .toNumber()
                                                                                     .round() /
                                                                                     255;
-                                                                            block.block.getComponent("fluidContainer").fluidColor =
+                                                                            block.block.getComponent("fluid_container").fluidColor =
                                                                                 {
                                                                                     red,
                                                                                     green,
@@ -4713,10 +4713,10 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                                                     player.sendError(`§cSyntax error: Unexpected "": at "${switchTestB.slice(-10)}>><<"`, true);
                                                                     return;
                                                                 }
-                                                                const currentColor = block?.block.getComponent("fluidContainer").fluidColor;
+                                                                const currentColor = block?.block.getComponent("fluid_container").fluidColor;
                                                                 const hslB = HSLToRGB(...hsl);
                                                                 const [red, green, blue,] = hslB;
-                                                                block.block.getComponent("fluidContainer").fluidColor = {
+                                                                block.block.getComponent("fluid_container").fluidColor = {
                                                                     red: red /
                                                                         255,
                                                                     green: green /
@@ -4760,11 +4760,11 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                                              */
                                             case "filllevel":
                                                 {
-                                                    if (!!!block.block.getComponent("fluidContainer")) {
+                                                    if (!!!block.block.getComponent("fluid_container")) {
                                                         throw new Error(`This block does not have any fluid container components.`);
                                                     }
                                                     const argsc = evaluateParameters(argsb.extra, ["presetText"]);
-                                                    block.block.getComponent("fluidContainer").fillLevel =
+                                                    block.block.getComponent("fluid_container").fillLevel =
                                                         argsc.args[0].toNumber();
                                                 }
                                                 break;
@@ -4819,13 +4819,13 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 break;
             case !!switchTest.match(/^gmc$/):
                 eventData.cancel = true;
-                try {
-                    player.runCommandAsync("/gamemode c");
-                }
-                catch (e) {
-                    player.sendError("§c" + e + e.stack, true);
-                }
                 system.run(() => {
+                    try {
+                        player.runCommand("/gamemode c");
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
                     targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
                         " " +
                         player.location.y +
@@ -4839,13 +4839,13 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 break;
             case !!switchTest.match(/^gms$/):
                 eventData.cancel = true;
-                try {
-                    player.runCommandAsync("/gamemode s");
-                }
-                catch (e) {
-                    player.sendError("§c" + e + e.stack, true);
-                }
                 system.run(() => {
+                    try {
+                        player.runCommand("/gamemode s");
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
                     targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
                         " " +
                         player.location.y +
@@ -4859,13 +4859,13 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 break;
             case !!switchTest.match(/^gma$/):
                 eventData.cancel = true;
-                try {
-                    player.runCommandAsync("/gamemode a");
-                }
-                catch (e) {
-                    player.sendError("§c" + e + e.stack, true);
-                }
                 system.run(() => {
+                    try {
+                        player.runCommand("/gamemode a");
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
                     targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
                         " " +
                         player.location.y +
@@ -4879,13 +4879,13 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 break;
             case !!switchTest.match(/^gmd$/):
                 eventData.cancel = true;
-                try {
-                    player.runCommandAsync("/gamemode d");
-                }
-                catch (e) {
-                    player.sendError("§c" + e + e.stack, true);
-                }
                 system.run(() => {
+                    try {
+                        player.runCommand("/gamemode d");
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
                     targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
                         " " +
                         player.location.y +
@@ -4899,13 +4899,13 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 break;
             case !!switchTest.match(/^gmp$/):
                 eventData.cancel = true;
-                try {
-                    player.runCommandAsync("/gamemode spectator");
-                }
-                catch (e) {
-                    player.sendError("§c" + e + e.stack, true);
-                }
                 system.run(() => {
+                    try {
+                        player.runCommand("/gamemode spectator");
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
                     targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
                         " " +
                         player.location.y +
@@ -4919,50 +4919,50 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 break;
             case !!switchTest.match(/^gmr$/):
                 eventData.cancel = true;
-                switch (Math.round(Math.random() * 4)) {
-                    case 0:
-                        try {
-                            player.runCommandAsync("/gamemode c");
-                        }
-                        catch (e) {
-                            player.sendError("§c" + e + e.stack, true);
-                        }
-                        break;
-                    case 1:
-                        try {
-                            player.runCommandAsync("/gamemode s");
-                        }
-                        catch (e) {
-                            player.sendError("§c" + e + e.stack, true);
-                        }
-                        break;
-                    case 2:
-                        try {
-                            player.runCommandAsync("/gamemode a");
-                        }
-                        catch (e) {
-                            player.sendError("§c" + e + e.stack, true);
-                        }
-                        break;
-                    case 3:
-                        try {
-                            player.runCommandAsync("/gamemode d");
-                        }
-                        catch (e) {
-                            player.sendError("§c" + e + e.stack, true);
-                        }
-                        break;
-                    case 4:
-                        try {
-                            player.runCommandAsync("/gamemode spectator");
-                        }
-                        catch (e) {
-                            player.sendError("§c" + e + e.stack, true);
-                        }
-                        break;
-                } /*
-            try{player.runCommandAsync("/gamemode random")}catch(e){player.sendError("§c" + e + e.stack, true)}*/
                 system.run(() => {
+                    switch (Math.round(Math.random() * 4)) {
+                        case 0:
+                            try {
+                                player.runCommand("/gamemode c");
+                            }
+                            catch (e) {
+                                player.sendError("§c" + e + e.stack, true);
+                            }
+                            break;
+                        case 1:
+                            try {
+                                player.runCommand("/gamemode s");
+                            }
+                            catch (e) {
+                                player.sendError("§c" + e + e.stack, true);
+                            }
+                            break;
+                        case 2:
+                            try {
+                                player.runCommand("/gamemode a");
+                            }
+                            catch (e) {
+                                player.sendError("§c" + e + e.stack, true);
+                            }
+                            break;
+                        case 3:
+                            try {
+                                player.runCommand("/gamemode d");
+                            }
+                            catch (e) {
+                                player.sendError("§c" + e + e.stack, true);
+                            }
+                            break;
+                        case 4:
+                            try {
+                                player.runCommand("/gamemode spectator");
+                            }
+                            catch (e) {
+                                player.sendError("§c" + e + e.stack, true);
+                            }
+                            break;
+                    } /*
+                try{player.runCommand("/gamemode random")}catch(e){player.sendError("§c" + e + e.stack, true)}*/
                     targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
                         " " +
                         player.location.y +
@@ -4976,25 +4976,27 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 break; /*
 case !!switchTest.match(/^settings$/):
     eventData.cancel = true;
-    switch (Math.min(newMessage.split(" ").length, 3)){
-        case 3:
-            try{player.runCommandAsync("/scriptevent andexdb:setWorldDynamicPropertyB " + newMessage.slice(10).split(" ")[0] + "|" + newMessage.slice(newMessage.split(" ")[1].length+10))}catch(e){player.sendError("§c" + e + e.stack, true)}
-            try{eventData.sender.sendMessage("Set " + newMessage.split(" ")[1] + " to " + newMessage.slice(newMessage.split(" ")[1].length+10)); }catch(e){player.sendError("§c" + e + e.stack, true)}
-        break;
-        case 2:
-            try{eventData.sender.sendMessage("Setting " + newMessage.split(" ")[1] + ": " + world.getDynamicProperty(newMessage.split(" ")[1])); }catch(e){player.sendError("§c" + e + e.stack, true)}
-        break;
-    }
+    srun(()=>{
+        switch (Math.min(newMessage.split(" ").length, 3)){
+            case 3:
+                try{player.runCommand("/scriptevent andexdb:setWorldDynamicPropertyB " + newMessage.slice(10).split(" ")[0] + "|" + newMessage.slice(newMessage.split(" ")[1].length+10))}catch(e){player.sendError("§c" + e + e.stack, true)}
+                try{eventData.sender.sendMessage("Set " + newMessage.split(" ")[1] + " to " + newMessage.slice(newMessage.split(" ")[1].length+10)); }catch(e){player.sendError("§c" + e + e.stack, true)}
+            break;
+            case 2:
+                try{eventData.sender.sendMessage("Setting " + newMessage.split(" ")[1] + ": " + world.getDynamicProperty(newMessage.split(" ")[1])); }catch(e){player.sendError("§c" + e + e.stack, true)}
+            break;
+        }
+    });
 break; */
             case !!switchTest.match(/^enderchest$/) || !!switchTest.match(/^ec$/):
                 eventData.cancel = true;
-                try {
-                    player.runCommandAsync("/setblock ~~~ ender_chest");
-                }
-                catch (e) {
-                    player.sendError("§c" + e + e.stack, true);
-                }
                 system.run(() => {
+                    try {
+                        player.runCommand("/setblock ~~~ ender_chest");
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
                     targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
                         " " +
                         player.location.y +
@@ -7289,7 +7291,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                         ];
                                         if (!!world.structureManager.get(args[2])) {
                                             const structure = world.structureManager.get(args[2]);
-                                            psend(player, `§aID: ${structure.id}\nisValid: ${structure.isValid()}\nSize: ${JSON.stringify(structure.size)}.`);
+                                            psend(player, `§aID: ${structure.id}\nisValid: ${structure.isValid}\nSize: ${JSON.stringify(structure.size)}.`);
                                         }
                                         else {
                                             psend(player, `§cError: Unable to find the structure "§r${args[2]}§r§c".`);
@@ -8411,8 +8413,12 @@ break; */ // COMING SOON!
                 try {
                     system.run(() => {
                         try {
+                            if (entity_scale_format_version === null) {
+                                throw new Error(`8Crafter's Entity Scale Add-On v1.18.0 or newer is required to use the ${command.dp}scale command as of Minecraft v1.21.70, this is because in v1.21.70 microsoft made the value property of EntityScaleComponent readonly, so entity scale is required because it uses an older, stable version of the @minecraft/server modules that does not have this change.`);
+                            }
                             if (newMessage.split(" ")[2] == undefined) {
-                                player.getComponent("scale").value = Number(newMessage.split(" ")[1]);
+                                player.runCommand("/scriptevent andexsa:setScale " +
+                                    Number(newMessage.split(" ")[1]));
                             }
                             else {
                                 targetSelectorAllListE(newMessage.split(" ").slice(2).join(" "), "~~~").forEach((p) => {
@@ -8482,12 +8488,14 @@ break; */ // COMING SOON!
                 break;
             case !!switchTest.match(/^tps$/):
                 eventData.cancel = true;
-                try {
-                    player.runCommandAsync("/scriptevent andexsa:getTPSExtraDetails");
-                }
-                catch (e) {
-                    player.sendError("§c" + e + e.stack, true);
-                }
+                srun(() => {
+                    try {
+                        player.runCommand("/scriptevent andexsa:getTPSExtraDetails");
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
+                });
                 break;
             case !!switchTest.match(/^managescriptautoeval$/):
                 eventData.cancel = true;
@@ -8766,12 +8774,14 @@ break; */ // COMING SOON!
                 break;
             case !!switchTest.match(/^stopallsaintervals$/):
                 eventData.cancel = true;
-                try {
-                    player.runCommandAsync("/scriptevent andexsa:clearRepeatingIntervals");
-                }
-                catch (e) {
-                    player.sendError("§c" + e + e.stack, true);
-                }
+                srun(() => {
+                    try {
+                        player.runCommand("/scriptevent andexsa:clearRepeatingIntervals");
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
+                });
                 break;
             case !!switchTest.match(/^datapickblock$/) ||
                 !!switchTest.match(/^dpb$/):
@@ -27290,9 +27300,9 @@ ${command.dp}snapshot list`);
                     !args[1].includes(":")
                         ? (args[1] = "minecraft:" + args[1])
                         : undefined;
-                    player.runCommandAsync(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex((v) => v.id == args[1] &&
+                    srun(() => player.runCommand(`/give @s andexdb:enchantment_transfer_smithing_template 1 ${listoftransformrecipes.findIndex((v) => v.id == args[1] &&
                         ((!!!v["data"] && !!!args[2]) ||
-                            v["data"] == args[2]))}`);
+                            v["data"] == args[2]))}`));
                     player.sendMessageB(listoftransformrecipes.findIndex((v) => v.id == args[1] &&
                         ((!!!v["data"] && !!!args[2]) ||
                             v["data"] == args[2])) == -1
@@ -27851,7 +27861,10 @@ ${command.dp}snapshot list`);
                                                     return target.getComponent("scale").value;
                                                 },
                                                 set ["minecraft:generic.scale"](value) {
-                                                    target.getComponent("scale").value = value;
+                                                    if (entity_scale_format_version === null) {
+                                                        throw new Error("8Crafter's Entity Scale Add-On v1.18.0 or newer is required to set the minecraft:generic.scale\" attribute.");
+                                                    }
+                                                    target.runCommand("/scriptevent andexsa:setScale " + value);
                                                 },
                                             };
                                             pbsend(player, directory[argsa.args[1]]);
