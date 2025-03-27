@@ -12,5 +12,6 @@
   },
   "java.project.referencedLibraries": [
     "BP/json-20250107.jar"
-  ]
+  ],
+  "workbench.editor.pinnedTabsOnSeparateRow": true
 }
