@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "ES2022",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "outDir": "./scripts",
+    "paths": {
+      "@minecraft/math.js": ["../node_modules/@minecraft/math"],
+      "@minecraft/vanilla-data.js": ["../node_modules/@minecraft/vanilla-data"],
+      "shiki-core.js": ["../node_modules/@shikijs/core"]/*,
+      "semver": ["C:/Users/ander/github/Debug Sticks/BP/node_modules/semver/index.d.ts"]*/
+    },
+    "allowJs": true,
+    "declaration": true,/*
+    "declarationMap": true,*/
+    "declarationDir": "./scripts",
+    "verbatimModuleSyntax": true/*, 
+    "resolveJsonModule": true*/,
+    "sourceMap": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictBindCallApply": true,
+    // "strictNullChecks": true,
+    // "strictPropertyInitialization": true,
+    "noImplicitAny": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "generateCpuProfile": "profile.cpuprofile",
+    // "traceResolution": true,
+    "extendedDiagnostics": true,
+    "skipLibCheck": true
+  },
+  "exclude": [ "node_modules" ],
+  "include": [ "src" ]
+}

@@ -4,13 +4,19 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.3.0",
     "configurations": [
-        
         {
             "type": "java",
-            "name": "generateDirectoryTreeFile",
+            "name": "(BP) Gen Dir Tree File",
             "request": "launch",
-            "mainClass": "generateDirectoryTreeFile",
-            "projectName": "Debug Sticks_f97a0e52"
+            "mainClass": "generateDirectoryTreeFile_BP",
+            "projectName": "Debug Sticks_f97a0e52",
+        },
+        {
+            "type": "java",
+            "name": "(BP Preview) Gen Dir Tree File",
+            "request": "launch",
+            "mainClass": "generateDirectoryTreeFile_BP_Preview",
+            "projectName": "Debug Sticks_f97a0e52",
         },
         {
             "type": "minecraft-js",
