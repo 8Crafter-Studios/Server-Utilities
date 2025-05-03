@@ -1,0 +1,8 @@
+{
+  "format_version": "1.21.30",
+  "minecraft:texture_set": {
+    "color": "player_menu_1",
+    "metalness_emissive_roughness": [0, 255, 0],
+    "heightmap": "player_menu_1_heightmap"
+  }
+}

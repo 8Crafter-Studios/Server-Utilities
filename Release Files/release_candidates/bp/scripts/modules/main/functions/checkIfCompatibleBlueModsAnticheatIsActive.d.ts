@@ -1,0 +1,1 @@
+export declare function checkIfCompatibleBlueModsAnticheatIsActive(init?: boolean, maxWaitTicks?: number): Promise<false | `${bigint}.${bigint}.${bigint}` | `${bigint}.${bigint}.${bigint}+${string}` | `${bigint}.${bigint}.${bigint}-${string}` | `${bigint}.${bigint}.${bigint}-${string}+${string}`>;

@@ -1,9 +1,8 @@
 {
-	"format_version": "1.21.30",
+	"format_version": "1.21.60",
 	"minecraft:item": {
 		"description": {
-			"identifier": "andexdb:non_chargeable_item_1",
-			"menu_category": {"category": "items", "group": "itemGroup.name.andexdbNonChargeableItem", "is_hidden_in_commands": false}
+			"identifier": "andexdb:non_chargeable_item_1"
 		},
 		"components": {
 			"minecraft:hand_equipped": true,

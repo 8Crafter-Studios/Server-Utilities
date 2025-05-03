@@ -1,0 +1,90 @@
+{
+    "namespace": "andexdb_wide_long_form",
+    "long_form@andexdb_common.main_panel_no_buttons_plus": {
+        "$title_panel": "andexdb_common.standard_title_label",
+        "$title_size": ["100% - 14px", 10],
+        "size": "$form_size",
+        "$form_size|default": [440, 200],
+        "$show_status_bar|default": true,
+        "variables": [
+            {
+                "requires": "$show_status_bar",
+                "$form_size": [440, 215]
+            }
+        ],
+        "$text_name": "#title_text",
+        "$title_text_binding_type": "none",
+        "$child_control": "andexdb_wide_long_form.long_form_panel",
+        "layer": 2
+    },
+    "long_form_panel": {
+        "type": "stack_panel",
+        "size": ["100%", "100%"],
+        "orientation": "vertical",
+        "layer": 1,
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+        "controls": [
+            {
+                "scrolling_panel@common.scrolling_panel": {
+                    "anchor_to": "top_left",
+                    "anchor_from": "top_left",
+                    "$show_background": false,
+                    "size": ["100%", "100%"],
+                    "$scrolling_content": "andexdb_wide_long_form.long_form_scrolling_content",
+                    "$scroll_size": [5, "100% - 4px"],
+                    "$scrolling_pane_size": ["100% - 4px", "100% - 2px"],
+                    "$scrolling_pane_offset": [2, 0],
+                    "$scroll_bar_right_padding_size": [0, 0]
+                }
+            }
+        ]
+    },
+
+    "long_form_scrolling_content": {
+        "type": "stack_panel",
+        "size": ["100% - 4px", "100%c"],
+        "orientation": "vertical",
+        "anchor_from": "top_left",
+        "anchor_to": "top_left",
+
+        "controls": [
+            {
+                "label_offset_panel": {
+                    "type": "panel",
+                    "size": ["100%", "100%c"],
+                    "controls": [
+                        {
+                            "main_label": {
+                                "type": "label",
+                                "offset": [2, 2],
+                                "color": "$main_header_text_color",
+                                "size": ["100%", "default"],
+                                "anchor_from": "top_left",
+                                "anchor_to": "top_left",
+                                "text": "#form_text"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "padding": {
+                    "type": "panel",
+                    "size": ["100%", 4]
+                }
+            },
+            {
+                "wrapping_panel": {
+                    "type": "panel",
+                    "size": ["100%", "100%c"],
+                    "controls": [
+                        {
+                            "long_form_dynamic_buttons_panel@andexdb_common.long_form_dynamic_buttons_panel": {}
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+import type { Vector3 } from "@minecraft/server";
+export declare function generateMathExpression(expression: (wx: number, wy: number, wz: number, x: number, y: number, z: number, ax: number, ay: number, az: number, bx: number, by: number, bz: number, nx: number, ny: number, nz: number, px: number, py: number, pz: number) => boolean, generateCallback: (location: {
+    x: number;
+    y: number;
+    z: number;
+    rx: number;
+    ry: number;
+    rz: number;
+    ax: number;
+    ay: number;
+    az: number;
+    bx: number;
+    by: number;
+    bz: number;
+    nx: number;
+    ny: number;
+    nz: number;
+    px: number;
+    py: number;
+    pz: number;
+    count: bigint;
+    index: bigint;
+}) => any, from: Vector3, to: Vector3, pos1: Vector3, pos2: Vector3, step?: number): Generator<void, bigint, unknown>;

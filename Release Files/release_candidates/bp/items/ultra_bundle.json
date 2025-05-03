@@ -1,5 +1,5 @@
 {
-	"format_version": "1.21.40",
+	"format_version": "1.21.30",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:ultra_bundle",
@@ -28,11 +28,11 @@
 			},
 			"minecraft:dyeable": {},
 			"minecraft:storage_item": {
-				"allow_nested_storage_items": true, // Can be any of the enchant slot listed below
-				"value": 10,
-				"weight_in_storage_item": 1,
 				"max_weight_limit": 64,
-				"max_slots": 64
+				"weight_in_storage_item": 0,
+				"allow_nested_storage_items": true,
+				"max_slots": 64,
+				"allowed_items": []
 			},
 			"minecraft:bundle_interaction": {
 				"num_viewable_slots": 64

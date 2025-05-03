@@ -1,0 +1,1 @@
+{"version":3,"file":"bcsend.js","sourceRoot":"","sources":["../../../src/init/functions/bcsend.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAE,MAAM,mBAAmB,CAAC;AAE1C,UAAU,CAAC,MAAM,GAAG,SAAS,MAAM,CAC/B,KAAU,EACV,KAAuB,EACvB,OAAkD;IAElD,KAAK,CAAC,WAAW,CACb,kBAAkB,CAAC,aAAa,CAAC,KAAK,EAAE,IAAI,EAAE,KAAK,CAAC,EAAE,OAAO,CAAC,CACjE,CAAC;AACN,CAAC,CAAC"}

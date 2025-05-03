@@ -5,7 +5,17 @@ function loggedMethod(originalMethod, propertyKey, descriptor) {
         descriptor.value = function replacementMethod(...args) {
             console.log(`LOG: Entering method ${!!methodName ? ` <(${methodName})${!!propertyKey ? ` ${propertyKey}` : ""}>` : !!propertyKey ? ` <${propertyKey}>` : ""}.`);
             const result = originalValue.call(this, ...args);
-            console.log(`LOG: Exiting method ${!!methodName ? ` <(${methodName})${!!propertyKey ? ` ${propertyKey}` : ""}>` : !!propertyKey ? ` <${propertyKey}>` : ""}. Value type is ${typeof result == "object" ? result?.constructor?.name ?? "null" : typeof result}. ${tryget(() => "Value is " + JSONB.stringify(result, undefined, 0, { bigint: true, function: true, get: true, set: true, Infinity: true, NaN: true, NegativeInfinity: true, undefined: true })) ?? "Unable to get the returned value"}.`);
+            console.log(`LOG: Exiting method ${!!methodName ? ` <(${methodName})${!!propertyKey ? ` ${propertyKey}` : ""}>` : !!propertyKey ? ` <${propertyKey}>` : ""}. Value type is ${typeof result == "object" ? result?.constructor?.name ?? "null" : typeof result}. ${tryget(() => "Value is " +
+                JSONB.stringify(result, undefined, 0, {
+                    bigint: true,
+                    function: true,
+                    get: true,
+                    set: true,
+                    Infinity: true,
+                    NaN: true,
+                    NegativeInfinity: true,
+                    undefined: true,
+                })) ?? "Unable to get the returned value"}.`);
             return result;
         };
     }
@@ -14,7 +24,17 @@ function loggedMethod(originalMethod, propertyKey, descriptor) {
         descriptor.get = function replacementMethod(...args) {
             console.log(`LOG: Entering getter ${!!methodName ? ` <(${methodName})${!!propertyKey ? ` ${propertyKey}` : ""}>` : !!propertyKey ? ` <${propertyKey}>` : ""}.`);
             const result = originalGet.call(this, ...args);
-            console.log(`LOG: Exiting getter ${!!methodName ? ` <(${methodName})${!!propertyKey ? ` ${propertyKey}` : ""}>` : !!propertyKey ? ` <${propertyKey}>` : ""}. Value type is ${typeof result == "object" ? result?.constructor?.name ?? "null" : typeof result}. ${tryget(() => "Value is " + JSONB.stringify(result, undefined, 0, { bigint: true, function: true, get: true, set: true, Infinity: true, NaN: true, NegativeInfinity: true, undefined: true })) ?? "Unable to get the returned value"}.`);
+            console.log(`LOG: Exiting getter ${!!methodName ? ` <(${methodName})${!!propertyKey ? ` ${propertyKey}` : ""}>` : !!propertyKey ? ` <${propertyKey}>` : ""}. Value type is ${typeof result == "object" ? result?.constructor?.name ?? "null" : typeof result}. ${tryget(() => "Value is " +
+                JSONB.stringify(result, undefined, 0, {
+                    bigint: true,
+                    function: true,
+                    get: true,
+                    set: true,
+                    Infinity: true,
+                    NaN: true,
+                    NegativeInfinity: true,
+                    undefined: true,
+                })) ?? "Unable to get the returned value"}.`);
             return result;
         };
     }
@@ -37,25 +57,97 @@ function loggedMethod(originalMethod, propertyKey, descriptor) {
 }
 globalThis.loggedMethod = loggedMethod;
 function log(value, propertyKey) {
-    console.log(`LOG ${!!propertyKey ? `<${propertyKey}>` : ""}: ${JSONB.stringify(value, undefined, 0, { bigint: true, function: true, get: true, set: true, Infinity: true, NaN: true, NegativeInfinity: true, undefined: true })}`);
+    console.log(`LOG ${!!propertyKey ? `<${propertyKey}>` : ""}: ${JSONB.stringify(value, undefined, 0, {
+        bigint: true,
+        function: true,
+        get: true,
+        set: true,
+        Infinity: true,
+        NaN: true,
+        NegativeInfinity: true,
+        undefined: true,
+    })}`);
 }
 globalThis.log = log;
 function configurable(value) {
     return function (target, propertyKey, descriptor) {
-        descriptor.configurable = value;
+        if (descriptor != undefined) {
+            descriptor.configurable = value;
+        }
+        else {
+            Object.defineProperty(target, propertyKey, {
+                ...Object.getOwnPropertyDescriptor(target, propertyKey),
+                configurable: value,
+            });
+        }
     };
 }
 globalThis.configurable = configurable;
 function enumerable(value) {
     return function (target, propertyKey, descriptor) {
-        descriptor.enumerable = value;
+        if (descriptor != undefined) {
+            descriptor.enumerable = value;
+        }
+        else {
+            Object.defineProperty(target, propertyKey, {
+                ...Object.getOwnPropertyDescriptor(target, propertyKey),
+                enumerable: value,
+            });
+        }
     };
 }
 globalThis.enumerable = enumerable;
 function writable(value) {
     return function (target, propertyKey, descriptor) {
-        descriptor.writable = value;
+        if (descriptor != undefined) {
+            descriptor.writable = value;
+        }
+        else {
+            Object.defineProperty(target, propertyKey, {
+                ...Object.getOwnPropertyDescriptor(target, propertyKey),
+                writable: value,
+            });
+        }
     };
 }
 globalThis.writable = writable;
+const readonlifyMap = new Map();
+// CLASS DECORATOR
+function readonlify(constructor) {
+    const c = class extends constructor {
+        constructor(...args) {
+            super(...args);
+            if (new.target === c)
+                readonlifyMap.set(this, true);
+        }
+    };
+    return c;
+}
+globalThis.readonlify = readonlify;
+// PROPERTY DECORATOR
+function readonly(target, key, propertyDescriptor) {
+    let z = undefined;
+    Object.defineProperty(target, key, {
+        get() {
+            return z;
+        },
+        set(value) {
+            console.log("Set ", value);
+            if (readonlifyMap.get(this))
+                throw new Error();
+            z = value;
+        },
+    });
+}
+globalThis.readonly = readonly;
+// PROPERTY DECORATOR
+function propToGetter(target, key, propertyDescriptor) {
+    let z = undefined;
+    Object.defineProperty(target, key, {
+        get() {
+            return Object.getOwnPropertyDescriptor(target, key).value;
+        },
+    });
+}
+Object.defineProperty(globalThis, "propToGetter", { value: propToGetter, writable: false, enumerable: false, configurable: false });
 //# sourceMappingURL=GlobalDecorators.js.map

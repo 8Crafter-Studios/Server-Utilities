@@ -1,0 +1,30 @@
+{
+    "format_version": "1.21.50",
+    "minecraft:block": {
+        "description": {
+            "identifier": "andexdb:invalid_block_placeholder",
+            "menu_category": {
+                "category": "none",
+                "is_hidden_in_commands": false
+            }
+        },
+        "components": {
+            "minecraft:light_dampening": 15,
+            "minecraft:geometry": {
+                "identifier": "minecraft:geometry.full_block"
+            },
+            "minecraft:material_instances": {
+                "*": {
+                    "texture": "invalid_block_placeholder",
+                    "ambient_occlusion": true,
+                    "face_dimming": true,
+                    "render_method": "opaque"
+                }
+            },
+            "minecraft:map_color": "#FF00FF",
+            "minecraft:display_name": "Invalid Block Placeholder",
+            "minecraft:collision_box": true,
+            "minecraft:selection_box": true
+        }
+    }
+}

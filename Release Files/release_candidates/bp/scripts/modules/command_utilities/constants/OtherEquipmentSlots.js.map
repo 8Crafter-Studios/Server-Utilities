@@ -1,0 +1,1 @@
+{"version":3,"file":"OtherEquipmentSlots.js","sourceRoot":"","sources":["../../../../src/modules/command_utilities/constants/OtherEquipmentSlots.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,mBAAmB,CAAC;AAElD,MAAM,CAAC,MAAM,mBAAmB,GAAG;IAC/B,aAAa,CAAC,IAAI;IAClB,aAAa,CAAC,KAAK;IACnB,aAAa,CAAC,IAAI;IAClB,aAAa,CAAC,IAAI;IAClB,aAAa,CAAC,OAAO;CACf,CAAC"}

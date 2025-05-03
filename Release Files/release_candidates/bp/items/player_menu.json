@@ -1,0 +1,48 @@
+{
+	"format_version": "1.21.60",
+	"minecraft:item": {
+		"description": {
+			"identifier": "andexdb:player_menu",
+			"menu_category": {"category": "items", "is_hidden_in_commands": false}
+		},
+		"components": {
+			"minecraft:hand_equipped": false,
+			"minecraft:stacked_by_data": true,
+			"minecraft:max_stack_size": 1,
+			"minecraft:icon": {
+				"textures": {
+					"default": "player_menu"
+				}
+			},
+			"minecraft:interact_button": "Open Menu",
+			"minecraft:rarity": "common",/*
+			"minecraft:render_offsets": {
+				"main_hand": {
+					"first_person": {*//*
+						"scale": [1.075, 0.125, 1.075]*//*
+						"rotation": [90, 0, 0]
+					},
+					"third_person": {*//*
+						"scale": [0.15, 0.25, 0.15],*//*
+						"rotation": [60, 0, 60],
+						"position": [-2.5, 2.5, 0.5]
+					}
+				},
+				"off_hand": {
+					"first_person": {*//*
+						"scale": [1.075, 0.125, 1.075]*//*
+						"rotation": [90, 0, 0]
+					},
+					"third_person": {*//*
+						"scale": [1.075, 1.125, -1.075]*//*
+						"rotation": [90, 0, 0]
+					}
+				}
+			},*/
+			"minecraft:display_name": {
+				"value": "Player Menu"
+			},
+			"minecraft:allow_off_hand": true
+		}
+	}
+}

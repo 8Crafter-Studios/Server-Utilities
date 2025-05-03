@@ -4,11 +4,11 @@
 +*********************************************************/
 
 {
-  "namespace": "server_form",/*
+    "namespace": "server_form" /*
   "long_form@common_dialogs.main_panel_no_buttons": {
     "$title_panel": "common_dialogs.standard_title_label",
     "$title_size": [ "100% - 14px", 10 ],
-    "min_size": ["100%", "100%"]*//*[225, 200]*//*,
+    "min_size": ["100%", "100%"]*/ /*[225, 200]*/ /*,
     "max_size": [5000, 4000],
     "size": ["default", "default"],
     "$text_name": "#textb",
@@ -26,7 +26,7 @@
           },
           {
                 "binding_type": "view",
-                "source_property_name": "((#title_text - 'screensize:fullscreen') - 'imagegrid:true')",
+                "source_property_name": "((('a' + #title_text) - 'screensize:fullscreen') - 'imagegrid:true')",
                 "target_property_name": "#textb"
           }
     ],
@@ -40,7 +40,7 @@
         "requires": "((#text - 'screensize:fullscreen') = #text)",
           "$new_min_size": [225, 200],
         "$new_max_size": [225, 200]
-        }*//*,
+        }*/ /*,
         {
           "requires": "(not ((#text - 'imagegrid:true') = #text))",
           "$new_child_control": "server_form.long_form_panel_grid_view"
@@ -48,9 +48,9 @@
         {
           "requires": "((#text - 'imagegrid:true') = #text)",
           "$new_child_control": "server_form.long_form_panel"
-        }*//*
+        }*/ /*
     ]
-  },*//*
+  },*/ /*
 
   "long_form_panel_grid_view" : {
     "type": "stack_panel",
@@ -250,12 +250,12 @@
         }
       }
     ]
-  },*//*
+  },*/ /*
 
   "dynamic_button_grid_view": {
     "type": "panel",
-    "size": [70, 70],*//*
-    "orientation": "horizontal",*//*
+    "size": [70, 70],*/ /*
+    "orientation": "horizontal",*/ /*
     "controls":[
       {
         "panel_name": {
@@ -353,121 +353,124 @@
   	"controls": [
   		{ "common_panel@common_dialogs.common_panel": { "$dialog_background": "$custom_background" } }
   	]
-  },*/
+  },*/,
 
-  "dynamic_button": {
-      "modifications": [
-          {
-              "array_name": "controls",
-              "operation": "replace",
-              "where": {
-                "form_button@common_buttons.light_text_button": {
-                    "$pressed_button_name": "button.form_button_click",
-                    "anchor_from": "top_left",
-                    "anchor_to": "top_left",
-                    "size": [ "fill", 32 ],
-                    "$button_text": "#form_button_text",
-                    "$button_text_binding_type": "collection",
-                    "$button_text_grid_collection_name": "form_buttons",
-                    "$button_text_max_size": [ "100%", 20 ],
-                    "bindings": [
+    "dynamic_button": {/* 
+        "bindings": [
+        ], */
+        "modifications": [
+            {
+                "array_name": "controls",
+                "operation": "replace",
+                "where": {
+                    "form_button@common_buttons.light_text_button": {
+                        "$pressed_button_name": "button.form_button_click",
+                        "anchor_from": "top_left",
+                        "anchor_to": "top_left",
+                        "size": ["fill", 32],
+                        "$button_text": "#form_button_text",
+                        "$button_text_binding_type": "collection",
+                        "$button_text_grid_collection_name": "form_buttons",
+                        "$button_text_max_size": ["100%", 20],
+                        "bindings": [
+                            {
+                                "binding_type": "collection_details",
+                                "binding_collection_name": "form_buttons"
+                            }
+                        ]
+                    }
+                },
+                "value": {
+                    "form_button@common_buttons.light_text_button_b": {
+                        "$pressed_button_name": "button.form_button_click",
+                        "anchor_from": "top_left",
+                        "anchor_to": "top_left",
+                        "size": ["fill", 32],
+                        "$button_text": "#form_button_text",
+                        "$button_text_binding_type": "collection",
+                        "$button_text_grid_collection_name": "form_buttons",
+                        "$button_text_max_size": ["100%", 20],
+                        "bindings": [
+                            {
+                                "binding_type": "collection_details",
+                                "binding_collection_name": "form_buttons"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "array_name": "bindings",
+                "operation": "insert_back",
+                "value": [
+                    {
+                        "binding_name": "#form_button_text",
+                        "binding_type": "collection",
+                        "binding_collection_name": "form_buttons"
+                    },
+                    {
+                      "binding_type": "view",
+                      "source_property_name": "((('a' + #form_button_text) - $andexdb_disabled_button_code) = ('a' + #form_button_text))",
+                      "target_property_name": "#enabled"
+                    }/* ,
+                    {
+                        "binding_name": "#form_button_text",
+                        "binding_collection_name": "form_buttons",
+                        "binding_type": "collection"
+                    },
+                    {
+                        "binding_type": "view",
+                        "source_property_name": "(not (#form_button_text = ''))",
+                        "target_property_name": "#visible"
+                    } */
+                ]
+            }
+        ]
+    },
+
+    "multiline_toggle@common.checkbox": {
+        /*
+    "$option_binding_name": "#toggle_state",*/
+        "toggle_name": "multiline_toggle",
+        "toggle_grid_collection_name": "multiline_toggle",
+        "anchor_from": "top_right",
+        "anchor_to": "top_right"
+    },
+
+    "multiline_chat_enabled_toggle": {
+        "type": "panel",
+        "size": ["100%", "20px"] /*
+    "anchor_from": "top_right",
+    "anchor_to": "top_right",*/,
+        "controls": [
+            {
+                "title_panel": {
+                    "type": "label",
+                    "size": ["default", 10],
+                    "text": "Multiline",
+                    "offset": [2, -1],
+                    "color": "$title_text_color",
+                    "layer": 2
+                }
+            },
+            {
+                "toggle_panel": {
+                    "type": "panel",
+                    "size": ["100%c", "100%c"],
+                    "anchor_from": "middle_right",
+                    "anchor_to": "middle_right",
+                    "controls": [
                         {
-                            "binding_type": "collection_details",
-                            "binding_collection_name": "form_buttons"
+                            "multiline_toggle@server_form.multiline_toggle": {
+                                "size": ["100%c", "100%c"],
+                                "offset": [30, -1]
+                            }
                         }
                     ]
                 }
-            },
-              "value": {
-                  "form_button@common_buttons.light_text_button_b": {
-                      "$pressed_button_name": "button.form_button_click",
-                      "anchor_from": "top_left",
-                      "anchor_to": "top_left",
-                      "size": [ "fill", 32 ],
-                      "$button_text": "#form_button_text",
-                      "$button_text_binding_type": "collection",
-                      "$button_text_grid_collection_name": "form_buttons",
-                      "$button_text_max_size": [ "100%", 20 ],
-                      "bindings": [
-                          {
-                              "binding_type": "collection_details",
-                              "binding_collection_name": "form_buttons"
-                          }
-                      ]
-                  }
-              }
-          }
-      ]
-  },
-
-  "multiline_toggle@common.checkbox": {/*
-    "$option_binding_name": "#toggle_state",*/
-    "toggle_name": "multiline_toggle",
-    "toggle_grid_collection_name": "multiline_toggle",
-    "anchor_from": "top_right",
-    "anchor_to": "top_right"
-  },
-
-  "multiline_chat_enabled_toggle": {
-    "type": "panel",
-    "size": [ "100%", "20px" ],/*
-    "anchor_from": "top_right",
-    "anchor_to": "top_right",*/
-    "controls": [
-      {
-        "title_panel": {
-          "type": "label",
-          "size": [ "default", 10 ],
-          "text": "Multiline",
-          "offset": [ 2, -1 ],
-          "color": "$title_text_color",
-          "layer": 2
-        }
-      },
-      {
-        "toggle_panel": {
-          "type": "panel",
-          "size": [ "100%c", "100%c" ],
-          "anchor_from": "middle_right",
-          "anchor_to": "middle_right",
-          "controls": [
-            {
-              "multiline_toggle@server_form.multiline_toggle": {	
-                "size": [ "100%c", "100%c" ],	
-                "offset": [ 30, -1 ],	
-                "bindings": [	
-                  {	
-                    "binding_name": "(not #gamepad_helper_visible)",	
-                    "binding_name_override": "#visible"	
-                  }
-                ]
-              }
             }
-          ]	
-        }	
-      },	
-      {	
-        "gamepad_y_button": {	
-          "type": "panel",	
-          "size": [ 24, 17 ],	
-          "offset": [ 6, -1 ],	
-          "controls": [	
-            {	
-              "icon@common.gamepad_helper_y": {	
-                "$icon_description_bind_type": "none"	
-              }	
-            }	
-          ],	
-          "bindings": [	
-            {	
-              "binding_name": "#gamepad_helper_visible",	
-              "binding_name_override": "#visible"	
-            }	
-          ]	
-        }	
-      }	
-    ]	
-  },/*
+        ]
+    } /*
 
   "custom_input": {
     "type": "stack_panel",
@@ -477,34 +480,44 @@
       { "custom_input_a@server_form.custom_input_a": { "layer": 2 } },
       { "custom_input_b@server_form.custom_input_b": { "layer": 2 } }
     ]
-  },*/
+  },*/,
 
-  "custom_input@settings_common.option_text_edit_c": {
-    "$option_label": "#custom_text",
-    "$option_place_holder_text": "#custom_placeholder_text",
-    "$text_edit_box_placeholder_content_binding_name": "$option_place_holder_text",
-    "$text_edit_box_placeholder_content_binding_type": "collection",
-    "$text_edit_box_grid_collection_name": "custom_form",
+    "custom_input@settings_common.option_text_edit_c": {
+        "$option_label": "#custom_text",
+        "$option_place_holder_text": "#custom_placeholder_text",
+        "$text_edit_box_placeholder_content_binding_name": "$option_place_holder_text",
+        "$text_edit_box_placeholder_content_binding_type": "collection",
+        "$text_edit_box_grid_collection_name": "custom_form" /* 
 
-    "$max_text_edit_length": 100000000,/*
-    "$multiline": false,*//*
+    "$max_text_edit_length": 100000000, */ /*
+    "$multiline": false,*/ /*
     "$multilinename": "multiline", 
-    "enabled_newline": "not ((#custom_placeholder_text - $multilinename) = #custom_placeholder_text)", */
+    "enabled_newline": "not ((#custom_placeholder_text - $multilinename) = #custom_placeholder_text)", */,
 
-    "$text_edit_box_content_binding_type": "collection",
-    "$text_edit_box_content_binding_name": "#custom_input_text",
+        "$text_edit_box_content_binding_type": "collection",
+        "$text_edit_box_content_binding_name": "#custom_input_text",
 
-    "$option_binding_name": "#custom_input_text",
-    "$text_box_enabled_binding_name": "#custom_input_enabled",
-    "$text_box_name": "custom_input",
-    "$label_bindings": [
-      {
-        "binding_name": "#custom_text",
-        "binding_type": "collection",
-        "binding_collection_name": "custom_form"
-      }
-    ]
-  }/*,
+        "$option_binding_name": "#custom_input_text",
+        "$text_box_enabled_binding_name": "#custom_input_enabled",
+        "$text_box_name": "custom_input",
+        "$label_bindings": [
+            {
+                "binding_name": "#custom_text",
+                "binding_type": "collection",
+                "binding_collection_name": "custom_form"
+            }
+        ],
+        "variables": [
+            {
+                "requires": "$xbox_one",
+                "$max_text_edit_length": 10000
+            },
+            {
+                "requires": "(not $xbox_one)",
+                "$max_text_edit_length": 100000000
+            }
+        ]
+    } /*,
 
   "custom_input_b@settings_common.option_text_edit_b": {
     "$option_label": "#custom_text",
@@ -515,9 +528,9 @@
     "$option_text_edit_control_size": [ "100%", "120px" ],
     "$multiline": true,
 
-    "$max_text_edit_length": 100000000,*//*
+    "$max_text_edit_length": 100000000,*/ /*
     "$multilinename": "multiline", 
-    "enabled_newline": "not ((#custom_placeholder_text - $multilinename) = #custom_placeholder_text)", *//*
+    "enabled_newline": "not ((#custom_placeholder_text - $multilinename) = #custom_placeholder_text)", */ /*
 
     "$text_edit_box_content_binding_type": "collection",
     "$text_edit_box_content_binding_name": "#custom_input_text",
@@ -540,5 +553,305 @@
         "target_property_name": "#visible"
       }
     ]
-  }*/
+  }*/,
+    "long_form": {
+        "modifications": [
+            // This goes before all other bindings because it is a placeholder to allow the bindings in the other modification to work if no other resource packs are adding #visibile modifying bindings.
+            {
+                "array_name": "bindings",
+                "operation": "insert_front",
+                "value": [
+                    {
+                        "binding_name": "#title_text"
+                    },
+                    {
+                        "binding_type": "view",
+                        "source_control_name": "long_form",
+                        "source_property_name": "(('a' + #title_text) = ('a' + #title_text))",
+                        "target_property_name": "#visible"
+                    }
+                ]
+            },
+            {
+                "array_name": "bindings",
+                "operation": "insert_back",
+                "value": [
+                    // Use a different method to make it invisible so that it will still be compatible with other packs that modify the script form UIs.
+                    // This one checks that it does not contain the code for one of the special forms from this resource pack, and then if it does not contain one of those codes, it checks if it has already been set to invisible by another resource pack.
+                    {
+                        "binding_type": "view",
+                        "source_control_name": "long_form",
+                        "source_property_name": "(((('a' + #title_text) - $andexdb_general_form_code - $andexdb_general_status_bar_form_code - $andexdb_grid_menu_form_code - $andexdb_grid_menu_status_bar_form_code - $andexdb_wide_long_form_code - $andexdb_wide_status_bar_long_form_code - $andexdb_medium_long_form_code - $andexdb_medium_status_bar_long_form_code - $andexdb_fullscreen_long_form_code - $andexdb_fullscreen_status_bar_long_form_code) = ('a' + #title_text)) and #visible)",
+                        "target_property_name": "#visible"
+                    }
+                ]
+            }
+        ]
+    },
+    "andexdb_long_form_panel": {
+        "type": "panel",
+        "bindings": [
+            {
+                "binding_name": "#title_text"
+            }
+        ],
+        "controls": [
+            {
+                "general@andexdb_general_long_form.panel": {
+                    "layer": 2,
+                    "type": "panel",
+                    // "$screen_animations|default": ["@server_form.screen_exit_animation_pop_offset"],
+                    "$show_status_bar": false,
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "((not ((('a' + #title_text) - $andexdb_grid_menu_form_code - $andexdb_general_form_code - $andexdb_wide_long_form_code - $andexdb_medium_long_form_code - $andexdb_fullscreen_long_form_code) = ('a' + #title_text)))",
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            }/* ,
+            {
+                "general_status_bar@andexdb_general_long_form.long_form": {
+                    "ignored": true,
+                    "layer": 2,
+                    "type": "panel",
+                    // "$screen_animations|default": ["@server_form.screen_exit_animation_pop_offset"],
+                    "$show_status_bar": true,
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_general_status_bar_form_code) = ('a' + #title_text)))",
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            }, *//* 
+            {
+                "grid_menu@andexdb_grid_menu.panel": {
+                    "layer": 2,
+                    "type": "panel",
+                    // "$screen_animations|default": ["@server_form.screen_exit_animation_pop_offset"],
+                    "$show_status_bar": false,
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "((not ((('a' + #title_text) - $andexdb_grid_menu_form_code) = ('a' + #title_text))) and ((('a' + #title_text) - $andexdb_grid_menu_status_bar_form_code) = ('a' + #title_text)))",
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            } *//* ,
+            {
+                "grid_menu_status_bar@andexdb_grid_menu.panel": {
+                    "ignored": true,
+                    "layer": 2,
+                    "type": "panel",
+                    // "$screen_animations|default": ["@server_form.screen_exit_animation_pop_offset"],
+                    "$show_status_bar": true,
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_grid_menu_status_bar_form_code) = ('a' + #title_text)))",
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "wide_long_form@andexdb_wide_long_form.long_form": {
+                    "ignored": true,
+                    "layer": 2,
+                    "type": "panel",
+                    // "$screen_animations|default": ["@server_form.screen_exit_animation_pop_offset"],
+                    "$show_status_bar": false,
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "((not ((('a' + #title_text) - $andexdb_wide_long_form_code) = ('a' + #title_text))) and ((('a' + #title_text) - $andexdb_wide_status_bar_long_form_code) = ('a' + #title_text)))",
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "wide_long_form_status_bar@andexdb_wide_long_form.long_form": {
+                    "ignored": true,
+                    "layer": 2,
+                    "type": "panel",
+                    // "$screen_animations|default": ["@server_form.screen_exit_animation_pop_offset"],
+                    "$show_status_bar": true,
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_wide_status_bar_long_form_code) = ('a' + #title_text)))",
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "fullscreen_long_form@andexdb_fullscreen_long_form.long_form": {
+                    "ignored": true,
+                    "layer": 2,
+                    "type": "panel",
+                    // "$screen_animations|default": ["@server_form.screen_exit_animation_pop_offset"],
+                    "$show_status_bar": false,
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "((not ((('a' + #title_text) - $andexdb_fullscreen_long_form_code) = ('a' + #title_text))) and ((('a' + #title_text) - $andexdb_fullscreen_status_bar_long_form_code) = ('a' + #title_text)))",
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "fullscreen_long_form_status_bar@andexdb_fullscreen_long_form.long_form": {
+                    "ignored": true,
+                    "layer": 2,
+                    "type": "panel",
+                    // "$screen_animations|default": ["@server_form.screen_exit_animation_pop_offset"],
+                    "$show_status_bar": true,
+                    "bindings": [
+                        {
+                            "binding_type": "global",
+                            "binding_condition": "none",
+                            "binding_name": "#title_text",
+                            "binding_name_override": "#title_text"
+                        },
+                        {
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_fullscreen_status_bar_long_form_code) = ('a' + #title_text)))",
+                            "binding_type": "view",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            } */
+        ]
+    },
+    "custom_form": {
+      "modifications": [
+          // This goes before all other bindings because it is a placeholder to allow the bindings in the other modification to work if no other resource packs are adding #visibile modifying bindings.
+          {
+              "array_name": "bindings",
+              "operation": "insert_front",
+              "value": [
+                  {
+                      "binding_name": "#title_text"
+                  },
+                  {
+                      "binding_type": "view",
+                      "source_control_name": "custom_form",
+                      "source_property_name": "(('a' + #title_text) = ('a' + #title_text))",
+                      "target_property_name": "#visible"
+                  }
+              ]
+          },
+          {
+              "array_name": "bindings",
+              "operation": "insert_back",
+              "value": [
+                  // Use a different method to make it invisible so that it will still be compatible with other packs that modify the script form UIs.
+                  // This one checks that it does not contain the code for one of the special forms from this resource pack, and then if it does not contain one of those codes, it checks if it has already been set to invisible by another resource pack.
+                  {
+                      "binding_type": "view",
+                      "source_control_name": "custom_form",
+                      "source_property_name": "(((('a' + #title_text) - $andexdb_general_custom_form_code - $andexdb_wide_custom_form_code - $andexdb_medium_custom_form_code - $andexdb_fullscreen_custom_form_code) = ('a' + #title_text)) and #visible)",
+                      "target_property_name": "#visible"
+                  }
+              ]
+          }
+      ]
+    },
+    "andexdb_custom_form_panel": {
+        "type": "panel",
+        "bindings": [
+            {
+                "binding_name": "#title_text"
+            }
+        ],
+        "controls": [
+            {
+                "general_custom_menu_panel@andexdb_general_custom_form.panel": {
+                    "bindings": [
+                        {
+                            "binding_name": "#title_text"
+                        },
+                        {
+                            "binding_type": "view",
+                            "source_property_name": "(not ((('a' + #title_text) - $andexdb_general_custom_form_code - $andexdb_wide_custom_form_code - $andexdb_medium_custom_form_code - $andexdb_fullscreen_custom_form_code) = ('a' + #title_text)))",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "main_screen_content": {
+        "size": ["100%", "100%"],
+        "modifications": [
+            {
+                "array_name": "controls",
+                "operation": "insert_back",
+                "value": [
+                    {
+                        "andexdb_server_form_factory": {
+                            // Name can be anything but cannot be the same as "server_form_factory"
+                            "type": "panel",
+                            "factory": {
+                                "name": "server_form_factory", // Required, this name is binded to the data given to long_form
+                                "control_ids": {
+                                    "long_form": "@server_form.andexdb_long_form_panel",
+                                    "custom_form": "@server_form.andexdb_custom_form_panel"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
 }

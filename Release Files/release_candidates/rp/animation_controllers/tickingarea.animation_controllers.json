@@ -1,0 +1,20 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.andexdb.tickingarea.main": {
+			"states": {
+				"default": {
+					"transitions": [
+						{"visible": "q.property('andexdb:is_visible') == true"}
+					]
+				},
+				"visible": {
+					"animations": ["number_hover", "number_spin"],
+					"transitions": [
+						{"default": "q.property('andexdb:is_visible') == false"}
+					]
+				}
+			}
+		}
+	}
+}

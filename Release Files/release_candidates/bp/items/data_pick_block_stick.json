@@ -1,9 +1,9 @@
 {
-	"format_version": "1.21.40",
+	"format_version": "1.21.60",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:data_pick_block_stick",
-			"menu_category": {"category": "items", "group": "itemGroup.name.debugSticks", "is_hidden_in_commands": false}
+			"menu_category": {"category": "items", "group": "andexdb:itemGroup.name.debug_sticks", "is_hidden_in_commands": false}
 		},
 		"components": {
 			"minecraft:hand_equipped": true,

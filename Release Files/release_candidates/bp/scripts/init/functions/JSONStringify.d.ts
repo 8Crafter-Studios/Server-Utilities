@@ -1,0 +1,1 @@
+import "init/meta/importToMakeValidModule";

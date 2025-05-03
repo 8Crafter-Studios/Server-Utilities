@@ -1,0 +1,1 @@
+{"version":3,"file":"getPlayerHeldItemSlot.js","sourceRoot":"","sources":["../../../../src/modules/command_utilities/functions/getPlayerHeldItemSlot.ts"],"names":[],"mappings":"AAGA,MAAM,UAAU,qBAAqB,CAAC,MAAsC;IACxE,OAAO,MAAM;SACR,YAAY,CAAC,WAAW,CAAC;SACzB,SAAS,CAAC,OAAO,CAAC,MAAM,CAAC,iBAAiB,CAAC,CAAC;AACrD,CAAC"}

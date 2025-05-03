@@ -1,11 +1,11 @@
 {
-	"format_version": "1.21.10",
+	"format_version": "1.21.60",
 	"minecraft:item": {
 		"description": {
 			"identifier": "andexdb:enchantment_transfer_smithing_template",
 			"menu_category": {
-				"category": "Items",
-				"group": "itemGroup.name.smithing_templates"
+				"category": "items",
+				"group": "minecraft:itemGroup.name.smithing_templates"
 			}
 		},
 		"components": {

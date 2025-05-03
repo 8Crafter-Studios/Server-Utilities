@@ -1,0 +1,3 @@
+import type { RawMessage } from "@minecraft/server";
+import { ModalFormData, ActionFormData, MessageFormData } from "@minecraft/server-ui";
+export declare const customElementTypes: (((label: RawMessage | string, placeholderText: RawMessage | string, defaultValue?: RawMessage | string) => ModalFormData) | ((label: RawMessage | string, options: (RawMessage | string)[], defaultValueIndex?: number) => ModalFormData) | ((label: RawMessage | string, defaultValue?: boolean) => ModalFormData) | ((label: RawMessage | string, minimumValue: number, maximumValue: number, valueStep: number, defaultValue?: number) => ModalFormData) | ((text: RawMessage | string, iconPath?: string) => ActionFormData) | ((text: RawMessage | string) => MessageFormData))[];

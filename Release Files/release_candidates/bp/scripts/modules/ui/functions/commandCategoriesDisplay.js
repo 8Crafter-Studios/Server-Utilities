@@ -1,0 +1,21 @@
+export const commandCategoriesDisplay = [
+    { name: "Items", icon: "" },
+    { name: "Misc" },
+    { name: "Invsee" },
+    { name: "Players" },
+    { name: "Containers/Inventories" },
+    { name: "Entities" },
+    { name: "Warps" },
+    { name: "World" },
+    { name: "Server" },
+    { name: "System" },
+    { name: "UIs" },
+    { name: "World Edit" },
+    { name: "Shop System" },
+    { name: "§4Dangerous" },
+    { name: "§6Entity Scale Add-On" },
+    { name: "All Built-In" },
+    { name: "Custom" },
+    { name: "All" },
+];
+//# sourceMappingURL=commandCategoriesDisplay.js.map
