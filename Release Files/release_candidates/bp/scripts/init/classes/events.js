@@ -4449,7 +4449,7 @@ export class andexdb_ModifiedChatMessageSendBeforeEvent {
  *
  * These callbacks are triggered by the chat ranks system of the add-on, if the chat ranks system is disabled these callbacks will never fire.
  *
- * Note: If the modified chat message send event is cancelled from a subscription to {@link Events.andexdb.beforeEvents.modifiedChatMessageSend}, this event will not fire.
+ * Note: If the modified chat message send event is cancelled from a subscription to {@link Events.andexdb.afterEvents.modifiedChatMessageSend}, this event will not fire.
  */
 export class andexdb_ModifiedChatMessageSendAfterEventSignal {
     constructor() { }
@@ -4718,12 +4718,12 @@ export class andexdbAfterEvents {
      *
      * This is triggered by the chat ranks system of the add-on, if the chat ranks system is disabled this event will never fire.
      *
-     * Note: If the modified chat message send event is cancelled from a subscription to {@link Events.andexdb.beforeEvents.modifiedChatMessageSend}, this event will not fire.
+     * Note: If the modified chat message send event is cancelled from a subscription to {@link Events.andexdb.afterEvents.modifiedChatMessageSend}, this event will not fire.
      *
      * This property can be read in early-execution mode.
      *
      */
-    modifiedChatMessageSend = new andexdb_ModifiedChatMessageSendBeforeEventSignal();
+    modifiedChatMessageSend = new andexdb_ModifiedChatMessageSendAfterEventSignal();
 }
 const deepFreeze = (obj, changeTypes) => {
     if (obj && typeof obj === "object" && !Object.isFrozen(obj)) {
@@ -5094,6 +5094,22 @@ var exports;
             return this.#eventType;
         }
         /**
+         * A reference to the event signal for the event this subscription is for.
+         *
+         * @type {EventSignal}
+         */
+        get eventTypeSignalReference() {
+            return this.#eventTypeSignalReference;
+        }
+        /**
+         * A reference to the array of loaded event subscriptions for the event this subscription is for.
+         *
+         * @type {SubscribedEvent<EventTypeID, EventSignal>[]}
+         */
+        get eventTypeLoadedEventsReference() {
+            return this.#eventTypeLoadedEventsReference;
+        }
+        /**
          * Whether or not the event subscription is valid.
          *
          * True if the event is loaded, false otherwise.
@@ -5113,8 +5129,18 @@ var exports;
          * @default undefined
          */
         get creationTime() {
-            const creationTime = this.data.saveID.match(/^([0-9]+)\_/)?.[1];
+            const creationTime = this.data.saveID.match(/^EventSubscription:([0-9]+)\_/)?.[1];
             return creationTime ? Number(creationTime) : undefined;
+        }
+        /**
+         * The last time the event subscription was modified.
+         *
+         * @type {number | undefined}
+         *
+         * @default this.creationTime
+         */
+        get lastModified() {
+            return this.data.metadata.lastModified ?? this.creationTime;
         }
         /**
          * Creates a new event subscription.

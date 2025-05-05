@@ -306,14 +306,14 @@ selectedSlotIndex*/, isWaterlogged /*,
                 undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) {
             /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/ block2
                 .getComponent("sign")
-                .setTextDyeColor(eval(`DyeColor.${signFrontTextColor}`), SignSide.Back);
+                .setTextDyeColor(eval(`DyeColor.${signFrontTextColor}`), SignSide.Front);
         }
         if (signBackTextColorEnabled &&
             block2.getComponent("sign") !=
                 undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) {
             /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/ block2
                 .getComponent("sign")
-                .setTextDyeColor(eval(`DyeColor.${signBackTextColor}`), SignSide.Front);
+                .setTextDyeColor(eval(`DyeColor.${signBackTextColor}`), SignSide.Back);
         }
         for (let index in blockPropertyValueArray) {
             if (String(blockPropertyValueArray[index]).startsWith('"') &&

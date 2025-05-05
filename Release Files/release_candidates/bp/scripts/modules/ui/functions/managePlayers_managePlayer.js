@@ -364,7 +364,7 @@ export async function managePlayers_managePlayer_viewData(sourceEntity, targetPl
             '§r§f"'
         ) */)}`);
         form.button(customFormUICodes.action.buttons.positions.main_only + "Done");
-        await form.forceShow(sourceEntity);
+        await form.forceShow(player);
         return 1;
     }
     catch (e) {

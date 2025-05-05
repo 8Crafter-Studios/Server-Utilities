@@ -85,14 +85,14 @@ export interface SubscribedEventSavedData<EventTypeID extends SubscribedEventTyp
      * const creationTime: number = Date.now(); // The time the event subscription was created.
      * const number1: number = Math.round(Math.random() * 100000); // Random integer between 0 and 100,000.
      * const number2: number = Math.round(Math.random() * 100000); // Random integer between 0 and 100,000.
-     * const saveID: string = `${creationTime}_${number1}_${number2}`
+     * const saveID: string = `EventSubscription:${creationTime}_${number1}_${number2}`
      * ```
      *
      * @type {string}
      *
      * @default
      * ```typescript
-     * `${Date.now()}_${Math.round(Math.random() * 100000)}_${Math.round(Math.random() * 100000)}`
+     * `EventSubscription:${Date.now()}_${Math.round(Math.random() * 100000)}_${Math.round(Math.random() * 100000)}`
      * ```
      */
     readonly saveID: string;
@@ -128,6 +128,12 @@ export interface SubscribedEventSavedData<EventTypeID extends SubscribedEventTyp
          * @type {string}
          */
         displayIcon?: string;
+        /**
+         * The last time the event subscription was modified.
+         *
+         * @type {number}
+         */
+        lastModified?: number;
         /**
          * Additional metadata for the event subscription.
          */
@@ -3269,7 +3275,7 @@ export declare class andexdb_ModifiedChatMessageSendBeforeEvent implements ChatS
  *
  * These callbacks are triggered by the chat ranks system of the add-on, if the chat ranks system is disabled these callbacks will never fire.
  *
- * Note: If the modified chat message send event is cancelled from a subscription to {@link Events.andexdb.beforeEvents.modifiedChatMessageSend}, this event will not fire.
+ * Note: If the modified chat message send event is cancelled from a subscription to {@link Events.andexdb.afterEvents.modifiedChatMessageSend}, this event will not fire.
  */
 export declare class andexdb_ModifiedChatMessageSendAfterEventSignal {
     constructor();
@@ -3693,12 +3699,12 @@ export declare class andexdbAfterEvents {
      *
      * This is triggered by the chat ranks system of the add-on, if the chat ranks system is disabled this event will never fire.
      *
-     * Note: If the modified chat message send event is cancelled from a subscription to {@link Events.andexdb.beforeEvents.modifiedChatMessageSend}, this event will not fire.
+     * Note: If the modified chat message send event is cancelled from a subscription to {@link Events.andexdb.afterEvents.modifiedChatMessageSend}, this event will not fire.
      *
      * This property can be read in early-execution mode.
      *
      */
-    readonly modifiedChatMessageSend: andexdb_ModifiedChatMessageSendBeforeEventSignal;
+    readonly modifiedChatMessageSend: andexdb_ModifiedChatMessageSendAfterEventSignal;
 }
 /**
  * An object that maps event types to their corresponding event signals.
@@ -3897,6 +3903,18 @@ declare namespace exports {
          */
         get eventType(): EventTypeID;
         /**
+         * A reference to the event signal for the event this subscription is for.
+         *
+         * @type {EventSignal}
+         */
+        get eventTypeSignalReference(): EventSignal;
+        /**
+         * A reference to the array of loaded event subscriptions for the event this subscription is for.
+         *
+         * @type {SubscribedEvent<EventTypeID, EventSignal>[]}
+         */
+        get eventTypeLoadedEventsReference(): SubscribedEvent<EventTypeID, EventSignal>[];
+        /**
          * Whether or not the event subscription is valid.
          *
          * True if the event is loaded, false otherwise.
@@ -3914,6 +3932,14 @@ declare namespace exports {
          * @default undefined
          */
         get creationTime(): number | undefined;
+        /**
+         * The last time the event subscription was modified.
+         *
+         * @type {number | undefined}
+         *
+         * @default this.creationTime
+         */
+        get lastModified(): number | undefined;
         /**
          * Creates a new event subscription.
          *

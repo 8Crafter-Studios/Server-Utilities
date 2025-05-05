@@ -21,7 +21,6 @@ import moment from "moment";
  */
 export async function manageBans(sourceEntity, pagen = 0, maxentriesperpage = config.ui.pages.maxBansPerManageBansPage ?? 9, search, cachedEntries) {
     const player = extractPlayerFromLooseEntityType(sourceEntity);
-    [].sort;
     var currentParameters = {
         player,
         pagen,
@@ -219,7 +218,6 @@ export async function manageBans(sourceEntity, pagen = 0, maxentriesperpage = co
  */
 export async function manageBansOnPlayer(sourceEntity, target, pagen = 0, maxentriesperpage = config.ui.pages.maxPlayersPerManagePlayersPage ?? 9, search, cachedEntries) {
     const player = extractPlayerFromLooseEntityType(sourceEntity);
-    [].sort;
     var currentParameters = {
         player,
         pagen,

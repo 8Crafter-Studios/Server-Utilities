@@ -19,7 +19,6 @@ import moment from "moment";
  */
 export async function manageMutes(sourceEntity, pagen = 0, maxentriesperpage = config.ui.pages.maxPlayersPerManagePlayersPage ?? 9, search, cachedEntries) {
     const player = extractPlayerFromLooseEntityType(sourceEntity);
-    [].sort;
     var currentParameters = {
         player,
         pagen,
