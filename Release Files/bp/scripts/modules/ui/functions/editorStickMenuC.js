@@ -9,8 +9,8 @@ export function editorStickMenuC(sourceEntitya) {
         : sourceEntitya;
     let form = new ModalFormData();
     let playerList = world.getPlayers();
-    form.toggle("includeLiquidBlocks", true);
-    form.toggle("includePassableBlocks", true);
+    form.toggle("includeLiquidBlocks", { defaultValue: true });
+    form.toggle("includePassableBlocks", { defaultValue: true });
     form.textField("maxDistance ( Optional )", "maxDistance ( Optional )");
     forceShow(form, sourceEntity)
         .then((r) => {

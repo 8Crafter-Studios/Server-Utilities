@@ -43,11 +43,18 @@ export async function antispamSettings(sourceEntity) {
         }
         let form = new ModalFormData();
         form.title(customFormUICodes.modal.titles.formStyles.medium + "Anti-Spam Settings [§cExperimental§r]");
-        form.toggle("§l§fAnti-Spam Enabled§r§f", config.antiSpamSystem.antispamEnabled);
-        form.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute);
-        form.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", String(config.antiSpamSystem.waitTimeAfterAntispamActivation));
-        form.textField("§f(The anti-spam will only activate if the player sends a number of messages equal to (§bMessage count to trigger anti-spam§f) and those messages each had a delay of at most (§bMaximum time between messages§f) seconds between them)\n§lMaximum time between messages, §r§f", "5", String(config.antiSpamSystem.maxTimeBewteenMessagesToTriggerAntiSpam));
-        form.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, 1, config.antiSpamSystem.antispamTriggerMessageCount);
+        form.toggle("§l§fAnti-Spam Enabled§r§f", { defaultValue: config.antiSpamSystem.antispamEnabled });
+        form.toggle("§l§fReset Anti-Spam Mute Timer Upon Attempted Message Send While Muted§r§f", {
+            defaultValue: config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute,
+        });
+        form.textField("§l§fWait time before player can send another chat message in seconds§r§f", "60", {
+            defaultValue: String(config.antiSpamSystem.waitTimeAfterAntispamActivation),
+        });
+        form.textField("§f(The anti-spam will only activate if the player sends a number of messages equal to (§bMessage count to trigger anti-spam§f) and those messages each had a delay of at most (§bMaximum time between messages§f) seconds between them)\n§lMaximum time between messages, §r§f", "5", { defaultValue: String(config.antiSpamSystem.maxTimeBewteenMessagesToTriggerAntiSpam) });
+        form.slider("§l§fMessage count to trigger anti-spam, defaults to 4§r§f", 1, 100, {
+            valueStep: 1,
+            defaultValue: config.antiSpamSystem.antispamTriggerMessageCount,
+        });
         form.submitButton("Save");
         const r = await form.forceShow(player);
         if (r.canceled) {

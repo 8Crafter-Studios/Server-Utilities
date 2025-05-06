@@ -451,12 +451,12 @@ export async function securitySettings_playersWithPermissions_permission(sourceE
                 {
                     const rb = await tryget(async () => await new ModalFormData()
                         .title("Search")
-                        .textField("", "Search", search?.value ?? "")
-                        .toggle("Case Sensitive", search?.caseSensitive ?? false)
-                        .toggle("Search Player Names", search?.searchNames ?? true)
-                        .toggle("Search Player IDs", search?.searchIds ?? true)
-                        .toggle("Search Last Online Dates", search?.searchLastOnlineDates ?? false)
-                        .toggle("Search Last Online Times", search?.searchLastOnlineTimes ?? false)
+                        .textField("", "Search", { defaultValue: search?.value ?? "" })
+                        .toggle("Case Sensitive", { defaultValue: search?.caseSensitive ?? false })
+                        .toggle("Search Player Names", { defaultValue: search?.searchNames ?? true })
+                        .toggle("Search Player IDs", { defaultValue: search?.searchIds ?? true })
+                        .toggle("Search Last Online Dates", { defaultValue: search?.searchLastOnlineDates ?? false })
+                        .toggle("Search Last Online Times", { defaultValue: search?.searchLastOnlineTimes ?? false })
                         .submitButton("Search")
                         .forceShow(sourceEntity));
                     if (!!!rb || rb?.canceled == true) {
@@ -694,12 +694,12 @@ export async function securitySettings_playersWithPermissions_permission_UltraSe
                 {
                     const rb = await tryget(async () => await new ModalFormData()
                         .title("Search")
-                        .textField("", "Search", search?.value ?? "")
-                        .toggle("Case Sensitive", search?.caseSensitive ?? false)
-                        .toggle("Search Player Names", search?.searchNames ?? true)
-                        .toggle("Search Player IDs", search?.searchIds ?? true)
-                        .toggle("Search Last Online Dates", search?.searchLastOnlineDates ?? false)
-                        .toggle("Search Last Online Times", search?.searchLastOnlineTimes ?? false)
+                        .textField("", "Search", { defaultValue: search?.value ?? "" })
+                        .toggle("Case Sensitive", { defaultValue: search?.caseSensitive ?? false })
+                        .toggle("Search Player Names", { defaultValue: search?.searchNames ?? true })
+                        .toggle("Search Player IDs", { defaultValue: search?.searchIds ?? true })
+                        .toggle("Search Last Online Dates", { defaultValue: search?.searchLastOnlineDates ?? false })
+                        .toggle("Search Last Online Times", { defaultValue: search?.searchLastOnlineTimes ?? false })
                         .submitButton("Search")
                         .forceShow(sourceEntity));
                     if (!!!rb || rb?.canceled == true) {
@@ -875,12 +875,12 @@ export async function securitySettings_playersWithPermissions_permission_any_Ult
                 {
                     const rb = await tryget(async () => await new ModalFormData()
                         .title("Search")
-                        .textField("", "Search", search?.value ?? "")
-                        .toggle("Case Sensitive", search?.caseSensitive ?? false)
-                        .toggle("Search Player Names", search?.searchNames ?? true)
-                        .toggle("Search Player IDs", search?.searchIds ?? true)
-                        .toggle("Search Last Online Dates", search?.searchLastOnlineDates ?? false)
-                        .toggle("Search Last Online Times", search?.searchLastOnlineTimes ?? false)
+                        .textField("", "Search", { defaultValue: search?.value ?? "" })
+                        .toggle("Case Sensitive", { defaultValue: search?.caseSensitive ?? false })
+                        .toggle("Search Player Names", { defaultValue: search?.searchNames ?? true })
+                        .toggle("Search Player IDs", { defaultValue: search?.searchIds ?? true })
+                        .toggle("Search Last Online Dates", { defaultValue: search?.searchLastOnlineDates ?? false })
+                        .toggle("Search Last Online Times", { defaultValue: search?.searchLastOnlineTimes ?? false })
                         .submitButton("Search")
                         .forceShow(sourceEntity));
                     if (!!!rb || rb?.canceled == true) {

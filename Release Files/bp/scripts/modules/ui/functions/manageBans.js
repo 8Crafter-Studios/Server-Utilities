@@ -120,10 +120,10 @@ export async function manageBans(sourceEntity, pagen = 0, maxentriesperpage = co
                     {
                         const r = await tryget(async () => await new ModalFormData()
                             .title("Search")
-                            .textField("", "Search", search?.value ?? "")
-                            .toggle("Case Sensitive", search?.caseSensitive ?? false)
-                            .toggle("Search Player Names", search?.searchNames ?? true)
-                            .toggle("Search Player IDs", search?.searchIds ?? true)
+                            .textField("", "Search", { defaultValue: search?.value ?? "" })
+                            .toggle("Case Sensitive", { defaultValue: search?.caseSensitive ?? false })
+                            .toggle("Search Player Names", { defaultValue: search?.searchNames ?? true })
+                            .toggle("Search Player IDs", { defaultValue: search?.searchIds ?? true })
                             .submitButton("Search")
                             .forceShow(player));
                         if (!!!r || r.canceled == true) {
@@ -317,10 +317,10 @@ export async function manageBansOnPlayer(sourceEntity, target, pagen = 0, maxent
                     {
                         const r = await tryget(async () => await new ModalFormData()
                             .title("Search")
-                            .textField("", "Search", search?.value ?? "")
-                            .toggle("Case Sensitive", search?.caseSensitive ?? false)
-                            .toggle("Search Player Names", search?.searchNames ?? true)
-                            .toggle("Search Player IDs", search?.searchIds ?? true)
+                            .textField("", "Search", { defaultValue: search?.value ?? "" })
+                            .toggle("Case Sensitive", { defaultValue: search?.caseSensitive ?? false })
+                            .toggle("Search Player Names", { defaultValue: search?.searchNames ?? true })
+                            .toggle("Search Player IDs", { defaultValue: search?.searchIds ?? true })
                             .submitButton("Search")
                             .forceShow(player));
                         if (!!!r || r.canceled == true) {
@@ -421,9 +421,11 @@ export async function manageBan(sourceEntity, ban) {
                 ? { days: Infinity, hours: Infinity, minutes: Infinity, seconds: Infinity, milliseconds: Infinity }
                 : ban.timeRemainingString;
             const timeZone = player.timeZone;
-            form.body(`§bFormat Version: §e${ban.format_version}\n§r§bBan Format Version: §e${ban.ban_format_version}\n§r§bBan Id: §6${ban.banId}\n§r§bType: §a${ban.type}\n§r§bBan Duration: §q${isPermanent ? "Permanent" : ban.banDate > ban.unbanDate ? "-" + moment(ban.banDate).preciseDiff(moment(ban.unbanDate)) : moment(ban.banDate).preciseDiff(moment(ban.unbanDate)) /* `${duration.days}d, ${duration.hours}h ${duration.minutes}m ${duration.seconds}s ${duration.milliseconds}ms` */}${isPermanent
-                ? ""
-                : `\n§r§bTime Remaining: §q${timeRemaining}`}\n§r§bBan Date: §q${formatDateTime(new Date(ban.banDate), timeZone) + " UTC" + (timeZone > 0 || Object.is(timeZone, 0) ? "+" : "") + timeZone}${isPermanent
+            form.body(`§bFormat Version: §e${ban.format_version}\n§r§bBan Format Version: §e${ban.ban_format_version}\n§r§bBan Id: §6${ban.banId}\n§r§bType: §a${ban.type}\n§r§bBan Duration: §q${isPermanent
+                ? "Permanent"
+                : ban.banDate > ban.unbanDate
+                    ? "-" + moment(ban.banDate).preciseDiff(moment(ban.unbanDate))
+                    : moment(ban.banDate).preciseDiff(moment(ban.unbanDate)) /* `${duration.days}d, ${duration.hours}h ${duration.minutes}m ${duration.seconds}s ${duration.milliseconds}ms` */}${isPermanent ? "" : `\n§r§bTime Remaining: §q${timeRemaining}`}\n§r§bBan Date: §q${formatDateTime(new Date(ban.banDate), timeZone) + " UTC" + (timeZone > 0 || Object.is(timeZone, 0) ? "+" : "") + timeZone}${isPermanent
                 ? ""
                 : `\n§r§bUnban Date: §q${formatDateTime(new Date(ban.unbanDate), timeZone) + " UTC" + (timeZone > 0 || Object.is(timeZone, 0) ? "+" : "") + timeZone}`}\n§r§b${ban.type == "id" ? "Player ID" : "Original Player ID"}: §6${ban.type == "id" ? ban.playerId : ban.originalPlayerId}\n§r§b${ban.type == "id" ? "Original Player Name" : "Player Name"}: §6${ban.type == "id" ? ban.originalPlayerName : ban.playerName}\n§r§bBanned By: §a${ban.bannedByName ?? "Unknown Name"}<${ban.bannedById ?? "Unknown ID"}>\n§r§bRemove After Ban Expires: §d${ban.removeAfterBanExpires}\n§r§bReason: §r§f${ban.reason}\n§r§b${
             /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/ ""}`);
@@ -488,7 +490,7 @@ export async function unbanPlayer(sourceEntity, selectedBan) {
             }
             case "unban": {
                 selectedBan.remove();
-                return ((await showMessage(player, "Player Unbanned", `${selectedBan.playerName ?? selectedBan.originalPlayerName ?? "Unknown Name"}<${selectedBan.playerId ?? selectedBan.originalPlayerId ?? "Unknown ID"}> has been sucessfully unbanned.`, "Back", "Close")).selection !== 1).toNumber() * 2;
+                return (((await showMessage(player, "Player Unbanned", `${selectedBan.playerName ?? selectedBan.originalPlayerName ?? "Unknown Name"}<${selectedBan.playerId ?? selectedBan.originalPlayerId ?? "Unknown ID"}> has been sucessfully unbanned.`, "Back", "Close")).selection !== 1).toNumber() * 2);
             }
         }
     }
@@ -518,9 +520,11 @@ export async function addIDBan(sourceEntity) {
             }
             let form = new ModalFormData();
             form.title(`${customFormUICodes.modal.titles.formStyles.medium}Add ID Ban`);
-            form.textField("Player UUID\nThis is the uuid of the player. ", "Integer", defaultPlayerUUID);
-            form.textField("Ban Time (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the ban duration permanent.", "permanent", defaultBanTime);
-            form.textField("Reason", "§cYOU HAVE BEEN BANNED BY THE BAN HAMMER", defaultReason);
+            form.textField("Player UUID\nThis is the uuid of the player. ", "Integer", { defaultValue: defaultPlayerUUID });
+            form.textField("Ban Time (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the ban duration permanent.", "permanent", {
+                defaultValue: defaultBanTime,
+            });
+            form.textField("Reason", "§cYOU HAVE BEEN BANNED BY THE BAN HAMMER", { defaultValue: defaultReason });
             form.submitButton("Ban");
             const r = await forceShow(form, player);
             if (r.canceled) {
@@ -592,9 +596,11 @@ export async function addNameBan(sourceEntity) {
             }
             let form = new ModalFormData();
             form.title(`${customFormUICodes.modal.titles.formStyles.medium}Add Name Ban`);
-            form.textField("Player Name\nThis is the name of the player. ", "string", defaultPlayerName);
-            form.textField("Ban Time (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the ban duration permanent.", "permanent", defaultBanTime);
-            form.textField("Reason", "§cYOU HAVE BEEN BANNED BY THE BAN HAMMER", defaultReason);
+            form.textField("Player Name\nThis is the name of the player. ", "string", { defaultValue: defaultPlayerName });
+            form.textField("Ban Time (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the ban duration permanent.", "permanent", {
+                defaultValue: defaultBanTime,
+            });
+            form.textField("Reason", "§cYOU HAVE BEEN BANNED BY THE BAN HAMMER", { defaultValue: defaultReason });
             form.submitButton("Ban");
             const r = await forceShow(form, player);
             if (r.canceled) {
@@ -665,8 +671,10 @@ export async function addIDBanOnPlayer(sourceEntity, targetDetails) {
             }
             let form = new ModalFormData();
             form.title(`${customFormUICodes.modal.titles.formStyles.medium}Add ID Ban on ${targetDetails.name ?? targetDetails.id}`);
-            form.textField("Ban Time (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the ban duration permanent.", "permanent", defaultBanTime);
-            form.textField("Reason", "§cYOU HAVE BEEN BANNED BY THE BAN HAMMER", defaultReason);
+            form.textField("Ban Time (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the ban duration permanent.", "permanent", {
+                defaultValue: defaultBanTime,
+            });
+            form.textField("Reason", "§cYOU HAVE BEEN BANNED BY THE BAN HAMMER", { defaultValue: defaultReason });
             form.submitButton("Ban");
             const r = await forceShow(form, player);
             if (r.canceled) {
@@ -736,8 +744,10 @@ export async function addNameBanOnPlayer(sourceEntity, targetDetails) {
             }
             let form = new ModalFormData();
             form.title(`${customFormUICodes.modal.titles.formStyles.medium}Add Name Ban on ${targetDetails.name ?? targetDetails.id}`);
-            form.textField("Ban Time (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the ban duration permanent.", "permanent", defaultBanTime);
-            form.textField("Reason", "§cYOU HAVE BEEN BANNED BY THE BAN HAMMER", defaultReason);
+            form.textField("Ban Time (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the ban duration permanent.", "permanent", {
+                defaultValue: defaultBanTime,
+            });
+            form.textField("Reason", "§cYOU HAVE BEEN BANNED BY THE BAN HAMMER", { defaultValue: defaultReason });
             form.submitButton("Ban");
             const r = await forceShow(form, player);
             if (r.canceled) {

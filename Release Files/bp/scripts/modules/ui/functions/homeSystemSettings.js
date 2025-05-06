@@ -31,8 +31,8 @@ export async function homeSystemSettings(sourceEntitya) {
     }
     let form2 = new ModalFormData();
     form2.title(customFormUICodes.modal.titles.formStyles.medium + "Home System Settings [§cExperimental§r]");
-    form2.toggle("§l§fHome System Enabled§r§f", config.homeSystem.homeSystemEnabled);
-    form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", String(config.homeSystem.maxHomesPerPlayer));
+    form2.toggle("§l§fHome System Enabled§r§f", { defaultValue: config.homeSystem.homeSystemEnabled });
+    form2.textField("§l§fMaximum Homes Per Player§r§f", "Int|Infinity", { defaultValue: String(config.homeSystem.maxHomesPerPlayer) });
     form2.submitButton("Save");
     return await forceShow(form2, sourceEntity)
         .then((to) => {

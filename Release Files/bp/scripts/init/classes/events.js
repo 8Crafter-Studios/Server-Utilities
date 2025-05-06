@@ -4749,6 +4749,12 @@ export const signalMap = deepFreeze({
         afterEvents: andexdbAfterEvents.instance,
     },
 }, false);
+// type SwitchesData = [buttonname: string, toggleevent: string, toggleTexture?: string];
+// type Switches = SwitchesData[];
+// type PluginData = [buttontext: string, texturepath: string, switches: Switches];
+// const plugins: PluginData[] = [];
+// const plugin: PluginData = ["test 1", "textures/ui/toggle_off", [["toggle 1", "/say hi", "textures/ui/toggle_on"]]]
+// ${ase}const plugin = ["test 1", "textures/ui/toggle_off", [["toggle 1", "/say hi", "textures/ui/toggle_on"]]]; overworld.runCommand(`/scriptevent mcbepm:load_plugin ${JSON.stringify(plugin)}`)
 var exports;
 (function (exports) {
     /**

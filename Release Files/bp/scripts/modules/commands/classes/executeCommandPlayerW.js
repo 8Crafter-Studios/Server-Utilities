@@ -1,4 +1,4 @@
-import { Player, Dimension, Block, Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, EffectType, GameMode, MolangVariableMap, InputInfo, } from "@minecraft/server";
+import { Player, Dimension, Block, Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, EffectType, GameMode, MolangVariableMap, InputInfo, GraphicsMode, } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -370,11 +370,27 @@ export class executeCommandPlayerW {
     get inputInfo() {
         return this.player?.inputInfo;
     }
+    /**
+     * @beta
+     * @remarks
+     * Gets the current graphics mode of the player's client. This
+     * can be changed in the Video section of the settings menu
+     * based on what hardware is available.
+     *
+     * This property can return undefined if the {@link executeCommandPlayerW} instance does not have a linked player.
+     *
+     * @throws This property can throw when used.
+     *
+     * {@link InvalidEntityError}
+     */
     get graphicsMode() {
         return this.player?.graphicsMode;
     }
     get isValid() {
         return this.player?.isValid;
+    }
+    get localizationKey() {
+        return this.player?.localizationKey;
     }
     addEffect(effectType, duration, options) {
         return this.player?.addEffect(effectType, duration, options);

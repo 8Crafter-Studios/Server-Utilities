@@ -76,7 +76,7 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity, player
                 let form5 = new ModalFormData();
                 form5.title(`Add ID Ban`);
                 form5.textField("Ban Time (In Minutes)", "Decimal");
-                form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", '"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}"');
+                form5.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", { defaultValue: '"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}"' });
                 form5.submitButton("Ban");
                 return await forceShow(form5, sourceEntity)
                     .then((ha) => {
@@ -127,7 +127,7 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity, player
                 let form6 = new ModalFormData();
                 form6.title(`Add Name Ban`);
                 form6.textField("Ban Time (In Minutes)", "Decimal");
-                form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", '"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}"');
+                form6.textField("Reason", "JavaScript Object ex. `Date:\n ${new\n Date(Date.now()).to\nLoca\nleString()}`", { defaultValue: '"§cYOU HAVE BEEN BANNED BY THE BAN HAMMER\\nBanned By: {bannedByName}\\nBanned Until: {unbanDate}\\nBanned On: {banDate}\\nTime Remaining: {timeRemaining}"' });
                 form6.submitButton("Ban");
                 return await forceShow(form6, sourceEntity)
                     .then((ha) => {

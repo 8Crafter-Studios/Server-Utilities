@@ -32,20 +32,20 @@ export async function worldBorderSettings(sourceEntitya, dimension = 0) {
     let form2 = new ModalFormData();
     const configobj = config.worldBorder[dimensionse[dimension]];
     form2.title(`${["Overworld", "Nether", "The End"][dimension]} World Border Settings`);
-    form2.toggle(`§l§fEnabled§r§f\nWhether or not the ${["overworld", "nether", "the end"][dimension]} world border is enabled, default is false`, configobj.enabled);
-    form2.toggle(`§l§fPrevent World Interaction§r§f\nWhether or not to prevent players form interacting with the world when outside of the ${["overworld", "nether", "the end"][dimension]} world border, default is false`, configobj.preventWorldInteractionOutsideBorder);
-    form2.toggle(`§l§fShow Red Screen Outline For When Outside Border§r§f\nWhether or not to show a red outline around the screen for players that are outside of the ${["overworld", "nether", "the end"][dimension]} world border, default is true`, configobj.showRedScreenOutlineWhenOutsideBorder);
-    form2.toggle(`§l§fShow Border Particles§r§f\nWhether or not to show border particles on the boundaries of the ${["overworld", "nether", "the end"][dimension]} world border, default is true`, configobj.showBorderParticles); /*
+    form2.toggle(`§l§fEnabled§r§f\nWhether or not the ${["overworld", "nether", "the end"][dimension]} world border is enabled, default is false`, { defaultValue: configobj.enabled });
+    form2.toggle(`§l§fPrevent World Interaction§r§f\nWhether or not to prevent players form interacting with the world when outside of the ${["overworld", "nether", "the end"][dimension]} world border, default is false`, { defaultValue: configobj.preventWorldInteractionOutsideBorder });
+    form2.toggle(`§l§fShow Red Screen Outline For When Outside Border§r§f\nWhether or not to show a red outline around the screen for players that are outside of the ${["overworld", "nether", "the end"][dimension]} world border, default is true`, { defaultValue: configobj.showRedScreenOutlineWhenOutsideBorder });
+    form2.toggle(`§l§fShow Border Particles§r§f\nWhether or not to show border particles on the boundaries of the ${["overworld", "nether", "the end"][dimension]} world border, default is true`, { defaultValue: configobj.showBorderParticles }); /*
     form2.toggle(`§l§fWarn Players With Actionbar§r§f\nWhether or not to show a warning in the actionbar when the player in outside of the world border, default is false`, configobj.showActionbarWarningWhenOutsideBorder)
     form2.toggle(`§l§fWarn Players In Chat§r§f\nWhether or not to show a warning in the chat when the player in outside of the world border, default is false`, configobj.warnPlayersInChat)*/
-    form2.dropdown(`§l§fMode§r§f\nThe mode of the world border, default is Yeet Players`, ["Teleport Players", "Yeet Players", "Damage Players"], configobj.mode);
-    form2.textField(`§l§fFrom§r§f\nThe first corner of the world border, each of the values in this should be smaller than their corresponding values in the "To" property, default is "-29999984 -29999984"`, "x z", `${configobj.from.x} ${configobj.from.z}`);
-    form2.textField(`§l§fTo§r§f\nThe first corner of the world border, each of the values in this should be larger than their corresponding values in the "From" property, default is "29999984 29999984"`, "x z", `${configobj.to.x} ${configobj.to.z}`);
-    form2.textField(`§l§fTint Intensity§r§f\nThe intensity of the screen tint that appears when you are outside of the world border (this value controls the intensity by changing how many particles will spawn), the default is 1`, "float", String(configobj.tintIntensity));
-    form2.textField(`§l§fBuffer§r§f\n(§cONLY APPLIES TO DAMAGE MODE§f)\nThe distance outside of the border that a player must be to start taking damage, the default is 5`, "float", String(configobj.buffer));
-    form2.textField(`§l§fDamage§r§f\n(§cONLY APPLIES TO DAMAGE MODE§f)\nThe amount of damage to apply, the default is 1`, "float", String(configobj.damage));
-    form2.textField(`§l§fHorizontal Knockback§r§f\n(§bONLY APPLIES TO YEET MODE§f)\nThe amount of horizontal knockback to apply, the default is 2.5`, "float", String(configobj.knockbackH));
-    form2.textField(`§l§fVertical Knockback§r§f\n(§bONLY APPLIES TO YEET MODE§f)\nThe amount of vertical knockback to apply, the default is 1.25`, "float", String(configobj.knockbackV));
+    form2.dropdown(`§l§fMode§r§f\nThe mode of the world border, default is Yeet Players`, ["Teleport Players", "Yeet Players", "Damage Players"], { defaultValueIndex: configobj.mode });
+    form2.textField(`§l§fFrom§r§f\nThe first corner of the world border, each of the values in this should be smaller than their corresponding values in the "To" property, default is "-29999984 -29999984"`, "x z", { defaultValue: `${configobj.from.x} ${configobj.from.z}` });
+    form2.textField(`§l§fTo§r§f\nThe first corner of the world border, each of the values in this should be larger than their corresponding values in the "From" property, default is "29999984 29999984"`, "x z", { defaultValue: `${configobj.to.x} ${configobj.to.z}` });
+    form2.textField(`§l§fTint Intensity§r§f\nThe intensity of the screen tint that appears when you are outside of the world border (this value controls the intensity by changing how many particles will spawn), the default is 1`, "float", { defaultValue: String(configobj.tintIntensity) });
+    form2.textField(`§l§fBuffer§r§f\n(§cONLY APPLIES TO DAMAGE MODE§f)\nThe distance outside of the border that a player must be to start taking damage, the default is 5`, "float", { defaultValue: String(configobj.buffer) });
+    form2.textField(`§l§fDamage§r§f\n(§cONLY APPLIES TO DAMAGE MODE§f)\nThe amount of damage to apply, the default is 1`, "float", { defaultValue: String(configobj.damage) });
+    form2.textField(`§l§fHorizontal Knockback§r§f\n(§bONLY APPLIES TO YEET MODE§f)\nThe amount of horizontal knockback to apply, the default is 2.5`, "float", { defaultValue: String(configobj.knockbackH) });
+    form2.textField(`§l§fVertical Knockback§r§f\n(§bONLY APPLIES TO YEET MODE§f)\nThe amount of vertical knockback to apply, the default is 1.25`, "float", { defaultValue: String(configobj.knockbackV) });
     form2.submitButton("Save");
     return await forceShow(form2, sourceEntity)
         .then((t) => {

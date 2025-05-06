@@ -2,15 +2,13 @@ import { ModalFormData, ModalFormResponse, MessageFormData } from "@minecraft/se
 import { forceShow } from "modules/ui/functions/forceShow";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 export function itemCodePropertyEditor(sourceEntitya, item) {
-    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
-        ? sourceEntitya.player
-        : sourceEntitya;
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     form.title("Code Editor");
-    form.textField("Item Use Code", "JavaScript", String(item.getDynamicProperty("code")));
-    form.textField("Item Use On Code", "JavaScript", !!item.getDynamicProperty("itemUseOnCode")
-        ? String(item.getDynamicProperty("itemUseOnCode"))
-        : undefined);
+    form.textField("Item Use Code", "JavaScript", { defaultValue: String(item.getDynamicProperty("code")) });
+    form.textField("Item Use On Code", "JavaScript", {
+        defaultValue: !!item.getDynamicProperty("itemUseOnCode") ? String(item.getDynamicProperty("itemUseOnCode")) : undefined,
+    });
     form.submitButton("Done");
     forceShow(form, sourceEntity)
         .then((ra) => {
@@ -28,10 +26,7 @@ export function itemCodePropertyEditor(sourceEntitya, item) {
             console.error(e, e.stack);
         }
         try {
-            if (itemUseOnCode == ""
-                ? undefined
-                : String(itemUseOnCode) !=
-                    String(item.getDynamicProperty("itemUseOnCode"))) {
+            if (itemUseOnCode == "" ? undefined : String(itemUseOnCode) != String(item.getDynamicProperty("itemUseOnCode"))) {
                 item.setDynamicProperty("itemUseOnCode", itemUseOnCode == "" ? undefined : String(itemUseOnCode));
             }
         }

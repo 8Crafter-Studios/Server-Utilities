@@ -275,7 +275,10 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                     }
                 case "editMoney": {
                     try {
-                        const r = await new ModalFormData().title(`${customFormUICodes.modal.titles.formStyles.medium}Edit Money for ${targetPlayer.name}`).textField("Money", "int", MoneySystem.get(targetPlayer.id).money.toString()).forceShow(player);
+                        const r = await new ModalFormData()
+                            .title(`${customFormUICodes.modal.titles.formStyles.medium}Edit Money for ${targetPlayer.name}`)
+                            .textField("Money", "int", { defaultValue: MoneySystem.get(targetPlayer.id).money.toString() })
+                            .forceShow(player);
                         if (r.canceled)
                             continue;
                         if (!!r.formValues[0].toBigInt()) {
@@ -380,28 +383,31 @@ export async function managePlayers_managePlayer_managePermissions(sourceEntity,
         form.title(`${targetPlayer.name}'s Permissions`);
         form.toggle(`canUseChatCommands${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseChatCommands")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseChatCommands").value}§a when the player joins)`
-            : ""}`, targetPlayer.playerPermissions.canUseChatCommands);
+            : ""}`, { defaultValue: targetPlayer.playerPermissions.canUseChatCommands });
         form.toggle(`canUseDangerousCommands${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseDangerousCommands")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseDangerousCommands").value}§a when the player joins)`
-            : ""}`, targetPlayer.playerPermissions.canUseDangerousCommands);
+            : ""}`, { defaultValue: targetPlayer.playerPermissions.canUseDangerousCommands });
         form.toggle(`canUseScriptEval${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseScriptEval")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseScriptEval").value}§a when the player joins)`
-            : ""}`, targetPlayer.playerPermissions.canUseScriptEval);
+            : ""}`, { defaultValue: targetPlayer.playerPermissions.canUseScriptEval });
         form.toggle(`canUseCommands${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseCommands")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseCommands").value}§a when the player joins)`
-            : ""}`, targetPlayer.playerPermissions.canUseCommands);
+            : ""}`, { defaultValue: targetPlayer.playerPermissions.canUseCommands });
         form.toggle(`canBypassProtectedAreas${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canBypassProtectedAreas")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canBypassProtectedAreas").value}§a when the player joins)`
-            : ""}`, targetPlayer.playerPermissions.canBypassProtectedAreas);
+            : ""}`, { defaultValue: targetPlayer.playerPermissions.canBypassProtectedAreas });
         form.toggle(`getAllChatCommands${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "getAllChatCommands")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "getAllChatCommands").value}§a when the player joins)`
-            : ""}`, targetPlayer.playerPermissions.getAllChatCommands);
+            : ""}`, { defaultValue: targetPlayer.playerPermissions.getAllChatCommands });
         form.toggle(`admin${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "admin")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "admin").value}§a when the player joins)`
-            : ""}`, targetPlayer.playerPermissions.admin);
+            : ""}`, { defaultValue: targetPlayer.playerPermissions.admin });
         form.slider(`permissionLevel${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "permissionLevel")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "permissionLevel").value}§a when the player joins)`
-            : ""}`, 0, 10, 1, targetPlayer.playerPermissions.permissionLevel);
+            : ""}`, 0, 10, {
+            defaultValue: targetPlayer.playerPermissions.permissionLevel,
+            valueStep: 1,
+        });
         form.submitButton("Save");
         const r = await form.forceShow(player);
         if (r.canceled) {

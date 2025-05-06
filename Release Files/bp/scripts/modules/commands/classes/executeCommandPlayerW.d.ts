@@ -1,4 +1,4 @@
-import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, InputInfo, type EntityComponentReturnType } from "@minecraft/server";
+import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, InputInfo, type EntityComponentReturnType, GraphicsMode } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -6,7 +6,7 @@ import { WorldEditSelection } from "init/classes/WorldEditSelection";
 import "init/classes/config";
 import { WorldPosition } from "modules/coordinates/classes/WorldPosition";
 import type { RotationLocation } from "modules/coordinates/interfaces/RotationLocation";
-export declare class executeCommandPlayerW {
+export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"> {
     player?: Player;
     sendErrorsTo?: Player | Console | Player[] | (() => Player | Player[] | Console) | null | undefined;
     modifiedlocation?: Vector3;
@@ -82,8 +82,22 @@ export declare class executeCommandPlayerW {
     get inputPermissions(): import("@minecraft/server").PlayerInputPermissions;
     get clientSystemInfo(): import("@minecraft/server").ClientSystemInfo;
     get inputInfo(): InputInfo;
-    get graphicsMode(): import("@minecraft/server").GraphicsMode;
+    /**
+     * @beta
+     * @remarks
+     * Gets the current graphics mode of the player's client. This
+     * can be changed in the Video section of the settings menu
+     * based on what hardware is available.
+     *
+     * This property can return undefined if the {@link executeCommandPlayerW} instance does not have a linked player.
+     *
+     * @throws This property can throw when used.
+     *
+     * {@link InvalidEntityError}
+     */
+    get graphicsMode(): GraphicsMode | undefined;
     get isValid(): boolean;
+    get localizationKey(): string;
     addEffect(effectType: string | EffectType, duration: number, options?: EntityEffectOptions): import("@minecraft/server").Effect;
     addExperience(amount: number): number;
     getRotation(): Vector2;

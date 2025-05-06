@@ -215,7 +215,8 @@ Icon Path: ${category.icon_path ?? "None"}`)
                         delete ProtectedAreas.areas.advancedArea[categoryID];
                         world.setDynamicProperty("advancedProtectedAreaCategory:" + categoryID);
                         delete ProtectedAreas.areas.advancedAreaCategories[ProtectedAreas.areas.advancedAreaCategories.findIndex((category) => category.id === categoryID)];
-                        if ((await showMessage(player, "Category Deleted", "This protected area category has been successfully deleted.", "Back", "Close")).selection !== 1) {
+                        if ((await showMessage(player, "Category Deleted", "This protected area category has been successfully deleted.", "Back", "Close"))
+                            .selection !== 1) {
                             return 1;
                         }
                         else {
@@ -392,8 +393,8 @@ export async function editCustomAreaCategorySettings(sourceEntity, categoryID) {
             "string",
             category.id
         ) */
-        form.toggle("Enabled\nWhether or not this protected area category is enabled. If disabled, then any areas in this category will cease to function until this is enabled.", category.enabled ?? true);
-        form.textField("Icon Path (Optional)", "string", category.icon_path ?? "");
+        form.toggle("Enabled\nWhether or not this protected area category is enabled. If disabled, then any areas in this category will cease to function until this is enabled.", { defaultValue: category.enabled ?? true });
+        form.textField("Icon Path (Optional)", "string", { defaultValue: category.icon_path ?? "" });
         form.submitButton("Save");
         const r = await form.forceShow(player);
         if (r.canceled)
@@ -759,7 +760,9 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                         throw new Error("allowedBypassTags is not a property of this event");
                     let form = new ModalFormData();
                     form.title(customFormUICodes.modal.titles.formStyles.medium + "Allowed Bypass Tags");
-                    form.textField("Allowed Bypass Tags", "Comma separated list.", category[setting].allowedBypassTags?.join(",") ?? "");
+                    form.textField("Allowed Bypass Tags", "Comma separated list.", {
+                        defaultValue: category[setting].allowedBypassTags?.join(",") ?? "",
+                    });
                     form.submitButton("Save");
                     const r = await form.forceShow(player);
                     if (r.canceled)
@@ -789,14 +792,16 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                     const catProp = category[setting];
                     let form = new ModalFormData();
                     form.title(customFormUICodes.modal.titles.formStyles.medium + "Effect Filter");
-                    form.dropdown("Effect Filter Type\nInclude will cause only effects listed below to be blocked, exclude will cause all other effects to be blocked.", ["exclude", "include"], catProp.effectFilter?.excludeTypes?.length === 1 ? 0 : 1);
+                    form.dropdown("Effect Filter Type\nInclude will cause only effects listed below to be blocked, exclude will cause all other effects to be blocked.", ["exclude", "include"], { defaultValueIndex: catProp.effectFilter?.excludeTypes?.length === 1 ? 0 : 1 });
                     form.textField(`Types\nList of effect types to allow or block.\nValid Effect Types: ${EffectTypes.getAll()
                         .map((t) => t.getName())
-                        .join(", ")}\nComma separated list.`, "Comma separated list.", (category[setting].effectFilter?.excludeTypes?.length ?? 0) === 0
-                        ? category[setting].effectFilter?.includeTypes?.join(",") ?? ""
-                        : category[setting].effectFilter?.excludeTypes?.join(",") ?? "");
-                    form.textField("Minimum Effect Duration\nThis will cause this to only block effects with a duration of at least this many seconds.\nLeave blank to have no minimum.", "int", String(category[setting]?.effectFilter?.minDuration ?? ""));
-                    form.textField("Maximum Effect Duration\nThis will cause this to only block effects with a duration of at most this many seconds.\nLeave blank to have no maximum.", "int", String(category[setting]?.effectFilter?.maxDuration ?? ""));
+                        .join(", ")}\nComma separated list.`, "Comma separated list.", {
+                        defaultValue: (category[setting].effectFilter?.excludeTypes?.length ?? 0) === 0
+                            ? category[setting].effectFilter?.includeTypes?.join(",") ?? ""
+                            : category[setting].effectFilter?.excludeTypes?.join(",") ?? "",
+                    });
+                    form.textField("Minimum Effect Duration\nThis will cause this to only block effects with a duration of at least this many seconds.\nLeave blank to have no minimum.", "int", { defaultValue: String(category[setting]?.effectFilter?.minDuration ?? "") });
+                    form.textField("Maximum Effect Duration\nThis will cause this to only block effects with a duration of at most this many seconds.\nLeave blank to have no maximum.", "int", { defaultValue: String(category[setting]?.effectFilter?.maxDuration ?? "") });
                     form.submitButton("Save");
                     const r = await form.forceShow(player);
                     if (r.canceled)
@@ -834,21 +839,27 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                         throw new Error("fromGameModesToGameModes is not a property of this event");
                     let form = new ModalFormData();
                     form.title(customFormUICodes.modal.titles.formStyles.medium + "Game Mode Filter");
-                    form.textField("To block all game mode changes, leave all of the text boxes below blank.\n\nFrom Game Modes\nA list of gamemodes that if the player is switching out of one of these gamemodes, it will be blocked.\nComma separated list.\nLeave blank to have no from game modes filter.", "Comma separated list.", category[setting].fromGameModes?.length === 0
-                        ? category[setting].fromGameModes?.length === 0
-                            ? category[setting].fromGameModes?.join(",") ?? ""
-                            : ""
-                        : category[setting].fromGameModes?.join(",") ?? "");
-                    form.textField("To Game Modes\nA list of gamemodes that if the player is switching to one of these gamemodes, it will be blocked.\nComma separated list.\nLeave blank to have no to game modes filter.", "Comma separated list.", category[setting].fromGameModes?.length === 0
-                        ? category[setting].fromGameModes?.length === 0
-                            ? category[setting].fromGameModes?.join(",") ?? ""
-                            : ""
-                        : category[setting].fromGameModes?.join(",") ?? "");
-                    form.textField('From Game Modes To Game Modes\nA JSON onject that if an array with arrays that each have two strings inside of it, if in any of these arrays, the first string matches the from gamemode and the second matches the to gamemode, it will be blocked.\nJSON: [from: string, to: string][]\nex. [["survival", "creative"], ["adventure", "spectator"]]\nLeave blank to have no from game modes to game modes filter.', "Comma separated list.", category[setting].fromGameModes?.length === 0
-                        ? category[setting].fromGameModes?.length === 0
-                            ? category[setting].fromGameModes?.join(",") ?? ""
-                            : ""
-                        : category[setting].fromGameModes?.join(",") ?? "");
+                    form.textField("To block all game mode changes, leave all of the text boxes below blank.\n\nFrom Game Modes\nA list of gamemodes that if the player is switching out of one of these gamemodes, it will be blocked.\nComma separated list.\nLeave blank to have no from game modes filter.", "Comma separated list.", {
+                        defaultValue: category[setting].fromGameModes?.length === 0
+                            ? category[setting].fromGameModes?.length === 0
+                                ? category[setting].fromGameModes?.join(",") ?? ""
+                                : ""
+                            : category[setting].fromGameModes?.join(",") ?? "",
+                    });
+                    form.textField("To Game Modes\nA list of gamemodes that if the player is switching to one of these gamemodes, it will be blocked.\nComma separated list.\nLeave blank to have no to game modes filter.", "Comma separated list.", {
+                        defaultValue: category[setting].fromGameModes?.length === 0
+                            ? category[setting].fromGameModes?.length === 0
+                                ? category[setting].fromGameModes?.join(",") ?? ""
+                                : ""
+                            : category[setting].fromGameModes?.join(",") ?? "",
+                    });
+                    form.textField('From Game Modes To Game Modes\nA JSON onject that if an array with arrays that each have two strings inside of it, if in any of these arrays, the first string matches the from gamemode and the second matches the to gamemode, it will be blocked.\nJSON: [from: string, to: string][]\nex. [["survival", "creative"], ["adventure", "spectator"]]\nLeave blank to have no from game modes to game modes filter.', "Comma separated list.", {
+                        defaultValue: category[setting].fromGameModes?.length === 0
+                            ? category[setting].fromGameModes?.length === 0
+                                ? category[setting].fromGameModes?.join(",") ?? ""
+                                : ""
+                            : category[setting].fromGameModes?.join(",") ?? "",
+                    });
                     form.submitButton("Save");
                     const r = await form.forceShow(player);
                     if (r.canceled)
@@ -883,8 +894,8 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                     const catFilters = catProp?.heldItemFilters;
                     let form = new ModalFormData();
                     form.title(customFormUICodes.modal.titles.formStyles.medium + "Held Item Filters");
-                    form.dropdown("Filter Type\nInclude will cause only players with held items listed below to be blocked, exclude will cause only players who are not holding one of the item types listed below to be blocked.", ["exclude", "include"], catFilters.mode === "exclude" ? 0 : 1);
-                    form.textField(`Item Types\nList of item types to allow or block. These should be item namespaced IDs.\nex. minecraft:stick,minecraft:diamond_pickaxe\nComma separated list.`, "Comma separated list.", catFilters?.items?.length === 0 ? "" : catFilters?.items?.join(",") ?? "");
+                    form.dropdown("Filter Type\nInclude will cause only players with held items listed below to be blocked, exclude will cause only players who are not holding one of the item types listed below to be blocked.", ["exclude", "include"], { defaultValueIndex: catFilters.mode === "exclude" ? 0 : 1 });
+                    form.textField(`Item Types\nList of item types to allow or block. These should be item namespaced IDs.\nex. minecraft:stick,minecraft:diamond_pickaxe\nComma separated list.`, "Comma separated list.", { defaultValue: catFilters?.items?.length === 0 ? "" : catFilters?.items?.join(",") ?? "" });
                     form.submitButton("Save");
                     const r = await form.forceShow(player);
                     if (r.canceled)
@@ -914,8 +925,8 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                     const catProp = category[setting];
                     let form = new ModalFormData();
                     form.title(customFormUICodes.modal.titles.formStyles.medium + "Block Mask");
-                    form.dropdown("Mask Type\nInclude will cause only only blocks matching the block mask below to be blocked, exclude will cause only players who are not holding one of the item types listed below to be blocked.", ["exclude", "include"], +(catProp.mode === "include"));
-                    form.textField(`Block Mask\nA block mask, more information is available at §bhttps://wiki.8crafter.com/andexdb/commands/parameter-types#mask§r.`, "Mask", (catProp.rawmask ?? "") === "none" ? "" : String(catProp.rawmask ?? ""));
+                    form.dropdown("Mask Type\nInclude will cause only only blocks matching the block mask below to be blocked, exclude will cause only players who are not holding one of the item types listed below to be blocked.", ["exclude", "include"], { defaultValueIndex: +(catProp.mode === "include") });
+                    form.textField(`Block Mask\nA block mask, more information is available at §bhttps://wiki.8crafter.com/andexdb/commands/parameter-types#mask§r.`, "Mask", { defaultValue: (catProp.rawmask ?? "") === "none" ? "" : String(catProp.rawmask ?? "") });
                     form.submitButton("Save");
                     const r = await form.forceShow(player);
                     if (r.canceled)
@@ -946,14 +957,18 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                     const catProp = category[setting];
                     let form = new ModalFormData();
                     form.title(customFormUICodes.modal.titles.formStyles.medium + "Source Entity Filter");
-                    form.dropdown("Entity Type Filter Type\nInclude will cause only entity types listed below to be blocked, exclude will cause all other entity types to be blocked.", ["exclude", "include"], catProp.sourceEntityFilter?.includeTypes?.length === 0 ? 0 : 1);
-                    form.textField(`Entity Types\nList of entity types to allow or block.\nShould be entity namespaced IDs.\nComma separated list.`, "Comma separated list.", (category[setting].sourceEntityFilter?.excludeTypes?.length ?? 0) === 0
-                        ? category[setting].sourceEntityFilter?.includeTypes?.join(",") ?? ""
-                        : category[setting].sourceEntityFilter?.excludeTypes?.join(",") ?? "");
-                    form.dropdown("Entity Tags Filter Type\nInclude will cause only entities with at least one of the tags listed below to be blocked, exclude will cause all other entities to be blocked.", ["exclude", "include"], catProp.sourceEntityFilter?.includeTags?.length === 0 ? 0 : 1);
-                    form.textField(`Entity Tags\nList of entity tags to allow or block.\nComma separated list.`, "Comma separated list.", (category[setting].sourceEntityFilter?.excludeTags?.length ?? 0) === 0
-                        ? category[setting].sourceEntityFilter?.includeTags?.join(",") ?? ""
-                        : category[setting].sourceEntityFilter?.excludeTags?.join(",") ?? "");
+                    form.dropdown("Entity Type Filter Type\nInclude will cause only entity types listed below to be blocked, exclude will cause all other entity types to be blocked.", ["exclude", "include"], { defaultValueIndex: catProp.sourceEntityFilter?.includeTypes?.length === 0 ? 0 : 1 });
+                    form.textField(`Entity Types\nList of entity types to allow or block.\nShould be entity namespaced IDs.\nComma separated list.`, "Comma separated list.", {
+                        defaultValue: (category[setting].sourceEntityFilter?.excludeTypes?.length ?? 0) === 0
+                            ? category[setting].sourceEntityFilter?.includeTypes?.join(",") ?? ""
+                            : category[setting].sourceEntityFilter?.excludeTypes?.join(",") ?? "",
+                    });
+                    form.dropdown("Entity Tags Filter Type\nInclude will cause only entities with at least one of the tags listed below to be blocked, exclude will cause all other entities to be blocked.", ["exclude", "include"], { defaultValueIndex: catProp.sourceEntityFilter?.includeTags?.length === 0 ? 0 : 1 });
+                    form.textField(`Entity Tags\nList of entity tags to allow or block.\nComma separated list.`, "Comma separated list.", {
+                        defaultValue: (category[setting].sourceEntityFilter?.excludeTags?.length ?? 0) === 0
+                            ? category[setting].sourceEntityFilter?.includeTags?.join(",") ?? ""
+                            : category[setting].sourceEntityFilter?.excludeTags?.join(",") ?? "",
+                    });
                     form.submitButton("Save");
                     const r = await form.forceShow(player);
                     if (r.canceled)
@@ -986,14 +1001,18 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                     const catProp = category[setting];
                     let form = new ModalFormData();
                     form.title(customFormUICodes.modal.titles.formStyles.medium + "Target Entity Filter");
-                    form.dropdown("Entity Type Filter Type\nInclude will cause only entity types listed below to be blocked, exclude will cause all other entity types to be blocked.", ["exclude", "include"], catProp.targetEntityFilter?.includeTypes?.length === 0 ? 0 : 1);
-                    form.textField(`Entity Types\nList of entity types to allow or block.\nShould be entity namespaced IDs.\nComma separated list.`, "Comma separated list.", (catProp.targetEntityFilter?.excludeTypes?.length ?? 0) === 0
-                        ? catProp.targetEntityFilter?.includeTypes?.join(",") ?? ""
-                        : catProp.targetEntityFilter?.excludeTypes?.join(",") ?? "");
-                    form.dropdown("Entity Tags Filter Type\nInclude will cause only entities with at least one of the tags listed below to be blocked, exclude will cause all other entities to be blocked.", ["exclude", "include"], catProp.targetEntityFilter?.includeTags?.length === 0 ? 0 : 1);
-                    form.textField(`Entity Tags\nList of entity tags to allow or block.\nComma separated list.`, "Comma separated list.", (catProp.targetEntityFilter?.excludeTags?.length ?? 0) === 0
-                        ? catProp.targetEntityFilter?.includeTags?.join(",") ?? ""
-                        : catProp.targetEntityFilter?.excludeTags?.join(",") ?? "");
+                    form.dropdown("Entity Type Filter Type\nInclude will cause only entity types listed below to be blocked, exclude will cause all other entity types to be blocked.", ["exclude", "include"], { defaultValueIndex: catProp.targetEntityFilter?.includeTypes?.length === 0 ? 0 : 1 });
+                    form.textField(`Entity Types\nList of entity types to allow or block.\nShould be entity namespaced IDs.\nComma separated list.`, "Comma separated list.", {
+                        defaultValue: (catProp.targetEntityFilter?.excludeTypes?.length ?? 0) === 0
+                            ? catProp.targetEntityFilter?.includeTypes?.join(",") ?? ""
+                            : catProp.targetEntityFilter?.excludeTypes?.join(",") ?? "",
+                    });
+                    form.dropdown("Entity Tags Filter Type\nInclude will cause only entities with at least one of the tags listed below to be blocked, exclude will cause all other entities to be blocked.", ["exclude", "include"], { defaultValueIndex: catProp.targetEntityFilter?.includeTags?.length === 0 ? 0 : 1 });
+                    form.textField(`Entity Tags\nList of entity tags to allow or block.\nComma separated list.`, "Comma separated list.", {
+                        defaultValue: (catProp.targetEntityFilter?.excludeTags?.length ?? 0) === 0
+                            ? catProp.targetEntityFilter?.includeTags?.join(",") ?? ""
+                            : catProp.targetEntityFilter?.excludeTags?.join(",") ?? "",
+                    });
                     form.submitButton("Save");
                     const r = await form.forceShow(player);
                     if (r.canceled)
@@ -1026,8 +1045,12 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
                     const catProp = category[setting];
                     let form = new ModalFormData();
                     form.title(customFormUICodes.modal.titles.formStyles.medium + "Tag Zone Tags");
-                    form.textField("Tags\nThis is a comma-separated list of tags to will be given to players entering this area.", "Comma separated list.", catProp.tags?.join(",") ?? "");
-                    form.toggle("Remove Tags On Exit\nWhether or not to remove the tags given to players entering this area when they exit.", catProp.removeOnExit ?? false);
+                    form.textField("Tags\nThis is a comma-separated list of tags to will be given to players entering this area.", "Comma separated list.", {
+                        defaultValue: catProp.tags?.join(",") ?? "",
+                    });
+                    form.toggle("Remove Tags On Exit\nWhether or not to remove the tags given to players entering this area when they exit.", {
+                        defaultValue: catProp.removeOnExit ?? false,
+                    });
                     form.submitButton("Save");
                     const r = await form.forceShow(player);
                     if (r.canceled)

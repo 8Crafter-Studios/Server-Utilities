@@ -4,15 +4,15 @@ import { forceShow } from "modules/ui/functions/forceShow";
 import { chatMessage } from "modules/chat/functions/chatMessage";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 export function chatMessageNoCensor(sourceEntitya, bypassChatInputRequests = false) {
-    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
-        ? sourceEntitya.player
-        : sourceEntitya;
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     system.run(() => {
         let form = new ModalFormData();
         let playerList = world.getAllPlayers();
         form.title("Chat");
         form.textField("Chat Message / Command", "Chat Message / Command");
-        form.dropdown("As Player", playerList.map((p) => p.name), playerList.indexOf(sourceEntity));
+        form.dropdown("As Player", playerList.map((p) => p.name), {
+            defaultValueIndex: playerList.indexOf(sourceEntity),
+        });
         form.submitButton("Send");
         forceShow(form, sourceEntity)
             .then((ra) => {
@@ -26,8 +26,7 @@ export function chatMessageNoCensor(sourceEntitya, bypassChatInputRequests = fal
             chatMessage({
                 cancel: false,
                 message: message,
-                sender: playerList[asPlayer] ??
-                    sourceEntity,
+                sender: playerList[asPlayer] ?? sourceEntity,
             }, bypassChatInputRequests);
             // Do something
         })

@@ -7830,8 +7830,14 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             ]).args;
                             const rotation = evaluateRotationCoordinates(String(args[7] ?? 0), String(args[6] ?? 0).replace("~", "0"), player.getRotation());
                             const location = evaluateCoordinates(args[3] ?? "~", args[4] ?? "~", args[5] ?? "~", player.location, player.getRotation());
+                            let entityType = args[2].replace(/^[^\<\:]+(?=[\<\$])/, "minecraft:$&");
+                            let spawnEvent = undefined;
+                            if (/^[^<]+<[^>]*>$/.test(entityType)) {
+                                spawnEvent = entityType.match(/^[^<]+<([^>]*)>$/)[1];
+                                entityType = entityType.match(/^([^<]+)<[^>]*>$/)[1];
+                            }
                             for (let i = 0; i < args[1]; i++) {
-                                let a = player.dimension.spawnEntity(args[2].replace(/^[^\<\:]+(?=[\<\$])/, "minecraft:$&"), location, { initialPersistence: args[8] ?? false });
+                                let a = player.dimension.spawnEntity(entityType, location, { initialPersistence: args[8] ?? false, spawnEvent });
                                 a.setRotation(rotation);
                                 a.nameTag = args[9] ?? "";
                             }

@@ -12,7 +12,7 @@ export function chatSendNoCensor(sourceEntitya) {
         let playerList = world.getAllPlayers();
         form.title("Chat");
         form.textField("Chat Message", "Chat Message");
-        form.dropdown("As Player", playerList.map((p) => p.name), playerList.indexOf(sourceEntity));
+        form.dropdown("As Player", playerList.map((p) => p.name), { defaultValueIndex: playerList.indexOf(sourceEntity) });
         form.submitButton("Send");
         forceShow(form, sourceEntity)
             .then((ra) => {

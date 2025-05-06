@@ -99,8 +99,8 @@ export async function manageMutes(sourceEntity, pagen = 0, maxentriesperpage = c
                     {
                         const r = await tryget(async () => await new ModalFormData()
                             .title("Search")
-                            .textField("", "Search", search?.value ?? "")
-                            .toggle("Case Sensitive", search?.caseSensitive ?? false)
+                            .textField("", "Search", { defaultValue: search?.value ?? "" })
+                            .toggle("Case Sensitive", { defaultValue: search?.caseSensitive ?? false })
                             .submitButton("Search")
                             .forceShow(player));
                         if (!!!r || r.canceled == true) {
@@ -258,7 +258,8 @@ export async function unmutePlayer(sourceEntity, playerName) {
             return 1;
         switch (["cancel", "unmute"][r.selection]) {
             case "cancel": {
-                return ((await showMessage(player, "Unmute Canceled", `The unmute of ${playerName} has been sucessfully canceled.`, "Back", "Close")).selection !== 1).toNumber();
+                return ((await showMessage(player, "Unmute Canceled", `The unmute of ${playerName} has been sucessfully canceled.`, "Back", "Close")).selection !==
+                    1).toNumber();
             }
             case "unmute": {
                 ModerationActions.unmutePlayer(playerName);
@@ -292,9 +293,11 @@ export async function addMute(sourceEntity) {
             }
             let form = new ModalFormData();
             form.title(`${customFormUICodes.modal.titles.formStyles.medium}Mute Player`);
-            form.textField("Player Name\nThis is the name of the player. ", "string", defaultPlayerName);
-            form.textField("Mute Duration (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the mute duration permanent.", "permanent", defaultMuteDuration);
-            form.textField("Reason", "Reason", defaultReason);
+            form.textField("Player Name\nThis is the name of the player. ", "string", { defaultValue: defaultPlayerName });
+            form.textField("Mute Duration (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the mute duration permanent.", "permanent", {
+                defaultValue: defaultMuteDuration,
+            });
+            form.textField("Reason", "Reason", { defaultValue: defaultReason });
             form.submitButton("Mute");
             const r = await forceShow(form, player);
             if (r.canceled) {
@@ -356,8 +359,10 @@ export async function addMuteOnPlayer(sourceEntity, targetName) {
             }
             let form = new ModalFormData();
             form.title(`${customFormUICodes.modal.titles.formStyles.medium}Mute ${targetName}`);
-            form.textField("Mute Duration (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the mute duration permanent.", "permanent", defaultMuteDuration);
-            form.textField("Reason", "Reason", defaultReason);
+            form.textField("Mute Duration (Time String, ex. 5y 7mo 6d 5h 3m 1s 17ms)\nLeave blank to make the mute duration permanent.", "permanent", {
+                defaultValue: defaultMuteDuration,
+            });
+            form.textField("Reason", "Reason", { defaultValue: defaultReason });
             form.submitButton("Mute");
             const r = await forceShow(form, player);
             if (r.canceled) {

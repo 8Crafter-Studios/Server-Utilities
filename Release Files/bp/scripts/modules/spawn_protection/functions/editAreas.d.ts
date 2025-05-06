@@ -7,4 +7,4 @@ import { protectedAreaCategories } from "init/variables/protectedAreaVariables";
  * @param prefix
  * @returns
  */
-export declare function editAreas(player: Player, prefix: typeof protectedAreaCategories[number]): Promise<0 | 1>;
+export declare function editAreas(player: Player, prefix: (typeof protectedAreaCategories)[number]): Promise<0 | 1>;

@@ -46,7 +46,7 @@ export async function editAreasForCustomCategory(sourceEntity, prefix) {
                     form.textField("Identifier Name", "myArea");
                     form.textField("From", "x1, y1, z1");
                     form.textField("To", "x2, y2, z2");
-                    form.dropdown("Dimension", ["Overworld", "Nether", "The End"], dimensions.indexOf(player.dimension));
+                    form.dropdown("Dimension", ["Overworld", "Nether", "The End"], { defaultValueIndex: dimensions.indexOf(player.dimension) });
                     form.dropdown("Mode", ["Protection", "Anti-Protection"]);
                     form.textField("Icon Path (Optional)", "text");
                     form.submitButton("Add");
@@ -191,11 +191,11 @@ export async function editAreaForCustomCategory(sourceEntity, areaID, prefix) {
         ].find((a) => a.id === areaID);
         const form = new ModalFormData();
         form.title(customFormUICodes.modal.titles.formStyles.medium + "Edit Protected Area");
-        form.textField("From", "x1, y1, z1", `${area.from.x}, ${area.from.y}, ${area.from.z}`);
-        form.textField("To", "x2, y2, z2", `${area.to.x}, ${area.to.y}, ${area.to.z}`);
-        form.dropdown("Dimension", ["Overworld", "Nether", "The End"], area.dimension);
-        form.dropdown("Mode", ["Protection", "Anti-Protection"], area.mode);
-        form.textField("Icon Path (Optional)", "text", area.icon_path ?? "");
+        form.textField("From", "x1, y1, z1", { defaultValue: `${area.from.x}, ${area.from.y}, ${area.from.z}` });
+        form.textField("To", "x2, y2, z2", { defaultValue: `${area.to.x}, ${area.to.y}, ${area.to.z}` });
+        form.dropdown("Dimension", ["Overworld", "Nether", "The End"], { defaultValueIndex: area.dimension });
+        form.dropdown("Mode", ["Protection", "Anti-Protection"], { defaultValueIndex: area.mode });
+        form.textField("Icon Path (Optional)", "text", { defaultValue: area.icon_path ?? "" });
         form.submitButton("Save");
         const r = await form.forceShow(player);
         if (r.canceled)

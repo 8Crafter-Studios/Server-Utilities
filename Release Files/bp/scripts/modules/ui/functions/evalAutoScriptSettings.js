@@ -25,11 +25,10 @@ import { customFormUICodes } from "../constants/customFormUICodes";
  * @throws Will log an error and return `-2` if an exception occurs during form processing.
  */
 export async function evalAutoScriptSettings(sourceEntitya) {
-    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
-        ? sourceEntitya.player
-        : sourceEntitya;
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     if (securityVariables.ultraSecurityModeEnabled) {
-        if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessAdvancedSettings") == false || securityVariables.testPlayerForPermission(sourceEntity, "andexdb.useScriptEval") == false) {
+        if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessAdvancedSettings") == false ||
+            securityVariables.testPlayerForPermission(sourceEntity, "andexdb.useScriptEval") == false) {
             const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permissions to access this menu: andexdb.accessAdvancedSettings, andexdb.useScriptEval", "Back", "Cancel");
             if (r.canceled || r.selection == 0) {
                 return 1;
@@ -44,35 +43,65 @@ export async function evalAutoScriptSettings(sourceEntitya) {
     let targetList = [players[0].nameTag];
     for (const index in players) {
         if (Number(index) != 0) {
-            targetList = String([
-                String(targetList),
-                players[index].nameTag,
-            ]).split(",");
+            targetList = String([String(targetList), players[index].nameTag]).split(",");
         }
     }
     form2.title(customFormUICodes.modal.titles.formStyles.fullscreen + "§r§0Eval Auto Script Settings (§nDEPRECATED§r§0)");
-    form2.textField("evalBeforeEvents:chatSend", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:chatSend") ?? ""));
-    form2.textField("evalBeforeEvents:dataDrivenEntityTrggerEvent", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:dataDrivenEntityTriggerEvent") ?? ""));
-    form2.textField("evalBeforeEvents:effectAdd", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:effectAdd") ?? ""));
-    form2.textField("evalBeforeEvents:entityRemove", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:entityRemove")));
-    form2.textField("evalBeforeEvents:explosion", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:explosion")));
-    form2.textField("evalBeforeEvents:itemDefinitionEvent", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent") ??
-        ""));
-    form2.textField("evalBeforeEvents:itemUse", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:itemUse") ?? ""));
-    form2.textField("evalBeforeEvents:itemUseOn", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:itemUseOn") ?? ""));
-    form2.textField("evalBeforeEvents:pistonActivate", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:pistonActivate") ?? ""));
-    form2.textField("evalBeforeEvents:playerBreakBlock", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:playerBreakBlock") ?? ""));
-    form2.textField("evalBeforeEvents:playerInteractWithBlock", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock") ?? ""));
-    form2.textField("evalBeforeEvents:playerInteractWithEntity", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity") ?? ""));
-    form2.textField("evalBeforeEvents:playerLeave", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:playerLeave") ?? ""));
-    form2.textField("evalBeforeEvents:playerPlaceBlock", "JavaScript Script API Code", String(world.getDynamicProperty("evalBeforeEvents:playerPlaceBlock") ?? ""));
-    form2.textField("evalAfterEvents:blockExplode", "JavaScript Script API Code", String(world.getDynamicProperty("evalAfterEvents:blockExplode") ?? ""));
-    form2.textField("evalAfterEvents:playerLeave", "JavaScript Script API Code", String(world.getDynamicProperty("evalAfterEvents:playerLeave") ?? ""));
-    form2.textField("evalAfterEvents:entityDie", "JavaScript Script API Code", String(world.getDynamicProperty("evalAfterEvents:entityDie") ?? "")); /*
-    form2.textField("Slot Number", "Slot Number", "0");
+    form2.textField("evalBeforeEvents:chatSend", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:chatSend") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:dataDrivenEntityTrggerEvent", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:dataDrivenEntityTriggerEvent") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:effectAdd", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:effectAdd") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:entityRemove", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:entityRemove")),
+    });
+    form2.textField("evalBeforeEvents:explosion", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:explosion")),
+    });
+    form2.textField("evalBeforeEvents:itemDefinitionEvent", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:itemDefinitionEvent") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:itemUse", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:itemUse") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:itemUseOn", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:itemUseOn") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:pistonActivate", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:pistonActivate") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:playerBreakBlock", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:playerBreakBlock") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:playerInteractWithBlock", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithBlock") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:playerInteractWithEntity", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:playerInteractWithEntity") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:playerLeave", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:playerLeave") ?? ""),
+    });
+    form2.textField("evalBeforeEvents:playerPlaceBlock", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalBeforeEvents:playerPlaceBlock") ?? ""),
+    });
+    form2.textField("evalAfterEvents:blockExplode", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalAfterEvents:blockExplode") ?? ""),
+    });
+    form2.textField("evalAfterEvents:playerLeave", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalAfterEvents:playerLeave") ?? ""),
+    });
+    form2.textField("evalAfterEvents:entityDie", "JavaScript Script API Code", {
+        defaultValue: String(world.getDynamicProperty("evalAfterEvents:entityDie") ?? ""),
+    }); /*
+    form2.textField("Slot Number", "Slot Number", {defaultValue: "0"});
     form2.dropdown("Player Target", String(targetList).split(","), 0)
     form2.dropdown("Player Viewer", String(targetList).split(","), 0)
-    form2.toggle("Debug2", false);*/
+    form2.toggle("Debug2", {defaultValue: false});*/
     form2.submitButton("Save");
     return await forceShow(form2, sourceEntity)
         .then((to) => {
@@ -80,7 +109,7 @@ export async function evalAutoScriptSettings(sourceEntitya) {
         if (t.canceled) {
             return 1;
         }
-        let [becs, beddete, beea, beer, bee, beide, beiu, beiuo, bepa, bepbb, bepiwb, bepiwe, bepl, beppb, aebe, aepl, aeed,] = t.formValues;
+        let [becs, beddete, beea, beer, bee, beide, beiu, beiuo, bepa, bepbb, bepiwb, bepiwe, bepl, beppb, aebe, aepl, aeed] = t.formValues;
         world.setDynamicProperty("evalBeforeEvents:chatSend", becs);
         world.setDynamicProperty("evalBeforeEvents:dataDrivenEntityTrggerEvent", beddete);
         world.setDynamicProperty("evalBeforeEvents:effectAdd", beea);

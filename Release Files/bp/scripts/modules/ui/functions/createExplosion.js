@@ -7,15 +7,15 @@ export async function createExplosion(sourceEntitya, parameterDefaults) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     form.title("Create Explosion");
-    form.textField("x", "number", String(parameterDefaults?.x ?? sourceEntity.location.x));
-    form.textField("y", "number", String(parameterDefaults?.y ?? sourceEntity.location.y));
-    form.textField("z", "number", String(parameterDefaults?.z ?? sourceEntity.location.z));
-    form.textField("dimension", "dimensionId", String(parameterDefaults?.dimension?.id ?? sourceEntity.dimension.id));
-    form.textField("radius", "number", String(parameterDefaults?.radius ?? 1));
-    form.textField("source", "targetSelector", parameterDefaults?.source);
-    form.toggle("allowUnderwater", parameterDefaults?.explosionOptions?.allowUnderwater ?? false);
-    form.toggle("breaksBlocks", parameterDefaults?.explosionOptions?.breaksBlocks ?? true);
-    form.toggle("causesFire", parameterDefaults?.explosionOptions?.causesFire ?? false);
+    form.textField("x", "number", { defaultValue: String(parameterDefaults?.x ?? sourceEntity.location.x) });
+    form.textField("y", "number", { defaultValue: String(parameterDefaults?.y ?? sourceEntity.location.y) });
+    form.textField("z", "number", { defaultValue: String(parameterDefaults?.z ?? sourceEntity.location.z) });
+    form.textField("dimension", "dimensionId", { defaultValue: String(parameterDefaults?.dimension?.id ?? sourceEntity.dimension.id) });
+    form.textField("radius", "number", { defaultValue: String(parameterDefaults?.radius ?? 1) });
+    form.textField("source", "targetSelector", { defaultValue: parameterDefaults?.source });
+    form.toggle("allowUnderwater", { defaultValue: parameterDefaults?.explosionOptions?.allowUnderwater ?? false });
+    form.toggle("breaksBlocks", { defaultValue: parameterDefaults?.explosionOptions?.breaksBlocks ?? true });
+    form.toggle("causesFire", { defaultValue: parameterDefaults?.explosionOptions?.causesFire ?? false });
     form.submitButton("Create");
     return await forceShow(form, sourceEntity)
         .then((ra) => {

@@ -689,4 +689,7 @@ declare module "@minecraft/server" {
         y: number;
         z: number;
     }
+    interface Dimension {
+        spawnEntity(identifier: string, location: Vector3, options?: SpawnEntityOptions): Entity;
+    }
 }

@@ -119,12 +119,16 @@ if (args.some((arg) => arg.startsWith("--version="))) {
 }
 
 if (newVersion === originalVersion && newMCVersion === originalMCVersion) {
-    console.error("\u001B[38;2;255;0;0mBoth the new version number and the new supported Minecraft version number are the same as the original version numbers. Exiting...\u001B[0m");
+    console.error(
+        "\u001B[38;2;255;0;0mBoth the new version number and the new supported Minecraft version number are the same as the original version numbers. Exiting...\u001B[0m"
+    );
     process.exit(1);
 }
 
 if (newVersion === originalVersion && newMCVersion === "") {
-    console.error("\u001B[38;2;255;0;0mNew version number is the same as the original version number and new supported Minecraft version number is not provided. Exiting...\u001B[0m");
+    console.error(
+        "\u001B[38;2;255;0;0mNew version number is the same as the original version number and new supported Minecraft version number is not provided. Exiting...\u001B[0m"
+    );
     process.exit(1);
 }
 
@@ -136,7 +140,9 @@ if (newVersion === "" && newMCVersion === originalMCVersion) {
 }
 
 if (newVersion === originalVersion) {
-    console.warn("\u001B[38;2;255;255;0mWARNING: New version number is the same as the original version number. This version number will not be changed.\u001B[0m");
+    console.warn(
+        "\u001B[38;2;255;255;0mWARNING: New version number is the same as the original version number. This version number will not be changed.\u001B[0m"
+    );
 }
 
 if (newMCVersion === originalMCVersion) {
@@ -180,53 +186,66 @@ let howToPlayScreenJSON = readFileSync("./previews/rp/ui/how_to_play_screen.json
  */
 let enUSTextsLang = readFileSync("./previews/rp/texts/en_US.lang", "utf-8");
 
-if (!rawInitializeMainGlobalVariablesFileJS.includes('mainGlobalVariables.current_format_version = "' + originalVersion + '";')) {
-    console.warn(
-        `\u001B[38;2;255;255;0mWARNING: ./previews/bp/scripts/initializeMainGlobalVariables.js does not contain the original version number: \u001B[38;2;0;255;128mv${originalVersion}\u001B[38;2;255;255;0m. Detected Version: \u001B[38;2;0;255;128mv${
-            rawInitializeMainGlobalVariablesFileJS.match(
-                /(?<=mainGlobalVariables.current_format_version = ")[0-9]+\.[0-9]+\.[0-9]+(-[^+]*?)?(\+.*?)?(?=";)/
-            )?.[0] ?? "\u001B[38;2;255;0;0mNot Found"
-        }\u001B[38;2;255;255;0m.\u001B[0m`
-    );
-}
-if (!rawInitializeMainGlobalVariablesFileDTS.includes('const current_format_version = "' + originalVersion + '";')) {
-    console.warn(
-        `\u001B[38;2;255;255;0mWARNING: ./previews/bp/scripts/initializeMainGlobalVariables.d.ts does not contain the original version number: \u001B[38;2;0;255;128mv${originalVersion}\u001B[38;2;255;255;0m. Detected Version: \u001B[38;2;0;255;128mv${
-            rawInitializeMainGlobalVariablesFileDTS.match(/(?<=const current_format_version = ")[0-9]+\.[0-9]+\.[0-9]+(-[^+]*?)?(\+.*?)?(?=";)/)?.[0] ??
-            "\u001B[38;2;255;0;0mNot Found"
-        }\u001B[38;2;255;255;0m.\u001B[0m`
-    );
-}
-if (!settingsScreenJSON.includes("(Version: " + originalVersion + " for ")) {
-    console.warn(
-        `\u001B[38;2;255;255;0mWARNING: ./previews/rp/ui/settings_screen.json does not contain the original version number: \u001B[38;2;0;255;128mv${originalVersion}\u001B[38;2;255;255;0m. Detected Version: \u001B[38;2;0;255;128mv${
-            settingsScreenJSON.match(/(?<=\(Version: )[0-9]+\.[0-9]+\.[0-9]+(-[^+]*?)?(\+[^a-zA-Z.\-+0-9_=]*?)?(?= for )/)?.[0] ?? "\u001B[38;2;255;0;0mNot Found"
-        }\u001B[38;2;255;255;0m.\u001B[0m`
-    );
-}
+if (newVersion !== "") {
+    if (!rawInitializeMainGlobalVariablesFileJS.includes('mainGlobalVariables.current_format_version = "' + originalVersion + '";')) {
+        console.warn(
+            `\u001B[38;2;255;255;0mWARNING: ./previews/bp/scripts/initializeMainGlobalVariables.js does not contain the original version number: \u001B[38;2;0;255;128mv${originalVersion}\u001B[38;2;255;255;0m. Detected Version: \u001B[38;2;0;255;128mv${
+                rawInitializeMainGlobalVariablesFileJS.match(
+                    /(?<=mainGlobalVariables.current_format_version = ")[0-9]+\.[0-9]+\.[0-9]+(-[^+]*?)?(\+.*?)?(?=";)/
+                )?.[0] ?? "\u001B[38;2;255;0;0mNot Found"
+            }\u001B[38;2;255;255;0m.\u001B[0m`
+        );
+    }
+    if (!rawInitializeMainGlobalVariablesFileDTS.includes('const current_format_version = "' + originalVersion + '";')) {
+        console.warn(
+            `\u001B[38;2;255;255;0mWARNING: ./previews/bp/scripts/initializeMainGlobalVariables.d.ts does not contain the original version number: \u001B[38;2;0;255;128mv${originalVersion}\u001B[38;2;255;255;0m. Detected Version: \u001B[38;2;0;255;128mv${
+                rawInitializeMainGlobalVariablesFileDTS.match(/(?<=const current_format_version = ")[0-9]+\.[0-9]+\.[0-9]+(-[^+]*?)?(\+.*?)?(?=";)/)?.[0] ??
+                "\u001B[38;2;255;0;0mNot Found"
+            }\u001B[38;2;255;255;0m.\u001B[0m`
+        );
+    }
+    if (!settingsScreenJSON.includes("(Version: " + originalVersion + " for ")) {
+        console.warn(
+            `\u001B[38;2;255;255;0mWARNING: ./previews/rp/ui/settings_screen.json does not contain the original version number: \u001B[38;2;0;255;128mv${originalVersion}\u001B[38;2;255;255;0m. Detected Version: \u001B[38;2;0;255;128mv${
+                settingsScreenJSON.match(/(?<=\(Version: )[0-9]+\.[0-9]+\.[0-9]+(-[^+]*?)?(\+[^a-zA-Z.\-+0-9_=]*?)?(?= for )/)?.[0] ??
+                "\u001B[38;2;255;0;0mNot Found"
+            }\u001B[38;2;255;255;0m.\u001B[0m`
+        );
+    }
 
-if (!enUSTextsLang.includes("8crafterdebugsticksrp.version=" + originalVersion + "\n") && !enUSTextsLang.includes("8crafterdebugsticksrp.version=" + originalVersion + "\r")) {
-    console.warn(
-        `\u001B[38;2;255;255;0mWARNING: ./previews/rp/texts/en_US.lang does not contain the original version number: \u001B[38;2;0;255;128mv${originalVersion}\u001B[38;2;255;255;0m. Detected Version: \u001B[38;2;0;255;128mv${
-            enUSTextsLang.match(/(?<=8crafterdebugsticksrp\.version=)[0-9]+\.[0-9]+\.[0-9]+(-[^+]*?)?(\+.*?)?(?=\s)/)?.[0] ?? "\u001B[38;2;255;0;0mNot Found"
-        }\u001B[38;2;255;255;0m.\u001B[0m`
-    );
-}
+    if (
+        !enUSTextsLang.includes("8crafterdebugsticksrp.version=" + originalVersion + "\n") &&
+        !enUSTextsLang.includes("8crafterdebugsticksrp.version=" + originalVersion + "\r")
+    ) {
+        console.warn(
+            `\u001B[38;2;255;255;0mWARNING: ./previews/rp/texts/en_US.lang does not contain the original version number: \u001B[38;2;0;255;128mv${originalVersion}\u001B[38;2;255;255;0m. Detected Version: \u001B[38;2;0;255;128mv${
+                enUSTextsLang.match(/(?<=8crafterdebugsticksrp\.version=)[0-9]+\.[0-9]+\.[0-9]+(-[^+]*?)?(\+.*?)?(?=\s)/)?.[0] ??
+                "\u001B[38;2;255;0;0mNot Found"
+            }\u001B[38;2;255;255;0m.\u001B[0m`
+        );
+    }
 
-manifestBPRaw = manifestBPRaw.replaceAll(originalVersion, newVersion);
-manifestRPRaw = manifestRPRaw.replaceAll(originalVersion, newVersion);
-rawInitializeMainGlobalVariablesFileJS = rawInitializeMainGlobalVariablesFileJS.replace(
-    'mainGlobalVariables.current_format_version = "' + originalVersion + '";',
-    'mainGlobalVariables.current_format_version = "' + newVersion + '";'
-);
-rawInitializeMainGlobalVariablesFileDTS = rawInitializeMainGlobalVariablesFileDTS.replace(
-    'const current_format_version = "' + originalVersion + '";',
-    'const current_format_version = "' + newVersion + '";'
-);
-settingsScreenJSON = settingsScreenJSON.replace("(Version: " + originalVersion + " for ", "(Version: " + newVersion + " for ");
-enUSTextsLang = enUSTextsLang
-    .replace(new RegExp(`8crafterdebugsticksrp\\.version=${originalVersion.replaceAll(".", "\\.")}\\s?\\n`), "8crafterdebugsticksrp.version=" + newVersion + "\n")
-    .replace(new RegExp(`8crafterdebugsticksrp2\\.version=${originalVersion.replaceAll(".", "\\.")}\\s?\\n`), "8crafterdebugsticksrp2.version=" + newVersion + "\n");
+    manifestBPRaw = manifestBPRaw.replaceAll(originalVersion, newVersion);
+    manifestRPRaw = manifestRPRaw.replaceAll(originalVersion, newVersion);
+    rawInitializeMainGlobalVariablesFileJS = rawInitializeMainGlobalVariablesFileJS.replace(
+        'mainGlobalVariables.current_format_version = "' + originalVersion + '";',
+        'mainGlobalVariables.current_format_version = "' + newVersion + '";'
+    );
+    rawInitializeMainGlobalVariablesFileDTS = rawInitializeMainGlobalVariablesFileDTS.replace(
+        'const current_format_version = "' + originalVersion + '";',
+        'const current_format_version = "' + newVersion + '";'
+    );
+    settingsScreenJSON = settingsScreenJSON.replace("(Version: " + originalVersion + " for ", "(Version: " + newVersion + " for ");
+    enUSTextsLang = enUSTextsLang
+        .replace(
+            new RegExp(`8crafterdebugsticksrp\\.version=${originalVersion.replaceAll(".", "\\.")}\\s?\\n`),
+            "8crafterdebugsticksrp.version=" + newVersion + "\n"
+        )
+        .replace(
+            new RegExp(`8crafterdebugsticksrp2\\.version=${originalVersion.replaceAll(".", "\\.")}\\s?\\n`),
+            "8crafterdebugsticksrp2.version=" + newVersion + "\n"
+        );
+}
 
 if (newMCVersion !== "") {
     if (!rawInitializeMainGlobalVariablesFileJS.includes('mainGlobalVariables.current_supported_minecraft_version = "' + originalMCVersion + '";')) {
@@ -248,8 +267,14 @@ if (newMCVersion !== "") {
         );
     }
 
-    manifestBPRaw = manifestBPRaw.replaceAll("(for minecraft bedrock edition " + originalMCVersion + ")", "(for minecraft bedrock edition " + newMCVersion + ")");
-    manifestRPRaw = manifestRPRaw.replaceAll("(for minecraft bedrock edition " + originalMCVersion + ")", "(for minecraft bedrock edition " + newMCVersion + ")");
+    manifestBPRaw = manifestBPRaw.replaceAll(
+        "(for minecraft bedrock edition " + originalMCVersion + ")",
+        "(for minecraft bedrock edition " + newMCVersion + ")"
+    );
+    manifestRPRaw = manifestRPRaw.replaceAll(
+        "(for minecraft bedrock edition " + originalMCVersion + ")",
+        "(for minecraft bedrock edition " + newMCVersion + ")"
+    );
     rawInitializeMainGlobalVariablesFileJS = rawInitializeMainGlobalVariablesFileJS.replace(
         'mainGlobalVariables.current_supported_minecraft_version = "' + originalMCVersion + '";',
         'mainGlobalVariables.current_supported_minecraft_version = "' + newMCVersion + '";'

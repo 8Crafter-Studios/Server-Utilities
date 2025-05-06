@@ -102,11 +102,12 @@ export async function uiSettings_menuConfigurations_playerMenu_leaderboardsSetti
     form.body("This menu allows you to customize what leaderboards are displayed in the leaderboards section of the player menu.");
     leaderboards.forEach((l) => {
         const button = statistics.find((s) => s.id === l);
-        form.button(customFormUICodes.action.buttons.positions.main_only + (button !== undefined
-            ? typeof button?.buttonDisplayName === "string"
-                ? button?.buttonDisplayName
-                : "INVALID NAME TYPE: " + typeof button?.buttonDisplayName
-            : "MISSING: " + l), button === undefined ? "bug_pack_icon" : undefined);
+        form.button(customFormUICodes.action.buttons.positions.main_only +
+            (button !== undefined
+                ? typeof button?.buttonDisplayName === "string"
+                    ? button?.buttonDisplayName
+                    : "INVALID NAME TYPE: " + typeof button?.buttonDisplayName
+                : "MISSING: " + l), button === undefined ? "bug_pack_icon" : undefined);
     });
     form.button(customFormUICodes.action.buttons.positions.main_only + "Add Leaderboard", "textures/ui/color_plus");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
@@ -155,11 +156,12 @@ Default Button Index: ${leaderboard.type === "built-in" ? defaultPlayerMenuLeade
                     form.body(`Select the button you would like to move this button ${r.selection === 0 ? "above" : "below"}.`);
                     leaderboards.forEach((l) => {
                         const button = statistics.find((s) => s.id === l);
-                        form.button(customFormUICodes.action.buttons.positions.main_only + (button !== undefined
-                            ? typeof button?.buttonDisplayName === "string"
-                                ? button?.buttonDisplayName
-                                : "INVALID NAME TYPE: " + typeof button?.buttonDisplayName
-                            : "MISSING: " + l), button === undefined ? "bug_pack_icon" : undefined);
+                        form.button(customFormUICodes.action.buttons.positions.main_only +
+                            (button !== undefined
+                                ? typeof button?.buttonDisplayName === "string"
+                                    ? button?.buttonDisplayName
+                                    : "INVALID NAME TYPE: " + typeof button?.buttonDisplayName
+                                : "MISSING: " + l), button === undefined ? "bug_pack_icon" : undefined);
                     });
                     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
                     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
@@ -372,11 +374,12 @@ Default Button Index: ${leaderboard.type === "built-in" ? defaultPlayerMenuLeade
                     form.body(`Select the button you would like to move this button ${r.selection === 0 ? "above" : "below"}.`);
                     trackedStats.forEach((l) => {
                         const button = statistics.find((s) => s.id === l);
-                        form.button(customFormUICodes.action.buttons.positions.main_only + (button !== undefined
-                            ? typeof button?.buttonDisplayName === "string"
-                                ? button?.buttonDisplayName
-                                : "INVALID NAME TYPE: " + typeof button?.buttonDisplayName
-                            : "MISSING: " + l), button === undefined ? "bug_pack_icon" : undefined);
+                        form.button(customFormUICodes.action.buttons.positions.main_only +
+                            (button !== undefined
+                                ? typeof button?.buttonDisplayName === "string"
+                                    ? button?.buttonDisplayName
+                                    : "INVALID NAME TYPE: " + typeof button?.buttonDisplayName
+                                : "MISSING: " + l), button === undefined ? "bug_pack_icon" : undefined);
                     });
                     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
                     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
@@ -711,9 +714,9 @@ export async function uiSettings_menuConfigurations_playerMenu_leaderboardsSetti
     const form = new ModalFormData();
     form.title(customFormUICodes.modal.titles.formStyles.medium + "Edit Built-In Statistic");
     const formOptionsMap = {
-        enabled: () => form.toggle("§l§fEnabled§r§f\nWhether or not this built-in statistic is enabled. Defaults to true.", menuConfig.enabled),
-        addCommaSeparators: () => form.toggle("§l§fAdd Comma Separators§r§f\nWhether or not to add comma separators in the displayed value. ex. 1327401 would become 1,327,401. Defaults to true.", menuConfig.displayOptions.addCommaSeparators),
-        currencyPrefix: () => form.textField(`§l§fCurrency Prefix§r§f\nA currency symbol to prefix the displayed value with. For example, if this is set to "$", then 1327401 would become $1327401 and -1234781 would become -$1234781. (Can be combined with "Add Comma Separators" to make it display like -$1,234,781.). Leave it blank to have no currency symbol. Defaults to ${JSON.stringify(statistic.displayOptions.currencyPrefix)}.`, "Currency Symbol", menuConfig.displayOptions.currencyPrefix),
+        enabled: () => form.toggle("§l§fEnabled§r§f\nWhether or not this built-in statistic is enabled. Defaults to true.", { defaultValue: menuConfig.enabled }),
+        addCommaSeparators: () => form.toggle("§l§fAdd Comma Separators§r§f\nWhether or not to add comma separators in the displayed value. ex. 1327401 would become 1,327,401. Defaults to true.", { defaultValue: menuConfig.displayOptions.addCommaSeparators }),
+        currencyPrefix: () => form.textField(`§l§fCurrency Prefix§r§f\nA currency symbol to prefix the displayed value with. For example, if this is set to "$", then 1327401 would become $1327401 and -1234781 would become -$1234781. (Can be combined with "Add Comma Separators" to make it display like -$1,234,781.). Leave it blank to have no currency symbol. Defaults to ${JSON.stringify(statistic.displayOptions.currencyPrefix)}.`, "Currency Symbol", { defaultValue: menuConfig.displayOptions.currencyPrefix }),
     };
     includedOptions.forEach((o) => formOptionsMap[o]());
     form.submitButton("Save");
@@ -953,10 +956,10 @@ export async function uiSettings_menuConfigurations_playerMenu_leaderboardsSetti
     const form = new ModalFormData();
     form.title(customFormUICodes.modal.titles.formStyles.medium + "Custom Statistic Formatting Options");
     const formOptionsMap = {
-        addCommaSeparators: () => form.toggle("§l§fAdd Comma Separators§r§f\nWhether or not to add comma separators in the displayed value. ex. 1327401 would become 1,327,401. Defaults to true.", statistic.displayOptions.addCommaSeparators ?? true),
-        currencyPrefix: () => form.textField(`§l§fCurrency Prefix§r§f\nA currency symbol to prefix the displayed value with. For example, if this is set to "$", then 1327401 would become $1327401 and -1234781 would become -$1234781. (Can be combined with "Add Comma Separators" to make it display like -$1,234,781.). Leave it blank to have no currency symbol. Defaults to "".`, "Currency Prefix", statistic.displayOptions.currencyPrefix ?? ""),
-        valueDisplayColor: () => form.textField('§l§fValue Display Color§r§f\nThe formatting codes to apply to the score when it is displayed in the player statistics list that is shown when a player clicks on another player in the leaderboard. Should be either blank or any combination of these characters: "§00§r§11§r§22§r§33§r§44§r§55§r§66§r§77§r§88§r§99§r§aa§r§bb§r§cc§r§dd§r§ee§r§ff§r§gg§r§hh§r§ii§r§jj§r§kk§r§ll§r§mm§r§nn§r§oo§r§pp§r§qq§r§rr§r§ss§r§tt§r§uu§r§vv§r§ww§r§xx§r§yy§r§zz§r". Defaults to "".', "text", statistic.displayOptions.valueDisplayColor ?? ""),
-        sorter: () => form.dropdown("§l§fSort Order§r§f\nWhether the leaderboard should be in Ascending or Descending order. Defaults to Descending.", ["Ascending", "Descending"], statistic.sorter),
+        addCommaSeparators: () => form.toggle("§l§fAdd Comma Separators§r§f\nWhether or not to add comma separators in the displayed value. ex. 1327401 would become 1,327,401. Defaults to true.", { defaultValue: statistic.displayOptions.addCommaSeparators ?? true }),
+        currencyPrefix: () => form.textField(`§l§fCurrency Prefix§r§f\nA currency symbol to prefix the displayed value with. For example, if this is set to "$", then 1327401 would become $1327401 and -1234781 would become -$1234781. (Can be combined with "Add Comma Separators" to make it display like -$1,234,781.). Leave it blank to have no currency symbol. Defaults to "".`, "Currency Prefix", { defaultValue: statistic.displayOptions.currencyPrefix ?? "" }),
+        valueDisplayColor: () => form.textField('§l§fValue Display Color§r§f\nThe formatting codes to apply to the score when it is displayed in the player statistics list that is shown when a player clicks on another player in the leaderboard. Should be either blank or any combination of these characters: "§00§r§11§r§22§r§33§r§44§r§55§r§66§r§77§r§88§r§99§r§aa§r§bb§r§cc§r§dd§r§ee§r§ff§r§gg§r§hh§r§ii§r§jj§r§kk§r§ll§r§mm§r§nn§r§oo§r§pp§r§qq§r§rr§r§ss§r§tt§r§uu§r§vv§r§ww§r§xx§r§yy§r§zz§r". Defaults to "".', "text", { defaultValue: statistic.displayOptions.valueDisplayColor ?? "" }),
+        sorter: () => form.dropdown("§l§fSort Order§r§f\nWhether the leaderboard should be in Ascending or Descending order. Defaults to Descending.", ["Ascending", "Descending"], { defaultValueIndex: statistic.sorter }),
     };
     includedOptions.forEach((o) => formOptionsMap[o]());
     form.submitButton("Save");
@@ -1053,12 +1056,16 @@ export async function uiSettings_menuConfigurations_playerMenu_leaderboardsSetti
     const form = new ModalFormData();
     form.title(customFormUICodes.modal.titles.formStyles.medium + "Edit Custom Statistic");
     const formOptionsMap = {
-        id: () => form.textField("§l§fID§r§f\nThe ID of this leaderboard statistic, this must be unique.", "ID", statistic.id),
-        scoreboardObjective: () => form.textField("§l§fScoreboard Objective§r§f\nThe ID of the scoreboard objective that this leaderboard statistic is linked to.", "Objective Name", statistic.scoreboardObjective),
-        menuTitle: () => form.textField("§l§fMenu Title§r§f\nThe title text that will be displayed when the player is looking at the leaderboard for this leaderboard statistic.", "text", statistic.menuTitle),
-        statsListDisplayName: () => form.textField("§l§fStats List Display Name§r§f\nThe text that will go before the colon when displaying the value of this statistic for a player when a player clicks on another player in the leaderboard.", "text", statistic.statsListDisplayName),
-        buttonDisplayName: () => form.textField("§l§fButton Display Name§r§f\nThe text that will be displayed on the button to view this leaderboard.", "text", statistic.buttonDisplayName),
-        buttonIcon: () => form.textField("§l§fButton Icon§r§f (Optional)\nThe text that will go before the colon when displaying the value of this statistic for a player when a player clicks on another player in the leaderboard.", "text", statistic.buttonIcon),
+        id: () => form.textField("§l§fID§r§f\nThe ID of this leaderboard statistic, this must be unique.", "ID", { defaultValue: statistic.id }),
+        scoreboardObjective: () => form.textField("§l§fScoreboard Objective§r§f\nThe ID of the scoreboard objective that this leaderboard statistic is linked to.", "Objective Name", {
+            defaultValue: statistic.scoreboardObjective,
+        }),
+        menuTitle: () => form.textField("§l§fMenu Title§r§f\nThe title text that will be displayed when the player is looking at the leaderboard for this leaderboard statistic.", "text", { defaultValue: statistic.menuTitle }),
+        statsListDisplayName: () => form.textField("§l§fStats List Display Name§r§f\nThe text that will go before the colon when displaying the value of this statistic for a player when a player clicks on another player in the leaderboard.", "text", { defaultValue: statistic.statsListDisplayName }),
+        buttonDisplayName: () => form.textField("§l§fButton Display Name§r§f\nThe text that will be displayed on the button to view this leaderboard.", "text", {
+            defaultValue: statistic.buttonDisplayName,
+        }),
+        buttonIcon: () => form.textField("§l§fButton Icon§r§f (Optional)\nThe text that will go before the colon when displaying the value of this statistic for a player when a player clicks on another player in the leaderboard.", "text", { defaultValue: statistic.buttonIcon }),
     };
     includedOptions.forEach((o) => formOptionsMap[o]());
     form.submitButton("Save");
@@ -1153,18 +1160,24 @@ export async function uiSettings_menuConfigurations_playerMenu_leaderboardsSetti
     const form = new ModalFormData();
     form.title(customFormUICodes.modal.titles.formStyles.medium + "Advanced Statistic Options");
     const formOptionsMap = {
-        getterFunction: () => form.textField("§l§fGetter Function§r§c*§f\nA JavaScript function that will get a player's score for this statistic, it should accept one parameter of type savedPlayer, if you don't want a specific player appearing in the leaderboard, then have the function return undefined for them.\nThe type definitions for the savedPlayer class can be found in the declaration folder of the behavior pack, at §bBP/declaration/modules/player_save/classes/savedPlayer.d.ts§r.\nType: §f(§6player§b: §esavedPlayer§f) §d=> §cstring §b| §6undefined§r", "(player: savedPlayer) => string | undefined", statistic.getterFunction.toString()),
-        valueType: () => form.dropdown("§l§fValue Type§r§c*§f\nThe value type for the scores of this leaderboard statistic, choose string if it is not numerical, choose number if it needs to be able to have decimal places, and choose bigint if you want to be able to have infinitely large integers.\nNote: If you choose string, then the preset Ascending and Descending options below for the sort type will not sort based on numerical value, and instead sort it based off of alphabetical order. So if you choose string and do not want it sorting like that then you must choose the Function sort type and put in a custom JavaScript function for it.\nThe default is bigint.", ["string", "number", "bigint"], ["string", "number", "bigint"].indexOf(statistic.valueType.toLowerCase()) !== -1
-            ? ["string", "number", "bigint"].indexOf(statistic.valueType.toLowerCase())
-            : 2),
-        sortType: () => form.dropdown("§l§fSort Type§r§c*§f\nHow to sort the scores, Ascending, Descending, or Function. If you select function then you must put a JavaScript function to sort the scores in the text box below.\nType: §f(§6a§b: §estring§f, §6b§b: §estring§f) §d=> §cnumber§r\nThe default is Descending.", ["Ascending", "Descending", "Function"], typeof statistic.sorter === "function" ? 2 : statistic.sorter),
-        sorter: () => form.textField("§l§fSorter Function§r§f\n§oOnly applies when the Sort Type is set to Function.§r\nA JavaScript function that is used to sort the scores of the leaderboard, this will be passed directly into an Array.prototype.sort function, so it should return a negative value if the first parameter should be before the second parameter, zero if they are the same, and a positive value if the first parameter should be placed after the second parameter.\nType: §f(§6a§b: §estring§f, §6b§b: §estring§f) §d=> §cnumber§r", "(a: string, b: string) => number", typeof statistic.sorter === "number" ? "" : statistic.sorter.toString()),
-        valueDisplayTransformer_button: () => form.textField("§l§fValue Display Transformer - Button§r§f\nA JavaScript function that transforms the score values that are displayed on the buttons for each of the players in the leaderboard.\nLeave it blank to keep the scores displayed on the buttons as-is.\nType: §f(§6value§b: §estring§f) §d=> §cstring§r", "(value: string) => string", statistic.displayOptions.valueDisplayTransformer_button !== undefined
-            ? statistic.displayOptions.valueDisplayTransformer_button.toString()
-            : undefined),
-        valueDisplayTransformer_statsList: () => form.textField("§l§fValue Display Transformer - Stats List§r§f\nA JavaScript function that transforms the score value that is displayed is the statistics list that is shown when a player clicks on another player in the leaderboard.\nLeave it blank to keep the scores displayed on the stats list as-is.\nType: §f(§6value§b: §estring§f) §d=> §cstring§r", "(value: string) => string", statistic.displayOptions.valueDisplayTransformer_statsList !== undefined
-            ? statistic.displayOptions.valueDisplayTransformer_statsList.toString()
-            : undefined),
+        getterFunction: () => form.textField("§l§fGetter Function§r§c*§f\nA JavaScript function that will get a player's score for this statistic, it should accept one parameter of type savedPlayer, if you don't want a specific player appearing in the leaderboard, then have the function return undefined for them.\nThe type definitions for the savedPlayer class can be found in the declaration folder of the behavior pack, at §bBP/declaration/modules/player_save/classes/savedPlayer.d.ts§r.\nType: §f(§6player§b: §esavedPlayer§f) §d=> §cstring §b| §6undefined§r", "(player: savedPlayer) => string | undefined", { defaultValue: statistic.getterFunction.toString() }),
+        valueType: () => form.dropdown("§l§fValue Type§r§c*§f\nThe value type for the scores of this leaderboard statistic, choose string if it is not numerical, choose number if it needs to be able to have decimal places, and choose bigint if you want to be able to have infinitely large integers.\nNote: If you choose string, then the preset Ascending and Descending options below for the sort type will not sort based on numerical value, and instead sort it based off of alphabetical order. So if you choose string and do not want it sorting like that then you must choose the Function sort type and put in a custom JavaScript function for it.\nThe default is bigint.", ["string", "number", "bigint"], {
+            defaultValueIndex: ["string", "number", "bigint"].indexOf(statistic.valueType.toLowerCase()) !== -1
+                ? ["string", "number", "bigint"].indexOf(statistic.valueType.toLowerCase())
+                : 2,
+        }),
+        sortType: () => form.dropdown("§l§fSort Type§r§c*§f\nHow to sort the scores, Ascending, Descending, or Function. If you select function then you must put a JavaScript function to sort the scores in the text box below.\nType: §f(§6a§b: §estring§f, §6b§b: §estring§f) §d=> §cnumber§r\nThe default is Descending.", ["Ascending", "Descending", "Function"], { defaultValueIndex: typeof statistic.sorter === "function" ? 2 : statistic.sorter }),
+        sorter: () => form.textField("§l§fSorter Function§r§f\n§oOnly applies when the Sort Type is set to Function.§r\nA JavaScript function that is used to sort the scores of the leaderboard, this will be passed directly into an Array.prototype.sort function, so it should return a negative value if the first parameter should be before the second parameter, zero if they are the same, and a positive value if the first parameter should be placed after the second parameter.\nType: §f(§6a§b: §estring§f, §6b§b: §estring§f) §d=> §cnumber§r", "(a: string, b: string) => number", { defaultValue: typeof statistic.sorter === "number" ? "" : statistic.sorter.toString() }),
+        valueDisplayTransformer_button: () => form.textField("§l§fValue Display Transformer - Button§r§f\nA JavaScript function that transforms the score values that are displayed on the buttons for each of the players in the leaderboard.\nLeave it blank to keep the scores displayed on the buttons as-is.\nType: §f(§6value§b: §estring§f) §d=> §cstring§r", "(value: string) => string", {
+            defaultValue: statistic.displayOptions.valueDisplayTransformer_button !== undefined
+                ? statistic.displayOptions.valueDisplayTransformer_button.toString()
+                : undefined,
+        }),
+        valueDisplayTransformer_statsList: () => form.textField("§l§fValue Display Transformer - Stats List§r§f\nA JavaScript function that transforms the score value that is displayed is the statistics list that is shown when a player clicks on another player in the leaderboard.\nLeave it blank to keep the scores displayed on the stats list as-is.\nType: §f(§6value§b: §estring§f) §d=> §cstring§r", "(value: string) => string", {
+            defaultValue: statistic.displayOptions.valueDisplayTransformer_statsList !== undefined
+                ? statistic.displayOptions.valueDisplayTransformer_statsList.toString()
+                : undefined,
+        }),
     };
     includedOptions.forEach((o) => formOptionsMap[o]());
     form.submitButton("Save");
@@ -1348,8 +1361,8 @@ export async function uiSettings_menuConfigurations_playerMenu_leaderboardsSetti
         buttonDisplayName: () => form.textField("§l§fButton Display Name§r§c*§f\nThe text that will be displayed on the button to view this leaderboard.", "text"),
         buttonIcon: () => form.textField("§l§fButton Icon§r§f (Optional)\nThe text that will go before the colon when displaying the value of this statistic for a player when a player clicks on another player in the leaderboard.", "text"),
         getterFunction: () => form.textField("§l§fGetter Function§r§c*§f\nA JavaScript function that will get a player's score for this statistic, it should accept one parameter of type savedPlayer, if you don't want a specific player appearing in the leaderboard, then have the function return undefined for them.\nThe type definitions for the savedPlayer class can be found in the declaration folder of the behavior pack, at §bBP/declaration/modules/player_save/classes/savedPlayer.d.ts§r.\nType: §f(§6player§b: §esavedPlayer§f) §d=> §cstring §b| §6undefined§r", "(player: savedPlayer) => string | undefined"),
-        valueType: () => form.dropdown("§l§fValue Type§r§c*§f\nThe value type for the scores of this leaderboard statistic, choose string if it is not numerical, choose number if it needs to be able to have decimal places, and choose bigint if you want to be able to have infinitely large integers.\nNote: If you choose string, then the preset Ascending and Descending options below for the sort type will not sort based on numerical value, and instead sort it based off of alphabetical order. So if you choose string and do not want it sorting like that then you must choose the Function sort type and put in a custom JavaScript function for it.\nThe default is bigint.", ["string", "number", "bigint"], 2),
-        sortType: () => form.dropdown("§l§fSort Type§r§c*§f\nHow to sort the scores, Ascending, Descending, or Function. If you select function then you must put a JavaScript function to sort the scores in the text box below.\nType: §f(§6a§b: §estring§f, §6b§b: §estring§f) §d=> §cnumber§r\nThe default is Descending.", ["Ascending", "Descending", "Function"], 1),
+        valueType: () => form.dropdown("§l§fValue Type§r§c*§f\nThe value type for the scores of this leaderboard statistic, choose string if it is not numerical, choose number if it needs to be able to have decimal places, and choose bigint if you want to be able to have infinitely large integers.\nNote: If you choose string, then the preset Ascending and Descending options below for the sort type will not sort based on numerical value, and instead sort it based off of alphabetical order. So if you choose string and do not want it sorting like that then you must choose the Function sort type and put in a custom JavaScript function for it.\nThe default is bigint.", ["string", "number", "bigint"], { defaultValueIndex: 2 }),
+        sortType: () => form.dropdown("§l§fSort Type§r§c*§f\nHow to sort the scores, Ascending, Descending, or Function. If you select function then you must put a JavaScript function to sort the scores in the text box below.\nType: §f(§6a§b: §estring§f, §6b§b: §estring§f) §d=> §cnumber§r\nThe default is Descending.", ["Ascending", "Descending", "Function"], { defaultValueIndex: 1 }),
         sorter: () => form.textField("§l§fSorter Function§r§f\n§oOnly applies when the Sort Type is set to Function.§r\nA JavaScript function that is used to sort the scores of the leaderboard, this will be passed directly into an Array.prototype.sort function, so it should return a negative value if the first parameter should be before the second parameter, zero if they are the same, and a positive value if the first parameter should be placed after the second parameter.\nType: §f(§6a§b: §estring§f, §6b§b: §estring§f) §d=> §cnumber§r", "(a: string, b: string) => number"),
     };
     includedOptions.forEachB((o) => formOptionsMap[o]());

@@ -24,9 +24,7 @@ import { customFormUICodes } from "../constants/customFormUICodes";
  * 7. Handles any errors that occur during the form submission and updates.
  */
 export async function manageGameRulesUI(sourceEntitya) {
-    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
-        ? sourceEntitya.player
-        : sourceEntitya;
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     if (securityVariables.ultraSecurityModeEnabled) {
         if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessSettings") == false) {
             const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permission to access this menu: andexdb.accessSettings", "Go Back", "Close");
@@ -47,10 +45,10 @@ export async function manageGameRulesUI(sourceEntitya) {
     form2.title(customFormUICodes.modal.titles.formStyles.fullscreen + "Manage Game Rules");
     ruleNames.forEach((r) => {
         if (typeof ruleValues[r] == "number") {
-            form2.textField(r, "number", String(ruleValues[r]));
+            form2.textField(r, "number", { defaultValue: String(ruleValues[r]) });
         }
         else {
-            form2.toggle(r, Boolean(ruleValues[r]));
+            form2.toggle(r, { defaultValue: Boolean(ruleValues[r]) });
         }
     });
     form2.submitButton("Save");
@@ -63,9 +61,7 @@ export async function manageGameRulesUI(sourceEntitya) {
             t.formValues.forEach((v, i) => {
                 if (ruleValues[ruleNames[i]] != v) {
                     ruleValues[ruleNames[i]] =
-                        typeof ruleValues[ruleNames[i]] == "number"
-                            ? Number(v)
-                            : v;
+                        typeof ruleValues[ruleNames[i]] == "number" ? Number(v) : v;
                 }
             });
         }

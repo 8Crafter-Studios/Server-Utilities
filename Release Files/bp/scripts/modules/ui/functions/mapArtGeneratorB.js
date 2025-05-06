@@ -6,16 +6,14 @@ import { generateNBTFileB } from "modules/commands/functions/generateNBTFileB";
 import { chunkIndexToBoundingBox } from "modules/coordinates/functions/chunkIndexToBoundingBox";
 import { getChunkIndex } from "modules/coordinates/functions/getChunkIndex";
 export function mapArtGeneratorB(sourceEntitya) {
-    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
-        ? sourceEntitya.player
-        : sourceEntitya;
+    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     srun(() => {
         let form = new ModalFormData();
         form.title("Map Art Generator [§cExperimental§r]");
         form.textField("To use this generator you must first use something like cubical.xyz to convert an image to a minecraft structure, then save that structure as a .nbt file, then convert that .nbt file to SNBT format, then paste the SNBT into the text box below. \nNote: When pasting into the text box the game might freeze for a few minutes until it finishes pasting, and then it will unfreeze. \nSNBT of the .nbt file", "SNBT Data");
-        form.textField("Chunk Index x", "integer", String(Math.floor(getChunkIndex(sourceEntity.location).x / 8)));
-        form.textField("Chunk Index y", "integer", String(Math.floor(getChunkIndex(sourceEntity.location).y / 8)));
-        form.dropdown("Dimension", dimensions.map((d) => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(sourceEntity.dimension));
+        form.textField("Chunk Index x", "integer", { defaultValue: String(Math.floor(getChunkIndex(sourceEntity.location).x / 8)) });
+        form.textField("Chunk Index y", "integer", { defaultValue: String(Math.floor(getChunkIndex(sourceEntity.location).y / 8)) });
+        form.dropdown("Dimension", dimensions.map((d) => dimensionTypeDisplayFormatting[d.id]), { defaultValueIndex: dimensions.indexOf(sourceEntity.dimension) });
         form.submitButton("Generate Map Art");
         forceShow(form, sourceEntity)
             .then((ra) => {
@@ -35,11 +33,8 @@ export function mapArtGeneratorB(sourceEntitya) {
                 x: chunkx,
                 y: chunky,
             }).from, {
-                dimension: dimensions[dimension] ??
-                    sourceEntity.dimension,
-                y: (dimensions[dimension] ??
-                    sourceEntity.dimension).heightRange.max -
-                    (newsnbta.size[1] ?? 1),
+                dimension: dimensions[dimension] ?? sourceEntity.dimension,
+                y: (dimensions[dimension] ?? sourceEntity.dimension).heightRange.max - (newsnbta.size[1] ?? 1),
             }), newsnbta);
             // Do something
         })

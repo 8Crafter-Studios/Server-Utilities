@@ -95,7 +95,7 @@ debugAction(event.source.getBlockFromViewDirection().block, event.source, 0)
             targetList = String([String(targetList), players[index].nameTag]).split(",");
             }
         }
-        form2.textField("Slot Number", "Slot Number", "0");
+        form2.textField("Slot Number", "Slot Number", {defaultValue: "0"});
         form2.dropdown("Player Target", String(targetList).split(","), 0)
         form2.dropdown("Player Viewer", String(targetList).split(","), 0)
         form2.show(event.source as Player).then(t => {
@@ -120,13 +120,13 @@ debugAction(event.source.getBlockFromViewDirection().block, event.source, 0)
         console.warn(item.nameTag);
         console.warn(Array(item.getLore().toString()).join(""));
         form.title("Item Modifier / Lore");
-        form.textField("Item Name\nTo type multiple lines just put \\\\newline in between each line. \nTo clear item name just leave field blank. ", "Item Name", itemNameTextField*/ /*(String(item.nameTag))*/ /*);
-        form.textField("Item Lore\nTo type multiple lines just put \\\\newline in between each line. ", "Item Lore", (Array(item.getLore().toString()).join("")));
-        form.textField("Can Destroy", "Can Destroy", ""*/ /*(String(item.getCanDestroy()))*/ /*);
-        form.textField("Can Place On", "Can Place On", ""*/ /*(String(item.getCanPlaceOn()))*/ /*);
-        form.textField("Trigger Event", "Trigger Event", "");
-        form.slider("Count", 0, 255, 1, item.amount);
-        form.toggle("keepOnDeath", (item.keepOnDeath));
+        form.textField("Item Name\nTo type multiple lines just put \\\\newline in between each line. \nTo clear item name just leave field blank. ", "Item Name", {defaultValue: itemNameTextField*/ /*(String(item.nameTag))*/ /*});
+        form.textField("Item Lore\nTo type multiple lines just put \\\\newline in between each line. ", "Item Lore", {defaultValue: (Array(item.getLore().toString()).join(""))});
+        form.textField("Can Destroy", "Can Destroy", {defaultValue: ""*/ /*(String(item.getCanDestroy()))*/ /*});
+        form.textField("Can Place On", "Can Place On", {defaultValue: ""*/ /*(String(item.getCanPlaceOn()))*/ /*});
+        form.textField("Trigger Event", "Trigger Event", {defaultValue: ""});
+        form.slider("Count", 0, 255, {valueStep: 1, defaultValue: item.amount});
+        form.toggle("keepOnDeath", {defaultValue: (item.keepOnDeath)});
         function getItemLockMode(mode?: Number, input?: Number) {if (mode == 1) {
         if(item.lockMode == "inventory") {
             return 0
@@ -139,10 +139,10 @@ debugAction(event.source.getBlockFromViewDirection().block, event.source, 0)
                     if(input == 1) {return ItemLockMode.none} else{
                         if(input == 2) {return ItemLockMode.slot}}}}}}
         let itemLockModeIndex = Number(getItemLockMode(1))
-        form.dropdown("lockMode", [ "inventory", "none", "slot" ], (itemLockModeIndex));
-        form.toggle("setLore", false);
-        form.toggle("clearLore", false);
-        form.toggle("Debug", false);
+        form.dropdown("lockMode", [ "inventory", "none", "slot" ], {defaultValueIndex: (itemLockModeIndex)});
+        form.toggle("setLore", {defaultValue: false});
+        form.toggle("clearLore", {defaultValue: false});
+        form.toggle("Debug", {defaultValue: false});
 
         form.show(players[playerViewerB]).then(r => {
             // This will stop the code when the player closes the form
@@ -235,7 +235,7 @@ console.error(e, e.stack);
             targetList = String([String(targetList), players[index].nameTag]).split(",");
             }
         }
-        form2.textField("Slot Number", "Slot Number", "0");
+        form2.textField("Slot Number", "Slot Number", {defaultValue: "0"});
         form2.dropdown("Player Target", String(targetList).split(","), 0)
         form2.dropdown("Player Viewer", String(targetList).split(","), 0)
         form2.show(event.source as Player).then(t => {
@@ -260,13 +260,13 @@ console.error(e, e.stack);
         console.warn(item.nameTag);
         console.warn(Array(item.getLore().toString()).join(""));
         form.title("Item Modifier / Lore");
-        form.textField("Item Name\nTo type multiple lines just put \\\\newline in between each line. \nTo clear item name just leave field blank. ", "Item Name", itemNameTextField*/ /*(String(item.nameTag))*/ /*);
-        form.textField("Item Lore\nTo type multiple lines just put \\\\newline in between each line. ", "Item Lore", (Array(item.getLore().toString()).join("")));
-        form.textField("Can Destroy", "Can Destroy", ""*/ /*(String(item.getCanDestroy()))*/ /*);
-        form.textField("Can Place On", "Can Place On", ""*/ /*(String(item.getCanPlaceOn()))*/ /*);
-        form.textField("Trigger Event", "Trigger Event", "");
-        form.slider("Count", 0, 255, 1, item.amount);
-        form.toggle("keepOnDeath", (item.keepOnDeath));
+        form.textField("Item Name\nTo type multiple lines just put \\\\newline in between each line. \nTo clear item name just leave field blank. ", "Item Name", {defaultValue: itemNameTextField*/ /*(String(item.nameTag))*/ /*});
+        form.textField("Item Lore\nTo type multiple lines just put \\\\newline in between each line. ", "Item Lore", {defaultValue: (Array(item.getLore().toString()).join(""))});
+        form.textField("Can Destroy", "Can Destroy", {defaultValue: ""*/ /*(String(item.getCanDestroy()))*/ /*});
+        form.textField("Can Place On", "Can Place On", {defaultValue: ""*/ /*(String(item.getCanPlaceOn()))*/ /*});
+        form.textField("Trigger Event", "Trigger Event", {defaultValue: ""});
+        form.slider("Count", 0, 255, {valueStep: 1, defaultValue: item.amount});
+        form.toggle("keepOnDeath", {defaultValue: (item.keepOnDeath)});
         function getItemLockMode(mode?: Number, input?: Number) {if (mode == 1) {
         if(item.lockMode == "inventory") {
             return 0
@@ -279,10 +279,10 @@ console.error(e, e.stack);
                     if(input == 1) {return ItemLockMode.none} else{
                         if(input == 2) {return ItemLockMode.slot}}}}}}
         let itemLockModeIndex = Number(getItemLockMode(1))
-        form.dropdown("lockMode", [ "inventory", "none", "slot" ], (itemLockModeIndex));
-        form.toggle("setLore", false);
-        form.toggle("clearLore", false);
-        form.toggle("Debug", false);
+        form.dropdown("lockMode", [ "inventory", "none", "slot" ], {defaultValueIndex: (itemLockModeIndex)});
+        form.toggle("setLore", {defaultValue: false});
+        form.toggle("clearLore", {defaultValue: false});
+        form.toggle("Debug", {defaultValue: false});
 
         form.show(players[playerViewerB]).then(r => {
             // This will stop the code when the player closes the form
@@ -364,7 +364,7 @@ console.error(e, e.stack);
             form.title("Command Runner / Terminal");
             form.textField("Run Command", "Run Command");
             form.textField("Run Delay", "Run Delay");
-            form.toggle("Debug", false);
+            form.toggle("Debug", { defaultValue: false });
             form.show(event.source)
                 .then((r) => {
                 // This will stop the code when the player closes the form

@@ -1,2 +1,2 @@
-import type { BoundingBox } from "@minecraft/server";
-export declare function doBoundingBoxesIntersect(box1: BoundingBox, box2: BoundingBox): boolean;
+import type { BlockBoundingBox } from "@minecraft/server";
+export declare function doBoundingBoxesIntersect(box1: BlockBoundingBox, box2: BlockBoundingBox): boolean;

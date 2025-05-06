@@ -22,12 +22,12 @@ export async function mapArtGenerator(sourceEntity) {
         const form = new ModalFormData();
         form.title(customFormUICodes.modal.titles.formStyles.fullscreen + "Map Art Generator [§cExperimental§r]");
         form.textField("§fFor info on how to use this generator, go to §bhttps://www.8crafter.com/debug-sticks-add-on/andexdbnbtstructureloader§f\nNote: When pasting the nbt data into the text box the game might freeze for anywhere from a few seconds to half a hour depending on how much text is being pasted while it is pasting, and then it will unfreeze. \nNBT Data", "NBT Data");
-        form.textField("Chunk Index x", "integer", String(getChunkIndex(player.location).x));
-        form.textField("Chunk Index y", "integer", String(getChunkIndex(player.location).y));
-        form.textField("Offset x", "integer", "0");
-        form.textField("Offset z", "integer", "0");
-        form.dropdown("Alignment Mode", ["Chunk Grid", "Map Grid"], 1);
-        form.dropdown("Dimension", dimensions.map((d) => dimensionTypeDisplayFormatting[d.id]), dimensions.indexOf(player.dimension));
+        form.textField("Chunk Index x", "integer", { defaultValue: String(getChunkIndex(player.location).x) });
+        form.textField("Chunk Index y", "integer", { defaultValue: String(getChunkIndex(player.location).y) });
+        form.textField("Offset x", "integer", { defaultValue: "0" });
+        form.textField("Offset z", "integer", { defaultValue: "0" });
+        form.dropdown("Alignment Mode", ["Chunk Grid", "Map Grid"], { defaultValueIndex: 1 });
+        form.dropdown("Dimension", dimensions.map((d) => dimensionTypeDisplayFormatting[d.id]), { defaultValueIndex: dimensions.indexOf(player.dimension) });
         form.submitButton("Generate Map Art");
         const r = await form.forceShow(player);
         if (r.canceled)
