@@ -15,13 +15,12 @@ import moment from "moment";
  *
  * @param {loosePlayerType} sourceEntity - The player accessing the menu.
  * @param {number} [pagen] - The page of the menu to go to. Defaults to 0.
- * @param {number} [maxentriesperpage] - How many entries to show per page. Defaults to the value of {@linkcode config.ui.pages.maxPlayersPerManagePlayersPage}.
+ * @param {number} [maxentriesperpage] - How many entries to show per page. Defaults to the value of {@linkcode config.ui.pages.maxBansPerManageBansPage}.
  * @returns {Promise<0 | 1>} A promise that resolves to `0` if the previous menu should be closed, or `1` if the previous menu should be reopened.
  * @throws {TypeError} If sourceEntity is not an instance of the Player class or an instance of the executeCommandPlayerW class with a Player linked to it.
  */
-export async function manageBans(sourceEntity, pagen = 0, maxentriesperpage = config.ui.pages.maxPlayersPerManagePlayersPage ?? 9, search, cachedEntries) {
+export async function manageBans(sourceEntity, pagen = 0, maxentriesperpage = config.ui.pages.maxBansPerManageBansPage ?? 9, search, cachedEntries) {
     const player = extractPlayerFromLooseEntityType(sourceEntity);
-    [].sort;
     var currentParameters = {
         player,
         pagen,
@@ -105,8 +104,8 @@ export async function manageBans(sourceEntity, pagen = 0, maxentriesperpage = co
             }
             // form.button(customFormUICodes.action.buttons.positions.main_only + v[0].originalPlayerId, "loading_spinner");
         });
-        form.button(customFormUICodes.action.buttons.positions.right_side_only + customFormUICodes.action.buttons.styles.display_icon_as_text + "Add ID Ban", "textures/ui/hammer_l_id_ban");
-        form.button(customFormUICodes.action.buttons.positions.right_side_only + customFormUICodes.action.buttons.styles.display_icon_as_text + "Add Name Ban", "textures/ui/hammer_l_name_ban");
+        form.button(customFormUICodes.action.buttons.positions.right_side_only + "Add ID Ban", "textures/ui/hammer_l_id_ban");
+        form.button(customFormUICodes.action.buttons.positions.right_side_only + "Add Name Ban", "textures/ui/hammer_l_name_ban");
         form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
         form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
         form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Refresh", "textures/ui/refresh");
@@ -219,7 +218,6 @@ export async function manageBans(sourceEntity, pagen = 0, maxentriesperpage = co
  */
 export async function manageBansOnPlayer(sourceEntity, target, pagen = 0, maxentriesperpage = config.ui.pages.maxPlayersPerManagePlayersPage ?? 9, search, cachedEntries) {
     const player = extractPlayerFromLooseEntityType(sourceEntity);
-    [].sort;
     var currentParameters = {
         player,
         pagen,

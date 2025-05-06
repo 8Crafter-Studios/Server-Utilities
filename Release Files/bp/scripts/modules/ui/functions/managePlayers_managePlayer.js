@@ -11,6 +11,8 @@ import * as semver from "semver";
 import { extractPlayerFromLooseEntityType } from "modules/utilities/functions/extractPlayerFromLooseEntityType";
 import { customFormUICodes } from "../constants/customFormUICodes";
 import { manageBansOnPlayer } from "./manageBans";
+import { ModerationActions } from "modules/moderation/classes/ModerationActions";
+import { addMuteOnPlayer, manageMute, unmutePlayer } from "./manageMutes";
 /**
  * Shows the player a menu for managing a player.
  *
@@ -60,6 +62,8 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                     : "(Old Format Version)"}`, "textures/ui/inventory_icon");
             }
             form.button(customFormUICodes.action.buttons.positions.main_only + "Manage Bans", "textures/ui/hammer_l");
+            const isMuted = ModerationActions.testForMutedPlayer(targetPlayer.name);
+            form.button(customFormUICodes.action.buttons.positions.main_only + (isMuted ? "Mute Details" : "Mute Player"), isMuted ? "textures/ui/mute_on" : "textures/ui/mute_off");
             form.button(customFormUICodes.action.buttons.positions.main_only + "Edit Money", "textures/items/emerald");
             form.button(customFormUICodes.action.buttons.positions.main_only + "Manage Permissions", "textures/ui/permissions_op_crown");
             form.button(customFormUICodes.action.buttons.positions.main_only +
@@ -81,6 +85,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                 "checkInventory",
                 copyInventoryToChestIsAvailable ? "copyInventoryToChest" : undefined,
                 "manageBans",
+                "mute",
                 "editMoney",
                 "managePermissions",
                 "manageHotbarPresets",
@@ -108,7 +113,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                     form.button2("Clear All Data");
                     form.button1("Cancel");
                     const r = await form.forceShow(player);
-                    if (r.canceled || r.selection == 0) {
+                    if (r.canceled || r.selection === 0) {
                         continue;
                     }
                     else {
@@ -117,7 +122,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                     }
                 }
                 case "showData":
-                    if ((await managePlayers_managePlayer_viewData(player, targetPlayer)) == 1) {
+                    if ((await managePlayers_managePlayer_viewData(player, targetPlayer)) === 1) {
                         continue;
                     }
                     else {
@@ -151,7 +156,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                     else {
                         let items = targetPlayer.items.inventory.concat(targetPlayer.items.equipment);
                         items.forEach((item) => {
-                            if (item.count != 0) {
+                            if (item.count !== 0) {
                                 slotsArray = slotsArray.concat(String("slot: " +
                                     item.slot +
                                     ", item: " +
@@ -174,7 +179,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                         targetPlayer.format_version +
                         ") " +
                         targetPlayer.name +
-                        (world.getAllPlayers().find((p) => p.id == targetPlayer.id) != undefined
+                        (world.getAllPlayers().find((p) => p.id == targetPlayer.id) !== undefined
                             ? " (Online)"
                             : " (last seen: " + new Date(targetPlayer.lastOnline).formatDateTime(player.timeZone) + ")") +
                         " Items: \n" +
@@ -245,11 +250,28 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                     continue;
                 }
                 case "manageBans":
-                    if ((await manageBansOnPlayer(player, targetPlayer)) == 1) {
+                    if ((await manageBansOnPlayer(player, targetPlayer)) === 1) {
                         continue;
                     }
                     else {
                         return 0;
+                    }
+                case "mute":
+                    if (isMuted) {
+                        if ((await manageMute(player, [targetPlayer.name, ModerationActions.getMuteData(targetPlayer.name)])) === 1) {
+                            continue;
+                        }
+                        else {
+                            return 0;
+                        }
+                    }
+                    else {
+                        if ((await addMuteOnPlayer(player, targetPlayer.name)) === 1) {
+                            continue;
+                        }
+                        else {
+                            return 0;
+                        }
                     }
                 case "editMoney": {
                     try {
@@ -291,7 +313,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                         return 0;
                     }
                 case "manageHomes":
-                    if ((await managePlayers_managePlayer_manageHomes(player, targetPlayer)) == 1) {
+                    if ((await managePlayers_managePlayer_manageHomes(player, targetPlayer)) === 1) {
                         continue;
                     }
                     else {
@@ -342,7 +364,7 @@ export async function managePlayers_managePlayer_viewData(sourceEntity, targetPl
             '§r§f"'
         ) */)}`);
         form.button(customFormUICodes.action.buttons.positions.main_only + "Done");
-        await form.forceShow(sourceEntity);
+        await form.forceShow(player);
         return 1;
     }
     catch (e) {

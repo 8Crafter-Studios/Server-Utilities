@@ -31,7 +31,7 @@ export async function fillTunnel(center, radius, length, axis, dimension, block,
     const centerX = center.x;
     const centerY = center.y;
     const centerZ = center.z;
-    const minMSBetweenTickWaits = options?.minMSBetweenTickWaits ?? 2000;
+    const minMSBetweenTickWaits = options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits;
     const isWithinCylinderWall = (x, y, z) => {
         switch (axis) {
             case 'x':

@@ -39,7 +39,7 @@ export async function playerMenu_bounty(sourceEntitya, totalBounty, targetPlayer
             : menuConfig.showLastOnlineTimeInPlayerStatsList
                 ? "Last Online: " + new Date(target.lastOnline).formatDateTime(sourceEntity.timeZone, false, true)
                 : "Offline"}\nTotal Reward: ${numberFormatter(totalBounty.totalValue, { currencyPrefix: config.ui.menus.playerMenu_leaderboards.builtInStats.money.displayOptions.currencyPrefix, addCommaSeparators: true }, 0)}`);
-    form.button(`${customFormUICodes.action.buttons.positions.main_only}View Individual Bounties\n${totalBounty.getBounties().length}`, "textures/ui/arrow_left");
+    form.button(`${customFormUICodes.action.buttons.positions.main_only}View Individual Bounties\n${totalBounty.getBounties().length}`, "textures/ui/arrow_right");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
     return await forceShow(form, sourceEntity)

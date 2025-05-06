@@ -186,6 +186,33 @@ declare const permissionTypes: Readonly<{
         }];
     };
     /**
+     * Allows the player to run arbitrary JavaScript code.
+     * This allows the player to access menus like the {@link manageEventSubscriptions | Manage Event Subscriptions} menu.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * This permission is included in the `andexdb.admin` permission.
+     */
+    readonly "andexdb.useScriptEval": {
+        readonly id: "andexdb.useScriptEval";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to run arbitrary JavaScript code.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
+        readonly additionalPrompts: [{
+            readonly title: "§l§cWARNING!";
+            readonly prompt: "Are you sure you want to give this player the ability to run arbitrary JavaScript code in the chat with the '${se}' or '${scripteval}' escape sequence?";
+            readonly default: false;
+        }];
+    };
+    /**
+     * Allows the player to have the ability to transfer players to other servers through the moderation quick actions UI.
+     */
+    readonly "andexdb.transferPlayers": {
+        readonly id: "andexdb.transferPlayers";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to have the ability to transfer players to other servers through the moderation quick actions UI.";
+        readonly additionalPrompts: [];
+    };
+    /**
      * Allows the player to have the ability to ban players through the manage bans UI.
      * This permission is included in the `andexdb.headAdmin` permission.
      * This permission is included in the `andexdb.admin` permission.
@@ -223,6 +250,46 @@ declare const permissionTypes: Readonly<{
         readonly default: false;
         readonly includedInPermissions: [];
         readonly description: "Allows the player to access the manage bans UI.\n    Note: The player will not be able to ban or unban anyone through the UI unless you give them the 'andexdb.banPlayers' or 'andexdb.unbanPlayers' permissions respectively.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
+        readonly additionalPrompts: [];
+    };
+    /**
+     * Allows the player to have the ability to mute players through the manage mutes UI.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * This permission is included in the `andexdb.admin` permission.
+     * This permission is included in the `andexdb.moderator` permission.
+     */
+    readonly "andexdb.mutePlayers": {
+        readonly id: "andexdb.mutePlayers";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to have the ability to mute players through the manage mutes UI.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
+        readonly additionalPrompts: [];
+    };
+    /**
+     * Allows the player to have the ability to unmute players through the manage mutes UI.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * This permission is included in the `andexdb.admin` permission.
+     * This permission is included in the `andexdb.moderator` permission.
+     */
+    readonly "andexdb.unmutePlayers": {
+        readonly id: "andexdb.unmutePlayers";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to have the ability to unmute players through the manage mutes UI.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
+        readonly additionalPrompts: [];
+    };
+    /**
+     * Allows the player to access the manage mutes UI.
+     * Note: The player will not be able to mute or unmute anyone through the UI unless you give them the `andexdb.mutePlayers` or `andexdb.unmutePlayers` permissions respectively.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * This permission is included in the `andexdb.admin` permission.
+     * This permission is included in the `andexdb.moderator` permission.
+     */
+    readonly "andexdb.accessManageMutesUI": {
+        readonly id: "andexdb.accessManageMutesUI";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to access the manage mutes UI.\n    Note: The player will not be able to mute or unmute anyone through the UI unless you give them the 'andexdb.mutePlayers' or 'andexdb.unmutePlayers' permissions respectively.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
         readonly additionalPrompts: [];
     };
     /**
@@ -586,6 +653,19 @@ Note: Unless the player has the 'andexdb.fullControl' permission, the player can
         readonly description: "Allows the player to bypass all forms of spawn protection.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.";
         readonly additionalPrompts: [];
     };
+    /**
+     * Allows the player to bypass all teleport cooldowns.
+     * This permission is included in the `andexdb.headAdmin` permission.
+     * This permission is included in the `andexdb.admin` permission.
+     * This permission is included in the `andexdb.moderator` permission.
+     */
+    readonly "andexdb.bypassTeleportCooldowns": {
+        readonly id: "andexdb.bypassTeleportCooldowns";
+        readonly default: false;
+        readonly includedInPermissions: [];
+        readonly description: "Allows the player to bypass all teleport cooldowns.\n    This permission is included in the 'andexdb.headAdmin' permission.\n    This permission is included in the 'andexdb.admin' permission.\n    This permission is included in the 'andexdb.moderator' permission.";
+        readonly additionalPrompts: [];
+    };
 }>;
 declare global {
     const permissionType: typeof permissionTypes;
@@ -622,10 +702,10 @@ export declare class securityVariables {
     static convertPermissionTypeToId<T extends permissionType>(permission: T): T extends keyof typeof permissionType ? T : T extends (typeof permissionType)[keyof typeof permissionType] ? T["id"] : never;
     static convertPermissionTypeToObject<T extends permissionType>(permission: T): T extends keyof typeof permissionType ? (typeof permissionType)[T] : T;
     static testPlayerForPermission(player: Player, permission: permissionType): boolean;
-    static testPlayerForPermissionB(playerId: string, permission: permissionType): boolean;
-    static testOfflinePlayerForPermission(playerId: string, permission: permissionType): boolean;
+    static testPlayerForPermissionB(playerId: string, permission: permissionType, presetMode?: boolean): boolean;
+    static testOfflinePlayerForPermission(playerId: string, permission: permissionType, presetMode?: boolean): boolean;
 }
-export declare function editPermissionForPlayerUI(player: Player, targetPlayerId: LooseAutocomplete<"everyone" | typeof permissionPresetMap[keyof typeof permissionPresetMap]>): Promise<-403 | 1 | 0>;
+export declare function editPermissionForPlayerUI(player: Player, targetPlayerId: LooseAutocomplete<"everyone" | typeof permissionPresetMap[keyof typeof permissionPresetMap]>, mode?: "player" | "preset" | "default"): Promise<-403 | 1 | 0>;
 export declare function selectSecurityMode(player: Player): Promise<-424 | -403 | 0 | 1>;
 export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor(player: Player): Promise<1 | 0 | -403 | -423>;
 export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_categories(player: Player): Promise<1 | 0 | -403 | -423>;
@@ -634,7 +714,8 @@ export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_co
 export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_commands_category(player: Player, category: commandCategory): Promise<1 | 0 | -403 | -423>;
 export declare function selectCommandsUltraSecurityModeSecurityLevelOverrides_command_builtIn(player: Player, command: command<"built-in">): Promise<1 | -403 | -423>;
 export declare function selectCommandsUltraSecurityModeSecurityLevelOverrides_command_custom(player: Player, command: command<"custom">): Promise<1 | -403 | -423>;
-export declare function ultraSecurityModeDebug(player: Player): Promise<1 | -403 | -423>;
+export declare function ultraSecurityModeDebug(player: Player): Promise<-423 | -403 | 1>;
 export declare function resetPlayerPermissionsUI(player: Player): Promise<1 | -403 | -423>;
-export declare function managePermissionsPresets(player: Player): Promise<1 | 0 | -403 | -423>;
+export declare function resetPlayerPermissionsForPlayerUI(player: Player, targetPlayerId: LooseAutocomplete<"everyone" | typeof permissionPresetMap[keyof typeof permissionPresetMap]>, isPreset?: boolean): Promise<1 | -403 | -423>;
+export declare function managePermissionsPresets(player: Player): Promise<0 | 1 | -403 | -423>;
 export {};

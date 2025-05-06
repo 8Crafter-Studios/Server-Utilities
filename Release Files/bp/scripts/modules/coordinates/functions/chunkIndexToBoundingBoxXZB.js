@@ -1,14 +1,14 @@
 export function chunkIndexToBoundingBoxXZB(chunkIndex, heightRange = { min: -64, max: 320 }) {
     return {
-        from: {
+        min: {
             x: Math.floor(chunkIndex.x * 16),
             y: heightRange.min,
-            z: Math.floor(chunkIndex.y * 16),
+            z: Math.floor(chunkIndex.z * 16),
         },
-        to: {
+        max: {
             x: Math.round(chunkIndex.x * 16 + 15),
             y: heightRange.max,
-            z: Math.round(chunkIndex.y * 16 + 15),
+            z: Math.round(chunkIndex.z * 16 + 15),
         },
     };
 }

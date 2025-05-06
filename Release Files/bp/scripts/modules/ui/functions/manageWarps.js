@@ -57,7 +57,7 @@ export async function manageWarps(sourceEntity) {
             let form = new ActionFormData();
             form.title(customFormUICodes.action.titles.formStyles.medium + "Manage Warps");
             const warps = config.warpsSystem.warps;
-            warps.forEach((w) => form.button(w.displayName, w.icon));
+            warps.forEach((w) => form.button(customFormUICodes.action.buttons.positions.main_only + w.displayName, w.icon));
             form.button(customFormUICodes.action.buttons.positions.main_only + "Add Warp", "textures/ui/color_plus");
             form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
             form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
@@ -99,7 +99,7 @@ export async function manageWarps(sourceEntity) {
                         }
                         case "edit": {
                             const r = await new ModalFormData()
-                                .title(customFormUICodes.modal.titles.formStyles.medium + "New Warp")
+                                .title(customFormUICodes.modal.titles.formStyles.medium + "Edit Warp")
                                 .textField(`Warp Display Name`, "Warp Name", warp.displayName)
                                 .textField(`Warp Location. ex. 172.41 76 29.5`, "x y z", vTStr(warp.location))
                                 .dropdown("Warp Dimension", dimensionsd.map((d) => dimensionTypeDisplayFormattingE[d]), dimensionsd.indexOf(warp.dimension))

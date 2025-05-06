@@ -201,6 +201,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .\\chunk - §oSets the pos1 and pos2 locations of the selected area to contain the entire chunk that you are currently in for use in other worldedit commands.§r
 .\\shift - §oShifts the pos1 and pos2 locations of the selected area.§r
 .\\offset - §oOffsets the pos1 and pos2 locations of the selected area.§r
+.\\expandselection - §oExpands or shrinks the current selection.§r
 .\\generate - §oGenerates a 3d shape according to a formula in the selected area.§r
 .\\generatef - §oGenerates a 3d shape according to a formula in the selected area.§r
 .\\generates - §oGenerates a 3d shape with the specified step according to a formula in the selected area.§r
@@ -228,6 +229,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .\\hcube - §oGenerates a hollow cube in the selected area.§r
 .\\maze - §oGenerates a maze in the selected area.§r
 .\\regenerateblocks - §oRegenerates blocks in the selected area based on the surrounding blocks.§r
+.\\generateterrin - §oGenerates terrain in the selected area.§r
 §bCommands that require "8Crafter's Entity Scale, NBT, and Behavior Modifier, Bossbar, and Morph Addon" in order to function: §6
 .disconnect - §oDisconnects one or more players from the server.§r§6
 .morph - §oMorphs into the morph with the specified ID.§r§6
@@ -235,7 +237,7 @@ export const helpCommandChatCommandsList = `§2Chat Commands List§r
 .tint - §oTints the specified player's skin the specified color, or makes it glow, and optionally adjusts the opacity of their skin.§r§6
 .tps - §oDisplays the TPS.§r§6
 .visualscale - §oSets your visual scale (the one that does not actually change your hitbox size) to the specified amount.§r§6
-.visualscaleenabled - §oEnables or diables your visual scaling. 
+.visualscaleenabled - §oEnables or diables your visual scaling.§r
 §7Deprecated Commands: §8
 .einvseeb - §oThe original version of the \\einvsee command that does not scan equipment slots.§r
 .ecinvseec - §oScans a player's ender chest and displays the contents of it.§r§8

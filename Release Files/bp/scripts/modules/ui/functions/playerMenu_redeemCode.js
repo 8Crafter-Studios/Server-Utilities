@@ -4,6 +4,7 @@ import { forceShow } from "modules/ui/functions/forceShow";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { RedeemableCode } from "modules/main/classes/RedeemableCode";
+import { customFormUICodes } from "../constants/customFormUICodes";
 export async function playerMenu_redeemCode(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     if (!(sourceEntity instanceof Player)) {
@@ -16,7 +17,7 @@ export async function playerMenu_redeemCode(sourceEntitya) {
             ".");
     }
     let form = new ModalFormData();
-    form.title("Redeem Code");
+    form.title(customFormUICodes.modal.titles.formStyles.medium + "Redeem Code");
     form.textField("Enter your code below", "Code");
     form.submitButton("Redeem Code");
     return await forceShow(form, sourceEntity)

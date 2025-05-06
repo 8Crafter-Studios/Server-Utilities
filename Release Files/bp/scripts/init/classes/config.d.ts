@@ -1006,6 +1006,16 @@ declare namespace exports {
         static get system(): {
             new (): {};
             artificialLagMS: number;
+            /**
+             * The default minimum time between tick waits, in milliseconds.
+             *
+             * This will be the minimum amount of milliseconds that many generation functions will spend each tick, set this to a really low value to reduce lag while using them, but setting it really low will also cause the generation functions to take a really long time.
+             *
+             * Setting it close to or above 10000 may cause the generation functions to be interrupted with script hang errors.
+             *
+             * @default 2500
+             */
+            defaultMinMSBetweenTickWaits: number;
             timeZone: number;
             playerDataRefreshRate: number;
             /**
@@ -1014,13 +1024,36 @@ declare namespace exports {
              * Dynamic Property ID: `andexdbSettings:protectedAreasRefreshRate`
              *
              * @default 200
+             *
+             * @deprecated
              */
             protectedAreasRefreshRate: number;
+            /**
+             * Whether to enable zone actions for protected areas.
+             *
+             * Dynamic Property ID: `andexdbSettings:protectedAreasZoneActionsEnabled`
+             *
+             * @default true
+             */
             protectedAreasZoneActionsEnabled: boolean;
+            /**
+             * How often in ticks to execute the zone actions.
+             *
+             * Dynamic Property ID: `andexdbSettings:protectedAreasZoneActionsInterval`
+             *
+             * @default 5
+             */
             protectedAreasZoneActionsInterval: number;
+            /**
+             * How often in milliseconds to refresh the list of protected areas zones with zone actions.
+             *
+             * Dynamic Property ID: `andexdbSettings:protectedAreasZoneRefreshInterval`
+             *
+             * @default 200
+             */
             protectedAreasZoneRefreshInterval: number;
             /**
-             * How often to check for banned players.
+             * How often in ticks to check for banned players.
              *
              * Dynamic Property ID: `andexdbSettings:bannedPlayersRefreshRate`
              *
@@ -1121,6 +1154,16 @@ export import config = exports.config;
 export declare const system: {
     new (): {};
     artificialLagMS: number;
+    /**
+     * The default minimum time between tick waits, in milliseconds.
+     *
+     * This will be the minimum amount of milliseconds that many generation functions will spend each tick, set this to a really low value to reduce lag while using them, but setting it really low will also cause the generation functions to take a really long time.
+     *
+     * Setting it close to or above 10000 may cause the generation functions to be interrupted with script hang errors.
+     *
+     * @default 2500
+     */
+    defaultMinMSBetweenTickWaits: number;
     timeZone: number;
     playerDataRefreshRate: number;
     /**
@@ -1129,13 +1172,36 @@ export declare const system: {
      * Dynamic Property ID: `andexdbSettings:protectedAreasRefreshRate`
      *
      * @default 200
+     *
+     * @deprecated
      */
     protectedAreasRefreshRate: number;
+    /**
+     * Whether to enable zone actions for protected areas.
+     *
+     * Dynamic Property ID: `andexdbSettings:protectedAreasZoneActionsEnabled`
+     *
+     * @default true
+     */
     protectedAreasZoneActionsEnabled: boolean;
+    /**
+     * How often in ticks to execute the zone actions.
+     *
+     * Dynamic Property ID: `andexdbSettings:protectedAreasZoneActionsInterval`
+     *
+     * @default 5
+     */
     protectedAreasZoneActionsInterval: number;
+    /**
+     * How often in milliseconds to refresh the list of protected areas zones with zone actions.
+     *
+     * Dynamic Property ID: `andexdbSettings:protectedAreasZoneRefreshInterval`
+     *
+     * @default 200
+     */
     protectedAreasZoneRefreshInterval: number;
     /**
-     * How often to check for banned players.
+     * How often in ticks to check for banned players.
      *
      * Dynamic Property ID: `andexdbSettings:bannedPlayersRefreshRate`
      *

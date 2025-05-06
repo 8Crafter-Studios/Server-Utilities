@@ -21,6 +21,8 @@ import * as mcMath from "@minecraft/math.js";
 import * as ipc from "ipc";
 import "intl";
 import "intl.locales";
+import alea from "alea";
+import * as simplexNoise from "simplex-noise";
 import * as shopmain from "ExtraFeatures/shop_main";
 import * as servershop from "ExtraFeatures/server_shop";
 import * as playershop from "ExtraFeatures/player_shop";
@@ -122,6 +124,12 @@ declare const modulesMap: {
      */
     bans: UnionToIntersection<optionalModuleObjectImportFilePathsImportMap[(typeof moduleOptionalImportPathMap)["ban"][number]]>;
     /**
+     * This module contains classes, constants, functions, and types for working with the moderation system.
+     * @namespace
+     * @path `modules/moderation/`
+     */
+    moderation: UnionToIntersection<optionalModuleObjectImportFilePathsImportMap[(typeof moduleOptionalImportPathMap)["moderation"][number]]>;
+    /**
      * This module contains constants, functions, and types for working with the UI system.
      * @namespace
      * @path `modules/ui/`
@@ -183,6 +191,18 @@ declare const modulesMap: {
      * @namespace
      */
     moment: typeof import("moment");
+    /**
+     * The `alea` module.
+     * @see {@link https://www.npmjs.com/package/alea}
+     * @namespace
+     */
+    alea: typeof alea;
+    /**
+     * The `simplex-noise` module.
+     * @see {@link https://www.npmjs.com/package/simplex-noise}
+     * @namespace
+     */
+    simplexNoise: typeof simplexNoise;
     /**
      * The `@minecraft/server` module.
      *

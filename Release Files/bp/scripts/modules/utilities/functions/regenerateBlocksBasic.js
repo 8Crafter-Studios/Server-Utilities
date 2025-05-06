@@ -33,7 +33,6 @@ import { BlockPermutation, UnloadedChunksError, LocationInUnloadedChunkError, Lo
  * @returns error? - The error that caused execution to be stopped early.
  */
 export async function regenerateBlocksBasic(corner1, corner2, dimension, radius, options) {
-    console.log(1);
     const startTime = Date.now();
     const startTick = system.currentTick;
     var successfulRegenerations = 0n;
@@ -44,7 +43,7 @@ export async function regenerateBlocksBasic(corner1, corner2, dimension, radius,
     var unloadedBlockCount = 0n;
     var unloadedSurroundingBlockCount = 0n;
     const opts = {
-        minMSBetweenTickWaits: options?.minMSBetweenTickWaits ?? 2000,
+        minMSBetweenTickWaits: options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits,
         ignoreAir: options?.ignoreAir ?? true,
         onlyReplaceAir: options?.onlyReplaceAir ?? true,
         airPriority: options?.airPriority ?? 0.5,

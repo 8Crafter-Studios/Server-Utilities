@@ -615,7 +615,7 @@ console.error(e, e.stack);
                                                 : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,
@@ -666,7 +666,7 @@ console.error(e, e.stack);
                                                 : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,
@@ -709,7 +709,7 @@ console.error(e, e.stack);
                                                 : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,
@@ -757,7 +757,7 @@ console.error(e, e.stack);
                                                 : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,
@@ -813,7 +813,7 @@ console.error(e, e.stack);
                                                 : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,
@@ -863,7 +863,7 @@ console.error(e, e.stack);
                                                 : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,
@@ -914,7 +914,7 @@ console.error(e, e.stack);
                                                 : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,
@@ -974,7 +974,7 @@ console.error(e, e.stack);
                                                 : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,
@@ -1028,7 +1028,7 @@ console.error(e, e.stack);
                                                     : BlockPermutation.resolve(b.type, b.states);
                                         }, {
                                             blockMask: mask,
-                                            minMSBetweenTickWaits: 2500,
+                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                             replacemode: true,
                                             integrity: 100,
                                             liteMode: true,

@@ -85,12 +85,66 @@ declare global {
          * @param sdsa284f83kd_38pqnv_38_f_0_vmewd_19mvndifekod_f8ufv4m3ddm1c0nvh289cmfue8hd9mjf3 INTERNAL
          */
         function tfsa(sdsa284f83kd_38pqnv_38_f_0_vmewd_19mvndifekod_f8ufv4m3ddm1c0nvh289cmfue8hd9mjf3: unknown): unknown;
+        /**
+         * Removes all values from an array that are `null`.
+         *
+         * @param {T} array The array to remove null values from.
+         * @template {any[]} T The type of the array to remove null values from.
+         * @returns {T[number][]} The array without null values.
+         */
         function cullNull<T extends any[]>(array: T): T[number][];
+        /**
+         * Removes all values from an array that are `undefined`.
+         *
+         * @param {T} array The array to remove undefined values from.
+         * @template {any[]} T The type of the array to remove undefined values from.
+         * @returns {T[number][]} The array without undefined values.
+         */
         function cullUndefined<T extends any[]>(array: T): T[number][];
+        /**
+         * Removes all values from an array that are `null` or `undefined`.
+         *
+         * @param {T} array The array to remove empty values from.
+         * @template {any[]} T The type of the array to remove empty values from.
+         * @returns {T[number][]} The array without empty values.
+         */
         function cullEmpty<T extends any[]>(array: T): T[number][];
+        /**
+         * Tries to get the value of a callback function.
+         *
+         * If the callback function throws an error, it will return `undefined`.
+         *
+         * The is intended to be used with callbacks that might throw errors, and you don't want to handle the error.
+         *
+         * @param {() => T} callbackfn The callback function to try to get the value of.
+         * @template {any} T The type of the value returned by the callback function.
+         * @returns {T} The value of the callback function, or `undefined` if the callback function threw an error.
+         */
         function tryget<T>(callbackfn: () => T): T;
+        /**
+         * Runs a callback function and catches any errors that occur.
+         *
+         * It is the same as {@link tryget}, except it does not return anything.
+         *
+         * @param {() => any} callbackfn The callback function to run.
+         */
         function tryrun(callbackfn: () => any): void;
-        function catchtry(trycallbackfn: () => any, catchcallbackfn?: (e: Error) => any, finallycallbackfn?: (v: any) => any): any;
+        /**
+         * Runs a callback function and catches any errors that occur.
+         *
+         * If an error occurs, it will run the `catchcallbackfn` function, and return the result of that function, unless the `finallycallbackfn` function returns a value.
+         *
+         * It will then run the `finallycallbackfn` function, whether an error occurred or not, and return the result of that function or if it does not return anything, the result of the `catchcallbackfn` function, or if there was no error, the result of the `trycallbackfn` function.
+         *
+         * @param {() => TT} trycallbackfn The callback function to run.
+         * @param {((e: Error) => CT)} [catchcallbackfn] The callback function to run if an error occurs.
+         * @param {((v: TT | ReturnType<typeof catchcallbackfn> | undefined) => FT)} [finallycallbackfn] The callback function to run whether an error occurred or not.
+         * @template {unknown} TT The type of the value returned by the `trycallbackfn` function.
+         * @template {unknown} CT The type of the value returned by the `catchcallbackfn` function.
+         * @template {unknown} FT The type of the value returned by the `finallycallbackfn` function.
+         * @returns {TT | CT | FT | undefined} The result of the `finallycallbackfn` function, unless it does not return a value, in which case it will return the result of the `catchcallbackfn` function, or if there was no error, the result of the `trycallbackfn` function.
+         */
+        function catchtry<TT extends unknown, CT extends unknown, FT extends unknown>(trycallbackfn: () => TT, catchcallbackfn?: (e: Error) => CT, finallycallbackfn?: (v: TT | ReturnType<typeof catchcallbackfn> | undefined) => FT): TT | CT | FT | undefined;
         function send(message: (RawMessage | string)[] | RawMessage | string): void;
         function asend(value: any): void;
         function bsend(value: any, space?: string | number): void;
@@ -289,42 +343,6 @@ declare global {
          * @version 1.0.0
          */
         function formatDate(date: Date, timeZoneOffset?: number): string;
-        /**
-         *
-         * @param json
-         * @param options
-         * @default
-         * enum options = {
-         *     number = "§6",
-         *     key = "§e",
-         *     string = "§q",
-         *     true = "§a",
-         *     false = "§c",
-         *     null = "§d",
-         *     undefined = "§d"
-         *     bigint = "§g",
-         *     leftCurlyBracket = "§9",
-         *     rightCurlyBracket = "§9",
-         *     leftSquareBracket = "§5",
-         *     rightSquareBracket = "§5",
-         *     comma = "§f",
-         * }
-         */
-        function colorizeJSONString(json: string | object, options?: {
-            number?: string;
-            key?: string;
-            string?: string;
-            true?: string;
-            false?: string;
-            null?: string;
-            bigint?: string;
-            leftCurlyBracket?: string;
-            rightCurlyBracket?: string;
-            leftSquareBracket?: string;
-            rightSquareBracket?: string;
-            comma?: string;
-            undefined?: string;
-        }): string;
     }
     /**
      * @namespace
@@ -619,11 +637,47 @@ declare global {
         static readonly lastPlayerDataAutoSaveRun: number;
     }
     interface Function {
+        /**
+         * The line number where the function was defined.
+         *
+         * Native JavaScript property in Minecraft Bedrock Edition.
+         *
+         * Note: This property is only available in Minecraft Bedrock Edition, it is not documented anywhere and was discovered by reverse engineering.
+         *
+         * This property was discovered by 8Crafter.
+         */
         readonly lineNumber: number;
+        /**
+         * The file name where the function was defined.
+         *
+         * Native JavaScript property in Minecraft Bedrock Edition.
+         *
+         * Note: This property is only available in Minecraft Bedrock Edition, it is not documented anywhere and was discovered by reverse engineering.
+         *
+         * This property was discovered by 8Crafter.
+         */
         readonly fileName: string;
     }
     interface Class {
+        /**
+         * The line number where the class was defined.
+         *
+         * Native JavaScript property in Minecraft Bedrock Edition.
+         *
+         * Note: This property is only available in Minecraft Bedrock Edition, it is not documented anywhere and was discovered by reverse engineering.
+         *
+         * This property was discovered by 8Crafter.
+         */
         readonly lineNumber: number;
+        /**
+         * The file name where the class was defined.
+         *
+         * Native JavaScript property in Minecraft Bedrock Edition.
+         *
+         * Note: This property is only available in Minecraft Bedrock Edition, it is not documented anywhere and was discovered by reverse engineering.
+         *
+         * This property was discovered by 8Crafter.
+         */
         readonly fileName: string;
     }
 }

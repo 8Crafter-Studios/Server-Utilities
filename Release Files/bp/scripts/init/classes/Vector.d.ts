@@ -105,7 +105,11 @@ declare const VectorClass: {
     floor: typeof Vector3Utils.floor;
     lerp: typeof Vector3Utils.lerp;
     magnitude: typeof Vector3Utils.magnitude;
+    multiply: typeof Vector3Utils.multiply;
     normalize: typeof Vector3Utils.normalize;
+    rotateX: typeof Vector3Utils.rotateX;
+    rotateY: typeof Vector3Utils.rotateY;
+    rotateZ: typeof Vector3Utils.rotateZ;
     scale: typeof Vector3Utils.scale;
     slerp: typeof Vector3Utils.slerp;
     subtract: typeof Vector3Utils.subtract;

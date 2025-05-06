@@ -4,7 +4,9 @@ import { patternColors } from "modules/chat/constants/patternColors";
 import { patternColorsMap } from "modules/chat/constants/patternColorsMap";
 import { patternFunctionList } from "modules/chat/constants/patternFunctionList";
 import { evaluateChatColorType } from "./evaluateChatColorType";
-import { chatSend_getChatMessageFormatFromPlayerTags, chatSend_getDisplayNameFromPlayer, chatSend_getPlayerPersonalSettings, chatSend_getRanksFromPlayerTags, chatSend_getTargetPlayerSettings, chatSendMessageEvaluator, chatSendMessageEvaluator_players, chatSendMessageEvaluator_prePlayers } from "./chatSendMessageEvaluator";
+import { chatSend_getChatMessageFormatFromPlayerTags, chatSend_getDisplayNameFromPlayer, chatSend_getPlayerPersonalSettings, chatSend_getRanksFromPlayerTags, chatSend_getTargetPlayerSettings, chatSendMessageEvaluator, chatSendMessageEvaluator_players, chatSendMessageEvaluator_prePlayers, } from "./chatSendMessageEvaluator";
+import { ModerationActions } from "modules/moderation/classes/ModerationActions";
+import { andexdb_ModifiedChatMessageFormatBeforeEvent, andexdb_ModifiedChatMessageFormatBeforeEventSignal, andexdb_ModifiedChatMessageFormatFinalizationBeforeEvent, andexdb_ModifiedChatMessageFormatFinalizationBeforeEventSignal, andexdb_ModifiedChatMessageSendAfterEvent, andexdb_ModifiedChatMessageSendAfterEventSignal, andexdb_ModifiedChatMessageSendBeforeEvent, andexdb_ModifiedChatMessageSendBeforeEventSignal, } from "init/classes/events";
 export function chatSend(params) {
     let returnBeforeChatSend = params.returnBeforeChatSend;
     let player = params.player;
@@ -13,25 +15,52 @@ export function chatSend(params) {
     let newMessage = params.newMessage;
     if (config.antiSpamSystem.antispamEnabled) {
         if (!player.hasTag("canBypassAntiSpam")) {
-            if ( /*
-                globalThis["lastChatMessage" + player.id] == event.message &&*/Date.now() - ((globalThis["msgAmountOfSpam" + player.id] >= config.antiSpamSystem.antispamTriggerMessageCount ? globalThis["antiSpamMuteStartTime" + player.id] : globalThis["lastChatTime" + player.id]) ?? 0) <
+            if (
+            /*
+            globalThis["lastChatMessage" + player.id] == event.message &&*/ Date.now() -
+                ((globalThis[("msgAmountOfSpam" + player.id)] >= config.antiSpamSystem.antispamTriggerMessageCount
+                    ? globalThis[("antiSpamMuteStartTime" + player.id)]
+                    : globalThis[("lastChatTime" + player.id)]) ?? 0) <
                 config.antiSpamSystem.waitTimeAfterAntispamActivation * 1000) {
-                globalThis["msgAmountOfSpam" + player.id] = (globalThis["msgAmountOfSpam" + player.id] ?? 0) + 1;
-                if (globalThis["msgAmountOfSpam" + player.id] >= config.antiSpamSystem.antispamTriggerMessageCount) {
-                    if (globalThis["msgAmountOfSpam" + player.id] == config.antiSpamSystem.antispamTriggerMessageCount || config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) {
-                        globalThis["antiSpamMuteStartTime" + player.id] = Date.now();
+                globalThis[("msgAmountOfSpam" + player.id)] =
+                    (globalThis[("msgAmountOfSpam" + player.id)] ?? 0) + 1;
+                if (globalThis[("msgAmountOfSpam" + player.id)] >= config.antiSpamSystem.antispamTriggerMessageCount) {
+                    if (globalThis[("msgAmountOfSpam" + player.id)] == config.antiSpamSystem.antispamTriggerMessageCount ||
+                        config.antiSpamSystem.restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute) {
+                        globalThis[("antiSpamMuteStartTime" + player.id)] = Date.now();
                     }
                     returnBeforeChatSend = true;
                     event.cancel = true;
-                    const remainingSeconds = (((globalThis["antiSpamMuteStartTime" + player.id] ?? 0) + (config.antiSpamSystem.waitTimeAfterAntispamActivation * 1000) - Date.now()) / 1000).ceil();
+                    const remainingSeconds = (((globalThis[("antiSpamMuteStartTime" + player.id)] ?? 0) +
+                        config.antiSpamSystem.waitTimeAfterAntispamActivation * 1000 -
+                        Date.now()) /
+                        1000).ceil();
                     player.sendMessage("§cStop Spamming!§r You are muted for " + remainingSeconds + " second" + (remainingSeconds === 1 ? "" : "s") + ".");
                 }
             }
             else {
-                globalThis["msgAmountOfSpam" + player.id] = 0;
+                globalThis[("msgAmountOfSpam" + player.id)] = 0;
             }
-            globalThis["lastChatMessage" + player.id] = event.message;
-            globalThis["lastChatTime" + player.id] = Date.now();
+            globalThis[("lastChatMessage" + player.id)] = event.message;
+            globalThis[("lastChatTime" + player.id)] = Date.now();
+        }
+    }
+    if (ModerationActions.testForMutedPlayer(player.name)) {
+        const mute = ModerationActions.getMuteData(player.name);
+        returnBeforeChatSend = true;
+        event.cancel = true;
+        if (newMessage.toLowerCase().includes("mute details")) {
+            const timeZone = player.timeZone;
+            player.sendMessage(`§cMute Details:
+Muted by: ${mute.mutedByName}<${mute.mutedById}>
+Muted on: ${formatDateTime(new Date(mute.muteDate), timeZone)} UTC${timeZone > 0 || Object.is(timeZone, 0) ? "+" : ""}${timeZone}
+Unmute date: ${mute.unmuteDate === null ? "Never" : formatDateTime(new Date(mute.unmuteDate), timeZone)} UTC${timeZone > 0 || Object.is(timeZone, 0) ? "+" : ""}${timeZone}
+Mute duration: ${mute.unmuteDate === null ? "Permanent" : ModerationActions.playerMuteDurationFormatted(player.name)}
+Time until unmute: ${mute.unmuteDate === null ? "Infinite" : ModerationActions.playerTimeUntilUnmuteFormatted(player.name)}
+Mute reason: ${mute.reason}`);
+        }
+        else {
+            player.sendMessage(`§cYou are ${mute.unmuteDate === null ? "§lpermanently§r§c" : "temporarily"} muted${mute.unmuteDate === null ? "" : " for another " + ModerationActions.playerTimeUntilUnmuteFormatted(player.name)}! Type "mute details" for more details.`);
         }
     }
     try {
@@ -39,9 +68,11 @@ export function chatSend(params) {
     }
     catch (e) {
         console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("chatSendBeforeEventDebugErrors")) {
-            currentplayer.sendMessage((e + " " + e.stack));
-        } });
+        world.getAllPlayers().forEach((currentplayer) => {
+            if (currentplayer.hasTag("chatSendBeforeEventDebugErrors")) {
+                currentplayer.sendMessage(e + " " + e.stack);
+            }
+        });
     }
     if (returnBeforeChatSend)
         return;
@@ -55,28 +86,51 @@ export function chatSend(params) {
     // let separatorGradientMode: string = msgFormatFromTags.separatorGradientMode;
     // let showDimension: boolean = msgFormatFromTags.showDimension;
     const time = Date.now();
+    const beforeFormatData = new andexdb_ModifiedChatMessageFormatBeforeEvent({
+        ...eventData,
+        message: newMessage,
+        originalMessage: eventData.message,
+        cancel: false,
+        formatOptions: {
+            isPlaceholderPlayer: false,
+            player,
+            allowEval: true,
+            dimension: player.dimension.id,
+            // messageFormatting,
+            // messageGradientMode,
+            // nameFormatting,
+            // nameGradientMode,
+            playerPersonalSettings,
+            ranks: chatSend_getRanksFromPlayerTags(player, { playerPersonalSettings: playerPersonalSettings }),
+            // separatorFormatting,
+            // separatorGradientMode,
+            // showDimension,
+            tags: player.getTags(),
+            time,
+            ...msgFormatFromTags,
+        },
+        nameTag: chatSend_getDisplayNameFromPlayer(player, { playerPersonalSettings: playerPersonalSettings }),
+    }, false);
+    andexdb_ModifiedChatMessageFormatBeforeEventSignal.callbacks.forEach((callback) => {
+        try {
+            callback(beforeFormatData);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getPlayers({ tags: ["andexdb_ModifiedChatMessageSendBeforeEventDebugErrors"] }).forEach((currentplayer) => {
+                currentplayer.sendMessage(e + " " + e.stack);
+            });
+        }
+    });
+    if (beforeFormatData.cancel)
+        return;
     const options = {
-        isPlaceholderPlayer: false,
-        player,
         isPlaceholderTargetPlayer: undefined,
         targetPlayer: undefined,
-        allowEval: true,
-        dimension: player.dimension.id,
-        // messageFormatting,
-        // messageGradientMode,
-        // nameFormatting,
-        // nameGradientMode,
-        playerPersonalSettings,
-        ranks: chatSend_getRanksFromPlayerTags(player, { playerPersonalSettings: playerPersonalSettings }),
-        // separatorFormatting,
-        // separatorGradientMode,
-        // showDimension,
-        tags: player.getTags(),
         targetPlayerSettings: undefined,
-        time,
-        ...msgFormatFromTags,
+        ...beforeFormatData.formatOptions,
     };
-    const prePlayersOutput = chatSendMessageEvaluator_prePlayers(newMessage, chatSend_getDisplayNameFromPlayer(player, { playerPersonalSettings: playerPersonalSettings }), options);
+    let prePlayersOutput = chatSendMessageEvaluator_prePlayers(beforeFormatData.message, beforeFormatData.nameTag, options);
     //    let showHealth = false
     /* if (player.hasTag('messageFormatting:r')) { messageFormatting += "§r"; };
     if (player.hasTag('messageFormatting:o')) { messageFormatting += "§o"; };
@@ -355,17 +409,47 @@ export function chatSend(params) {
     }
     catch (e) {
         console.error(e, e.stack);
-        world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("chatSendBeforeEventDebugErrors")) {
-            currentplayer.sendMessage((e + " " + e.stack));
-        } });
+        world.getPlayers({ tags: ["chatSendBeforeEventDebugErrors"] }).forEach((currentplayer) => {
+            currentplayer.sendMessage(e + " " + e.stack);
+        });
     }
+    const beforeFormatFinalizationData = new andexdb_ModifiedChatMessageFormatFinalizationBeforeEvent({
+        get targets() {
+            return eventData.targets;
+        },
+        get sender() {
+            return eventData.sender;
+        },
+        get message() {
+            return beforeFormatData.message;
+        },
+        get originalMessage() {
+            return eventData.message;
+        },
+        tokenData: prePlayersOutput,
+        cancel: false,
+    }, false);
+    andexdb_ModifiedChatMessageFormatFinalizationBeforeEventSignal.callbacks.forEach((callback) => {
+        try {
+            callback(beforeFormatFinalizationData);
+        }
+        catch (e) {
+            console.error(e, e.stack);
+            world.getPlayers({ tags: ["chatSendBeforeEventDebugErrors"] }).forEach((currentplayer) => {
+                currentplayer.sendMessage(e + " " + e.stack);
+            });
+        }
+    });
+    if (beforeFormatFinalizationData.cancel)
+        return;
+    prePlayersOutput = beforeFormatFinalizationData.tokenData;
     eventData.cancel = true;
     //╙
     if (player.hasTag("doNotSendChatMessages")) {
         return;
     }
     else {
-        world.getAllPlayers().forEach(p => {
+        world.getAllPlayers().forEach((p) => {
             // let messageTimeStampEnabled = (player.hasTag("chatDisplayTimeStamp") || p.hasTag("chatDisplayTimeStamps") || ((world.getDynamicProperty("andexdbSettings:chatDisplayTimeStamp") ?? false) && !player.hasTag("hideChatDisplayTimeStamp") && !p.hasTag("hideChatDisplayTimeStamps")));
             // let timestampenabled = messageTimeStampEnabled;
             // let timestamp = messageTimeStampEnabled ? formatTime(new Date(Date.now() + (Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000))) : "";
@@ -415,21 +499,59 @@ export function chatSend(params) {
             options.isPlaceholderTargetPlayer = false;
             options.targetPlayer = p;
             options.targetPlayerSettings = chatSend_getTargetPlayerSettings(p);
-            const messageOutput = chatSendMessageEvaluator_players(prePlayersOutput, options);
+            let messageOutput = chatSendMessageEvaluator_players(prePlayersOutput, options);
             try {
                 eval(String(world.getDynamicProperty("evalBeforeEvents:chatSendBeforeModifiedMessageSend")));
             }
             catch (e) {
                 console.error(e, e.stack);
-                world.getAllPlayers().forEach((currentplayer) => { if (currentplayer.hasTag("chatSendBeforeEventDebugErrors")) {
-                    currentplayer.sendMessage((e + " " + e.stack));
-                } });
+                world.getAllPlayers().forEach((currentplayer) => {
+                    if (currentplayer.hasTag("chatSendBeforeEventDebugErrors")) {
+                        currentplayer.sendMessage(e + " " + e.stack);
+                    }
+                });
             }
+            const beforeSendData = new andexdb_ModifiedChatMessageSendBeforeEvent({
+                get targets() {
+                    return eventData.targets;
+                },
+                get sender() {
+                    return eventData.sender;
+                },
+                message: messageOutput,
+                get originalMessage() {
+                    return eventData.message;
+                },
+                get tokenData() {
+                    return prePlayersOutput;
+                },
+                get formatOptions() {
+                    return beforeFormatData.formatOptions;
+                },
+                get nameTag() {
+                    return beforeFormatData.nameTag;
+                },
+                cancel: false,
+            }, false);
+            andexdb_ModifiedChatMessageSendBeforeEventSignal.callbacks.forEach((callback) => {
+                try {
+                    callback(beforeSendData);
+                }
+                catch (e) {
+                    console.error(e, e.stack);
+                    world.getPlayers({ tags: ["chatSendBeforeEventDebugErrors"] }).forEach((currentplayer) => {
+                        currentplayer.sendMessage(e + " " + e.stack);
+                    });
+                }
+            });
+            if (beforeSendData.cancel)
+                return;
+            messageOutput = beforeSendData.message;
             if (world.getDynamicProperty("allowCustomChatMessagesMuting") != true) {
                 p.sendMessage(messageOutput);
             }
             else {
-                srun(() => p.runCommand(`/tellraw @s ${JSON.stringify({ "rawtext": [{ "text": messageOutput }] })}`));
+                srun(() => p.runCommand(`/tellraw @s ${JSON.stringify({ rawtext: [{ text: messageOutput }] })}`));
             }
         });
     } /*
@@ -466,5 +588,41 @@ export function chatSend(params) {
             }
         }
     }*/
+    srun(() => {
+        const data = new andexdb_ModifiedChatMessageSendAfterEvent({
+            get targets() {
+                return eventData.targets;
+            },
+            get sender() {
+                return eventData.sender;
+            },
+            get message() {
+                return beforeFormatData.message;
+            },
+            get originalMessage() {
+                return eventData.message;
+            },
+            get tokenData() {
+                return prePlayersOutput;
+            },
+            get formatOptions() {
+                return beforeFormatData.formatOptions;
+            },
+            get nameTag() {
+                return beforeFormatData.nameTag;
+            },
+        }, false);
+        andexdb_ModifiedChatMessageSendAfterEventSignal.callbacks.forEach((callback) => {
+            try {
+                callback(data);
+            }
+            catch (e) {
+                console.error(e, e.stack);
+                world.getPlayers({ tags: ["chatSendAfterEventDebugErrors"] }).forEach((currentplayer) => {
+                    currentplayer.sendMessage(e + " " + e.stack);
+                });
+            }
+        });
+    });
 }
 //# sourceMappingURL=chatSend.js.map

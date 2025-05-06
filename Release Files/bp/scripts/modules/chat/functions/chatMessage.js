@@ -7,7 +7,7 @@ import { command } from "modules/commands/classes/command";
 import { chatCommands } from "modules/commands/functions/chatCommands";
 import { commands } from "modules/commands_list/constants/commands";
 import { chatSend } from "./chatSend";
-import { cmdsEval } from "../../../Main/commands";
+import { cmdsEval, cmdsEvalAsync } from "../../../Main/commands";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { ProtectedAreaTester } from "init/variables/protectedAreaVariables";
 export function chatMessage(eventData, bypassChatInputRequests = false) {
@@ -220,6 +220,21 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
             console.error(e, e.stack);
             eventData.sender.sendMessage(e + " " + e.stack);
         }
+        eventData.cancel = true;
+        return;
+    }
+    else if (newMessage.includes("${ase}") &&
+        (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"]) : player.playerPermissions.canUseScriptEval)) {
+        newMessage = newMessage.replace("${ase}", "");
+        system.waitTicks(1).then(async () => {
+            try {
+                await cmdsEvalAsync(newMessage, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda);
+            }
+            catch (e) {
+                console.error(e, e.stack);
+                eventData.sender.sendMessage(e + " " + e.stack);
+            }
+        });
         eventData.cancel = true;
         return;
     }

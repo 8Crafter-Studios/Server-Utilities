@@ -63,7 +63,7 @@ export class undoClipboard {
             y: Math.abs(v.y),
             z: Math.abs(v.z),
         }))(Vector.subtract(area.to, area.from)));
-        for (const range of splitArea(area, sizeLimits)) {
+        for (const range of splitArea({ from: { ...area.from, y: Math.min(dimension.heightRange.max, Math.max(dimension.heightRange.min, area.from.y)) }, to: { ...area.to, y: Math.min(dimension.heightRange.max, Math.max(dimension.heightRange.min, area.to.y)) } }, sizeLimits)) {
             this.saveRange(dimension, range, saveTime, {
                 saveMode: options?.saveMode ?? config.undoClipboardMode,
                 includeBlocks: options?.includeBlocks,

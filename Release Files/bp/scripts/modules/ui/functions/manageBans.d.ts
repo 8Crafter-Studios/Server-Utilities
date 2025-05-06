@@ -6,7 +6,7 @@ import type { savedPlayer } from "modules/player_save/classes/savedPlayer";
  *
  * @param {loosePlayerType} sourceEntity - The player accessing the menu.
  * @param {number} [pagen] - The page of the menu to go to. Defaults to 0.
- * @param {number} [maxentriesperpage] - How many entries to show per page. Defaults to the value of {@linkcode config.ui.pages.maxPlayersPerManagePlayersPage}.
+ * @param {number} [maxentriesperpage] - How many entries to show per page. Defaults to the value of {@linkcode config.ui.pages.maxBansPerManageBansPage}.
  * @returns {Promise<0 | 1>} A promise that resolves to `0` if the previous menu should be closed, or `1` if the previous menu should be reopened.
  * @throws {TypeError} If sourceEntity is not an instance of the Player class or an instance of the executeCommandPlayerW class with a Player linked to it.
  */

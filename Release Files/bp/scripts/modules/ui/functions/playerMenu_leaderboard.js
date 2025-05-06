@@ -61,8 +61,8 @@ export async function playerMenu_leaderboard(sourceEntitya, leaderboard, pagen =
         const participants = leaderboard.getterFunction != undefined ? undefined : world.scoreboard.getParticipants();
         const getterFunction = leaderboard.getterFunction != undefined
             ? leaderboard.getterFunction
-            : (p) => tryget(() => leaderboardObjective?.getScore(participants?.find((v) => tryget(() => v.getEntity()?.id) == p.id) ??
-                participants?.find((v) => v.id == p.scoreboardIdentity)))?.toString();
+            : (p) => tryget(() => leaderboardObjective?.getScore(participants?.find((v) => v.id == p.scoreboardIdentity)
+                ?? participants?.find((v) => tryget(() => v.getEntity()?.id) == p.id)))?.toString();
         displayPlayers = savedPlayers
             .map((p) => [p, getterFunction(p)])
             .filter((p) => p[1] !== undefined)

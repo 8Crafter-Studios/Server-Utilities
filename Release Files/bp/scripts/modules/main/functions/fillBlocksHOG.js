@@ -33,7 +33,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                 }
             }, {
                 integrity,
-                minMSBetweenYields: options?.minMSBetweenYields ?? 5000,
+                minMSBetweenYields: options?.minMSBetweenYields ?? config.system.defaultMinMSBetweenTickWaits,
             }));
         }
         else {
@@ -51,7 +51,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                 }
             }, {
                 integrity,
-                minMSBetweenYields: options?.minMSBetweenYields ?? 5000,
+                minMSBetweenYields: options?.minMSBetweenYields ?? config.system.defaultMinMSBetweenTickWaits,
             }));
         }
     }
@@ -81,7 +81,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                 }
             }, {
                 integrity,
-                minMSBetweenYields: options?.minMSBetweenYields ?? 5000,
+                minMSBetweenYields: options?.minMSBetweenYields ?? config.system.defaultMinMSBetweenTickWaits,
             }));
         }
         else {
@@ -113,7 +113,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                 }
             }, {
                 integrity,
-                minMSBetweenYields: options?.minMSBetweenYields ?? 5000,
+                minMSBetweenYields: options?.minMSBetweenYields ?? config.system.defaultMinMSBetweenTickWaits,
             }));
         }
     }

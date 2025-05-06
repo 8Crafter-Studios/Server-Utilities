@@ -79,4 +79,10 @@ declare global {
     type KeyValuePairs<T> = {
         [K in KeysOfUnion<T>]: AllValues<Extract<T, Record<K, any>>>;
     };
+    /**
+     * @see https://stackoverflow.com/a/58986589
+     * @author jcalz <https://stackoverflow.com/users/2887218/jcalz>
+     */
+    type ExcludeFromTuple<T extends readonly any[], E> = T extends [infer F, ...infer R] ? [F] extends [E] ? ExcludeFromTuple<R, E> : [F, ...ExcludeFromTuple<R, E>] : [];
+    type IncludeFromTuple<T extends readonly any[], E> = T extends [infer F, ...infer R] ? [F] extends [E] ? [F, ...IncludeFromTuple<R, E>] : IncludeFromTuple<R, E> : [];
 }

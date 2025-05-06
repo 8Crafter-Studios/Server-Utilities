@@ -63,7 +63,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -96,7 +96,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -130,7 +130,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -159,7 +159,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -200,7 +200,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -235,7 +235,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -270,7 +270,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -301,7 +301,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -350,7 +350,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -388,7 +388,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -427,7 +427,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -461,7 +461,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -507,7 +507,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -547,7 +547,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -587,7 +587,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -623,7 +623,7 @@ export async function fillStretchedSphere(center, radius, stretch, dimension, bl
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }

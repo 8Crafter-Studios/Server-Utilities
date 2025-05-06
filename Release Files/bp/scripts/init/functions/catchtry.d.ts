@@ -1,1 +1,1 @@
-import "init/meta/importToMakeValidModule";
+export {};

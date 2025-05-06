@@ -1,4 +1,4 @@
-export default function checkStackOverflowDepth(i?: number): {
+export declare function checkStackOverflowDepth(i?: number): {
     depth: number;
     error: InternalError;
 };

@@ -105,7 +105,7 @@ export declare class command<T extends "built-in" | "custom" | "unknown" = "unkn
     /**
      * The version of the command.
      */
-    command_version?: string | number;
+    command_version?: string;
     /**
      * The syntaxes of the command.
      */
@@ -117,11 +117,11 @@ export declare class command<T extends "built-in" | "custom" | "unknown" = "unkn
     /**
      * The version of the add-on that custom command was created in.
      */
-    format_version: string | number;
+    format_version: string;
     /**
      * The commands format version that the command was created in.
      */
-    commands_format_version: string | number;
+    commands_format_version: string;
     /**
      * The ID of the custom command.
      */

@@ -31,7 +31,7 @@ export async function fillCylinder(center, radius, length, axis, dimension, bloc
     const centerX = center.x;
     const centerY = center.y;
     const centerZ = center.z;
-    const minMSBetweenTickWaits = options?.minMSBetweenTickWaits ?? 2000;
+    const minMSBetweenTickWaits = options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits;
     const isWithinCylinder = (x, y, z) => {
         switch (axis) {
             case 'x':

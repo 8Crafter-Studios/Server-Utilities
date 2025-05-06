@@ -1,7 +1,7 @@
-import { EquipmentSlot, Container, EntityEquippableComponent, PlayerCursorInventoryComponent } from "@minecraft/server";
-export declare function getSlotFromParsedSlot(slot: "~" | "cursor" | EquipmentSlot | number, options?: {
+import { EquipmentSlot, type Container, type EntityEquippableComponent, type PlayerCursorInventoryComponent, type ContainerSlot } from "@minecraft/server";
+export declare function getSlotFromParsedSlot<Options extends {
     container?: Container;
     equipment?: EntityEquippableComponent;
     cursor?: PlayerCursorInventoryComponent;
     selectedSlotIndex?: number;
-}): PlayerCursorInventoryComponent | import("@minecraft/server").ContainerSlot;
+}>(slot: "~" | "cursor" | EquipmentSlot | number, options: Options): (Options["cursor"] extends PlayerCursorInventoryComponent ? PlayerCursorInventoryComponent : undefined) | (Options["container"] extends Container ? ContainerSlot : undefined) | (Options["equipment"] extends EntityEquippableComponent ? ContainerSlot : undefined) | undefined;

@@ -18,7 +18,7 @@ export async function playerMenu_about(sourceEntitya) {
     }
     let form = new ActionFormData();
     form.title(customFormUICodes.action.titles.formStyles.wide + "About");
-    form.body("8Crafter's Debug Sticks, Chat Ranks, Custom UI, and JavaScript Commands/Script REPL and Server Utilities v" + format_version);
+    form.body("8Crafter's Server Utilities & Debug Sticks v" + format_version);
     form.button(customFormUICodes.action.buttons.positions.main_only + "Links", "textures/ui/external_link_no_blur");
     form.button(customFormUICodes.action.buttons.positions.main_only + "Contributors", "textures/ui/8Crafter");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");

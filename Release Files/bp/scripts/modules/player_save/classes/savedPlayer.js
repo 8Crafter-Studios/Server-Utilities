@@ -539,6 +539,87 @@ saveBan(ban: ban){if(ban.type=="name"){world.setDynamicProperty(`ban:${ban.playe
         } /*
         // playerDataSaveDebug
         world.getAllPlayers().filter(p=>p.hasTag("playerDataSaveDebug")).forEach(p=>p.sendMessage(`§r[${formatTime(new Date(Date.now() + (Number(p.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? world.getDynamicProperty("andexdbSettings:timeZone") ?? 0) * 3600000)))}] §r[§l§bplayerDataSaveDebug§r] savePlayer() for player ${tryget(()=>player?.name??"undefined")??"ERROR"}<${tryget(()=>player?.id??"undefined")??"ERROR"}>`)) */
+        // Crash Test
+        /*
+        ${ase}const origData = {}; const player = players.Andexter8; while(true){await waitTick(); dcsend({
+                // ms for 1000 runs: 1
+                name: player.name,
+                // ms for 1000 runs: 1-2
+                nameTag: player.nameTag,
+                // ms for 1000 runs: 0
+                id: player.id,
+                // ms for 1000 runs: 1
+                isOp: player.isOp(),
+                // ms for 1000 runs: 4
+                tags: player.getTags(),
+                // ms for 1000 runs: 1
+                selectedSlotIndex: player.selectedSlotIndex,
+                // ms for 1000 runs: 1
+                scoreboardIdentity: player.scoreboardIdentity?.id,
+                // ms for 1000 runs: 0
+                format_version: format_version,
+                // ms for 1000 runs: 0
+                player_save_format_version: "23232.321.321",
+                // ms for 1000 runs: 0
+                lastOnline: Date.now(),
+                // ms for 1000 runs: 0
+                firstJoined: origData.firstJoined ?? Date.now(),
+                // ms for 1000 runs: 2-3
+                location: player.location,
+                // ms for 1000 runs: 1
+                dimension: player.dimension,
+                // ms for 1000 runs: 2
+                rotation: player.getRotation(),
+                // ms for 1000 runs: 1-2
+                gameMode: player.getGameMode(),
+                // ms for 1000 runs: 1
+                spawnPoint: player.getSpawnPoint(),
+                // ms for 1000 runs: 1
+                memoryTier: player.clientSystemInfo.memoryTier,
+                // ms for 1000 runs: 1
+                maxRenderDistance: player.clientSystemInfo.maxRenderDistance,
+                // ms for 1000 runs: 1
+                platformType: player.clientSystemInfo.platformType,
+                // ms for 1000 runs: 22
+                inputPermissions: {
+                    // ms for 1000 runs: 2
+                    Camera: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.Camera),
+                    // ms for 1000 runs: 2
+                    Movement: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.Movement),
+                    // ms for 1000 runs: 2
+                    LateralMovement: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.LateralMovement),
+                    // ms for 1000 runs: 2
+                    Sneak: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.Sneak),
+                    // ms for 1000 runs: 2
+                    Jump: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.Jump),
+                    // ms for 1000 runs: 2
+                    Mount: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.Mount),
+                    // ms for 1000 runs: 2
+                    Dismount: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.Dismount),
+                    // ms for 1000 runs: 2
+                    MoveForward: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.MoveForward),
+                    // ms for 1000 runs: 2
+                    MoveBackward: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.MoveBackward),
+                    // ms for 1000 runs: 2
+                    MoveLeft: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.MoveLeft),
+                    // ms for 1000 runs: 2
+                    MoveRight: player.inputPermissions.isPermissionCategoryEnabled(modules.mcServer.InputPermissionCategory.MoveRight),
+                },
+                // ms for 1000 runs: 2
+                inputInfo: {
+                    // ms for 1000 runs: 1
+                    lastInputModeUsed: player.inputInfo.lastInputModeUsed,
+                    // ms for 1000 runs: 1
+                    touchOnlyAffectsHotbar: player.inputInfo.touchOnlyAffectsHotbar,
+                },
+                // ms for 1000 runs: 20
+                playerPermissions: player.playerPermissions.toJSON(),
+                // ms for 1000 runs: 0
+                onJoinActions: origData.onJoinActions ?? [],
+                // ms for 1000 runs: 0
+                saveMode: "full",
+            })}
+                */
         const origData = this.getSavedPlayer("player:" + player.id);
         let savedPlayerData;
         if (config.system.playerDataSavePerformanceMode === "full") {

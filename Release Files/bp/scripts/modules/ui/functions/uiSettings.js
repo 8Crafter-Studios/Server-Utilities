@@ -3,7 +3,7 @@ import { ActionFormData } from "@minecraft/server-ui";
 import { uiSettings_main } from "./uiSettings_main";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
-import { uiSettings_menuConfigurations } from "./uiSettings_menuConfigurations";
+import { uiSettings_menuConfigurations } from "./uiSettings_MConfigs";
 import { customFormUICodes } from "../constants/customFormUICodes";
 import { extractPlayerFromLooseEntityType } from "modules/utilities/functions/extractPlayerFromLooseEntityType";
 export async function uiSettings(sourceEntity) {

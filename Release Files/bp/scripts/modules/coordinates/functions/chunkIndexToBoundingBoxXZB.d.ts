@@ -1,16 +1,5 @@
-import type { Vector2 } from "@minecraft/server";
-export declare function chunkIndexToBoundingBoxXZB(chunkIndex: Vector2, heightRange?: {
+import type { BoundingBox, VectorXZ } from "@minecraft/server";
+export declare function chunkIndexToBoundingBoxXZB(chunkIndex: VectorXZ, heightRange?: {
     min: number;
     max: number;
-}): {
-    from: {
-        x: number;
-        y: number;
-        z: number;
-    };
-    to: {
-        x: number;
-        y: number;
-        z: number;
-    };
-};
+}): BoundingBox;

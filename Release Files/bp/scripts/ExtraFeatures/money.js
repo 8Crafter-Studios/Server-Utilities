@@ -9,15 +9,6 @@ import * as ipc from "ipc";
 export class MoneySystem {
     playerID;
     get money() {
-        if (config.moneySystem.useScoreboardBasedMoneySystem && world.scoreboard
-            .getObjective(config.moneySystem.scoreboardName)
-            ?.getParticipants()
-            .find((v) => tryget(() => v.getEntity()?.id) == this.playerID) == undefined) {
-            const player = world.getAllPlayers().find((v) => v.id == this.playerID);
-            if (player != undefined) {
-                world.scoreboard.getObjective(config.moneySystem.scoreboardName)?.addScore(player, 0);
-            }
-        }
         if (config.moneySystem.useScoreboardBasedMoneySystem) {
             try {
                 return (world.scoreboard

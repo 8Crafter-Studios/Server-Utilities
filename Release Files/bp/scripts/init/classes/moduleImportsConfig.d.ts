@@ -73,12 +73,13 @@ export declare class moduleImportsConfig {
         coordinates: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         errors: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         main: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
+        moderation: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         player_save: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         spawn_protection: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         ui: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
         utilities: "none" | "disableAll" | "enableAll" | "enableAllNonDeprecated" | undefined | null;
     };
-    static get default(): moduleImportNamesToModuleImportsConfigObjectMapper<0>;
+    static get default(): moduleImportNamesToModuleImportsConfigObjectMapper<1>;
     /**
      *
      * @param filePath The path of the file, should be a value in the {@link optionalModuleObjectImportFilePaths} array.

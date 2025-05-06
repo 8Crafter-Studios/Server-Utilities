@@ -26,10 +26,10 @@ export async function playerMenu_leaderboards(sourceEntitya) {
     // menuConfig.buttons.map(k=>[k, menuButtonIds.mainMenu.buttons[k]])
     const buttons = menuConfig.leaderboards.map(k => [k, defaultPlayerMenuLeaderboardStatistics.find(s => s.id === k && menuConfig.builtInStats[k].enabled) ?? menuConfig.customStats.find(s => s.id === k)]);
     let form = new ActionFormData();
-    form.title(customFormUICodes.action.titles.formStyles.general + "Leaderboards");
+    form.title(customFormUICodes.action.titles.formStyles.medium + "Leaderboards");
     form.body("Select a leaderboard.");
     buttons.forEach(([k, b]) => {
-        form.button(customFormUICodes.action.buttons.positions.main_only + b.buttonDisplayName, b.buttonIcon);
+        form.button(customFormUICodes.action.buttons.positions.main_only + b?.buttonDisplayName, b?.buttonIcon);
     });
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");

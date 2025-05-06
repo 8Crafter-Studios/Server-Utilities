@@ -3,6 +3,9 @@ export const cmdsmetaimport = import.meta;
 export function cmdsEval(x, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda) {
     return eval(x);
 }
+export async function cmdsEvalAsync(x, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda) {
+    return await eval(`(async()=>{${x}})()`);
+}
 export function indirectCmdsEval(x) {
     return eval?.(x);
 }

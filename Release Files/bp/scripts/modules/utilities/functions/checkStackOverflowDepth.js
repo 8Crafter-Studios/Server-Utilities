@@ -1,4 +1,4 @@
-export default function checkStackOverflowDepth(i) {
+export function checkStackOverflowDepth(i) {
     var i = i || 1;
     try {
         checkStackOverflowDepth(i + 1);

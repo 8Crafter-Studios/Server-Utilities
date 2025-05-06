@@ -1,6 +1,33 @@
 {
    "content" : [
       {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/details.md"
+      },
+      {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/diff-details.md"
+      },
+      {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/diff.csv"
+      },
+      {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/diff.md"
+      },
+      {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/diff.txt"
+      },
+      {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/results.csv"
+      },
+      {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/results.json"
+      },
+      {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/results.md"
+      },
+      {
+         "path" : ".VSCodeCounter/2025-04-20_17-05-07/results.txt"
+      },
+      {
          "path" : ".eslintrc"
       },
       {
@@ -19,13 +46,25 @@
          "path" : "README.md"
       },
       {
-         "path" : "app.jsx"
+         "path" : "app.js"
       },
       {
          "path" : "blocks/ifill_placeholder_block_preset.json"
       },
       {
+         "path" : "blocks/invalid_block_placeholder.json"
+      },
+      {
+         "path" : "blocks/invalid_block_placeholder_lit.json"
+      },
+      {
+         "path" : "blocks/invalid_block_placeholder_no_occlusion_no_dimming.json"
+      },
+      {
          "path" : "bug_pack_icon.png"
+      },
+      {
+         "path" : "changeVersionNumber.js"
       },
       {
          "path" : "contents.json"
@@ -145,10 +184,13 @@
          "path" : "entities/tickingarea_6.json"
       },
       {
+         "path" : "fixUnresolvableDependencies.js"
+      },
+      {
          "path" : "functions/andexdbaddonsystemrun.mcfunction"
       },
       {
-         "path" : "generateDirectoryTreeFile.java"
+         "path" : "generateDirectoryTreeFile_BP.java"
       },
       {
          "path" : "generateExportsForIndexFile.js"
@@ -308,6 +350,15 @@
       },
       {
          "path" : "node_modules/.bin/esbuild.ps1"
+      },
+      {
+         "path" : "node_modules/.bin/json5"
+      },
+      {
+         "path" : "node_modules/.bin/json5.cmd"
+      },
+      {
+         "path" : "node_modules/.bin/json5.ps1"
       },
       {
          "path" : "node_modules/.bin/semver"
@@ -752,6 +803,18 @@
       },
       {
          "path" : "node_modules/alea/test.js"
+      },
+      {
+         "path" : "node_modules/ansi-regex/index.js"
+      },
+      {
+         "path" : "node_modules/ansi-regex/license"
+      },
+      {
+         "path" : "node_modules/ansi-regex/package.json"
+      },
+      {
+         "path" : "node_modules/ansi-regex/readme.md"
       },
       {
          "path" : "node_modules/asynckit/LICENSE"
@@ -3754,6 +3817,66 @@
          "path" : "node_modules/intl/package.json"
       },
       {
+         "path" : "node_modules/json5/LICENSE.md"
+      },
+      {
+         "path" : "node_modules/json5/README.md"
+      },
+      {
+         "path" : "node_modules/json5/dist/index.js"
+      },
+      {
+         "path" : "node_modules/json5/dist/index.min.js"
+      },
+      {
+         "path" : "node_modules/json5/dist/index.min.mjs"
+      },
+      {
+         "path" : "node_modules/json5/dist/index.mjs"
+      },
+      {
+         "path" : "node_modules/json5/lib/cli.js"
+      },
+      {
+         "path" : "node_modules/json5/lib/index.d.ts"
+      },
+      {
+         "path" : "node_modules/json5/lib/index.js"
+      },
+      {
+         "path" : "node_modules/json5/lib/parse.d.ts"
+      },
+      {
+         "path" : "node_modules/json5/lib/parse.js"
+      },
+      {
+         "path" : "node_modules/json5/lib/register.js"
+      },
+      {
+         "path" : "node_modules/json5/lib/require.js"
+      },
+      {
+         "path" : "node_modules/json5/lib/stringify.d.ts"
+      },
+      {
+         "path" : "node_modules/json5/lib/stringify.js"
+      },
+      {
+         "path" : "node_modules/json5/lib/unicode.d.ts"
+      },
+      {
+         "path" : "node_modules/json5/lib/unicode.js"
+      },
+      {
+         "path" : "node_modules/json5/lib/util.d.ts"
+      },
+      {
+         "path" : "node_modules/json5/lib/util.js"
+      },
+      {
+         "path" : "node_modules/json5/package.json"
+      },
+      {
          "path" : "node_modules/mcbe-ipc/LICENSE"
       },
       {
@@ -5446,6 +5569,21 @@
          "path" : "node_modules/moment/ts3.1-typings/moment.d.ts"
       },
       {
+         "path" : "node_modules/prompt-sync/LICENSE"
+      },
+      {
+         "path" : "node_modules/prompt-sync/README.md"
+      },
+      {
+         "path" : "node_modules/prompt-sync/index.js"
+      },
+      {
+         "path" : "node_modules/prompt-sync/package.json"
+      },
+      {
+         "path" : "node_modules/prompt-sync/test.js"
+      },
+      {
          "path" : "node_modules/proxy-from-env/.eslintrc"
       },
       {
@@ -5654,6 +5792,21 @@
       },
       {
          "path" : "node_modules/simplex-noise/simplex-noise.ts"
+      },
+      {
+         "path" : "node_modules/strip-ansi/index.d.ts"
+      },
+      {
+         "path" : "node_modules/strip-ansi/index.js"
+      },
+      {
+         "path" : "node_modules/strip-ansi/license"
+      },
+      {
+         "path" : "node_modules/strip-ansi/package.json"
+      },
+      {
+         "path" : "node_modules/strip-ansi/readme.md"
       },
       {
          "path" : "out.js"
@@ -10942,7 +11095,16 @@
          "path" : "recipes/smithing_table/enchanting/9minecraft;acacia_leaves.json"
       },
       {
+         "path" : "scripts/@minecraft/math.d.ts"
+      },
+      {
          "path" : "scripts/@minecraft/math.js"
+      },
+      {
+         "path" : "scripts/@minecraft/math.js.map"
+      },
+      {
+         "path" : "scripts/@minecraft/vanilla-data.d.ts"
       },
       {
          "path" : "scripts/@minecraft/vanilla-data.js"
@@ -11545,6 +11707,15 @@
          "path" : "scripts/init.js.map"
       },
       {
+         "path" : "scripts/init/classes/CommandRegistry.d.ts"
+      },
+      {
+         "path" : "scripts/init/classes/CommandRegistry.js"
+      },
+      {
+         "path" : "scripts/init/classes/CommandRegistry.js.map"
+      },
+      {
          "path" : "scripts/init/classes/PlayerNotifications.d.ts"
       },
       {
@@ -11588,6 +11759,15 @@
       },
       {
          "path" : "scripts/init/classes/config.js.map"
+      },
+      {
+         "path" : "scripts/init/classes/events.d.ts"
+      },
+      {
+         "path" : "scripts/init/classes/events.js"
+      },
+      {
+         "path" : "scripts/init/classes/events.js.map"
       },
       {
          "path" : "scripts/init/classes/moduleImportsConfig.d.ts"
@@ -12427,6 +12607,15 @@
          "path" : "scripts/init/functions/fsend.js.map"
       },
       {
+         "path" : "scripts/init/functions/gcsend.d.ts"
+      },
+      {
+         "path" : "scripts/init/functions/gcsend.js"
+      },
+      {
+         "path" : "scripts/init/functions/gcsend.js.map"
+      },
+      {
          "path" : "scripts/init/functions/gedp.d.ts"
       },
       {
@@ -12461,6 +12650,15 @@
       },
       {
          "path" : "scripts/init/functions/gidp.js.map"
+      },
+      {
+         "path" : "scripts/init/functions/gsend.d.ts"
+      },
+      {
+         "path" : "scripts/init/functions/gsend.js"
+      },
+      {
+         "path" : "scripts/init/functions/gsend.js.map"
       },
       {
          "path" : "scripts/init/functions/gwdp.d.ts"
@@ -12587,6 +12785,24 @@
       },
       {
          "path" : "scripts/init/functions/pfsend.js.map"
+      },
+      {
+         "path" : "scripts/init/functions/pgcsend.d.ts"
+      },
+      {
+         "path" : "scripts/init/functions/pgcsend.js"
+      },
+      {
+         "path" : "scripts/init/functions/pgcsend.js.map"
+      },
+      {
+         "path" : "scripts/init/functions/pgsend.d.ts"
+      },
+      {
+         "path" : "scripts/init/functions/pgsend.js"
+      },
+      {
+         "path" : "scripts/init/functions/pgsend.js.map"
       },
       {
          "path" : "scripts/init/functions/players.d.ts"
@@ -13559,6 +13775,15 @@
       },
       {
          "path" : "scripts/modules/command_utilities/functions/getInventory.js.map"
+      },
+      {
+         "path" : "scripts/modules/command_utilities/functions/getItemFromParsedSlot.d.ts"
+      },
+      {
+         "path" : "scripts/modules/command_utilities/functions/getItemFromParsedSlot.js"
+      },
+      {
+         "path" : "scripts/modules/command_utilities/functions/getItemFromParsedSlot.js.map"
       },
       {
          "path" : "scripts/modules/command_utilities/functions/getPlayerHeldItemSlot.d.ts"
@@ -16288,6 +16513,24 @@
          "path" : "scripts/modules/main/functions/v3Multiply.js.map"
       },
       {
+         "path" : "scripts/modules/moderation/classes/ModerationActions.d.ts"
+      },
+      {
+         "path" : "scripts/modules/moderation/classes/ModerationActions.js"
+      },
+      {
+         "path" : "scripts/modules/moderation/classes/ModerationActions.js.map"
+      },
+      {
+         "path" : "scripts/modules/moderation/constants/moderation_format_version.d.ts"
+      },
+      {
+         "path" : "scripts/modules/moderation/constants/moderation_format_version.js"
+      },
+      {
+         "path" : "scripts/modules/moderation/constants/moderation_format_version.js.map"
+      },
+      {
          "path" : "scripts/modules/player_save/classes/savedPlayer.d.ts"
       },
       {
@@ -16963,6 +17206,15 @@
          "path" : "scripts/modules/ui/functions/manageCommands.js.map"
       },
       {
+         "path" : "scripts/modules/ui/functions/manageEventSubscriptions.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/manageEventSubscriptions.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/manageEventSubscriptions.js.map"
+      },
+      {
          "path" : "scripts/modules/ui/functions/manageGameRulesUI.d.ts"
       },
       {
@@ -16970,6 +17222,15 @@
       },
       {
          "path" : "scripts/modules/ui/functions/manageGameRulesUI.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/manageMutes.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/manageMutes.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/manageMutes.js.map"
       },
       {
          "path" : "scripts/modules/ui/functions/managePlayers.d.ts"
@@ -17044,13 +17305,58 @@
          "path" : "scripts/modules/ui/functions/mapArtGeneratorB.js.map"
       },
       {
-         "path" : "scripts/modules/ui/functions/moderationSettings.d.ts"
+         "path" : "scripts/modules/ui/functions/moderationMenu.d.ts"
       },
       {
-         "path" : "scripts/modules/ui/functions/moderationSettings.js"
+         "path" : "scripts/modules/ui/functions/moderationMenu.js"
       },
       {
-         "path" : "scripts/modules/ui/functions/moderationSettings.js.map"
+         "path" : "scripts/modules/ui/functions/moderationMenu.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickActions.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickActions.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickActions.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickBan.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickBan.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickBan.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickKick.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickKick.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickKick.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickMute.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickMute.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickMute.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickTransfer.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickTransfer.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/moderationMenu_quickTransfer.js.map"
       },
       {
          "path" : "scripts/modules/ui/functions/moneySystemSettings.d.ts"
@@ -17440,6 +17746,78 @@
          "path" : "scripts/modules/ui/functions/uiSettings.js.map"
       },
       {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_MM.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_MM.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_MM.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_MM_MSttgs.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_MM_MSttgs.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_MM_MSttgs.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_EBttn.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_EBttn.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_EBttn.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_EBttn_aRB.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_EBttn_aRB.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_EBttn_aRB.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_MSttgs.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_MSttgs.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_MSttgs.js.map"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_lbrdSttgs.d.ts"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_lbrdSttgs.js"
+      },
+      {
+         "path" : "scripts/modules/ui/functions/uiSettings_MConfigs_PM_lbrdSttgs.js.map"
+      },
+      {
          "path" : "scripts/modules/ui/functions/uiSettings_main.d.ts"
       },
       {
@@ -17447,78 +17825,6 @@
       },
       {
          "path" : "scripts/modules/ui/functions/uiSettings_main.js.map"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations.d.ts"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations.js"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations.js.map"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_mainMenu.d.ts"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_mainMenu.js"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_mainMenu.js.map"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_mainMenu_mainSettings.d.ts"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_mainMenu_mainSettings.js"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_mainMenu_mainSettings.js.map"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu.d.ts"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu.js"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu.js.map"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_editButtons.d.ts"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_editButtons.js"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_editButtons.js.map"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_editButtons_addRemovedButtons.d.ts"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_editButtons_addRemovedButtons.js"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_editButtons_addRemovedButtons.js.map"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_leaderboardsSettings.d.ts"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_leaderboardsSettings.js"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_leaderboardsSettings.js.map"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_mainSettings.d.ts"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_mainSettings.js"
-      },
-      {
-         "path" : "scripts/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_mainSettings.js.map"
       },
       {
          "path" : "scripts/modules/ui/functions/worldBorderSettings.d.ts"
@@ -17699,6 +18005,15 @@
       },
       {
          "path" : "scripts/modules/utilities/functions/filterProperties.js.map"
+      },
+      {
+         "path" : "scripts/modules/utilities/functions/findClosestColorMatch.d.ts"
+      },
+      {
+         "path" : "scripts/modules/utilities/functions/findClosestColorMatch.js"
+      },
+      {
+         "path" : "scripts/modules/utilities/functions/findClosestColorMatch.js.map"
       },
       {
          "path" : "scripts/modules/utilities/functions/fixedPositionNumberObject.d.ts"
@@ -18310,6 +18625,9 @@
          "path" : "src/init.ts"
       },
       {
+         "path" : "src/init/classes/CommandRegistry.ts"
+      },
+      {
          "path" : "src/init/classes/PlayerNotifications.ts"
       },
       {
@@ -18323,6 +18641,9 @@
       },
       {
          "path" : "src/init/classes/config.ts"
+      },
+      {
+         "path" : "src/init/classes/events.ts"
       },
       {
          "path" : "src/init/classes/moduleImportsConfig.ts"
@@ -18604,6 +18925,9 @@
          "path" : "src/init/functions/fsend.ts"
       },
       {
+         "path" : "src/init/functions/gcsend.ts"
+      },
+      {
          "path" : "src/init/functions/gedp.ts"
       },
       {
@@ -18614,6 +18938,9 @@
       },
       {
          "path" : "src/init/functions/gidp.ts"
+      },
+      {
+         "path" : "src/init/functions/gsend.ts"
       },
       {
          "path" : "src/init/functions/gwdp.ts"
@@ -18656,6 +18983,12 @@
       },
       {
          "path" : "src/init/functions/pfsend.ts"
+      },
+      {
+         "path" : "src/init/functions/pgcsend.ts"
+      },
+      {
+         "path" : "src/init/functions/pgsend.ts"
       },
       {
          "path" : "src/init/functions/players.ts"
@@ -18977,6 +19310,9 @@
       },
       {
          "path" : "src/modules/command_utilities/functions/getInventory.ts"
+      },
+      {
+         "path" : "src/modules/command_utilities/functions/getItemFromParsedSlot.ts"
       },
       {
          "path" : "src/modules/command_utilities/functions/getPlayerHeldItemSlot.ts"
@@ -19888,6 +20224,12 @@
          "path" : "src/modules/main/functions/v3Multiply.ts"
       },
       {
+         "path" : "src/modules/moderation/classes/ModerationActions.ts"
+      },
+      {
+         "path" : "src/modules/moderation/constants/moderation_format_version.ts"
+      },
+      {
          "path" : "src/modules/player_save/classes/savedPlayer.ts"
       },
       {
@@ -20113,7 +20455,13 @@
          "path" : "src/modules/ui/functions/manageCommands.ts"
       },
       {
+         "path" : "src/modules/ui/functions/manageEventSubscriptions.ts"
+      },
+      {
          "path" : "src/modules/ui/functions/manageGameRulesUI.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/manageMutes.ts"
       },
       {
          "path" : "src/modules/ui/functions/managePlayers.ts"
@@ -20140,7 +20488,22 @@
          "path" : "src/modules/ui/functions/mapArtGeneratorB.ts"
       },
       {
-         "path" : "src/modules/ui/functions/moderationSettings.ts"
+         "path" : "src/modules/ui/functions/moderationMenu.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/moderationMenu_quickActions.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/moderationMenu_quickBan.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/moderationMenu_quickKick.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/moderationMenu_quickMute.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/moderationMenu_quickTransfer.ts"
       },
       {
          "path" : "src/modules/ui/functions/moneySystemSettings.ts"
@@ -20272,31 +20635,31 @@
          "path" : "src/modules/ui/functions/uiSettings.ts"
       },
       {
+         "path" : "src/modules/ui/functions/uiSettings_MConfigs.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/uiSettings_MConfigs_MM.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/uiSettings_MConfigs_MM_MSttgs.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/uiSettings_MConfigs_PM.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/uiSettings_MConfigs_PM_EBttn.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/uiSettings_MConfigs_PM_EBttn_aRB.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/uiSettings_MConfigs_PM_MSttgs.ts"
+      },
+      {
+         "path" : "src/modules/ui/functions/uiSettings_MConfigs_PM_lbrdSttgs.ts"
+      },
+      {
          "path" : "src/modules/ui/functions/uiSettings_main.ts"
-      },
-      {
-         "path" : "src/modules/ui/functions/uiSettings_menuConfigurations.ts"
-      },
-      {
-         "path" : "src/modules/ui/functions/uiSettings_menuConfigurations_mainMenu.ts"
-      },
-      {
-         "path" : "src/modules/ui/functions/uiSettings_menuConfigurations_mainMenu_mainSettings.ts"
-      },
-      {
-         "path" : "src/modules/ui/functions/uiSettings_menuConfigurations_playerMenu.ts"
-      },
-      {
-         "path" : "src/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_editButtons.ts"
-      },
-      {
-         "path" : "src/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_editButtons_addRemovedButtons.ts"
-      },
-      {
-         "path" : "src/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_leaderboardsSettings.ts"
-      },
-      {
-         "path" : "src/modules/ui/functions/uiSettings_menuConfigurations_playerMenu_mainSettings.ts"
       },
       {
          "path" : "src/modules/ui/functions/worldBorderSettings.ts"
@@ -20357,6 +20720,9 @@
       },
       {
          "path" : "src/modules/utilities/functions/filterProperties.ts"
+      },
+      {
+         "path" : "src/modules/utilities/functions/findClosestColorMatch.ts"
       },
       {
          "path" : "src/modules/utilities/functions/fixedPositionNumberObject.ts"

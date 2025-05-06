@@ -1,5 +1,5 @@
 import { Vector3Utils, VECTOR3_ONE, VECTOR3_FORWARD, VECTOR3_DOWN, VECTOR3_UP, VECTOR3_SOUTH, VECTOR3_NORTH, VECTOR3_EAST, VECTOR3_WEST, } from "@minecraft/math.js";
-import { Player, ChatSendBeforeEvent, world, EntityInventoryComponent, BlockInventoryComponent, system, ItemStack, EntityEquippableComponent, PlayerCursorInventoryComponent, EquipmentSlot, ItemLockMode, EnchantmentTypes, ContainerSlot, DimensionTypes, StructureSaveMode, StructureAnimationMode, StructureMirrorAxis, StructureRotation, BlockPermutation, BlockVolume, BlockTypes, Entity, Block, CompoundBlockVolume, ItemTypes, Dimension, EntityComponentTypes, Direction, MolangVariableMap, } from "@minecraft/server";
+import { Player, ChatSendBeforeEvent, world, EntityInventoryComponent, BlockInventoryComponent, system, ItemStack, EntityEquippableComponent, PlayerCursorInventoryComponent, EquipmentSlot, ItemLockMode, EnchantmentTypes, ContainerSlot, DimensionTypes, StructureSaveMode, StructureAnimationMode, StructureMirrorAxis, StructureRotation, BlockPermutation, BlockVolume, BlockTypes, Entity, Block, CompoundBlockVolume, ItemTypes, Dimension, EntityComponentTypes, Direction, MolangVariableMap, BlockVolumeBase, } from "@minecraft/server";
 import { uiManager } from "@minecraft/server-ui";
 import { listoftransformrecipes } from "Assets/constants/transformrecipes";
 import { rgbToHsl, rgbToHSLuv, rgbToHsv, rgbToHsi, rgbToHPLuv, Color, } from "color-core";
@@ -145,6 +145,9 @@ import { fillStretchedSphere } from "modules/block_generation_utilities/function
 import { fillOutline } from "modules/block_generation_utilities/functions/fillOutline";
 import { playerMenu } from "modules/ui/functions/playerMenu";
 import { protectedAreaCategories, ProtectedAreas } from "init/variables/protectedAreaVariables";
+import { securityVariables } from "security/ultraSecurityModeUtils";
+import { TeleportRequest } from "modules/coordinates/classes/TeleportRequest";
+import { biomeToDefaultTerrainDetailsMap, generateTerrainV2 } from "modules/utilities/functions/generateTerrain";
 export function chatCommands(params) {
     let returnBeforeChatSend = params.returnBeforeChatSend ?? false;
     let playerab = params.player ?? params.eventData?.sender ?? params.event?.sender;
@@ -4821,7 +4824,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 eventData.cancel = true;
                 system.run(() => {
                     try {
-                        player.runCommand("/gamemode c");
+                        player.setGameMode(1);
                     }
                     catch (e) {
                         player.sendError("§c" + e + e.stack, true);
@@ -4833,7 +4836,27 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                         player.location.z).forEach((entity) => {
                         entity.sendMessage(String("{§l§dCMDFEED§r§f}[" +
                             player.name +
-                            "§r§f]: Set gamemode to creative. "));
+                            "§r§f]: Set gamemode to creative."));
+                    });
+                });
+                break;
+            case !!switchTest.match(/^gmg$/):
+                eventData.cancel = true;
+                system.run(() => {
+                    try {
+                        player.setGameMode(7);
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
+                    targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
+                        " " +
+                        player.location.y +
+                        " " +
+                        player.location.z).forEach((entity) => {
+                        entity.sendMessage(String("{§l§dCMDFEED§r§f}[" +
+                            player.name +
+                            "§r§f]: Set gamemode to god."));
                     });
                 });
                 break;
@@ -4841,7 +4864,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 eventData.cancel = true;
                 system.run(() => {
                     try {
-                        player.runCommand("/gamemode s");
+                        player.setGameMode(0);
                     }
                     catch (e) {
                         player.sendError("§c" + e + e.stack, true);
@@ -4853,7 +4876,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                         player.location.z).forEach((entity) => {
                         entity.sendMessage(String("{§l§dCMDFEED§r§f}[" +
                             player.name +
-                            "§r§f]: Set gamemode to survival. "));
+                            "§r§f]: Set gamemode to survival."));
                     });
                 });
                 break;
@@ -4861,7 +4884,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 eventData.cancel = true;
                 system.run(() => {
                     try {
-                        player.runCommand("/gamemode a");
+                        player.setGameMode(2);
                     }
                     catch (e) {
                         player.sendError("§c" + e + e.stack, true);
@@ -4873,7 +4896,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                         player.location.z).forEach((entity) => {
                         entity.sendMessage(String("{§l§dCMDFEED§r§f}[" +
                             player.name +
-                            "§r§f]: Set gamemode to adventure. "));
+                            "§r§f]: Set gamemode to adventure."));
                     });
                 });
                 break;
@@ -4881,7 +4904,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 eventData.cancel = true;
                 system.run(() => {
                     try {
-                        player.runCommand("/gamemode d");
+                        player.setGameMode(5);
                     }
                     catch (e) {
                         player.sendError("§c" + e + e.stack, true);
@@ -4893,7 +4916,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                         player.location.z).forEach((entity) => {
                         entity.sendMessage(String("{§l§dCMDFEED§r§f}[" +
                             player.name +
-                            "§r§f]: Set gamemode to default. "));
+                            "§r§f]: Set gamemode to default."));
                     });
                 });
                 break;
@@ -4901,7 +4924,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                 eventData.cancel = true;
                 system.run(() => {
                     try {
-                        player.runCommand("/gamemode spectator");
+                        player.setGameMode(6);
                     }
                     catch (e) {
                         player.sendError("§c" + e + e.stack, true);
@@ -4913,55 +4936,64 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                         player.location.z).forEach((entity) => {
                         entity.sendMessage(String("{§l§dCMDFEED§r§f}[" +
                             player.name +
-                            "§r§f]: Set gamemode to spectator. "));
+                            "§r§f]: Set gamemode to spectator."));
                     });
                 });
                 break;
             case !!switchTest.match(/^gmr$/):
                 eventData.cancel = true;
                 system.run(() => {
-                    switch (Math.round(Math.random() * 4)) {
+                    try {
+                        const randomGameModeList = [
+                            0, // Survival
+                            1, // Creative
+                            2, // Adventure
+                            5, // Default
+                            6, // Spectator
+                            7, // God
+                        ];
+                        player.setGameMode(randomGameModeList[Math.floor(Math.random() * randomGameModeList.length)]);
+                    }
+                    catch (e) {
+                        player.sendError("§c" + e + e.stack, true);
+                    }
+                    /* switch (Math.round(Math.random() * 4)) {
                         case 0:
                             try {
                                 player.runCommand("/gamemode c");
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 player.sendError("§c" + e + e.stack, true);
                             }
                             break;
                         case 1:
                             try {
                                 player.runCommand("/gamemode s");
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 player.sendError("§c" + e + e.stack, true);
                             }
                             break;
                         case 2:
                             try {
                                 player.runCommand("/gamemode a");
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 player.sendError("§c" + e + e.stack, true);
                             }
                             break;
                         case 3:
                             try {
                                 player.runCommand("/gamemode d");
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 player.sendError("§c" + e + e.stack, true);
                             }
                             break;
                         case 4:
                             try {
                                 player.runCommand("/gamemode spectator");
-                            }
-                            catch (e) {
+                            } catch (e) {
                                 player.sendError("§c" + e + e.stack, true);
                             }
                             break;
-                    } /*
+                    } */ /*
                 try{player.runCommand("/gamemode random")}catch(e){player.sendError("§c" + e + e.stack, true)}*/
                     targetSelectorAllListE("@a [tag=canSeeCustomChatCommandFeedbackFromMods]", player.location.x +
                         " " +
@@ -4970,7 +5002,7 @@ ${command.dp}block facing set filllevel <fillLevel: int[min=0,max=6]>
                         player.location.z).forEach((entity) => {
                         entity.sendMessage(String("{§l§dCMDFEED§r§f}[" +
                             player.name +
-                            "§r§f]: Set gamemode to random. "));
+                            "§r§f]: Set gamemode to random."));
                     });
                 });
                 break; /*
@@ -6021,7 +6053,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                             .replaceAll(", ", " ")
                             .replaceAll("|", "\\u007c")) == undefined) {
                         case false /*
-                if (newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") == ""){*/ /*player.sendMessageB("§cError: missing required \"name\" field. "); */ /*break; */ /*}*/:
+                if (newMessage.split(" ").slice(5).join(" ").replaceAll(/(?<!\\p)\\n/g, "\n").replaceAll(/(?<!\\p)\\s/g, "\s").replaceAll(/(?<!\\p)\\0/g, "\0").replaceAll(/(?<!\\p)\\r/g, "\r").replaceAll(/(?<!\\p)\\t/g, "\t").replaceAll(/(?<!\\p)\\v/g, "\v").replaceAll(/(?<!\\p)\\f/g, "\f").replaceAll(/(?<!\\p)\\k/g, "\k").replaceAll(/(?<!\\p)\\p/g, "").replaceAll(", ", " ") == ""){*/ /*player.sendError("§cError: missing required \"name\" field. ", true); */ /*break; */ /*}*/:
                             try {
                                 warpList[warpList.findIndex((warpItem) => warpItem.split(", ")[0] ==
                                     newMessage
@@ -7366,11 +7398,12 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 break;
                             case "go":
                             case "warp":
-                            case "teleport":
-                                if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
+                            case "teleport": {
+                                const canBypassTeleportCooldowns = securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, "andexdb.bypassTeleportCooldowns") : player.hasTag("admin");
+                                if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
                                     player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                                 }
-                                else if (Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
+                                else if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
                                     player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                                 }
                                 else if (!!HomeSystem.getHomesForPlayer(player).find((h) => h.name == args[2])) {
@@ -7386,7 +7419,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                     }
                                     else {
                                         srun(async () => {
-                                            const standStillTime = config.teleportSystems.standStillTimeToTeleport;
+                                            const standStillTime = canBypassTeleportCooldowns ? 0 : config.teleportSystems.standStillTimeToTeleport;
                                             if (standStillTime > 0) {
                                                 player.sendMessageB("§eStand still for " + standStillTime + " seconds to teleport.");
                                                 await waitTicks(20);
@@ -7403,13 +7436,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                                 await waitTicks(20);
                                             }
                                             // Check for PVP cooldown again after ending the teleport countdown.
-                                            if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
+                                            if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
                                                 player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                                                 successful = false;
                                                 return 0;
                                             }
                                             // Check for teleport cooldown again after ending the teleport countdown.
-                                            if (Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
+                                            if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
                                                 player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                                                 return 0;
                                             }
@@ -7433,6 +7466,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                     player.sendError(`§cError: Could not find a home with the name "${args[2]}§r§c". `, true);
                                 }
                                 break;
+                            }
                             case "clear":
                                 HomeSystem.getHomesForPlayer(player).forEach((h) => h.remove());
                                 player.sendMessageB(`Successfully cleared all of your homes. `);
@@ -7534,6 +7568,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
             case !!switchTest.match(/^spawn$/):
                 {
                     eventData.cancel = true;
+                    const canBypassTeleportCooldowns = securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, "andexdb.bypassTeleportCooldowns") : player.hasTag("admin");
                     if (config.spawnCommandLocation.x == undefined) {
                         player.sendMessageB('§cError: This command cannot be used becuase no spawn teleport location has been set. It can be configured at "Main Menu>Settings>General Settings>spawnCommandLocation"');
                     }
@@ -7543,15 +7578,15 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     else if (config.spawnCommandLocation.dimension !== player.dimension && !config.spawnCommandAllowCrossDimensionalTeleport) {
                         player.sendMessageB('§cSorry but you cannot teleport to spawn because you are in a different dimension than spawn and cross-dimensional spawn teleports have been disabled.');
                     }
-                    else if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
+                    else if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
                         player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                     }
-                    else if (Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
+                    else if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
                         player.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                     }
                     else {
                         srun(async () => {
-                            const standStillTime = config.teleportSystems.standStillTimeToTeleport;
+                            const standStillTime = canBypassTeleportCooldowns ? 0 : config.teleportSystems.standStillTimeToTeleport;
                             if (standStillTime > 0) {
                                 player.sendMessageB("§eStand still for " + standStillTime + " seconds to teleport.");
                                 await waitTicks(20);
@@ -7568,13 +7603,13 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 await waitTicks(20);
                             }
                             // Check for PVP cooldown again after ending the teleport countdown.
-                            if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
+                            if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
                                 player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                                 successful = false;
                                 return 0;
                             }
                             // Check for teleport cooldown again after ending the teleport countdown.
-                            if (Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
+                            if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
                                 player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                                 return 0;
                             }
@@ -7600,10 +7635,11 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                     eventData.cancel = true;
                     // /scriptevent andexdb:spawnSimulatedPlayer t§ee§as§ft §4P§dl§layer|~~~|overworld|~~~
                     if (config.tpaSystem.tpaSystemEnabled) {
-                        if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
+                        const canBypassTeleportCooldowns = securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, "andexdb.bypassTeleportCooldowns") : player.hasTag("admin");
+                        if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
                             player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                         }
-                        else if (Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
+                        else if (!canBypassTeleportCooldowns && Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
                             player.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                         }
                         else {
@@ -7616,143 +7652,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                                 args[1].trim().startsWith("@");
                                 let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter((v) => v.typeId == "minecraft:player")[0];
                                 if (!!target) {
-                                    if (target.dimension !== player.dimension && !config.teleportSystems.allowCrossDimensionalTeleport) {
-                                        player.sendMessageB('§cSorry but you cannot send a teleport request to that player because you are in a different dimension than that player and all cross-dimensional teleports have been disabled.');
-                                    }
-                                    else if (target.dimension !== player.dimension && !config.tpaSystem.allowCrossDimensionalTeleport) {
-                                        player.sendMessageB('§cSorry but you cannot send a teleport request to that player because you are in a different dimension than that player and cross-dimensional teleport requests have been disabled.');
-                                    }
-                                    //requestChatInput(player, "a").then(v=>psend(player, "as")); srun(()=>requestChatInput(player, "b").then(v=>psend(player, "bs")));
-                                    player.sendMessageB(`§aSent a teleport request to "${target.name}".`);
-                                    requestConditionalChatInput(target, (player, message) => message.toLowerCase().trim() == "y" ||
-                                        message.toLowerCase().trim() == "n", {
-                                        requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in ${config.tpaSystem.timeoutDuration ==
-                                            60
-                                            ? "1 minute"
-                                            : (config.tpaSystem
-                                                .timeoutDuration / 60).floor() == 1
-                                                ? `1 minute and ${(config.tpaSystem
-                                                    .timeoutDuration % 60).floor()} second${(config.tpaSystem
-                                                    .timeoutDuration %
-                                                    60).floor() != 1
-                                                    ? "s"
-                                                    : ""}`
-                                                : (config.tpaSystem
-                                                    .timeoutDuration / 60).floor() == 0
-                                                    ? `${(config.tpaSystem
-                                                        .timeoutDuration % 60).floor()} second${(config.tpaSystem
-                                                        .timeoutDuration %
-                                                        60).floor() != 1
-                                                        ? "s"
-                                                        : ""}`
-                                                    : `${(config.tpaSystem
-                                                        .timeoutDuration / 60).floor()} minutes and ${(config.tpaSystem
-                                                        .timeoutDuration % 60).floor()} second${(config.tpaSystem
-                                                        .timeoutDuration %
-                                                        60).floor() != 1
-                                                        ? "s"
-                                                        : ""}`}.`,
-                                        expireMs: config.tpaSystem.timeoutDuration *
-                                            1000,
-                                    })
-                                        .then(async (t) => {
-                                        if (t.toLowerCase().trim() == "y") {
-                                            if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
-                                                target.sendMessage(`§cAccepted teleport request from "${player.name}", but they can't teleport to you right now because they have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before they can teleport again because they are still on PVP cooldown.`);
-                                                player.sendMessageB(`§c"${target.name}" accepted your teleport request, but you can't teleport to them right now because you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
-                                            }
-                                            else if (Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
-                                                target.sendMessage(`§cAccepted teleport request from "${player.name}", but they can't teleport to you right now because they have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before they can teleport again because they are still on cooldown.`);
-                                                player.sendMessageB(`§c"${target.name}" accepted your teleport request, but you can't teleport to them right now because you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
-                                            }
-                                            else if (target.dimension !== player.dimension && !config.teleportSystems.allowCrossDimensionalTeleport) {
-                                                target.sendMessage(`§cAccepted teleport request from "${player.name}", but they can't teleport to you right now because you are in a different dimension than that player and all cross-dimensional teleports have been disabled.`);
-                                                player.sendMessageB(`§c"${target.name}" accepted your teleport request, but you can't teleport to them right now because you are in a different dimension than that player and all cross-dimensional teleports have been disabled.`);
-                                            }
-                                            else if (target.dimension !== player.dimension && !config.tpaSystem.allowCrossDimensionalTeleport) {
-                                                target.sendMessage(`§cAccepted teleport request from "${player.name}", but they can't teleport to you right now because you are in a different dimension than that player and cross-dimensional teleport requests have been disabled.`);
-                                                player.sendMessageB(`§c"${target.name}" accepted your teleport request, but you can't teleport to them right now because you are in a different dimension than that player and cross-dimensional teleport requests have been disabled.`);
-                                            }
-                                            else {
-                                                target.sendMessage(`§aAccepted teleport request from "${player.name}".`);
-                                                player.sendMessageB(`§c"${target.name}" accepted your teleport request.`);
-                                                const standStillTime = config.teleportSystems.standStillTimeToTeleport;
-                                                let successfulWaitForStandStill = true;
-                                                if (standStillTime > 0) {
-                                                    player.sendMessageB("§eStand still for " + standStillTime + " seconds to teleport.");
-                                                    await waitTicks(20);
-                                                    const start = Date.now();
-                                                    while (!Vector.equals(player.getVelocity(), Vector.zero)) {
-                                                        if (Date.now() - start > 10000) {
-                                                            successfulWaitForStandStill = false;
-                                                            player.sendMessageB(`§cYou took too long to start standing still so your teleport to "${target.name}" was canceled.`);
-                                                            target.sendMessage(`§c"${player.name}" took to long to start standing still so their teleport to you was canceled.`);
-                                                            break;
-                                                        }
-                                                        await waitTick();
-                                                    }
-                                                }
-                                                if (!successfulWaitForStandStill) {
-                                                    return 0;
-                                                }
-                                                const playerPosition = player.player.location;
-                                                let successful = true;
-                                                for (let i = 0; i < standStillTime; i++) {
-                                                    if (!Vector.equals(player.player.location, playerPosition)) {
-                                                        successful = false;
-                                                        break;
-                                                    }
-                                                    ;
-                                                    player.sendMessageB("§bTeleporting in " + (standStillTime - i));
-                                                    await waitTicks(20);
-                                                }
-                                                // Check for PVP cooldown again after ending the teleport countdown.
-                                                if (Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
-                                                    player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown, as a result of you entering PVP cooldown, your teleport to "${target.name}" was canceled.`);
-                                                    target.sendMessage(`§c"${player.name}" entered PVP cooldown so their teleport to you was canceled.`);
-                                                    successful = false;
-                                                    return 0;
-                                                }
-                                                // Check for teleport cooldown again after ending the teleport countdown.
-                                                if (Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
-                                                    player.sendMessageB(`§cSorry but you have to wait another ${Math.round((Number(player.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
-                                                    target.sendMessage(`§c"${player.name}" entered cooldown so their teleport to you was canceled.`);
-                                                    return 0;
-                                                }
-                                                if (successful) {
-                                                    try {
-                                                        player.teleport(target.location, { dimension: target.dimension });
-                                                        player.setDynamicProperty("lastTeleportTime", Date.now());
-                                                        player.sendMessageB(`§aSuccessfully teleported to "${target.name}".`);
-                                                    }
-                                                    catch (e) {
-                                                        player.sendMessageB("§cAn error occurred while trying to teleport you to your home: " + e + e.stack);
-                                                        target.sendMessage(`§cAn error occurred while "${target.name}" was trying to teleport to you.`);
-                                                    }
-                                                }
-                                                else {
-                                                    player.sendMessageB("§cTeleport canceled.");
-                                                    target.sendMessage(`§c"${player.name}" moved so their teleport to you was canceled.`);
-                                                }
-                                            }
-                                        }
-                                        else {
-                                            target.sendMessage(`§cDenied "${player.name}"'s teleport request.`);
-                                            player.sendMessageB(`§c"${target.name}" denied your teleport request.`);
-                                        }
-                                    })
-                                        .catch((e) => {
-                                        if (e instanceof TimeoutError) {
-                                            psend(target, `§c${player.name}'s teleport request timed out.`);
-                                            psend(player, `§cThe teleport request to ${target.name} timed out.`);
-                                        }
-                                        else if (e instanceof ExpireError) {
-                                            psend(target, `§c${player.name}'s teleport request expired.`);
-                                            psend(player, `§cThe teleport request to ${target.name} expired.`);
-                                        }
-                                        else
-                                            psend(player, "§c" + e + " " + e.stack);
-                                    });
+                                    TeleportRequest.send(player, target);
                                 }
                                 else {
                                     player.sendError(`§cError: Unable to find player.`, true);
@@ -7761,32 +7661,156 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                         }
                     }
                     else {
-                        player.sendMessageB('§cTPASystemDisabledError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at "Main Menu>Settings>TPA System>Enable TPA System"');
+                        player.sendError('§cTPASystemDisabledError: This command cannot be used becuase the teleport request system is not enabled. It can be enabled at "Main Menu>Settings>TPA System>Enable TPA System"', true);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^tpaccept$/):
+                {
+                    eventData.cancel = true;
+                    if (config.tpaSystem.tpaSystemEnabled) {
+                        srun(() => {
+                            let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                            let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                            if (targets?.length > 0) {
+                                const matchedRequests = TeleportRequest.getRequestsToPlayer(player).filter(r => targets.some(p => r.player?.id === p.id));
+                                if (matchedRequests.length === 0) {
+                                    if (targets.length === 1) {
+                                        player.sendError(`§c${targets[0].name} has not sent you a teleport request.`, true);
+                                    }
+                                    else {
+                                        player.sendError(`§cNone of the ${targets.length} players matching the specified target selector have sent you any teleport requests.`, true);
+                                    }
+                                }
+                                else {
+                                    (async function acceptTeleportRequests() {
+                                        const successfullRequests = [];
+                                        const failedRequests = [];
+                                        for (const request of matchedRequests) {
+                                            if (await request.accept()) {
+                                                successfullRequests.push(request);
+                                            }
+                                            else {
+                                                failedRequests.push(request);
+                                            }
+                                            ;
+                                        }
+                                        ;
+                                        switch (successfullRequests.length) {
+                                            case 0:
+                                                break;
+                                            case 1:
+                                                player.sendMessageB("Successfully accepted 1 teleport request.");
+                                                break;
+                                            default:
+                                                player.sendMessageB(`Successfully accepted ${successfullRequests.length} teleport requests.`);
+                                        }
+                                        switch (failedRequests.length) {
+                                            case 0:
+                                                break;
+                                            case 1:
+                                                player.sendError("§cFailed to accept 1 teleport request.", true);
+                                                break;
+                                            default:
+                                                player.sendError(`§cFailed to accept ${successfullRequests.length} teleport requests.`, true);
+                                        }
+                                    })();
+                                }
+                            }
+                            else {
+                                player.sendError(`§cError: No players matching the specified target selector were found.`, true);
+                            }
+                        });
+                    }
+                    else {
+                        player.sendError("§cError: This command cannot be used becuase the teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable Teleport Request System\"", true);
+                    }
+                }
+                break;
+            case !!switchTest.match(/^tpdeny$/):
+                {
+                    eventData.cancel = true;
+                    if (config.tpaSystem.tpaSystemEnabled) {
+                        srun(() => {
+                            let args = evaluateParameters(switchTestB, ["presetText", "targetSelector"]).args;
+                            let targets = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v => v.typeId == "minecraft:player");
+                            if (targets?.length > 0) {
+                                const matchedRequests = TeleportRequest.getRequestsToPlayer(player).filter(r => targets.some(p => r.player?.id === p.id));
+                                if (matchedRequests.length === 0) {
+                                    if (targets.length === 1) {
+                                        player.sendError(`§c${targets[0].name} has not sent you a teleport request.`, true);
+                                    }
+                                    else {
+                                        player.sendError(`§cNone of the ${targets.length} players matching the specified target selector have sent you any teleport requests.`, true);
+                                    }
+                                }
+                                else {
+                                    (function denyTeleportRequests() {
+                                        const successfullRequests = [];
+                                        const failedRequests = [];
+                                        for (const request of matchedRequests) {
+                                            if (request.deny()) {
+                                                successfullRequests.push(request);
+                                            }
+                                            else {
+                                                failedRequests.push(request);
+                                            }
+                                            ;
+                                        }
+                                        ;
+                                        switch (successfullRequests.length) {
+                                            case 0:
+                                                break;
+                                            case 1:
+                                                player.sendMessageB("Successfully denied 1 teleport request.");
+                                                break;
+                                            default:
+                                                player.sendMessageB(`Successfully denied ${successfullRequests.length} teleport requests.`);
+                                        }
+                                        switch (failedRequests.length) {
+                                            case 0:
+                                                break;
+                                            case 1:
+                                                player.sendError("§cFailed to deny 1 teleport request.", true);
+                                                break;
+                                            default:
+                                                player.sendError(`§cFailed to deny ${successfullRequests.length} teleport requests.`, true);
+                                        }
+                                    })();
+                                }
+                            }
+                            else {
+                                player.sendError(`§cError: No players matching the specified target selector were found.`, true);
+                            }
+                        });
+                    }
+                    else {
+                        player.sendError("§cError: This command cannot be used becuase the teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable Teleport Request System\"", true);
                     }
                 }
                 break; /*
-case !!switchTest.match(/^tpablock$/): {
-    eventData.cancel = true;
-    if(config.tpaSystem.tpaSystemEnabled){
-        srun(()=>{
-        let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
-        let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player
-        if(!!target){
-            requestConditionalChatInput(target, (player, message)=>(message.trim()=="y"||message.trim()=="n"), {requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`}).then(t=>{
-                if(t.trim()=="y"){
-                    player.teleport(target.location, {dimension: target.dimension})
-                    player.sendMessageB(`Successfully teleported to "${target.name}".`)
+            case !!switchTest.match(/^tpablock$/): {
+                eventData.cancel = true;
+                if(config.tpaSystem.tpaSystemEnabled){
+                    srun(()=>{
+                    let args = evaluateParameters(switchTestB, ["presetText", "targetSelector", "string"]).args
+                    let target = targetSelectorAllListC(args[1], "", vTStr(player.location), player).filter(v=>v.typeId=="minecraft:player")[0] as Player
+                    if(!!target){
+                        requestConditionalChatInput(target, (player, message)=>(message.trim()=="y"||message.trim()=="n"), {requestMessage: `§a${player.name} sent you a teleport request, type "y" to accept or "n" to deny, this request will expire in 1 minute.`}).then(t=>{
+                            if(t.trim()=="y"){
+                                player.teleport(target.location, {dimension: target.dimension})
+                                player.sendMessageB(`Successfully teleported to "${target.name}".`)
+                            }else{
+                                player.sendMessageB(`"${target.name}" denied your teleport request.`)
+                            }
+                        }).catch(e=>{if(e instanceof TimeoutError){psend(target, `§c${player.name}'s teleport request expired.`); psend(player, "§cTeleport request timed out.")}else if(e instanceof ExpireError){psend(player, "§cTeleport request expired.")}else psend(player, "§c"+e+" "+e.stack)})
+                    }else{player.sendError(`§cError: Unable to find player.`, true)}
+                    })
                 }else{
-                    player.sendMessageB(`"${target.name}" denied your teleport request.`)
+                    player.sendError("§cError: This command cannot be used becuase the teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable Teleport Request System\"", true)
                 }
-            }).catch(e=>{if(e instanceof TimeoutError){psend(target, `§c${player.name}'s teleport request expired.`); psend(player, "§cTeleport request timed out.")}else if(e instanceof ExpireError){psend(player, "§cTeleport request expired.")}else psend(player, "§c"+e+" "+e.stack)})
-        }else{player.sendError(`§cError: Unable to find player.`, true)}
-        })
-    }else{
-        player.sendMessageB("§cError: This command cannot be used becuase the experimental teleport request system is not enabled. It can be enabled at \"Main Menu>Settings>TPA System>Enable Teleport Request System\"")
-    }
-}
-break; */ // COMING SOON!
+            }
+            break; */ // COMING SOON!
             case !!switchTest.match(/^summon$/):
                 {
                     eventData.cancel = true;
@@ -9675,7 +9699,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                             matchingBlock: sgmatchingblock[0],
                                             matchingBlockStates: sgmatchingblock[1],
-                                            minMSBetweenYields: 5000,
+                                            minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                         }, undefined, sgreplacemode, 100).then((a) => {
                                             player.sendMessageB(`${a.counter == 0
                                                 ? "§c"
@@ -9710,7 +9734,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                             matchingBlock: sgmatchingblock[0],
                                             matchingBlockStates: sgmatchingblock[1],
-                                            minMSBetweenYields: 5000,
+                                            minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                         }, undefined, sgreplacemode, 100).then((a) => {
                                             player.sendMessageB(`${a.counter == 0
                                                 ? "§c"
@@ -9761,7 +9785,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {
                                             matchingBlock: homatchingblock[0],
                                             matchingBlockStates: homatchingblock[1],
-                                            minMSBetweenYields: 5000,
+                                            minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                         }, undefined, horeplacemode, 100).then((a) => {
                                             player.sendMessageB(`${a.counter == 0
                                                 ? "§c"
@@ -9800,7 +9824,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {
                                             matchingBlock: omatchingblock[0],
                                             matchingBlockStates: omatchingblock[1],
-                                            minMSBetweenYields: 5000,
+                                            minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                         }, undefined, oreplacemode, 100).then((a) => {
                                             player.sendMessageB(`${a.counter == 0
                                                 ? "§c"
@@ -9835,7 +9859,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                             matchingBlock: hsmatchingblock[0],
                                             matchingBlockStates: hsmatchingblock[1],
-                                            minMSBetweenYields: 5000,
+                                            minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                         }, undefined, hsreplacemode, 100).then((a) => {
                                             player.sendMessageB(`${a.counter == 0
                                                 ? "§c"
@@ -9870,7 +9894,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                             matchingBlock: hsmatchingblock[0],
                                             matchingBlockStates: hsmatchingblock[1],
-                                            minMSBetweenYields: 5000,
+                                            minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                         }, undefined, hsreplacemode, 100).then((a) => {
                                             player.sendMessageB(`${a.counter == 0
                                                 ? "§c"
@@ -9905,7 +9929,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                             matchingBlock: ccmatchingblock[0],
                                             matchingBlockStates: ccmatchingblock[1],
-                                            minMSBetweenYields: 5000,
+                                            minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                         }, undefined, ccreplacemode, 100).then((a) => {
                                             player.sendMessageB(`${a.counter == 0
                                                 ? "§c"
@@ -9937,7 +9961,7 @@ ${command.dp}ifill <center: x y z> <radius: x y z> <offset: x y z> <length: floa
                                         fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                             matchingBlock: ccmatchingblock[0],
                                             matchingBlockStates: ccmatchingblock[1],
-                                            minMSBetweenYields: 5000,
+                                            minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                         }, undefined, ccreplacemode, 100).then((a) => {
                                             player.sendMessageB(`${a.counter == 0
                                                 ? "§c"
@@ -11027,7 +11051,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                                     matchingBlock: sgmatchingblock[0],
                                                     matchingBlockStates: sgmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, sgreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -11081,7 +11105,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                                     matchingBlock: sgmatchingblock[0],
                                                     matchingBlockStates: sgmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, sgreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -11151,7 +11175,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {
                                                     matchingBlock: homatchingblock[0],
                                                     matchingBlockStates: homatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, horeplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -11209,7 +11233,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {
                                                     matchingBlock: omatchingblock[0],
                                                     matchingBlockStates: omatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, oreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -11263,7 +11287,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                                     matchingBlock: hsmatchingblock[0],
                                                     matchingBlockStates: hsmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, hsreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -11317,7 +11341,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                                     matchingBlock: hsmatchingblock[0],
                                                     matchingBlockStates: hsmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, hsreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -11371,7 +11395,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                                     matchingBlock: ccmatchingblock[0],
                                                     matchingBlockStates: ccmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, ccreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -11422,7 +11446,7 @@ ${command.dp}itfill <center: x y z> <radius: x y z> <offset: x y z> <length: flo
                                                 fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                                     matchingBlock: ccmatchingblock[0],
                                                     matchingBlockStates: ccmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, ccreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -12481,7 +12505,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -12538,7 +12562,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, args[13] ?? true, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -12660,7 +12684,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -12716,7 +12740,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                         Math.random())]
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: "air",
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -12773,7 +12797,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -12830,7 +12854,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -12887,7 +12911,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -12975,7 +12999,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                                     matchingBlock: sgmatchingblock[0],
                                                     matchingBlockStates: sgmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, sgreplacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -13029,7 +13053,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                                     matchingBlock: sgmatchingblock[0],
                                                     matchingBlockStates: sgmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, sgreplacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -13098,7 +13122,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {
                                                     matchingBlock: homatchingblock[0],
                                                     matchingBlockStates: homatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, horeplacemode, hointegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -13164,7 +13188,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {
                                                     matchingBlock: omatchingblock[0],
                                                     matchingBlockStates: omatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, oreplacemode, ointegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -13226,7 +13250,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                                     matchingBlock: hsmatchingblock[0],
                                                     matchingBlockStates: hsmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, hsreplacemode, cintegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -13288,7 +13312,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                                     matchingBlock: hsmatchingblock[0],
                                                     matchingBlockStates: hsmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, hsreplacemode, cintegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -13350,7 +13374,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                                     matchingBlock: ccmatchingblock[0],
                                                     matchingBlockStates: ccmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, ccreplacemode, cintegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -13408,7 +13432,7 @@ ${command.dp}idtfill <center: x y z> <radius: x y z> <offset: x y z> <integrity:
                                                 fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                                     matchingBlock: ccmatchingblock[0],
                                                     matchingBlockStates: ccmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, ccreplacemode, cintegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -17203,49 +17227,42 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     //if((world.scoreboard.getObjective("balance").getScore(player)??0)>JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection]){world.scoreboard.getObjective("balance").addScore(player, -(JSON.parse(world.getDynamicProperty("shop:costs"))[r.selection])); player.getComponent("inventory").container.addItem(cmds.overworld.getBlock({x: 823, y: 84, z: 1037}).getComponent("inventory").container.getItem(r.selection))}
                     //${se}swdp("shop:costs", "[20, 50, 70, 80]")
                     eventData.cancel = true;
-                    let args = evaluateParametersOld(["presetText", "presetText", "string"], switchTestB).args;
-                    if (switchTestB.split(/\s+/g)[2].trim() == "~") {
-                        args[2] = player.name;
-                    }
-                    if ((switchTestB.split(/\s+/g)[2].trim() ?? "") == "") {
-                        args[2] = player.name;
-                    }
-                    let target = world
-                        .getAllPlayers()
-                        .find((_) => _.name == args[2]);
-                    if (!!!target) {
-                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
-                    }
-                    else {
-                        if (switchTestB.split(/\s+/g)[1].trim() == "~") {
-                            args[1] = target.selectedSlotIndex;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "presetText", "targetSelector"]).args;
+                        if (!args[2]?.trim() || args[2].trim() === "~") {
+                            args[2] = player.name;
                         }
-                        let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), {
-                            container: target?.getComponent("inventory")
-                                ?.container,
-                            equipment: target?.getComponent("equippable"),
-                            selectedSlotIndex: target?.selectedSlotIndex,
-                        });
-                        system.run(() => {
-                            if (slot instanceof PlayerCursorInventoryComponent) {
-                                player.sendError("§cYou cannot modify the item inside of a player's cursor inventory slot.", true);
-                                return;
+                        let targets = targetSelectorAllListC(args[2], "", vTStr(player.location), player).filter((v) => v.typeId == "minecraft:player");
+                        if (targets.length === 0) {
+                            player.sendError(`§cError: No players matching the specified target selector were found.`, true);
+                        }
+                        else {
+                            const item = player.getComponent("inventory").container.getItem(player.selectedSlotIndex);
+                            targets.forEach((target) => {
+                                const slot = getSlotFromParsedSlot(parseSlot(args[2] ?? "~"), {
+                                    container: target.getComponent("inventory").container,
+                                    equipment: target.getComponent("equippable"),
+                                    selectedSlotIndex: target.selectedSlotIndex,
+                                    cursor: target.getComponent("cursor_inventory"),
+                                });
+                                if (slot instanceof PlayerCursorInventoryComponent) {
+                                    player.sendError("§cYou cannot modify the item inside of a player's cursor inventory slot.", true);
+                                    return;
+                                }
+                                slot.setItem(item);
+                            });
+                            switch (true) {
+                                case args[2] === player.name:
+                                    player.sendMessageB(`Successfully copied item to slot ${args[1]} of your own inventory.`);
+                                    break;
+                                case targets.length === 1:
+                                    player.sendMessageB(`Successfully copied item to slot ${args[1]} of ${targets[0].name}'s inventory.`);
+                                    break;
+                                default:
+                                    player.sendMessageB(`Successfully copied item to slot ${args[1]} of ${targets.length} players' inventories.`);
                             }
-                            if (String(args[1]).match(/^\d+$/)) {
-                                target
-                                    .getComponent("inventory")
-                                    .container.setItem(Number(args[1]), player
-                                    .getComponent("inventory")
-                                    .container.getItem(player.selectedSlotIndex));
-                            }
-                            else {
-                                slot.setItem(player
-                                    .getComponent("inventory")
-                                    .container.getItem(player.selectedSlotIndex));
-                            }
-                            player.sendMessageB(`Successfully copied item to slot ${args[1]} of ${target.name}'s inventory. `);
-                        });
-                    }
+                        }
+                    });
                 }
                 break;
             case !!switchTest.match(/^dupeitem$/):
@@ -17366,44 +17383,50 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                             "targetSelector",
                             "targetSelector",
                         ]).args;
-                        if ((args[4] ?? "").trim() == "") {
+                        if (!args[4]?.trim() || args[3].trim() === "~") {
                             args[4] = player.name;
                         }
-                        else {
-                            if ((args[4] ?? "").trim() == "~") {
-                                args[4] = player.name;
-                            }
-                        }
-                        if ((args[3] ?? "").trim() == "") {
+                        if (!args[3]?.trim() || args[3].trim() === "~") {
                             args[3] = player.name;
-                        }
-                        else {
-                            if ((args[3] ?? "").trim() == "~") {
-                                args[3] = player.name;
-                            }
                         }
                         let target = targetSelectorAllListC(args[3], "", vTStr(player.location), player).find((v) => v.typeId == "minecraft:player");
                         let targetb = targetSelectorAllListC(args[4], "", vTStr(player.location), player).find((v) => v.typeId == "minecraft:player");
-                        if ((args[2] ?? "").trim() == "") {
+                        if (!args[2]?.trim()) {
                             args[2] = String(targetb?.selectedSlotIndex);
                         }
-                        if ((args[1] ?? "").trim() == "") {
+                        if (!args[1]?.trim()) {
                             args[1] = String(target?.selectedSlotIndex);
                         }
                         if (!!!target) {
-                            player.sendError(`§cError: No player matching the first specified target selector was found. `, true);
+                            player.sendError(`§cError: No player matching the first specified target selector was found.`, true);
                         }
                         else if (!!!targetb) {
-                            player.sendError(`§cError: No player matching the second specified target selector was found. `, true);
+                            player.sendError(`§cError: No player matching the second specified target selector was found.`, true);
+                        }
+                        else if (args[1]?.trim().toLowerCase() === "cursor") {
+                            player.sendError(`§cError: You cannot swap an item with the cursor inventory slot.`, true);
+                        }
+                        else if (args[2]?.trim().toLowerCase() === "cursor") {
+                            player.sendError(`§cError: You cannot swap an item with the cursor inventory slot.`, true);
                         }
                         else {
-                            system.run(() => {
-                                target
-                                    .getComponent("inventory")
-                                    .container.swapItems(Number(args[1].replace(/^~$/, String(target.selectedSlotIndex))), Number(args[2].replace(/^~$/, String(targetb.selectedSlotIndex))), targetb.getComponent("inventory")
-                                    .container);
+                            const targetSlot = getSlotFromParsedSlot(parseSlot(args[1]), {
+                                container: target.getComponent("inventory")
+                                    .container,
+                                equipment: target.getComponent("equippable"),
+                                selectedSlotIndex: target.selectedSlotIndex,
                             });
-                            player.sendMessageB(`Successfully swapped slot ${args[1]} of ${target.name}'s inventory with slot ${args[2]} of ${targetb.name}'s inventory. `);
+                            const targetbSlot = getSlotFromParsedSlot(parseSlot(args[2]), {
+                                container: targetb.getComponent("inventory")
+                                    .container,
+                                equipment: targetb.getComponent("equippable"),
+                                selectedSlotIndex: targetb.selectedSlotIndex,
+                            });
+                            const targetItem = targetSlot?.getItem();
+                            const targetbItem = targetbSlot?.getItem();
+                            targetSlot.setItem(targetbItem);
+                            targetbSlot.setItem(targetItem);
+                            player.sendMessageB(`Successfully swapped slot ${args[1]} of ${target.name}'s inventory with slot ${args[2]} of ${targetb.name}'s inventory.`);
                         }
                     });
                 }
@@ -17444,35 +17467,34 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
             case !!switchTest.match(/^takeitem$/):
                 {
                     eventData.cancel = true;
-                    let args = evaluateParametersOld(["presetText", "presetText", "string"], switchTestB).args;
-                    if (switchTestB.split(/\s+/g)[2].trim() == "~") {
-                        args[2] = player.name;
-                    }
-                    let target = world
-                        .getAllPlayers()
-                        .find((_) => _.name == args[2]);
-                    if (!!!target) {
-                        player.sendError(`§cError: Unable to find player with the name ${args[2]}. `, true);
-                    }
-                    else {
-                        if (switchTestB.split(/\s+/g)[1].trim() == "~") {
-                            args[1] = target.selectedSlotIndex;
+                    system.run(() => {
+                        let args = evaluateParameters(switchTestB, ["presetText", "f-t", "presetText", "targetSelector"]).args;
+                        if (!args[3]?.trim() || args[3].trim() === "~") {
+                            args[3] = player.name;
                         }
-                        let slot = getSlotFromParsedSlot(parseSlot(String(args[1])), {
-                            container: target?.getComponent("inventory")
-                                ?.container,
-                            equipment: target?.getComponent("equippable"),
-                            selectedSlotIndex: target?.selectedSlotIndex,
-                        });
-                        system.run(() => {
-                            if (String(args[1]).match(/^\d+$/)) {
+                        let target = targetSelectorAllListC(args[3], "", vTStr(player.location), player).find((v) => v.typeId == "minecraft:player");
+                        if (!args[2]?.trim()) {
+                            args[2] = String(target?.selectedSlotIndex);
+                        }
+                        if (!target) {
+                            player.sendError(`§cError: No player matching the specified target selector was found.`, true);
+                        }
+                        else {
+                            const slot = getSlotFromParsedSlot(parseSlot(args[2]), {
+                                container: target.getComponent("inventory")
+                                    .container,
+                                equipment: target.getComponent("equippable"),
+                                selectedSlotIndex: target.selectedSlotIndex,
+                                cursor: target.getComponent("cursor_inventory"),
+                            });
+                            if (args[1]?.t && /^\d+$/.test(String(args[2].trim() === "~" || !args[2] ? target.selectedSlotIndex : args[2]))) {
                                 target
                                     .getComponent("inventory")
-                                    .container.transferItem(Number(args[1]), player.getComponent("inventory")
+                                    .container.transferItem(Number(args[2].trim() === "~" || !args[2] ? target.selectedSlotIndex : args[2]), player.getComponent("inventory")
                                     .container);
                             }
                             else {
-                                player
+                                const remainingStack = player
                                     .getComponent("inventory")
                                     .container.addItem(slot instanceof
                                     PlayerCursorInventoryComponent
@@ -17481,10 +17503,13 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                 (slot instanceof PlayerCursorInventoryComponent
                                     ? slot.clear
                                     : slot.setItem)();
+                                if (remainingStack) {
+                                    player.dimension.spawnItem(remainingStack, player.location);
+                                }
                             }
-                            player.sendMessageB(`Successfully took item from ${args[2]}'s inventory. `);
-                        });
-                    }
+                            player.sendMessageB(`Successfully took item from slot ${args[2]} of ${args[3]}'s inventory.`);
+                        }
+                    });
                 }
                 break;
             case !!switchTest.match(/^swapinventories$/) ||
@@ -18919,11 +18944,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             let args = evaluateParameters(switchTestB, [
@@ -19098,7 +19123,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
             case !!switchTest.match(/^\\chunk$/):
                 {
                     eventData.cancel = true;
-                    const chunk = chunkIndexToBoundingBox(getChunkIndex(player.location));
+                    const chunk = chunkIndexToBoundingBox(getChunkIndex(player.location), [player.dimension.heightRange.min, player.dimension.heightRange.max - 1]);
                     player.setDynamicProperty("pos1", chunk.from);
                     player.setDynamicProperty("pos2", chunk.to);
                     player.setDynamicProperty("posD", player.dimension.id);
@@ -19139,6 +19164,145 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     player.sendMessageB(`Successfully shifted the selection by ${vTStr(offset)} (${vTStr(player.getDynamicProperty("pos1"))} to ${vTStr(player.getDynamicProperty("pos2"))}).`);
                 }
                 break;
+            case !!switchTest.match(/^\\expandselection$/) || !!switchTest.match(/^\\exsel$/) || !!switchTest.match(/^\\es$/):
+                {
+                    eventData.cancel = true;
+                    const validExpansionModes = ["up", "down", "north", "south", "east", "west", "scale", "scalex", "scaley", "scalez"];
+                    const args = evaluateParameters(switchTestB, [
+                        "presetText",
+                        "string",
+                        "string",
+                    ]).args;
+                    if (!args[1]) {
+                        throw new TypeError(`Missing expansion mode parameter, it should be one of the following: ${validExpansionModes.join(",")}.`);
+                    }
+                    if (!args[2]?.toNumber()) {
+                        throw new TypeError(`Invalid number passed to the value parameter, expected a finite float but got ${args[2]} instead.`);
+                    }
+                    switch (args[1].toLowerCase()) {
+                        case "up":
+                        case "north":
+                        case "east":
+                            if (Vector.equals(modules.mcMath.Vector3Utils.multiply(diroffsetmapb(args[1].toLowerCase()), player.worldEditSelection.pos2), modules.mcMath.Vector3Utils.multiply(diroffsetmapb(args[1].toLowerCase()), player.worldEditSelection.maxPos))) {
+                                player.worldEditSelection.pos2 = Vector.add(player.worldEditSelection.pos2, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2])));
+                            }
+                            else {
+                                player.worldEditSelection.pos1 = Vector.add(player.worldEditSelection.pos1, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2])));
+                            }
+                            player.sendMessageB(`Successfully expanded the selection ${args[2]} blocks ${args[1]} (${vTStr(player.worldEditSelection.pos1)} to ${vTStr(player.worldEditSelection.pos2)}).`);
+                            break;
+                        case "down":
+                        case "west":
+                        case "south":
+                            if (Vector.equals(modules.mcMath.Vector3Utils.multiply(diroffsetmapb(args[1].toLowerCase()), player.worldEditSelection.pos1), modules.mcMath.Vector3Utils.multiply(diroffsetmapb(args[1].toLowerCase()), player.worldEditSelection.minPos))) {
+                                player.worldEditSelection.pos1 = Vector.add(player.worldEditSelection.pos1, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2])));
+                            }
+                            else {
+                                player.worldEditSelection.pos2 = Vector.add(player.worldEditSelection.pos2, Vector.scale(diroffsetmapb(args[1].toLowerCase()), Number(args[2])));
+                            }
+                            player.sendMessageB(`Successfully expanded the selection ${args[2]} blocks ${args[1]} (${vTStr(player.worldEditSelection.pos1)} to ${vTStr(player.worldEditSelection.pos2)}).`);
+                            break;
+                        case "scale":
+                            {
+                                const values = {
+                                    pos1: player.worldEditSelection.pos1,
+                                    pos2: player.worldEditSelection.pos2,
+                                    centerToCornerDifference: Vector.scale(Vector.subtract(player.worldEditSelection.maxPos, player.worldEditSelection.minPos), 0.5),
+                                    center: Vector.subtract(player.worldEditSelection.maxPos, Vector.scale(Vector.subtract(player.worldEditSelection.maxPos, player.worldEditSelection.minPos), 0.5)),
+                                };
+                                for (const axis of ["x", "y", "z"]) {
+                                    if (values.pos1[axis] < values.pos2[axis]) {
+                                        const distance = (values.centerToCornerDifference[axis] * Number(args[2]));
+                                        values.pos1[axis] = values.center[axis] - distance;
+                                        values.pos2[axis] = values.center[axis] + distance;
+                                    }
+                                    else {
+                                        const distance = (values.centerToCornerDifference[axis] * Number(args[2]));
+                                        values.pos1[axis] = values.center[axis] + distance;
+                                        values.pos2[axis] = values.center[axis] - distance;
+                                    }
+                                }
+                                player.worldEditSelection.pos1 = values.pos1;
+                                player.worldEditSelection.pos2 = values.pos2;
+                            }
+                            break;
+                        case "scalex":
+                            {
+                                const values = {
+                                    pos1: player.worldEditSelection.pos1,
+                                    pos2: player.worldEditSelection.pos2,
+                                    centerToCornerDifference: Vector.scale(Vector.subtract(player.worldEditSelection.maxPos, player.worldEditSelection.minPos), 0.5),
+                                    center: Vector.subtract(player.worldEditSelection.maxPos, Vector.scale(Vector.subtract(player.worldEditSelection.maxPos, player.worldEditSelection.minPos), 0.5)),
+                                };
+                                for (const axis of ["x"]) {
+                                    if (values.pos1[axis] < values.pos2[axis]) {
+                                        const distance = (values.centerToCornerDifference[axis] * Number(args[2]));
+                                        values.pos1[axis] = values.center[axis] - distance;
+                                        values.pos2[axis] = values.center[axis] + distance;
+                                    }
+                                    else {
+                                        const distance = (values.centerToCornerDifference[axis] * Number(args[2]));
+                                        values.pos1[axis] = values.center[axis] + distance;
+                                        values.pos2[axis] = values.center[axis] - distance;
+                                    }
+                                }
+                                player.worldEditSelection.pos1 = values.pos1;
+                                player.worldEditSelection.pos2 = values.pos2;
+                            }
+                            break;
+                        case "scaley":
+                            {
+                                const values = {
+                                    pos1: player.worldEditSelection.pos1,
+                                    pos2: player.worldEditSelection.pos2,
+                                    centerToCornerDifference: Vector.scale(Vector.subtract(player.worldEditSelection.maxPos, player.worldEditSelection.minPos), 0.5),
+                                    center: Vector.subtract(player.worldEditSelection.maxPos, Vector.scale(Vector.subtract(player.worldEditSelection.maxPos, player.worldEditSelection.minPos), 0.5)),
+                                };
+                                for (const axis of ["y"]) {
+                                    if (values.pos1[axis] < values.pos2[axis]) {
+                                        const distance = (values.centerToCornerDifference[axis] * Number(args[2]));
+                                        values.pos1[axis] = values.center[axis] - distance;
+                                        values.pos2[axis] = values.center[axis] + distance;
+                                    }
+                                    else {
+                                        const distance = (values.centerToCornerDifference[axis] * Number(args[2]));
+                                        values.pos1[axis] = values.center[axis] + distance;
+                                        values.pos2[axis] = values.center[axis] - distance;
+                                    }
+                                }
+                                player.worldEditSelection.pos1 = values.pos1;
+                                player.worldEditSelection.pos2 = values.pos2;
+                            }
+                            break;
+                        case "scalez":
+                            {
+                                const values = {
+                                    pos1: player.worldEditSelection.pos1,
+                                    pos2: player.worldEditSelection.pos2,
+                                    centerToCornerDifference: Vector.scale(Vector.subtract(player.worldEditSelection.maxPos, player.worldEditSelection.minPos), 0.5),
+                                    center: Vector.subtract(player.worldEditSelection.maxPos, Vector.scale(Vector.subtract(player.worldEditSelection.maxPos, player.worldEditSelection.minPos), 0.5)),
+                                };
+                                for (const axis of ["z"]) {
+                                    if (values.pos1[axis] < values.pos2[axis]) {
+                                        const distance = (values.centerToCornerDifference[axis] * Number(args[2]));
+                                        values.pos1[axis] = values.center[axis] - distance;
+                                        values.pos2[axis] = values.center[axis] + distance;
+                                    }
+                                    else {
+                                        const distance = (values.centerToCornerDifference[axis] * Number(args[2]));
+                                        values.pos1[axis] = values.center[axis] + distance;
+                                        values.pos2[axis] = values.center[axis] - distance;
+                                    }
+                                }
+                                player.worldEditSelection.pos1 = values.pos1;
+                                player.worldEditSelection.pos2 = values.pos2;
+                            }
+                            break;
+                        default:
+                            throw new TypeError(`Invalid expansion mode: ${args[1]}. Expected one of: ${validExpansionModes.join(",")}.`);
+                    }
+                }
+                break;
             case !!switchTest.match(/^\\regenerateblocks$/):
                 {
                     eventData.cancel = true;
@@ -19156,11 +19320,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const cb = player.worldEditSelection.maxPos;
                     const dimensiona = player.worldEditSelection.dimension;
                     if (!!!ca) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!cb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19172,7 +19336,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                             volume: new BlockVolume(ca, cb),
                                         });
                                         return a;
-                                    })(), dimensiona).then((tac) => {
+                                    })(), dimensiona).then(async (tac) => {
                                         ta = tac;
                                         try {
                                             undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), {
@@ -19185,7 +19349,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                             player.sendMessageB("§c" + e + " " + e.stack);
                                         }
                                         try {
-                                            regenerateBlocksBasic(ca, cb, dimensiona, radius, {
+                                            await regenerateBlocksBasic(ca, cb, dimensiona, radius, {
                                                 ignoreAir: !args[1].i,
                                                 onlyReplaceAir: !args[1].s,
                                                 ignoreNotYetGeneratedAir: args[1].a,
@@ -19210,6 +19374,217 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                 }
                             });
                         }
+                    }
+                }
+                break;
+            case !!switchTest.match(/^\\generateterrain$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, [
+                        "presetText",
+                        "f-bod",
+                        {
+                            type: "string",
+                            key: "biome",
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "seed",
+                            name: "seed",
+                            valueType: "string",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "baseHeight",
+                            name: "baseHeight",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "heightVariation",
+                            name: "heightVariation",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "waterLevel",
+                            name: "waterLevel",
+                            valueType: "string",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "generatorType",
+                            name: "generatorType",
+                            valueType: "string",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "minMSBetweenTickWaits",
+                            name: "msbt",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "oreGenerationMode",
+                            name: "oreGenerationMode",
+                            valueType: "string",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "noiseOffsetX",
+                            name: "noiseOffsetX",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "noiseOffsetY",
+                            name: "noiseOffsetY",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "noiseOffsetZ",
+                            name: "noiseOffsetZ",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "noiseScaleX",
+                            name: "noiseScaleX",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "noiseScaleY",
+                            name: "noiseScaleY",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                        {
+                            type: "ignorableNamedParameter",
+                            key: "noiseScaleZ",
+                            name: "noiseScaleZ",
+                            valueType: "number",
+                            delimeter: "=",
+                            nameIsCaseSensitive: false,
+                        },
+                    ]).args;
+                    console.log(JSONB.stringify(args));
+                    const ca = player.worldEditSelection.minPos;
+                    const cb = player.worldEditSelection.maxPos;
+                    const dimensiona = player.worldEditSelection.dimension;
+                    if (!!!ca) {
+                        player.sendError("§cError: pos1 is not set.", true);
+                    }
+                    else if (!!!cb) {
+                        player.sendError("§cError: pos2 is not set.", true);
+                    }
+                    else if (!["v1", "v2"].includes(args.oreGenerationMode ?? "v2")) {
+                        player.sendError(`§cUnsupported ore generation mode: ${args.oreGenerationMode}. Expected one of: "v1", "v2".`, true);
+                    }
+                    else if (!["normal", "nether", "end", "fractal"].includes(args.generatorType ?? "normal")) {
+                        player.sendError(`§cUnsupported generator type: ${args.generatorType}. Expected one of: "normal", "nether", "end", "fractal".`, true);
+                    }
+                    else if (!Object.keys(biomeToDefaultTerrainDetailsMap).includes(args.biome ?? "undefined")) {
+                        player.sendError(`§cUnsupported biome type: ${args.biome}. Supported biome types: ${Object.keys(biomeToDefaultTerrainDetailsMap).join(", ")}`, true);
+                    }
+                    else {
+                        system.run(() => {
+                            let ta;
+                            try {
+                                generateTickingAreaFillCoordinatesC(player.location, (() => {
+                                    let a = new CompoundBlockVolume();
+                                    a.pushVolume({
+                                        volume: new BlockVolume(ca, cb),
+                                    });
+                                    return a;
+                                })(), dimensiona).then(async (tac) => {
+                                    ta = tac;
+                                    try {
+                                        undoClipboard.save(dimensiona, { from: ca, to: cb }, Date.now(), {
+                                            includeBlocks: true,
+                                            includeEntities: false,
+                                            saveMode: config.undoClipboardMode,
+                                        });
+                                    }
+                                    catch (e) {
+                                        player.sendMessageB("§c" + e + " " + e.stack);
+                                    }
+                                    try {
+                                        const result = await generateTerrainV2(ca, cb, dimensiona, args.biome, args.seed ? args.seed?.toNumber() ?? Math.random() : Math.random(), {
+                                            baseHeight: args.baseHeight ?? undefined,
+                                            generateBlobs: args[1].b,
+                                            generateOres: args[1].o,
+                                            generatorType: args.generatorType ?? undefined,
+                                            heightVariation: args.heightVariation ?? undefined,
+                                            waterLevel: args.waterLevel?.toLowerCase() === "false" ? false : args.waterLevel?.toNumber() ?? undefined,
+                                            minMSBetweenTickWaits: args.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits,
+                                            oreGenerationMode: args.oreGenerationMode ?? undefined,
+                                            offset: {
+                                                x: args.noiseOffsetX ?? undefined,
+                                                y: args.noiseOffsetY ?? undefined,
+                                                z: args.noiseOffsetZ ?? undefined,
+                                            },
+                                            scale: {
+                                                x: args.noiseScaleX ?? undefined,
+                                                y: args.noiseScaleY ?? undefined,
+                                                z: args.noiseScaleZ ?? undefined,
+                                            },
+                                        });
+                                        player.sendMessageB(`${result.totalBlocksGenerated == 0n ? "§c" : ""}${result.totalBlocksGenerated} blocks replaced in ${result.totalTime} ms over ${result.totalTicks} tick${result.totalTicks == 1 ? "" : "s"} with ${result.totalTimeSpentGenerating} ms spent actually generating blocks`);
+                                        if (args[1].d) {
+                                            player.sendMessageB(`Terrain Generation Debug Statistics:
+Total Blocks Generated: ${result.totalBlocksGenerated}
+Terrain Blocks Generated: ${result.blocksGenerated}
+Ores Generated: ${result.oresGenerated}
+Blobs Generated: ${result.blobsGenerated}
+Ore Blocks Generated: ${result.oreBlocksGenerated}
+Blob Blocks Generated: ${result.blobBlocksGenerated}
+Total Ores and Blobs Generated: ${result.totalOresAndBlobsGenerated}
+Start Tick: ${result.startTick}
+End Tick: ${result.endTick}
+Total Ticks: ${result.totalTicks}
+Start Time: ${result.startTime}
+End Time: ${result.endTime}
+Total Time: ${result.totalTime}
+Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
+                                        }
+                                    }
+                                    catch (e) {
+                                        player.sendError("§c" + e + e.stack, true);
+                                    }
+                                    finally {
+                                        tac.forEach((tab) => tab?.remove());
+                                    }
+                                });
+                            }
+                            catch (e) {
+                                player.sendError("§c" + e + e.stack, true);
+                            }
+                        });
                     }
                 }
                 break;
@@ -19246,11 +19621,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19319,11 +19694,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19357,7 +19732,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -19419,11 +19794,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19457,7 +19832,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -19519,11 +19894,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19557,7 +19932,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -19619,11 +19994,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19657,7 +20032,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -19719,11 +20094,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19757,7 +20132,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -19825,11 +20200,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19863,7 +20238,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -19951,11 +20326,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -19989,7 +20364,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -20077,11 +20452,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20115,7 +20490,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -20151,6 +20526,68 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     }
                 }
                 break;
+            case !!switchTest.match(/^\\loadchunks$/) || !!switchTest.match(/^\\lc$/):
+                {
+                    eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, [
+                        "presetText",
+                        "f-v"
+                    ]).args;
+                    const coordinatesa = player.getDynamicProperty("pos1");
+                    const coordinatesb = player.getDynamicProperty("pos2");
+                    const ca = {
+                        x: Math.min(coordinatesa.x, coordinatesb.x),
+                        y: Math.min(coordinatesa.y, coordinatesb.y),
+                        z: Math.min(coordinatesa.z, coordinatesb.z),
+                    };
+                    const cb = {
+                        x: Math.max(coordinatesa.x, coordinatesb.x),
+                        y: Math.max(coordinatesa.y, coordinatesb.y),
+                        z: Math.max(coordinatesa.z, coordinatesb.z),
+                    };
+                    const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
+                        player.dimension.id));
+                    if (!!!coordinatesa) {
+                        player.sendError("§cError: pos1 is not set.", true);
+                    }
+                    else {
+                        if (!!!coordinatesb) {
+                            player.sendError("§cError: pos2 is not set.", true);
+                        }
+                        else {
+                            system.run(() => {
+                                let ta;
+                                try {
+                                    generateTickingAreaFillCoordinatesC(player.location, (() => {
+                                        let a = new CompoundBlockVolume();
+                                        a.pushVolume({
+                                            volume: new BlockVolume(ca, cb),
+                                        });
+                                        return a;
+                                    })(), dimensiona).then((tac) => {
+                                        if (args[1].v) {
+                                            tac.forEach((tab) => {
+                                                try {
+                                                    tab.triggerEvent("andexdb:make_tickingarea_visible");
+                                                }
+                                                catch (e) {
+                                                    console.error(e, e.stack);
+                                                }
+                                            });
+                                        }
+                                        player.sendMessageB(`Spawned ${tac.length} ticking area(s).`);
+                                    }).catch((e) => {
+                                        player.sendError("§cError while loading chunks: " + e + e.stack, true);
+                                    });
+                                }
+                                catch (e) {
+                                    player.sendError("§c" + e + e.stack, true);
+                                }
+                            });
+                        }
+                    }
+                }
+                break;
             case !!switchTest.match(/^\\set$/):
                 {
                     eventData.cancel = true;
@@ -20175,11 +20612,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20211,7 +20648,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length *
                                                         Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
-                                            }, { minMSBetweenYields: 2500 }, args[1].c, 100).then((a) => {
+                                            }, { minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits }, args[1].c, 100).then((a) => {
                                                 player.sendMessageB(`${a.counter == 0
                                                     ? "§c"
                                                     : ""}${a.counter} blocks replaced in ${a.completionData
@@ -20276,11 +20713,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20312,7 +20749,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length *
                                                         Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
-                                            }, { minMSBetweenYields: 2500 }, args[1].c, integrity).then((a) => {
+                                            }, { minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits }, args[1].c, integrity).then((a) => {
                                                 player.sendMessageB(`${a.counter == 0
                                                     ? "§c"
                                                     : ""}${a.counter} blocks replaced in ${a.completionData
@@ -20374,11 +20811,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20406,7 +20843,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                         try {
                                             fillFlood(ca, cb, dimensiona, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 integrity: 100,
                                                 liteMode: false,
                                             }).then((a) => {
@@ -20464,11 +20901,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20496,7 +20933,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                         try {
                                             fillDrain(ca, cb, dimensiona, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 integrity: 100,
                                                 liteMode: false,
                                             }).then((a) => {
@@ -20536,7 +20973,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     eventData.cancel = true;
                     const args = evaluateParameters(switchTestB, [
                         "presetText",
-                        "f-c",
+                        "f-cf",
                         "block",
                     ]).args;
                     const lastblockname = args[2]?.id;
@@ -20565,11 +21002,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                         player.dimension.id));
                     const airpermutation = BlockPermutation.resolve("air");
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20595,32 +21032,43 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                         }
                                         const blocktypes = BlockTypes.getAll();
                                         try {
-                                            fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, {
-                                                matchingBlock: matchingblock[0],
-                                                matchingBlockStates: matchingblock[1],
-                                                minMSBetweenYields: 2500,
-                                            }, args[1].c, 100).then((a) => {
-                                                player.sendMessageB(`${a.counter == 0
-                                                    ? "§c"
-                                                    : ""}${a.counter} blocks replaced in ${a.completionData
-                                                    .endTime -
-                                                    a.completionData
-                                                        .startTime} ms over ${a.completionData
-                                                    .endTick -
-                                                    a.completionData
-                                                        .startTick} tick${a.completionData
-                                                    .endTick -
-                                                    a.completionData
-                                                        .startTick ==
-                                                    1
-                                                    ? ""
-                                                    : "s"}${a.completionData
-                                                    .containsUnloadedChunks
-                                                    ? "; Some blocks were not generated because they were in unloaded chunks. "
-                                                    : ""}`);
-                                            }, (e) => {
-                                                player.sendError("§c" + e + e.stack, true);
-                                            });
+                                            if (args[1].f) {
+                                                let i = 0n;
+                                                let startTime = Date.now();
+                                                for (const loc of dimensiona.getBlocks(new BlockVolume(ca, cb), { excludeTypes: ["minecraft:air"] }, true).getBlockLocationIterator()) {
+                                                    dimensiona.setBlockType(loc, "minecraft:air");
+                                                    i++;
+                                                }
+                                                player.sendMessageB(`${i == 0n ? "§c" : ""}${i} blocks replaced in ${Date.now() - startTime} ms`);
+                                            }
+                                            else {
+                                                fillBlocksHFGB(ca, cb, dimensiona, () => airpermutation, {
+                                                    matchingBlock: matchingblock[0],
+                                                    matchingBlockStates: matchingblock[1],
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
+                                                }, args[1].c, 100).then((a) => {
+                                                    player.sendMessageB(`${a.counter == 0
+                                                        ? "§c"
+                                                        : ""}${a.counter} blocks replaced in ${a.completionData
+                                                        .endTime -
+                                                        a.completionData
+                                                            .startTime} ms over ${a.completionData
+                                                        .endTick -
+                                                        a.completionData
+                                                            .startTick} tick${a.completionData
+                                                        .endTick -
+                                                        a.completionData
+                                                            .startTick ==
+                                                        1
+                                                        ? ""
+                                                        : "s"}${a.completionData
+                                                        .containsUnloadedChunks
+                                                        ? "; Some blocks were not generated because they were in unloaded chunks. "
+                                                        : ""}`);
+                                                }, (e) => {
+                                                    player.sendError("§c" + e + e.stack, true);
+                                                });
+                                            }
                                         }
                                         catch (e) {
                                             player.sendError("§c" + e + e.stack, true);
@@ -20652,11 +21100,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const coordinatesa = player.getDynamicProperty("pos1");
                     const coordinatesb = player.getDynamicProperty("pos2");
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             const ca = {
@@ -20702,7 +21150,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -20757,11 +21205,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20798,7 +21246,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -20854,11 +21302,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                         player.dimension.id));
                     console.log(JSON.stringify({ coordinatesa, coordinatesb, center, radius, stretch }));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20895,7 +21343,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -20953,11 +21401,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -20994,7 +21442,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -21050,11 +21498,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             system.run(() => {
@@ -21107,7 +21555,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
                                                 blockMask: mask,
-                                                minMSBetweenTickWaits: 2500,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
                                                 replacemode: args[1].c,
                                                 integrity: 100,
                                                 liteMode: false,
@@ -21163,11 +21611,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             const blocktypes = BlockTypes.getAll();
@@ -21234,11 +21682,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             const blocktypes = BlockTypes.getAll();
@@ -21306,11 +21754,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                     const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                         player.dimension.id));
                     if (!!!coordinatesa) {
-                        player.sendMessageB("§cError: pos1 is not set.");
+                        player.sendError("§cError: pos1 is not set.", true);
                     }
                     else {
                         if (!!!coordinatesb) {
-                            player.sendMessageB("§cError: pos2 is not set.");
+                            player.sendError("§cError: pos2 is not set.", true);
                         }
                         else {
                             const blocktypes = BlockTypes.getAll();
@@ -21382,7 +21830,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                         const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                             player.dimension.id));
                         if (!!!coordinatesa) {
-                            player.sendMessageB("§cError: pos1 is not set.");
+                            player.sendError("§cError: pos1 is not set.", true);
                         }
                         else {
                             if (!!!coordinatesb) {
@@ -21474,7 +21922,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                         const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                             player.dimension.id));
                         if (!!!coordinatesa) {
-                            player.sendMessageB("§cError: pos1 is not set.");
+                            player.sendError("§cError: pos1 is not set.", true);
                         }
                         else {
                             if (!!!coordinatesb) {
@@ -21519,7 +21967,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 ta = tac;
                                                 try {
                                                     fillBlocksHFG(coordinatesa, coordinatesb, player.dimension, "air", undefined, {
-                                                        minMSBetweenYields: 5000,
+                                                        minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                     }, undefined, true, 100).then(() => undefined, (e) => {
                                                         player.sendMessageB("§c" +
                                                             e +
@@ -21571,7 +22019,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                         const dimensiona = world.getDimension((player.getDynamicProperty("posD") ??
                             player.dimension.id));
                         if (!!!coordinatesa) {
-                            player.sendMessageB("§cError: pos1 is not set.");
+                            player.sendError("§cError: pos1 is not set.", true);
                         }
                         else {
                             if (!!!coordinatesb) {
@@ -21799,11 +22247,11 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                     "number",
                                     "string",
                                 ]).args;
-                                if (!spawnProtectionTypeList.includes(args[2])) {
+                                if (args[2].endsWith(":") && !spawnProtectionTypeList.includes(args[2]) && !ProtectedAreas.areas.advancedAreaCategories.some((c) => c.id === args[2])) {
                                     player.sendError(`§cError: ${JSON.stringify(args[2])} is not a valid protected area category, please use one of the following protected area categories: ${JSON.stringify(spawnProtectionTypeList)}.`, true);
                                     return;
                                 }
-                                if (!ProtectedAreas.areas.advancedAreaCategories.some((c) => c.id === args[2])) {
+                                if (!args[2].endsWith(":") && !ProtectedAreas.areas.advancedAreaCategories.some((c) => c.id === args[2])) {
                                     player.sendError(`§cError: The custom protected area category ${JSON.stringify(args[2])} does not exist, please double check your capitalization and spelling.`, true);
                                     return;
                                 }
@@ -22668,7 +23116,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                                     matchingBlock: sgmatchingblock[0],
                                                     matchingBlockStates: sgmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, sgreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -22722,7 +23170,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                                     matchingBlock: sgmatchingblock[0],
                                                     matchingBlockStates: sgmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, sgreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -22792,7 +23240,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {
                                                     matchingBlock: homatchingblock[0],
                                                     matchingBlockStates: homatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, horeplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -22850,7 +23298,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {
                                                     matchingBlock: omatchingblock[0],
                                                     matchingBlockStates: omatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, oreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -22904,7 +23352,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                                     matchingBlock: hsmatchingblock[0],
                                                     matchingBlockStates: hsmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, hsreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -22958,7 +23406,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                                     matchingBlock: hsmatchingblock[0],
                                                     matchingBlockStates: hsmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, hsreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -23012,7 +23460,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                                     matchingBlock: ccmatchingblock[0],
                                                     matchingBlockStates: ccmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, ccreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -23063,7 +23511,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                                                 fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                                     matchingBlock: ccmatchingblock[0],
                                                     matchingBlockStates: ccmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, ccreplacemode, 100).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24091,7 +24539,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24148,7 +24596,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, args[7] ?? true, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24270,7 +24718,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24326,7 +24774,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                         Math.random())]
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: "air",
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24383,7 +24831,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24440,7 +24888,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24497,7 +24945,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                     : firstblockname, firstblockstates, {
                                                     matchingBlock: matchingblock[0],
                                                     matchingBlockStates: matchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, replacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24585,7 +25033,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 fillBlocksHSGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                                     matchingBlock: sgmatchingblock[0],
                                                     matchingBlockStates: sgmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, sgreplacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24639,7 +25087,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 fillBlocksHISGG(coordinatesa, coordinatesb, sgskygridsize, player.dimension, sgfirstblockname, sgfirstblockstates, {
                                                     matchingBlock: sgmatchingblock[0],
                                                     matchingBlockStates: sgmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, sgreplacemode, integrity).then((a) => {
                                                     player.sendMessageB(`${a.counter == 0
                                                         ? "§c"
@@ -24708,7 +25156,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 })), hooffset, hothickness, player.dimension, hofirstblockname, hofirstblockstates, {
                                                     matchingBlock: homatchingblock[0],
                                                     matchingBlockStates: homatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, horeplacemode, hointegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -24774,7 +25222,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 })), ooffset, player.dimension, ofirstblockname, ofirstblockstates, {
                                                     matchingBlock: omatchingblock[0],
                                                     matchingBlockStates: omatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, oreplacemode, ointegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -24836,7 +25284,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 fillBlocksHHSG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                                     matchingBlock: hsmatchingblock[0],
                                                     matchingBlockStates: hsmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, hsreplacemode, cintegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -24898,7 +25346,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 fillBlocksHDG(center, radius - 0.5, thickness, player.dimension, hsfirstblockname, hsfirstblockstates, {
                                                     matchingBlock: hsmatchingblock[0],
                                                     matchingBlockStates: hsmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, hsreplacemode, cintegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -24960,7 +25408,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 fillBlocksHSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                                     matchingBlock: ccmatchingblock[0],
                                                     matchingBlockStates: ccmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, ccreplacemode, cintegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -25018,7 +25466,7 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                                                 fillBlocksHSSG(center, radius - 0.5, player.dimension, ccfirstblockname, ccfirstblockstates, {
                                                     matchingBlock: ccmatchingblock[0],
                                                     matchingBlockStates: ccmatchingblock[1],
-                                                    minMSBetweenYields: 5000,
+                                                    minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                                 }, undefined, ccreplacemode, cintegrity).then((a) => {
                                                     player.sendMessageB(`${a.counter ==
                                                         0
@@ -26887,6 +27335,10 @@ ${command.dp}snapshot list`);
                 !!switchTest.match(/^selr$/):
                 {
                     eventData.cancel = true;
+                    const args = evaluateParameters(switchTestB, [
+                        "presetText",
+                        "number"
+                    ]).args;
                     srun(async () => {
                         var msSinceLastTickWait = Date.now();
                         const begin = {
@@ -26900,7 +27352,7 @@ ${command.dp}snapshot list`);
                             z: Math.max(player.worldEditSelection.pos1.z, player.worldEditSelection.pos2.z),
                         };
                         const molangVariables = new MolangVariableMap();
-                        molangVariables.setFloat("variable.max_lifetime", 10);
+                        molangVariables.setFloat("variable.max_lifetime", args[1] ?? 10);
                         const dimension = player.worldEditSelection.dimension;
                         const ta = await generateTickingAreaFillCoordinatesC(player.location, (() => {
                             let a = new CompoundBlockVolume();
@@ -27194,7 +27646,7 @@ ${command.dp}snapshot list`);
                                         : matchingblock[0], matchingblock[1], {
                                         matchingBlock: firstblockname,
                                         matchingBlockStates: firstblockstates,
-                                        minMSBetweenYields: 2500,
+                                        minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits,
                                     }, undefined, args[1].c, 100).then((a) => {
                                         player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime -
                                             a.completionData.startTime} ms over ${a.completionData.endTick -
@@ -27721,7 +28173,7 @@ ${command.dp}snapshot list`);
                                     perror(player, e);
                                 }
                                 try {
-                                    fillBlocksHDFGB(from, to, player.dimension, { minMSBetweenYields: 2500 }, 100).then((a) => {
+                                    fillBlocksHDFGB(from, to, player.dimension, { minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits }, 100).then((a) => {
                                         player.sendMessageB(`${a.counter == 0 ? "§c" : ""}${a.counter} blocks replaced in ${a.completionData.endTime -
                                             a.completionData.startTime} ms over ${a.completionData.endTick -
                                             a.completionData.startTick} tick${a.completionData.endTick -

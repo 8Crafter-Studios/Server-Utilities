@@ -213,8 +213,8 @@ if (!enUSTextsLang.includes("8crafterdebugsticksrp.version=" + originalVersion +
     );
 }
 
-manifestBPRaw = manifestBPRaw.replaceAll(originalVersion, newVersion).replaceAll(new RegExp(`\\[\\s*${originalVersion.split(".").slice(0, 3).join(",\\s*")}\\s*\\]`), `[${newVersion.split(".").slice(0, 3).join(", ")}]`);
-manifestRPRaw = manifestRPRaw.replaceAll(originalVersion, newVersion);
+manifestBPRaw = manifestBPRaw.replaceAll(originalVersion, newVersion).replaceAll(new RegExp(`\\[\\s*${originalVersion.split(".").slice(0, 3).join(",\\s*")}\\s*\\]`, "g"), `[${newVersion.split(".").slice(0, 3).join(", ")}]`);
+manifestRPRaw = manifestRPRaw.replaceAll(originalVersion, newVersion).replaceAll(new RegExp(`\\[\\s*${originalVersion.split(".").slice(0, 3).join(",\\s*")}\\s*\\]`, "g"), `[${newVersion.split(".").slice(0, 3).join(", ")}]`);
 rawInitializeMainGlobalVariablesFileJS = rawInitializeMainGlobalVariablesFileJS.replace(
     'mainGlobalVariables.current_format_version = "' + originalVersion + '";',
     'mainGlobalVariables.current_format_version = "' + newVersion + '";'

@@ -61,7 +61,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -93,7 +93,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -126,7 +126,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -154,7 +154,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -194,7 +194,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -228,7 +228,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -262,7 +262,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -292,7 +292,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -340,7 +340,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -377,7 +377,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -415,7 +415,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -448,7 +448,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -493,7 +493,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -532,7 +532,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -571,7 +571,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }
@@ -606,7 +606,7 @@ export async function fillCone(center, radius, height, dimension, block, options
                                     }
                                 }
                                 index++;
-                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? 2000)) {
+                                if (Date.now() - msSinceLastTickWait >= (options?.minMSBetweenTickWaits ?? config.system.defaultMinMSBetweenTickWaits)) {
                                     await waitTick();
                                     msSinceLastTickWait = Date.now();
                                 }

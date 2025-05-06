@@ -53,6 +53,17 @@ declare module "@minecraft/server" {
          */
         get cursorInventory(): PlayerCursorInventoryComponent;
         get activeSlot(): ContainerSlot;
+        /**
+         * @remarks
+         * Sets a gamemode override for this player.
+         *
+         * This function can't be called in read-only mode.
+         *
+         * @param gameMode
+         * Active gamemode.
+         * @throws This function can throw errors.
+         */
+        setGameMode(gameMode?: GameMode | number): void;
     }
 }
 export {};

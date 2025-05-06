@@ -15,7 +15,7 @@ import { editModuleImportsConfig } from "./editModuleImportsConfig";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { moneySystemSettings } from "./moneySystemSettings";
-import { uiSettings_menuConfigurations_playerMenu } from "./uiSettings_menuConfigurations_playerMenu";
+import { uiSettings_menuConfigurations_playerMenu } from "./uiSettings_MConfigs_PM";
 import { teleportSystemsSettings } from "./teleportSystemsSettings";
 import { customFormUICodes } from "../constants/customFormUICodes";
 import { extractPlayerFromLooseEntityType } from "modules/utilities/functions/extractPlayerFromLooseEntityType";

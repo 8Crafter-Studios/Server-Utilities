@@ -79,6 +79,8 @@ import * as ipc from "ipc";
 import moment from "moment";
 import "intl";
 import "intl.locales";
+import alea from "alea";
+import * as simplexNoise from "simplex-noise";
 Object.defineProperties(globalThis, {
     IPC: {
         value: ipc.IPC,
@@ -129,6 +131,7 @@ const main = await moduleImportsConfig.import("main");
 const coords = await moduleImportsConfig.import("coordinates");
 const cmds = await moduleImportsConfig.import("commands");
 const bans = await moduleImportsConfig.import("ban");
+const moderation = await moduleImportsConfig.import("moderation");
 const uis = await moduleImportsConfig.import("ui");
 const playersave = await moduleImportsConfig.import("player_save");
 const spawnprot = await moduleImportsConfig.import("spawn_protection");
@@ -254,6 +257,12 @@ const modulesMap = {
      */
     bans: bans,
     /**
+     * This module contains classes, constants, functions, and types for working with the moderation system.
+     * @namespace
+     * @path `modules/moderation/`
+     */
+    moderation: moderation,
+    /**
      * This module contains constants, functions, and types for working with the UI system.
      * @namespace
      * @path `modules/ui/`
@@ -315,6 +324,18 @@ const modulesMap = {
      * @namespace
      */
     moment,
+    /**
+     * The `alea` module.
+     * @see {@link https://www.npmjs.com/package/alea}
+     * @namespace
+     */
+    alea,
+    /**
+     * The `simplex-noise` module.
+     * @see {@link https://www.npmjs.com/package/simplex-noise}
+     * @namespace
+     */
+    simplexNoise,
     /**
      * The `@minecraft/server` module.
      *

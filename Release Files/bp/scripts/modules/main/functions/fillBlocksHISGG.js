@@ -45,7 +45,7 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
                 }
             }, {
                 integrity,
-                minMSBetweenYields: options?.minMSBetweenYields ?? 5000,
+                minMSBetweenYields: options?.minMSBetweenYields ?? config.system.defaultMinMSBetweenTickWaits,
             }));
         }
         else {
@@ -63,7 +63,7 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
                 }
             }, {
                 integrity,
-                minMSBetweenYields: options?.minMSBetweenYields ?? 5000,
+                minMSBetweenYields: options?.minMSBetweenYields ?? config.system.defaultMinMSBetweenTickWaits,
             }));
         }
     }
@@ -93,7 +93,7 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
                 }
             }, {
                 integrity,
-                minMSBetweenYields: options?.minMSBetweenYields ?? 5000,
+                minMSBetweenYields: options?.minMSBetweenYields ?? config.system.defaultMinMSBetweenTickWaits,
             }));
         }
         else {
@@ -125,7 +125,7 @@ export async function fillBlocksHISGG(from, to, skygridSize, dimension, block, b
                 }
             }, {
                 integrity,
-                minMSBetweenYields: options?.minMSBetweenYields ?? 5000,
+                minMSBetweenYields: options?.minMSBetweenYields ?? config.system.defaultMinMSBetweenTickWaits,
             }));
         }
     }

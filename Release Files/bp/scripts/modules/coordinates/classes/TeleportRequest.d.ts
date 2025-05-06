@@ -1,10 +1,31 @@
 import { Player } from "@minecraft/server";
+/**
+ * The TeleportRequest class, it is used to handle teleport requests.
+ */
 export declare class TeleportRequest {
+    /**
+     * The unique identifier of this teleport request.
+     */
     readonly id: bigint;
+    /**
+     * The player who sent this teleport request.
+     */
     player: Player;
+    /**
+     * The player this teleport request was sent to.
+     */
     target: Player;
+    /**
+     * When this teleport request was sent.
+     */
     sendTime: number;
+    /**
+     * Whether or not this teleport request is valid.
+     */
     valid: boolean;
+    /**
+     * Whether or not this teleport request has been accepted.
+     */
     accepted: boolean;
     private constructor();
     private init;

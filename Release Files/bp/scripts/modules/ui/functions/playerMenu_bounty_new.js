@@ -116,6 +116,15 @@ export async function playerMenu_bounty_new(sourceEntitya, pagen = 0, maxplayers
                 break;
             case "player": {
                 const player = displayPlayersB[r.selection - 6];
+                if (Bounty.getBountiesFromPlayer(sourceEntity.id).some((b) => b.targetId === player.id)) {
+                    if ((await showMessage(sourceEntity, "Duplicate Bounty", `You already have a bounty on ${player.name}. Would you like to cancel the existing bounty in order to place a new one?`, "Back", "Cancel Existing Bounty")).selection !== 1) {
+                        return await playerMenu_bounty_new(sourceEntity, page, maxplayersperpage, search, displayPlayers);
+                    }
+                    else {
+                        Bounty.getBountiesFromPlayer(sourceEntity.id).find((b) => b.targetId === player.id).cancel();
+                    }
+                    ;
+                }
                 const ra = await new ModalFormData()
                     .title(customFormUICodes.modal.titles.formStyles.medium + "Place Bounty")
                     .textField(`§6--------------------------------

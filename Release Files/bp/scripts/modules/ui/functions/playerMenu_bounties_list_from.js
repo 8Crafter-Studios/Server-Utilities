@@ -68,7 +68,7 @@ export async function playerMenu_bounties_list_from(sourceEntitya, pagen = 0, ma
     let displayBountiesB = displayBounties.slice(page * maxbountiesperpage, (page + 1) * maxbountiesperpage);
     displayBountiesB.forEach((p, i) => {
         let text = `${numberFormatter_compact(p[0].value, true)}\n${p[1].name}`;
-        form.button(text, p[1].isOnline ? "textures/ui/online" : p[1].isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline");
+        form.button(customFormUICodes.action.buttons.positions.main_only + text, p[1].isOnline ? "textures/ui/online" : p[1].isBanned ? "textures/ui/Ping_Offline_Red_Dark" : "textures/ui/offline");
     });
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");

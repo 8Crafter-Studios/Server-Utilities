@@ -29,8 +29,8 @@ export async function evalAutoScriptSettings(sourceEntitya) {
         ? sourceEntitya.player
         : sourceEntitya;
     if (securityVariables.ultraSecurityModeEnabled) {
-        if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessSettings") == false) {
-            const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permission to access this menu: andexdb.accessSettings", "Back", "Cancel");
+        if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessAdvancedSettings") == false || securityVariables.testPlayerForPermission(sourceEntity, "andexdb.useScriptEval") == false) {
+            const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permissions to access this menu: andexdb.accessAdvancedSettings, andexdb.useScriptEval", "Back", "Cancel");
             if (r.canceled || r.selection == 0) {
                 return 1;
             }

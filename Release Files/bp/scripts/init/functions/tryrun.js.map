@@ -1,1 +1,1 @@
-{"version":3,"file":"tryrun.js","sourceRoot":"","sources":["../../../src/init/functions/tryrun.ts"],"names":[],"mappings":"AAAA,OAAO,mCAAmC,CAAC;AAC3C,UAAU,CAAC,MAAM,GAAG,SAAS,MAAM,CAAC,UAAqB;IACrD,IAAI,CAAC;QACD,UAAU,EAAE,CAAC;IACjB,CAAC;IAAC,MAAM,CAAC,CAAC,CAAC;AACf,CAAC,CAAC"}
+{"version":3,"file":"tryrun.js","sourceRoot":"","sources":["../../../src/init/functions/tryrun.ts"],"names":[],"mappings":"AAAA,UAAU,CAAC,MAAM,GAAG,SAAS,MAAM,CAAC,UAAqB;IACrD,IAAI,CAAC;QACD,UAAU,EAAE,CAAC;IACjB,CAAC;IAAC,MAAM,CAAC,CAAC,CAAC;AACf,CAAC,CAAC;AAEF,OAAO,EAAE,CAAC"}

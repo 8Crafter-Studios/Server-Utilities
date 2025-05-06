@@ -41,7 +41,7 @@ export async function tpaSettings(sourceEntity) {
             }
         }
         let form = new ModalFormData();
-        form.title(customFormUICodes.modal.titles.formStyles.medium + "TPA System Settings [§cExperimental§r]");
+        form.title(customFormUICodes.modal.titles.formStyles.medium + "TPA System Settings");
         form.toggle("§l§fEnable TPA System§r§o\ndefault is enabled", config.tpaSystem.tpaSystemEnabled);
         form.textField("§l§fSeconds Until Request Times Out§r§o\ndefault is 60", "int", config.tpaSystem.timeoutDuration.toString());
         form.toggle("§l§fAllow Cross-Dimensional Teleport§r§o\ndefault is enabled", config.tpaSystem.allowCrossDimensionalTeleport);

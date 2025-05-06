@@ -1,1 +1,1 @@
-{"version":3,"file":"clog.js","sourceRoot":"","sources":["../../../src/init/functions/clog.ts"],"names":[],"mappings":"AAAA,OAAO,mCAAmC,CAAC;AAC3C,UAAU,CAAC,IAAI,GAAG,SAAS,IAAI,CAAC,GAAG,IAAW;IAC1C,OAAO,CAAC,GAAG,CAAC,IAAI,CAAC,CAAC;AACtB,CAAC,CAAC"}
+{"version":3,"file":"clog.js","sourceRoot":"","sources":["../../../src/init/functions/clog.ts"],"names":[],"mappings":"AAAA,UAAU,CAAC,IAAI,GAAG,SAAS,IAAI,CAAC,GAAG,IAAW;IAC1C,OAAO,CAAC,GAAG,CAAC,IAAI,CAAC,CAAC;AACtB,CAAC,CAAC;AAEF,OAAO,EAAE,CAAC"}

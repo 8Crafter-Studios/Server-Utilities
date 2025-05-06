@@ -45,7 +45,7 @@ export async function playerMenu_about_contributors(sourceEntitya) {
                 }
                 break;
             case "terpyFTP":
-                if ((await showActions(sourceEntity, "terpyFTP", "§aRole: §bHelps with testing stuff.§r\n§dDiscord: §bterpyftp§r", ["Back", "textures/ui/arrow_left"], ["Close", "textures/ui/crossout"])).selection != 1) {
+                if ((await showActions(sourceEntity, "terpyFTP", "§aRole: §bHelped with testing the player menu.§r\n§dDiscord: §bterpyftp§r", ["Back", "textures/ui/arrow_left"], ["Close", "textures/ui/crossout"])).selection != 1) {
                     return await playerMenu_about_contributors(sourceEntity);
                 }
                 else {

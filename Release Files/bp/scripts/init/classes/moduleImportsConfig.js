@@ -50,13 +50,13 @@ export class moduleImportsConfig {
      */
     static get override() {
         const option = gwdp("moduleImportsConfig:override");
-        if (option == "disableAll") {
+        if (option === "disableAll") {
             return "disableAll";
         }
-        else if (option == "enableAll") {
+        else if (option === "enableAll") {
             return "enableAll";
         }
-        else if (option == "enableAllNonDeprecated") {
+        else if (option === "enableAllNonDeprecated") {
             return "enableAllNonDeprecated";
         }
         else {
@@ -325,6 +325,31 @@ export class moduleImportsConfig {
                     ? option ?? undefined
                     : "none");
             },
+            get moderation() {
+                const option = gwdp("moduleImportsConfig:moduleOverride.moderation");
+                if (option == "disableAll") {
+                    return "disableAll";
+                }
+                else if (option == "enableAll") {
+                    return "enableAll";
+                }
+                else if (option == "enableAllNonDeprecated") {
+                    return "enableAllNonDeprecated";
+                }
+                else {
+                    return "none";
+                }
+            },
+            set moderation(option) {
+                swdp("moduleImportsConfig:moduleOverride.moderation", [
+                    "none",
+                    "disableAll",
+                    "enableAll",
+                    "enableAllNonDeprecated",
+                ].includes(option)
+                    ? option ?? undefined
+                    : "none");
+            },
             get player_save() {
                 const option = gwdp("moduleImportsConfig:moduleOverride.player_save");
                 if (option == "disableAll") {
@@ -428,7 +453,7 @@ export class moduleImportsConfig {
         };
     }
     static get default() {
-        return Object.fromEntries(optionalModuleObjectImportFilePaths.map((s) => [s, 0]));
+        return Object.fromEntries(optionalModuleObjectImportFilePaths.map((s) => [s, 1]));
     }
     /**
      *
@@ -453,7 +478,7 @@ export class moduleImportsConfig {
     }
     static toJSON_module(module) {
         let string = getStringFromDynamicProperties("moduleImportsConfigData");
-        return Object.assign(Object.fromEntries(moduleOptionalImportPathMap[module].map(v => [v, 0])), Object.fromEntries(Object.entries(JSON.parse(string == "" ? JSON.stringify(this.default) : string)).filter((f) => f[0].startsWith(`BP/scripts/modules/${module}/`) && moduleOptionalImportPathMap[module].includes(f[0]))));
+        return Object.assign(Object.fromEntries(moduleOptionalImportPathMap[module].map(v => [v, 1])), Object.fromEntries(Object.entries(JSON.parse(string == "" ? JSON.stringify(this.default) : string)).filter((f) => f[0].startsWith(`BP/scripts/modules/${module}/`) && moduleOptionalImportPathMap[module].includes(f[0]))));
     }
     static setJSON(json) {
         saveStringToDynamicProperties(JSON.stringify(json), "moduleImportsConfigData");

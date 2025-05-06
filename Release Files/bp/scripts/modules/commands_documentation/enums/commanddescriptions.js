@@ -239,6 +239,7 @@ export var commanddescriptions;
     commanddescriptions["\\\\walls"] = "Replaces the walls of the selected area with the selected block type.";
     commanddescriptions["\\\\ceil"] = "Replaces the ceiling of the selected area with the selected block type.";
     commanddescriptions["\\\\floor"] = "Replaces the floor of the selected area with the selected block type.";
+    commanddescriptions["\\\\loadchunks"] = "Loads the chunks in the selected area.";
     commanddescriptions["\\\\set"] = "Sets the blocks between the selected area to the selected block type.";
     commanddescriptions["\\\\seti"] = "Sets the blocks between the selected area to the selected block type with the specified integrity.";
     commanddescriptions["\\\\drain"] = "Drains the blocks between the selected area.";

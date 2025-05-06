@@ -8,6 +8,7 @@ import { vTStr } from "modules/commands/functions/vTStr";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { Home } from "modules/commands/classes/Home";
 import { customFormUICodes } from "../constants/customFormUICodes";
+import { securityVariables } from "security/ultraSecurityModeUtils";
 export async function playerMenu_homes(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     if (!(sourceEntity instanceof Player)) {
@@ -27,8 +28,9 @@ export async function playerMenu_homes(sourceEntitya) {
             return 0;
         }
     }
+    const canBypassTeleportCooldowns = securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(sourceEntity, "andexdb.bypassTeleportCooldowns") : sourceEntity.hasTag("admin");
     let form = new ActionFormData();
-    form.title(customFormUICodes.action.titles.formStyles.general + "Homes");
+    form.title(customFormUICodes.action.titles.formStyles.medium + "Homes");
     const homes = HomeSystem.getHomesForPlayer(sourceEntity.id);
     homes.forEach((h) => form.button(`${customFormUICodes.action.buttons.positions.main_only}${h.name}\n${dimensionTypeDisplayFormatting[dimensionse[dimensions.indexOf(h.location.dimension)]]}§r ${vTStr(Vector.floor(h.location))}`));
     form.button(customFormUICodes.action.buttons.positions.main_only + "New Home", "textures/ui/color_plus");
@@ -42,7 +44,7 @@ export async function playerMenu_homes(sourceEntitya) {
         switch ((!!homes[r.selection] ? "home" : undefined) ?? ["newHome", "back", "close"][r.selection - homes.length]) {
             case "home":
                 const home = homes[r.selection];
-                switch (["teleport", "delete", "back", "close"][(await showActions(sourceEntity, "Home Details", `${home.name}\nDimension${dimensionTypeDisplayFormattingD[home.location.dimension.id]}`, ["Teleport", "textures/items/ender_pearl"], ["Delete", "textures/ui/trash_default"], ["Back", "textures/ui/arrow_left"], ["Close", "textures/ui/crossout"])).selection]) {
+                switch (["teleport", "delete", "back", "close"][(await showActions(sourceEntity, customFormUICodes.action.titles.formStyles.medium + "Home Details", `${home.name}\nDimension: ${dimensionTypeDisplayFormattingD[home.location.dimension.id]}`, [customFormUICodes.action.buttons.positions.main_only + "Teleport", "textures/items/ender_pearl"], [customFormUICodes.action.buttons.positions.main_only + "Delete", "textures/ui/trash_default"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"])).selection]) {
                     case "teleport":
                         if (home.location.dimension !== overworld && !config.homeSystem.allowHomesInOtherDimensions) {
                             if ((await showMessage(sourceEntity, "Error", `§cSorry but homes in dimensions other than the overworld have been disabled.`, "Back", "Close")).selection === 0) {
@@ -78,7 +80,7 @@ export async function playerMenu_homes(sourceEntitya) {
                             sourceEntity.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                             return 0;
                         }
-                        const standStillTime = config.teleportSystems.standStillTimeToTeleport;
+                        const standStillTime = canBypassTeleportCooldowns ? 0 : config.teleportSystems.standStillTimeToTeleport;
                         if (standStillTime > 0) {
                             sourceEntity.sendMessage("§eStand still for " + standStillTime + " seconds to teleport.");
                             await waitTicks(20);
@@ -95,13 +97,13 @@ export async function playerMenu_homes(sourceEntitya) {
                             await waitTicks(20);
                         }
                         // Check for PVP cooldown again after ending the teleport countdown.
-                        if (Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
+                        if (!canBypassTeleportCooldowns && Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
                             sourceEntity.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                             successful = false;
                             return 0;
                         }
                         // Check for teleport cooldown again after ending the teleport countdown.
-                        if (Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
+                        if (!canBypassTeleportCooldowns && Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
                             sourceEntity.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                             return 0;
                         }
@@ -147,7 +149,7 @@ export async function playerMenu_homes(sourceEntitya) {
                     }
                 }
                 const location = sourceEntity.dimensionLocation;
-                const r = await new ModalFormData().title("New Home").textField(`Location: ${vTStr(location)}\nDimension: ${dimensionTypeDisplayFormattingD[location.dimension.id]}\n\nPlease enter the name for your new home below.`, "Home Name").submitButton("Create Home").forceShow(sourceEntity);
+                const r = await new ModalFormData().title(customFormUICodes.modal.titles.formStyles.medium + "New Home").label(`Location: ${vTStr(location)}\nDimension: ${dimensionTypeDisplayFormattingD[location.dimension.id]}`).divider().textField("Please enter the name for your new home below.", "Home Name").submitButton("Create Home").forceShow(sourceEntity);
                 if (r.canceled) {
                     return await playerMenu_homes(sourceEntity);
                 }

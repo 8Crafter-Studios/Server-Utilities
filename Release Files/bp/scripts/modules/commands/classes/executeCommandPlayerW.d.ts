@@ -102,7 +102,7 @@ export declare class executeCommandPlayerW {
     queueMusic(trackId: string, musicOptions?: MusicOptions): void;
     resetLevel(): void;
     sendMessage(message: string | RawMessage | (string | RawMessage)[]): void;
-    setGameMode(gameMode?: GameMode): void;
+    setGameMode(gameMode?: GameMode | number): void;
     setOp(isOp: boolean): void;
     setSpawnPoint(spawnPoint?: DimensionLocation): void;
     spawnParticle(effectName: string, location: Vector3, molangVariables?: MolangVariableMap): void;

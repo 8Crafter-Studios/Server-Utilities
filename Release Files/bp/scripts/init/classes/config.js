@@ -2183,6 +2183,21 @@ var exports;
                 static set artificialLagMS(artificialLagMS) {
                     world.setDynamicProperty("andexdbSettings:artificialLagMS", artificialLagMS ?? 0);
                 }
+                /**
+                 * The default minimum time between tick waits, in milliseconds.
+                 *
+                 * This will be the minimum amount of milliseconds that many generation functions will spend each tick, set this to a really low value to reduce lag while using them, but setting it really low will also cause the generation functions to take a really long time.
+                 *
+                 * Setting it close to or above 10000 may cause the generation functions to be interrupted with script hang errors.
+                 *
+                 * @default 2500
+                 */
+                static get defaultMinMSBetweenTickWaits() {
+                    return Number(world.getDynamicProperty("andexdbSettings:defaultMinMSBetweenTickWaits") ?? 2500);
+                }
+                static set defaultMinMSBetweenTickWaits(defaultMinMSBetweenTickWaits) {
+                    world.setDynamicProperty("andexdbSettings:defaultMinMSBetweenTickWaits", defaultMinMSBetweenTickWaits ?? 2500);
+                }
                 static get timeZone() {
                     return isNaN(Number(world.getDynamicProperty("andexdbSettings:timeZone")))
                         ? 0
@@ -2203,6 +2218,8 @@ var exports;
                  * Dynamic Property ID: `andexdbSettings:protectedAreasRefreshRate`
                  *
                  * @default 200
+                 *
+                 * @deprecated
                  */
                 static get protectedAreasRefreshRate() {
                     return Number(world.getDynamicProperty("andexdbSettings:protectedAreasRefreshRate") ?? 200);
@@ -2210,12 +2227,26 @@ var exports;
                 static set protectedAreasRefreshRate(protectedAreasRefreshRate) {
                     world.setDynamicProperty("andexdbSettings:protectedAreasRefreshRate", Number.isNaN(Number(protectedAreasRefreshRate)) ? 200 : Math.min(1000000, Math.max(1, Number(protectedAreasRefreshRate ?? 200))));
                 }
+                /**
+                 * Whether to enable zone actions for protected areas.
+                 *
+                 * Dynamic Property ID: `andexdbSettings:protectedAreasZoneActionsEnabled`
+                 *
+                 * @default true
+                 */
                 static get protectedAreasZoneActionsEnabled() {
                     return Boolean(world.getDynamicProperty("andexdbSettings:protectedAreasZoneActionsEnabled") ?? true);
                 }
                 static set protectedAreasZoneActionsEnabled(protectedAreasZoneActionsEnabled) {
                     world.setDynamicProperty("andexdbSettings:protectedAreasZoneActionsEnabled", protectedAreasZoneActionsEnabled ?? true);
                 }
+                /**
+                 * How often in ticks to execute the zone actions.
+                 *
+                 * Dynamic Property ID: `andexdbSettings:protectedAreasZoneActionsInterval`
+                 *
+                 * @default 5
+                 */
                 static get protectedAreasZoneActionsInterval() {
                     return Number(world.getDynamicProperty("andexdbSettings:protectedAreasZoneActionsInterval") ?? 5);
                 }
@@ -2224,6 +2255,13 @@ var exports;
                         ? 5
                         : Math.min(1000000, Math.max(1, Number(protectedAreasZoneActionsInterval ?? 5))));
                 }
+                /**
+                 * How often in milliseconds to refresh the list of protected areas zones with zone actions.
+                 *
+                 * Dynamic Property ID: `andexdbSettings:protectedAreasZoneRefreshInterval`
+                 *
+                 * @default 200
+                 */
                 static get protectedAreasZoneRefreshInterval() {
                     return Number(world.getDynamicProperty("andexdbSettings:protectedAreasZoneRefreshInterval") ?? 200);
                 }
@@ -2233,7 +2271,7 @@ var exports;
                         : Math.min(1000000, Math.max(1, Number(protectedAreasZoneRefreshInterval ?? 200))));
                 }
                 /**
-                 * How often to check for banned players.
+                 * How often in ticks to check for banned players.
                  *
                  * Dynamic Property ID: `andexdbSettings:bannedPlayersRefreshRate`
                  *
