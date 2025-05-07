@@ -6,7 +6,7 @@ export declare namespace mainGlobalVariables {
     /**
      * The version of the add-on.
      */
-    const current_format_version = "1.36.1";
+    const current_format_version = "1.36.2";
     /**
      * The version of Minecraft Bedrock Edition supported by the add-on.
      */

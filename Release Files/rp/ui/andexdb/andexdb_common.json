@@ -349,13 +349,18 @@
 
         "factory": {
             "name": "buttons",
-            "control_name": "andexdb_common.dynamic_button"
+            "control_ids": {
+              "button": "andexdb_common.dynamic_button",
+              "label": "@server_form.dynamic_label",
+              "header": "@server_form.dynamic_header",
+              "divider": "@settings_common.option_group_section_divider"
+            }
         },
 
         "collection_name": "form_buttons",
         "bindings": [
             {
-                "binding_name": "#form_button_length",
+                "binding_name": "#form_button_contents",
                 "binding_name_override": "#collection_length"
             }
         ]

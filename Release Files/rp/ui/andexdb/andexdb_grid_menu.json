@@ -898,6 +898,28 @@
                 }
             },
             {
+                "labels_headers_and_dividers_panel": {
+                    "type": "stack_panel",
+                    "size": ["100%", "100%c"],
+                    "orientation": "vertical",
+                    "factory": {
+                        "name": "buttons",
+                        "control_ids": {
+                            "label": "@server_form.dynamic_label",
+                            "header": "@server_form.dynamic_header",
+                            "divider": "@settings_common.option_group_section_divider"
+                        }
+                    },
+                    "collection_name": "form_buttons",
+                    "bindings": [
+                        {
+                            "binding_name": "#form_button_contents",
+                            "binding_name_override": "#collection_length"
+                        }
+                    ]
+                }
+            },
+            {
                 "scroll_panel": {
                     "type": "stack_panel",
                     "orientation": "horizontal",
