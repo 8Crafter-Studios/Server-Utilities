@@ -8581,7 +8581,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 !!switchTest.match(/^cmdrunner$/):
                 eventData.cancel = true;
                 try {
-                    terminal(player);
+                    srun(() => terminal(player));
                 }
                 catch (e) {
                     player.sendError("§c" + e + e.stack, true);
@@ -8591,7 +8591,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 !!switchTest.match(/^msgui$/):
                 eventData.cancel = true;
                 try {
-                    chatMessageNoCensor(player);
+                    srun(() => chatMessageNoCensor(player));
                 }
                 catch (e) {
                     player.sendError("§c" + e + e.stack, true);
@@ -8603,7 +8603,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 !!switchTest.match(/^sendui$/):
                 eventData.cancel = true;
                 try {
-                    chatSendNoCensor(player);
+                    srun(() => chatSendNoCensor(player));
                 }
                 catch (e) {
                     player.sendError("§c" + e + e.stack, true);
@@ -8615,7 +8615,7 @@ stack of 16 unbreaking 3 mending 1 shields that are locked to a specific slot an
                 !!switchTest.match(/^commandui$/):
                 eventData.cancel = true;
                 try {
-                    chatCommandRunner(player);
+                    srun(() => chatCommandRunner(player));
                 }
                 catch (e) {
                     player.sendError("§c" + e + e.stack, true);

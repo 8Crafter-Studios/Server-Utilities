@@ -69,7 +69,7 @@ export async function editAreasForCustomCategory(sourceEntity, prefix) {
                         mode: mode,
                         icon_path: (icon_path ?? "") == "" ? undefined : icon_path,
                     };
-                    world.setDynamicProperty("v2:" + prefix + id, JSON.stringify(newValue));
+                    world.setDynamicProperty("advancedProtectedArea:" + prefix + ":" + id, JSON.stringify(newValue));
                     ProtectedAreas.areas.advancedArea[prefix][dimensionse[dimension]].push({ id, ...newValue });
                     continue;
                 }

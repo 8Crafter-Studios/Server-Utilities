@@ -1,6 +1,6 @@
 import { EffectTypes, GameMode, Player } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
-import { advancedCategoryPropertyDisplayNames, AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults, AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSON, convertAdvancedPropertedAreaCategoryToJSON, ProtectedAreas, } from "init/variables/protectedAreaVariables";
+import { advancedCategoryPropertyDisplayNames, AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults, AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSON, ProtectedAreas, } from "init/variables/protectedAreaVariables";
 import { BlockMask } from "modules/commands/classes/BlockMask";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import { customFormUICodes } from "modules/ui/constants/customFormUICodes";
@@ -73,7 +73,7 @@ Icon Path: ${category.icon_path ?? "None"}`)
                 "playerInteractWithBlock",
                 "playerInteractWithEntity",
                 "itemUse",
-                "itemUseOn",
+                // "itemUseOn",
                 "explosion",
                 "effectAdd",
                 "chatSend",
