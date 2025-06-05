@@ -19498,7 +19498,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname, firstblo
                             nameIsCaseSensitive: false,
                         },
                     ]).args;
-                    console.log(JSONB.stringify(args));
+                    // console.log(JSONB.stringify(args));
                     const ca = player.worldEditSelection.minPos;
                     const cb = player.worldEditSelection.maxPos;
                     const dimensiona = player.worldEditSelection.dimension;

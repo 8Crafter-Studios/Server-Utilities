@@ -405,7 +405,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                          * @type {typeof parameter.valueType}
                          */
                         const valueType = typeof parameter.valueType === "string" ? { type: parameter.valueType } : parameter.valueType;
-                        switch (valueType.type) {
+                        switch (valueType?.type) {
                             case "string":
                                 if (paramEval.startsWith('""')) {
                                     parameter.value = "";
@@ -526,7 +526,7 @@ export class EvaluateParameters_NamedIgnorableParamaters {
      * @param {ReturnType<typeof evaluateParameters<evaluateParametersParameter[], UOAT>>["args"]} args The args array to apply the detected values to.
      */
     applyDetectedValuesToArgsObject(args) {
-        for (const key in Object.keys(args)) {
+        for (const key of Object.keys(args)) {
             if (args[key] instanceof EvaluateParameters_NamedIgnorableParamater) {
                 args[key] = args[key].value;
             }
