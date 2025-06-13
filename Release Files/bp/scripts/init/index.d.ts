@@ -111,6 +111,7 @@ import "./functions/twoWayModulo";
 import "./functions/waitTick";
 import "./functions/waitTicks";
 import "security/ultraSecurityModeUtils";
+import "./classes/CommandRegistry";
 import "./eventSubscriptions/afterEvents/blockExplode";
 import "./eventSubscriptions/afterEvents/buttonPush";
 import "./eventSubscriptions/afterEvents/chatSend";
@@ -175,10 +176,12 @@ import "./intervals/rankNameTags_editorStickActionbar_artificialLagMS";
 import "./intervals/worldBorderSystem";
 import "./systems/ban_checker";
 import "./systems/player_data_auto_save";
+import "./systems/protected_areas_refresher";
 import "./systems/zone_actions_interval";
 import "./types";
 import "./variables/protectedAreaVariables";
 import "modules/errors/index";
+import "./commands/misc/-debugcustomcommands.command";
 /**
  * ```ts
 node -e "const fs=require('fs');

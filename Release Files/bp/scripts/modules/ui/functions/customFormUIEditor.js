@@ -22,9 +22,9 @@ export function customFormUIEditor(UIId, player, goBackToMenu = false) {
         if (t.canceled)
             return;
         world.setDynamicProperty(`customUI:${formId}`, `${t.formValues[0]}|${t.formValues[1]}`);
-        let elementValues = t.formValues.slice(2, -2);
+        let elementValues = t.formValues?.slice(2, -2);
         console.warn(elementValues);
-        elementValues.forEach((v, i) => {
+        elementValues?.forEach((v, i) => {
             switch (i % 7) {
                 case 0:
                     world.setDynamicProperty(`customUIElement:${formId}|${form.indexList[Math.floor(i / 7)]}`, `${customElementTypeIds[Number(elementValues[i])]}|${elementValues.slice(i + 1, i + 6).join("|")}`);
@@ -36,8 +36,8 @@ export function customFormUIEditor(UIId, player, goBackToMenu = false) {
                     break;
             }
         });
-        if (t.formValues[t.formValues.length - 2]) {
-            world.setDynamicProperty(`customUIElement:${formId}|${Number(t.formValues[t.formValues.length - 1]) ??
+        if (t.formValues[t.formValues?.length - 2]) {
+            world.setDynamicProperty(`customUIElement:${formId}|${Number(t.formValues[t.formValues?.length - 1]) ??
                 (form.indexList[form.indexList.length - 1] ?? -1) + 1}`, "");
         }
         if (goBackToMenu == true) {

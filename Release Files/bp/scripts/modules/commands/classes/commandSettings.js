@@ -1,7 +1,12 @@
 import { world } from "@minecraft/server";
 import { command, command as commandClass } from "modules/commands/classes/command";
-import { command_settings_format_version } from "modules/commands/constants/command_settings_format_version";
+import { legacy_command_settings_format_version } from "modules/commands/constants/command_settings_format_version";
 import { commands } from "modules/commands_list/constants/commands";
+/**
+ * Handles settings for commands.
+ *
+ * @deprecated Legacy class. Superceeded by {@link RegisteredCommandSettings}.
+ */
 export class commandSettings {
     type;
     commandName;
@@ -22,17 +27,12 @@ export class commandSettings {
                 ? commandSettingsId.slice(22)
                 : commandSettingsId;
         this.commandName =
-            this.commandName.slice(0, commandClass.dp.length) ==
-                commandClass.dp &&
+            this.commandName.slice(0, commandClass.dp.length) == commandClass.dp &&
                 this.commandName.slice(commandClass.dp.length, commandClass.dp.length + 1) != "\\"
                 ? "\\" + this.commandName
                 : this.commandName;
         this.commandSettingsId = commandSettingsId;
-        this.customCommandId =
-            this.type == "custom"
-                ? command?.customCommandId ??
-                    "customCommand:" + this.commandName
-                : undefined;
+        this.customCommandId = this.type == "custom" ? command?.customCommandId ?? "customCommand:" + this.commandName : undefined;
         this.command = command;
         this.defaultSettings =
             this.type == "built-in" || this.type == "unknown"
@@ -53,16 +53,13 @@ export class commandSettings {
         return JSONParse(String(world.getDynamicProperty(this.commandSettingsId)));
     }
     get enabled() {
-        return (this?.parsed?.enabled ??
-            this?.defaultSettings?.enabled ??
-            true);
+        return this?.parsed?.enabled ?? this?.defaultSettings?.enabled ?? true;
     }
     set enabled(enabled) {
         this.save({ enabled });
     }
     get requiredTags() {
-        return (this?.parsed?.requiredTags ??
-            this?.defaultSettings?.requiredTags ?? ["canUseChatCommands"]);
+        return this?.parsed?.requiredTags ?? this?.defaultSettings?.requiredTags ?? ["canUseChatCommands"];
     }
     set requiredTags(requiredTags) {
         this.save({ requiredTags });
@@ -81,7 +78,7 @@ export class commandSettings {
     } /*
     get description(){return this?.parsed?.description ?? true}*/
     get settings_version() {
-        return (this?.parsed?.settings_version ?? command_settings_format_version);
+        return this?.parsed?.settings_version ?? legacy_command_settings_format_version;
     }
     get isSaved() {
         return world.getDynamicProperty(this.commandSettingsId) != undefined;
@@ -109,7 +106,7 @@ export class commandSettings {
             requiredTags: this.requiredTags,
             requiredPermissionLevel: this.requiredPermissionLevel,
             requiresOp: this.requiresOp,
-            settings_version: this.settings_version,
+            settings_version: legacy_command_settings_format_version,
         })), settings ?? {})));
     }
     remove() {

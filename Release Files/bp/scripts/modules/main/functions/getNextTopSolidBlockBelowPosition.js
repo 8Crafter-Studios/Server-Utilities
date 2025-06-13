@@ -20,10 +20,10 @@ export function getNextTopSolidBlockBelowPosition(location, dimension, onlySolid
                     block.isAir) &&
                 readyToSearch &&
                 (onlySolid
-                    ? block.below(1).isSolid
+                    ? block.below(1)?.isSolid
                     : !((!allowLiquidBelow
-                        ? block.below(1).isLiquid
-                        : false) || block.below(1).isAir))) {
+                        ? block.below(1)?.isLiquid
+                        : false) || block.below(1)?.isAir))) {
                 return block;
             }
             else {

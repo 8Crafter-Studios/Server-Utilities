@@ -28,25 +28,25 @@ export function playerController(sourceEntitya, message = "") {
     function playerControllerFormPopup(playerTargetB, playerViewerB) {
         let form = new ModalFormData();
         try {
-            dimension = String(playerList[playerTargetB].getSpawnPoint().dimension.id);
+            dimension = String(playerList[playerTargetB].getSpawnPoint()?.dimension.id);
         }
         catch (e) {
             dimension = "";
         }
         try {
-            spawnXPosition = String(playerList[playerTargetB].getSpawnPoint().x);
+            spawnXPosition = String(playerList[playerTargetB].getSpawnPoint()?.x);
         }
         catch (e) {
             spawnXPosition = "";
         }
         try {
-            spawnYPosition = String(playerList[playerTargetB].getSpawnPoint().y);
+            spawnYPosition = String(playerList[playerTargetB].getSpawnPoint()?.y);
         }
         catch (e) {
             spawnYPosition = "";
         }
         try {
-            spawnZPosition = String(playerList[playerTargetB].getSpawnPoint().z);
+            spawnZPosition = String(playerList[playerTargetB].getSpawnPoint()?.z);
         }
         catch (e) {
             spawnZPosition = "";
@@ -89,9 +89,9 @@ export function playerController(sourceEntitya, message = "") {
         form2.dropdown("damageType", ["entity", "projectile"], 0)
         form2.dropdown("damageCause", ["anvil", "none"], 0)*/
         form.toggle("§eapplyImpulse", { defaultValue: false });
-        form.textField("§eX Velocity", "§eX Velocity" /*, String(playerList[playerTargetB].getVelocity().x)*/);
-        form.textField("§eY Velocity", "§eY Velocity" /*, String(playerList[playerTargetB].getVelocity().y)*/);
-        form.textField("§eZ Velocity", "§eZ Velocity" /*, String(playerList[playerTargetB].getVelocity().z)*/);
+        form.textField("§eX Velocity", "§eX Velocity" /*, String(playerList[playerTargetB]!.getVelocity().x)*/);
+        form.textField("§eY Velocity", "§eY Velocity" /*, String(playerList[playerTargetB]!.getVelocity().y)*/);
+        form.textField("§eZ Velocity", "§eZ Velocity" /*, String(playerList[playerTargetB]!.getVelocity().z)*/);
         form.toggle("applyKnockback", { defaultValue: false });
         form.textField("directionX", "directionX");
         form.textField("directionZ", "directionZ");
@@ -375,10 +375,10 @@ export function playerController(sourceEntitya, message = "") {
                 catch (e) {
                     console.error(e, e.stack);
                 } /*
-        if (playerList[playerTargetB].hasTag("isSneaking")) {
+        if (playerList[playerTargetB]!.hasTag("isSneaking")) {
           system.runInterval( () => {
-          playerList[playerTargetB].isSneaking == true
-          if (playerList[playerTargetB].hasTag("isSneaking") == false) {
+          playerList[playerTargetB]!.isSneaking == true
+          if (playerList[playerTargetB]!.hasTag("isSneaking") == false) {
           return
           }
           }, 2)

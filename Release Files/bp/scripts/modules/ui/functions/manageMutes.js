@@ -21,7 +21,7 @@ export async function manageMutes(sourceEntity, pagen = 0, maxentriesperpage = c
     const player = extractPlayerFromLooseEntityType(sourceEntity);
     var currentParameters = {
         player,
-        pagen,
+        pagen: pagen,
         maxentriesperpage,
         search,
         cachedEntries,
@@ -40,7 +40,7 @@ export async function manageMutes(sourceEntity, pagen = 0, maxentriesperpage = c
             }
         }
         let form = new ActionFormData();
-        const page = Math.max(0, pagen);
+        const page = Math.max(0, pagen ?? 0);
         let displayEntries = cachedEntries ?? [];
         if (cachedEntries === undefined) {
             const onlinePlayerNames = world.getAllPlayers().map((v) => v.name);
@@ -92,7 +92,7 @@ export async function manageMutes(sourceEntity, pagen = 0, maxentriesperpage = c
             const r = await forceShow(form, player);
             if (r.canceled)
                 return 1;
-            switch (["search", "previous", "go", "next", "", ""][r.selection] ??
+            switch (["search", "previous", "go", "next", "", "", undefined][r.selection] ??
                 (!!displayEntriesB[r.selection - 6] ? "entry" : undefined) ??
                 ["mutePlayer", "back", "close", "refresh"][r.selection - displayEntriesB.length - 6]) {
                 case "search":
@@ -127,6 +127,8 @@ export async function manageMutes(sourceEntity, pagen = 0, maxentriesperpage = c
                         .textField(`Current Page: ${page + 1}\nPage # (Between 1 and ${numpages})`, "Page #")
                         .submitButton("Go To Page")
                         .forceShow(player));
+                    if (!r || r.canceled)
+                        continue;
                     currentParameters = {
                         player,
                         pagen: Math.max(1, Math.min(numpages, r.formValues?.[0]?.toNumber() ?? page + 1)) - 1,
@@ -320,8 +322,8 @@ export async function addMute(sourceEntity) {
                 muteDate,
                 mutedById: player.id,
                 mutedByName: player.name ?? player.nameTag,
-                unmuteDate,
-                reason: r.formValues[2] === "" ? null : r.formValues[2],
+                unmuteDate: unmuteDate,
+                reason: r.formValues[2] === "" ? undefined : r.formValues[2],
             });
             return 1;
         }
@@ -385,7 +387,7 @@ export async function addMuteOnPlayer(sourceEntity, targetName) {
                 mutedById: player.id,
                 mutedByName: player.name ?? player.nameTag,
                 unmuteDate,
-                reason: r.formValues[1] === "" ? null : r.formValues[1],
+                reason: r.formValues[1] === "" ? undefined : r.formValues[1],
             });
             return 1;
         }

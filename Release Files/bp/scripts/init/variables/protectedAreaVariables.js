@@ -492,7 +492,7 @@ export class ProtectedAreas {
     static loadAreasForAdvancedCategory(advancedCategoryID) {
         let a = world.getDynamicPropertyIds().filter((dpi) => dpi.startsWith("advancedProtectedArea:" + advancedCategoryID + ":"));
         let d = a.map((v) => tryget(() => ({
-            id: v.slice(advancedCategoryID.length + 24),
+            id: v.slice(advancedCategoryID.length + 23),
             ...JSON.parse(String(world.getDynamicProperty(v))),
         })));
         d.forEach((v) => (v.mode == 1 ? undefined : v.mode == 0 ? undefined : (v.mode = 0)));

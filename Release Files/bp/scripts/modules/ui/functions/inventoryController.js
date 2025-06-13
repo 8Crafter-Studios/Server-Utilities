@@ -27,7 +27,7 @@ export function inventoryController(sourceEntitya) {
         let playerViewerB = Number(playerViewer);
         let inventory;
         inventory = players[playerTargetB].getComponent("inventory"); /*
-try{inventory = players[playerTargetB].getComponent("equipment_inventory") as EntityEquipmentInventoryComponent;} catch(e){if (Boolean(debug2) == true) { console.error(e, e.stack); }};*/
+try{inventory = players[playerTargetB]!.getComponent("equipment_inventory") as EntityEquipmentInventoryComponent;} catch(e){if (Boolean(debug2) == true) { console.error(e, e.stack); }};*/
         let item = inventory.container.getItem(Number(slotNumber));
         let equipmentPlayerSlotsList = [
             EquipmentSlot.Head,
@@ -303,7 +303,7 @@ form.textField("Item Data", "Trigger Event", {defaultValue: ""});*/
             let [itemName, itemLore, canDestroy, canPlaceOn, triggerEvent, setAmount, amount, keepOnDeath, lockMode, setLore, clearLore, newItem, newItemType, newItemCount /*, newItemData*/, moveItem, moveFromSlot, moveToSlot, moveFromContainerType, moveFromContainer, moveFromContainerBlock, moveToContainerType, moveToContainer, moveToContainerBlock, swapItems, swapSlot, swapOtherSlot, swapContainerType, swapContainer, swapContainerBlock, swapOtherContainerType, swapOtherContainer, swapOtherContainerBlock, transferItem, transferFromSlot, transferFromContainerType, transferFromContainer, transferFromContainerBlock, transferToContainerType, transferToContainer, transferToContainerBlock, debug,] = r.formValues; /*
 console.warn(r.formValues);*/
             /*let item = inventory.container.getItem(Number(slotNumber));
-if (Number(slotType) == 1) { try{let a = players[playerTargetB].getComponent("equipment_inventory") as EntityEquipmentInventoryComponent; item = a.getEquipmentSlot(equipmentPlayerSlotsList[Number(slotNumber)])} catch(e){if (Boolean(debug2) == true) { console.error(e, e.stack); }};};*/
+if (Number(slotType) == 1) { try{let a = players[playerTargetB]!.getComponent("equipment_inventory") as EntityEquipmentInventoryComponent; item = a.getEquipmentSlot(equipmentPlayerSlotsList[Number(slotNumber)])} catch(e){if (Boolean(debug2) == true) { console.error(e, e.stack); }};};*/
             let transferFromContainerBlockB = world.getDimension(String(transferFromContainerBlock).split(", ")[0]).getBlock({
                 x: Number(String(transferFromContainerBlock).split(", ")[1]),
                 y: Number(String(transferFromContainerBlock).split(", ")[2]),
@@ -338,7 +338,7 @@ if (Number(slotType) == 1) { try{let a = players[playerTargetB].getComponent("eq
             let enchantments2 = getEnchantments(); /*
 for (const index in inventory.) {
 if (Number(index) != 0) {
-targetList = String([String(targetList), players[index].nameTag]).split(",");
+targetList = String([String(targetList), players[index]!.nameTag]).split(",");
 }
 }*/
             let newItemNameTag = String(itemName).split("\\\\newline");

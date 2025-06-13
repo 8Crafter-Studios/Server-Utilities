@@ -1,4 +1,4 @@
-import { ChatSendBeforeEvent, world } from "@minecraft/server";
+import { ChatSendBeforeEvent, MemoryTier, world } from "@minecraft/server";
 import { LinkedServerShopCommands } from "ExtraFeatures/server_shop";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { srun } from "init/functions/srun";
@@ -10,31 +10,23 @@ import { chatSend } from "./chatSend";
 import { cmdsEval, cmdsEvalAsync } from "../../../Main/commands";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { ProtectedAreaTester } from "init/variables/protectedAreaVariables";
+import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 export function chatMessage(eventData, bypassChatInputRequests = false) {
-    if (!bypassChatInputRequests &&
-        Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).length != 0) {
-        currentlyRequestedChatInput[eventData.sender.id].anyInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].anyInput[a]
-            .time -
-            currentlyRequestedChatInput[eventData.sender.id].anyInput[b]
-                .time)[0]].input = eventData.message;
+    if (!bypassChatInputRequests && Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).length != 0) {
+        currentlyRequestedChatInput[eventData.sender.id].anyInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.anyInput ?? {}).sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].anyInput[a].time - currentlyRequestedChatInput[eventData.sender.id].anyInput[b].time)[0]].input = eventData.message;
         eventData.cancel = true;
         return;
     }
     if (!bypassChatInputRequests &&
-        Object.keys(currentlyRequestedChatInput[eventData.sender.id]
-            ?.conditionalInput ?? {}).filter((r) => !!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions
+        Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.conditionalInput ?? {}).filter((r) => !!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions
             ? currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions(eventData.sender, eventData.message, eventData)
             : true).length != 0) {
-        currentlyRequestedChatInput[eventData.sender.id].conditionalInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]
-            ?.conditionalInput ?? {})
-            .filter((r) => !!currentlyRequestedChatInput[eventData.sender.id]
-            .conditionalInput[r].conditions
+        currentlyRequestedChatInput[eventData.sender.id].conditionalInput[Object.keys(currentlyRequestedChatInput[eventData.sender.id]?.conditionalInput ?? {})
+            .filter((r) => !!currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions
             ? currentlyRequestedChatInput[eventData.sender.id].conditionalInput[r].conditions(eventData.sender, eventData.message, eventData)
             : true)
-            .sort((a, b) => currentlyRequestedChatInput[eventData.sender.id]
-            .conditionalInput[a].time -
-            currentlyRequestedChatInput[eventData.sender.id]
-                .conditionalInput[b].time)[0]].input = eventData.message;
+            .sort((a, b) => currentlyRequestedChatInput[eventData.sender.id].conditionalInput[a].time -
+            currentlyRequestedChatInput[eventData.sender.id].conditionalInput[b].time)[0]].input = eventData.message;
         eventData.cancel = true;
         return;
     }
@@ -61,9 +53,35 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     ///scriptevent andexdb:scriptEval world.setDynamicProperty("evalBeforeEvents:chatSend", `if(!(event.message.includes("${se}")&&player.hasTag("canUseScriptEval"))&&!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<10000)){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]\>\=4){returnBeforeChatCommandsOrChatSend=true; returnBeforeChatSend=true; runreturn=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }`)
     ///scriptevent andexdb:scriptEval world.setDynamicProperty("evalBeforeEvents:chatSend", `if(!player.hasTag("canBypassAntiSpam")){if(!!globalThis["lastChatMessage"+player.id]){if(globalThis["lastChatMessage"+player.id]==event.message&&((Date.now()-(globalThis["lastChatTime"+player.id]??0))<10000)){globalThis["msgAmountOfSpam"+player.id]=(globalThis["msgAmountOfSpam"+player.id]??0)+1; if(globalThis["msgAmountOfSpam"+player.id]\>\=4){returnBeforeChatCommandsOrChatSend=true; returnBeforeChatSend=true; runreturn=true; event.cancel=true; player.sendMessage("§cStop Spamming")}}else{globalThis["lastChatMessage"+player.id]=event.message; globalThis["msgAmountOfSpam"+player.id]=0}}else{globalThis["lastChatMessage"+player.id]=event.message}; globalThis["lastChatTime"+player.id]=Date.now(); }`)
     let newMessage = eventData.message;
-    let switchTest = newMessage
-        .slice(config.chatCommandPrefix.length)
-        .split(" ")[0];
+    const cmd = CommandRegistry.getCommandForPlayer(newMessage.split(" ")[0], player);
+    if (cmd) {
+        let playera = player instanceof executeCommandPlayerW ? player : player ? new executeCommandPlayerW(player) : undefined;
+        if (playera) {
+            Object.defineProperties(playera, {
+                id: {
+                    value: playera?.player?.id,
+                    writable: false,
+                    enumerable: true,
+                    configurable: true,
+                },
+                typeId: {
+                    value: playera?.player?.typeId,
+                    writable: false,
+                    enumerable: true,
+                    configurable: true,
+                },
+                name: {
+                    value: playera?.player?.name,
+                    writable: false,
+                    enumerable: true,
+                    configurable: true,
+                },
+            });
+            cmd.run(playera, eventData);
+            return;
+        }
+    }
+    let switchTest = newMessage.slice(config.chatCommandPrefix.length).split(" ")[0];
     let switchTestB = newMessage.slice(config.chatCommandPrefix.length);
     let commanda = undefined;
     if (newMessage.startsWith(config.chatCommandPrefix)) {
@@ -83,58 +101,36 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
                     .filter((cmd) => (cmd?.aliases ?? []).length != 0)
                     .find((v) => {
                     let cmd = command.get(v.commandName, "built-in");
-                    if (cmd.settings.enabled &&
-                        !!cmd?.aliases?.find?.((vd) => !!switchTest.match(vd.regexp))) {
+                    if (cmd.settings.enabled && !!cmd?.aliases?.find?.((vd) => !!switchTest.match(vd.regexp))) {
                         return cmd.testCanPlayerUseCommand(player);
                     }
                     else {
                         return false;
                     }
                 }) ??
-                (LinkedServerShopCommands.testCommandIsLinked(newMessage)
-                    ? { type: "server_shop" }
-                    : undefined) ??
+                (LinkedServerShopCommands.testCommandIsLinked(newMessage) ? { type: "server_shop" } : undefined) ??
                 command
                     .getCustomCommands()
-                    .find((v) => (v.settings.enabled &&
-                    (v.customCommandPrefix == undefined ||
-                        v.customCommandPrefix == "") &&
-                    !!switchTest.match(v.regexp)) ||
+                    .find((v) => (v.settings.enabled && (v.customCommandPrefix == undefined || v.customCommandPrefix == "") && !!switchTest.match(v.regexp)) ||
                     (v.customCommandPrefix != "" &&
                         !!v.customCommandPrefix &&
-                        newMessage
-                            .split(" ")[0]
-                            .startsWith(v.customCommandPrefix) &&
-                        !!newMessage
-                            .split(" ")[0]
-                            .slice(v.customCommandPrefix.length)
-                            .match(v.regexp) &&
-                        command
-                            .get(v.commandName, "custom")
-                            .testCanPlayerUseCommand(player)));
+                        newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
+                        !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
+                        command.get(v.commandName, "custom").testCanPlayerUseCommand(player)));
     }
     else if (true) {
         commanda =
-            (LinkedServerShopCommands.testCommandIsLinked(newMessage)
-                ? { type: "server_shop" }
-                : undefined) ??
+            (LinkedServerShopCommands.testCommandIsLinked(newMessage) ? { type: "server_shop" } : undefined) ??
                 command
                     .getCustomCommands()
                     .find((v) => v.settings.enabled &&
                     v.customCommandPrefix != "" &&
                     !!v.customCommandPrefix &&
-                    newMessage
-                        .split(" ")[0]
-                        .startsWith(v.customCommandPrefix) &&
-                    !!newMessage
-                        .split(" ")[0]
-                        .slice(v.customCommandPrefix.length)
-                        .match(v.regexp) &&
-                    command
-                        .get(v.commandName, "custom")
-                        .testCanPlayerUseCommand(player));
+                    newMessage.split(" ")[0].startsWith(v.customCommandPrefix) &&
+                    !!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp) &&
+                    command.get(v.commandName, "custom").testCanPlayerUseCommand(player));
     } /*
-    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0].startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0].slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
+    let commanda = commands.find(v=>(newMessage.startsWith(String(world.getDynamicProperty("andexdbSettings:chatCommandPrefix") ?? "\\"))&&(command.get(v.commandName, "built-in").settings.enabled&&!!switchTest.match(command.get(v.commandName, "built-in").regexp)))&&(command.get(v.commandName, "built-in").testCanPlayerUseCommand(player)))??command.getCustomCommands().find(v=>(v.settings.enabled&&((v.customCommandPrefix==undefined||v.customCommandPrefix=="")&&(!!switchTest.match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))||((v.customCommandPrefix!=""&&!!v.customCommandPrefix)&&newMessage.split(" ")[0]!.startsWith(v.customCommandPrefix)&&(!!newMessage.split(" ")[0]!.slice(v.customCommandPrefix.length).match(v.regexp))&&(command.get(v.commandName, "custom").testCanPlayerUseCommand(player)))))*/
     try {
         world
             .getAllPlayers()
@@ -142,19 +138,15 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
             .forEach((p) => {
             try {
                 p.sendMessage("§r§f[§l§dServer§r§f]" +
-                    (world.getDynamicProperty("chatMessageNotificationSpacer") ??
-                        world.getDynamicProperty("serverNotificationSpacer") ??
-                        "") +
+                    (world.getDynamicProperty("chatMessageNotificationSpacer") ?? world.getDynamicProperty("serverNotificationSpacer") ?? "") +
                     "[" +
                     player.name +
                     "]: " +
                     newMessage);
                 let pn = new PlayerNotifications(p);
                 srun(() => p.playSound(pn.getAllChatMessagesNotificationSound.soundId, {
-                    pitch: pn.getAllChatMessagesNotificationSound
-                        .pitch,
-                    volume: pn.getAllChatMessagesNotificationSound
-                        .volume,
+                    pitch: pn.getAllChatMessagesNotificationSound.pitch,
+                    volume: pn.getAllChatMessagesNotificationSound.volume,
                 }));
             }
             catch { }
@@ -167,8 +159,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     if (config.chatRanks.autoURIEscapeChatMessages) {
         newMessage = newMessage.escapeCharacters(false, false, 0, true);
     }
-    if (player.hasTag("canUseChatEscapeCodes") ||
-        config.chatRanks.allowChatEscapeCodes) {
+    if (player.hasTag("canUseChatEscapeCodes") || config.chatRanks.allowChatEscapeCodes) {
         if (newMessage.includes("${ea}")) {
             newMessage = newMessage.replace("${ea}", "");
             newMessage = newMessage.escapeCharacters(true);
@@ -211,7 +202,9 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         }
     }
     if (newMessage.includes("${se}") &&
-        (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"]) : player.playerPermissions.canUseScriptEval)) {
+        (securityVariables.ultraSecurityModeEnabled
+            ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"])
+            : player.playerPermissions.canUseScriptEval)) {
         newMessage = newMessage.replace("${se}", "");
         try {
             cmdsEval(newMessage, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda);
@@ -224,7 +217,9 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         return;
     }
     else if (newMessage.includes("${ase}") &&
-        (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"]) : player.playerPermissions.canUseScriptEval)) {
+        (securityVariables.ultraSecurityModeEnabled
+            ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"])
+            : player.playerPermissions.canUseScriptEval)) {
         newMessage = newMessage.replace("${ase}", "");
         system.waitTicks(1).then(async () => {
             try {
@@ -239,7 +234,9 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         return;
     }
     else if (newMessage.includes("${sel}") &&
-        (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"]) : player.playerPermissions.canUseScriptEval)) {
+        (securityVariables.ultraSecurityModeEnabled
+            ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"])
+            : player.playerPermissions.canUseScriptEval)) {
         newMessage = newMessage.replace("${sel}", "");
         try {
             eval(newMessage);
@@ -252,14 +249,18 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         return;
     }
     else if (newMessage.includes("${r}") &&
-        (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useCommandsRunningEscapeSequence"]) : (player.isOp() == true || player.playerPermissions.canUseCommands))) {
+        (securityVariables.ultraSecurityModeEnabled
+            ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useCommandsRunningEscapeSequence"])
+            : player.isOp() == true || player.playerPermissions.canUseCommands)) {
         newMessage = newMessage.replace("${r}", "");
         eventData.cancel = true;
         srun(() => player.runCommand(newMessage));
         return;
     }
     if (newMessage.includes("${scripteval}") &&
-        (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"]) : player.playerPermissions.canUseScriptEval)) {
+        (securityVariables.ultraSecurityModeEnabled
+            ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"])
+            : player.playerPermissions.canUseScriptEval)) {
         newMessage = newMessage.replace("${scripteval}", "");
         try {
             cmdsEval(newMessage, eventData, bypassChatInputRequests, runreturn, returnBeforeChatSend, returnBeforeChatCommandsOrChatSend, event, player, sendToPlayers, newMessage, switchTest, switchTestB, commanda);
@@ -272,7 +273,9 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         return;
     }
     else if (newMessage.includes("${scriptevallocal}") &&
-        (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"]) : player.playerPermissions.canUseScriptEval)) {
+        (securityVariables.ultraSecurityModeEnabled
+            ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useScriptEvalEscapeSequence"])
+            : player.playerPermissions.canUseScriptEval)) {
         newMessage = newMessage.replace("${scriptevallocal}", "");
         try {
             eval(newMessage);
@@ -285,7 +288,9 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
         return;
     }
     else if (newMessage.includes("${run}") &&
-        (securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useCommandsRunningEscapeSequence"]) : (player.isOp() == true || player.playerPermissions.canUseCommands))) {
+        (securityVariables.ultraSecurityModeEnabled
+            ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useCommandsRunningEscapeSequence"])
+            : player.isOp() == true || player.playerPermissions.canUseCommands)) {
         newMessage = newMessage.replace("${run}", "");
         eventData.cancel = true;
         srun(() => player.runCommand(newMessage));
@@ -299,10 +304,8 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     returnBeforeChatCommandsOrChatSend) {
         return;
     }
-    /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/ if (world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") !=
-        undefined &&
-        world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") !=
-            "") {
+    /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/ if (world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != undefined &&
+        world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != "") {
         String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? "")
             .split(", ")
             .forEach((prefix) => {
@@ -322,9 +325,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
                 ? (event.cancel = true)
                 : config.invalidChatCommandAction == 3
                     ? ((event.cancel = true),
-                        player.sendMessage(`§r§cUnknown command: ${switchTest.startsWith("\\")
-                            ? "\\" + switchTest
-                            : switchTest}§r§c. Please check that the command exists and that you have permission to use it.`))
+                        player.sendMessage(`§r§cUnknown command: ${switchTest.startsWith("\\") ? "\\" + switchTest : switchTest}§r§c. Please check that the command exists and that you have permission to use it.`))
                     : config.invalidChatCommandAction == 1
                         ? (() => {
                             if (!noChat) {

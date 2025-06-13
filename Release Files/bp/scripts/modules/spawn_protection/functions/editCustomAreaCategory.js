@@ -719,7 +719,7 @@ export async function editCustomAreaCategorySetting(sourceEntity, categoryID, se
             const r = await form.forceShow(player);
             if (r.canceled)
                 return 1;
-            switch (["toggle"][r.selection] ?? optionsList[r.selection - 1] ?? ["back", "close"][r.selection - optionsList.length - 1]) {
+            switch (["toggle", undefined][r.selection] ?? (optionsList[r.selection - 1] ? optionsList[r.selection - 1] : undefined) ?? ["back", "close"][r.selection - optionsList.length - 1]) {
                 case "toggle": {
                     if (!!category[setting]) {
                         if (category[setting].enabled === false) {

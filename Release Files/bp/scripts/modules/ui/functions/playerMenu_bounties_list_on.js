@@ -79,7 +79,7 @@ export async function playerMenu_bounties_list_on(sourceEntitya, pagen = 0, maxb
         // This will stop the code when the player closes the form
         if (r.canceled)
             return 1;
-        switch (["search", "previous", "go", "next", "", ""][r.selection] ??
+        switch (["search", "previous", "go", "next", "", "", undefined][r.selection] ??
             (!!displayBountiesB[r.selection - 6] ? "bounty" : undefined) ??
             ["back", "close", "refresh"][r.selection - displayBountiesB.length - 6]) {
             case "search":
@@ -113,6 +113,8 @@ export async function playerMenu_bounties_list_on(sourceEntitya, pagen = 0, maxb
                     .textField(`Current Page: ${page + 1}\nPage # (Between 1 and ${numpages})`, "Page #")
                     .submitButton("Go To Page")
                     .forceShow(sourceEntity));
+                if (!rb || rb.canceled)
+                    return await playerMenu_bounties_list_on(sourceEntity, page, maxbountiesperpage, search);
                 return await playerMenu_bounties_list_on(sourceEntity, Math.max(1, Math.min(numpages, rb.formValues?.[0]?.toNumber() ?? page + 1)) - 1, maxbountiesperpage, search, displayBounties);
             }
             case "next":
@@ -131,6 +133,7 @@ export async function playerMenu_bounties_list_on(sourceEntitya, pagen = 0, maxb
             case "close":
                 return 0;
             default:
+                throw new Error("Invalid selection: " + r.selection);
         }
     })
         .catch(async (e) => {

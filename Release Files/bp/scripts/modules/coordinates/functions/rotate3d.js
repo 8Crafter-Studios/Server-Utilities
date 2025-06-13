@@ -1,14 +1,23 @@
 import { world } from "@minecraft/server";
-export function rotate3d(points, pitchb, rollb, yawb) {
-    let pitch = pitchb * (Math.PI / 180);
-    let roll = rollb * (Math.PI / 180);
-    let yaw = yawb * (Math.PI / 180);
-    let cosa = Math.cos(yaw), sina = Math.sin(yaw);
-    let cosb = Math.cos(pitch), sinb = Math.sin(pitch);
-    let cosc = Math.cos(roll), sinc = Math.sin(roll);
-    let Axx = cosa * cosb, Axy = cosa * sinb * sinc - sina * cosc, Axz = cosa * sinb * cosc + sina * sinc;
-    let Ayx = sina * cosb, Ayy = sina * sinb * sinc + cosa * cosc, Ayz = sina * sinb * cosc - cosa * sinc;
-    let Azx = -sinb, Azy = cosb * sinc, Azz = cosb * cosc;
+export function rotate3d(points, pitchDeg, rollDeg, yawDeg) {
+    let pitchRad = pitchDeg * (Math.PI / 180);
+    let rollRad = rollDeg * (Math.PI / 180);
+    let yawRad = yawDeg * (Math.PI / 180);
+    let cosa = Math.cos(yawRad);
+    let sina = Math.sin(yawRad);
+    let cosb = Math.cos(pitchRad);
+    let sinb = Math.sin(pitchRad);
+    let cosc = Math.cos(rollRad);
+    let sinc = Math.sin(rollRad);
+    let Axx = cosa * cosb;
+    let Axy = cosa * sinb * sinc - sina * cosc;
+    let Axz = cosa * sinb * cosc + sina * sinc;
+    let Ayx = sina * cosb;
+    let Ayy = sina * sinb * sinc + cosa * cosc;
+    let Ayz = sina * sinb * cosc - cosa * sinc;
+    let Azx = -sinb;
+    let Azy = cosb * sinc;
+    let Azz = cosb * cosc;
     let px = points[0];
     let py = points[1];
     let pz = points[2];

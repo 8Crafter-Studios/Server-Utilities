@@ -52,20 +52,20 @@ subscribedEvents.afterEntityHurt = world.afterEvents.entityHurt.subscribe((event
                         ?.dimension.id] +
                     " at " +
                     vTStr(event.damageSource.damagingEntity
-                        .location))}`
+                        ?.location))}`
                 : ""}${!!event.damageSource?.damagingProjectile
                 ? `, the projectile that damaged the entity was ${`a projectile of type ${event.damageSource?.damagingProjectile?.typeId} with the ID ${event.damageSource?.damagingProjectile?.id}${tryget(() => event.damageSource.damagingProjectile
-                    .nameTag != ""
+                    ?.nameTag != ""
                     ? ' and the name tag "' +
                         event.damageSource.damagingProjectile
-                            .nameTag +
+                            ?.nameTag +
                         '"'
                     : "")}`}${tryget(() => " in " +
                     dimensionTypeDisplayFormatting[event.damageSource.damagingProjectile
-                        .dimension.id] +
+                        ?.dimension.id] +
                     " at " +
                     vTStr(event.damageSource.damagingProjectile
-                        .location))}`
+                        ?.location))}`
                 : ""}. The current velocity of the damaged entity is: ${tryget(() => JSON.stringify(event.hurtEntity.getVelocity())) ?? "§cError: Unable to get velocity.§r"}`);
             let pn = new PlayerNotifications(p);
             srun(() => p.playSound(pn.getEntityHurtNotificationsNotificationSound.soundId, {

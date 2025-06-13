@@ -22,9 +22,9 @@ import { showMessage } from "modules/utilities/functions/showMessage";
  * If an error occurs, the function returns `-2`.
  */
 export async function worldBorderSettingsDimensionSelector(sourceEntitya) {
-    const sourceEntity = sourceEntitya instanceof executeCommandPlayerW
+    const sourceEntity = (sourceEntitya instanceof executeCommandPlayerW
         ? sourceEntitya.player
-        : sourceEntitya;
+        : sourceEntitya);
     if (securityVariables.ultraSecurityModeEnabled) {
         if (securityVariables.testPlayerForPermission(sourceEntity, "andexdb.accessExtraFeaturesSettings") == false) {
             const r = await showMessage(sourceEntity, "Access Denied (403)", "You do not have permission to access this menu. You need the following permission to access this menu: andexdb.accessExtraFeaturesSettings", "Go Back", "Close");

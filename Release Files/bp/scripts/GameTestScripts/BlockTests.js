@@ -50,8 +50,8 @@ function testThatFallingSandLandsOnTop(test) {
 // Concrete Tests
 ///
 for (let i = 0; i < BLOCKS_THAT_POP_SAND.length; i++) {
-  const topBlock = BLOCKS_THAT_POP_SAND[i][0];
-  const bottomBlock = BLOCKS_THAT_POP_SAND[i][1];
+  const topBlock = BLOCKS_THAT_POP_SAND[i]![0];
+  const bottomBlock = BLOCKS_THAT_POP_SAND[i]![1];
   const testName = "blocktests.falling_sand_pops_on_" + topBlock.id;
   let tag = null;
 

@@ -5,8 +5,8 @@ import { Dimension, BlockVolume, BlockTypes, BlockPermutation } from "@minecraft
 export function fillBlocksC(begin, end, dimension, blocktype = "air", blockStates, matchingBlock, matchingBlockStates, overrideAllBlockStates = false) {
     let mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator());
     let counter = 0;
-    let block = BlockTypes.get(matchingBlock).id;
-    let blockmatching = BlockTypes.get(matchingBlock).id;
+    let block = BlockTypes.get(matchingBlock)?.id;
+    let blockmatching = BlockTypes.get(matchingBlock)?.id;
     if (overrideAllBlockStates) {
         if (!!matchingBlock) {
             //console.warn("3");
@@ -29,7 +29,7 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                                         //console.warn("5");
                                         dimension
                                             .getBlock(v)
-                                            .setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                            ?.setPermutation(BlockPermutation.resolve(blocktype, blockStates));
                                         counter++; //; console.warn("6");
                                     }
                                 }
@@ -56,7 +56,7 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                                         //console.warn("5");
                                         dimension
                                             .getBlock(v)
-                                            .setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                            ?.setPermutation(BlockPermutation.resolve(blocktype, blockStates));
                                         counter++; //; console.warn("6");
                                     }
                                 }
@@ -82,7 +82,7 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                                     //console.warn("14");
                                     dimension
                                         .getBlock(v)
-                                        .setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        ?.setPermutation(BlockPermutation.resolve(blocktype, blockStates));
                                     counter++; //; console.warn("8");
                                 }
                             }
@@ -103,7 +103,7 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                                     //console.warn("14");
                                     dimension
                                         .getBlock(v)
-                                        .setPermutation(BlockPermutation.resolve(blocktype));
+                                        ?.setPermutation(BlockPermutation.resolve(blocktype));
                                     counter++; //; console.warn("8");
                                 }
                             }
@@ -126,7 +126,7 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                             //console.warn("2");
                             dimension
                                 .getBlock(v)
-                                .setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                ?.setPermutation(BlockPermutation.resolve(blocktype, blockStates));
                             counter++; //; console.warn("11");
                         }
                     }
@@ -142,7 +142,7 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                         //console.warn("1");
                         if (dimension.getBlock(v)?.typeId != block) {
                             //console.warn("2");
-                            dimension.getBlock(v).setType(blocktype);
+                            dimension.getBlock(v)?.setType(blocktype);
                             counter++; //; console.warn("13");
                         }
                     }
@@ -165,14 +165,14 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                             //console.warn("1");
                             if (dimension.getBlock(v)?.permutation !=
                                 BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                    BlockTypes.get(blocktype).id ==
+                                    BlockTypes.get(blocktype)?.id ==
                                         dimension.getBlock(v)?.typeId
                                     ? Object.fromEntries(Object.entries(Object.assign(dimension
                                         .getBlock(v)
                                         ?.permutation?.getAllStates(), blockStates)).filter((v) => !!Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find((s) => v[0] == s[0])))
                                     : blockStates)) {
                                 //console.warn("2");
-                                if (BlockTypes.get(matchingBlock).id ==
+                                if (BlockTypes.get(matchingBlock)?.id ==
                                     dimension.getBlock(v)?.typeId) {
                                     //console.warn("14");
                                     if (Object.entries(matchingBlockStates).every((p) => Object.entries(dimension
@@ -181,8 +181,8 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                                         //console.warn("5");
                                         dimension
                                             .getBlock(v)
-                                            .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                            BlockTypes.get(blocktype).id ==
+                                            ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                            BlockTypes.get(blocktype)?.id ==
                                                 dimension.getBlock(v)?.typeId
                                             ? Object.fromEntries(Object.entries(Object.assign(dimension
                                                 .getBlock(v)
@@ -205,14 +205,14 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                             //console.warn("1");
                             if (dimension.getBlock(v)?.permutation !=
                                 BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                    BlockTypes.get(blocktype).id ==
+                                    BlockTypes.get(blocktype)?.id ==
                                         dimension.getBlock(v)?.typeId
                                     ? Object.fromEntries(Object.entries(dimension
                                         .getBlock(v)
                                         ?.permutation?.getAllStates()).filter((v) => !!Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find((s) => v[0] == s[0])))
                                     : blockStates)) {
                                 //console.warn("2");
-                                if (BlockTypes.get(matchingBlock).id ==
+                                if (BlockTypes.get(matchingBlock)?.id ==
                                     dimension.getBlock(v)?.typeId) {
                                     //console.warn("14");
                                     if (Object.entries(matchingBlockStates).every((p) => Object.entries(dimension
@@ -221,8 +221,8 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                                         //console.warn("5");
                                         dimension
                                             .getBlock(v)
-                                            .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                            BlockTypes.get(blocktype).id ==
+                                            ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                            BlockTypes.get(blocktype)?.id ==
                                                 dimension.getBlock(v)?.typeId
                                             ? Object.fromEntries(Object.entries(dimension
                                                 .getBlock(v)
@@ -259,9 +259,9 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                                     //console.warn("14");
                                     dimension
                                         .getBlock(v)
-                                        .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                        ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
                                         BlockTypes.get(blocktype)
-                                            .id ==
+                                            ?.id ==
                                             dimension.getBlock(v)
                                                 ?.typeId
                                         ? Object.fromEntries(Object.entries(Object.assign(dimension
@@ -294,9 +294,9 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                                     //console.warn("14");
                                     dimension
                                         .getBlock(v)
-                                        .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                        ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
                                         BlockTypes.get(blocktype)
-                                            .id ==
+                                            ?.id ==
                                             dimension.getBlock(v)
                                                 ?.typeId
                                         ? Object.fromEntries(Object.entries(dimension
@@ -324,7 +324,7 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                         //console.warn("1");
                         if (dimension.getBlock(v)?.permutation !=
                             BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                BlockTypes.get(blocktype).id ==
+                                BlockTypes.get(blocktype)?.id ==
                                     dimension.getBlock(v)?.typeId
                                 ? Object.fromEntries(Object.entries(Object.assign(dimension
                                     .getBlock(v)
@@ -333,8 +333,8 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                             //console.warn("2");
                             dimension
                                 .getBlock(v)
-                                .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                BlockTypes.get(blocktype).id ==
+                                ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                BlockTypes.get(blocktype)?.id ==
                                     dimension.getBlock(v)?.typeId
                                 ? Object.fromEntries(Object.entries(Object.assign(dimension
                                     .getBlock(v)
@@ -355,7 +355,7 @@ export function fillBlocksC(begin, end, dimension, blocktype = "air", blockState
                         //console.warn("1");
                         if (dimension.getBlock(v)?.typeId != block) {
                             //console.warn("2");
-                            dimension.getBlock(v).setType(blocktype);
+                            dimension.getBlock(v)?.setType(blocktype);
                             counter++; //; console.warn("13");
                         }
                     }

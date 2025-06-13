@@ -1,13 +1,17 @@
 import { Vector3Utils } from "@minecraft/math.js";
-import { Entity, Player, world, BlockPermutation, SignSide, ItemStack, DyeColor, BlockTypes } from "@minecraft/server";
-import { ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
+import { Entity, Player, world, BlockPermutation, SignSide, ItemStack, DyeColor, BlockTypes, Block } from "@minecraft/server";
+import { MessageFormData, MessageFormResponse, ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { forceShow } from "modules/ui/functions/forceShow";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
-export function editorStick(sourceEntitya, message = "") {
+export async function editorStick(sourceEntitya, message = "") {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     let form = new ModalFormData();
     let playerList = world.getPlayers();
     let block = sourceEntity.getBlockFromViewDirection();
+    if (!block) {
+        const r = await new MessageFormData().title("No Block Found").body("No block was found to use the Editor Stick C on.").button1("OK").button2("Close").forceShow(sourceEntity);
+        return;
+    }
     let block2 = block.block;
     let allCoordinates = [];
     if (message.startsWith("coordinates:") && message.includes("|") && message.slice(12).split("|").length == 4) {
@@ -17,6 +21,10 @@ export function editorStick(sourceEntitya, message = "") {
             y: allCoordinates[2].toNumber(),
             z: allCoordinates[3].toNumber(),
         });
+    }
+    if (!block2) {
+        const r = await new MessageFormData().title("No Block Found").body("No block was found to use the Editor Stick C on.").button1("OK").button2("Close").forceShow(sourceEntity);
+        return;
     }
     form.title("Editor Stick");
     form.submitButton("Save");
@@ -92,7 +100,7 @@ if (Number(index) != 0) {*/ /*
     form.toggle("setProperty Enabled", { defaultValue: false }); /*
     try {console.warn(block.block.permutation.getAllStates()) } catch(e){console.error(e, e.stack);}
     try {console.warn(block.block.permutation.getAllStates()[0]) } catch(e){console.error(e, e.stack);}
-    try {console.warn(block.block.permutation.getAllStates()[0][0]) } catch(e){console.error(e, e.stack);}*/
+    try {console.warn(block.block.permutation.getAllStates()[0]![0]) } catch(e){console.error(e, e.stack);}*/
     /*form.dropdown("Block Permutation To Set", block.getTags())*/ /*
     form.slider("Selected Slot", 0, 56, 1)*/
     form.toggle("isWaterlogged", { defaultValue: block2.isWaterlogged }); /*
@@ -150,7 +158,7 @@ if (Number(index) != 0) {*/ /*
     rawtextf = rawtextf + "}"
     return rawtextf
     }
-    block2.getComponent("sign").getRawText(SignSide.Front)?.rawtext.forEach((rt, i)=>{
+    block2.getComponent("sign")?.getRawText(SignSide.Front)?.rawtext.forEach((rt, i)=>{
         rawtextf = evalRawText(rawtextf, rt);
     });
     rawtextf = rawtextf + "]"*/
@@ -178,22 +186,22 @@ if (Number(index) != 0) {*/ /*
     }
     form.toggle("setSignFrontRawText Enabled", { defaultValue: false });
     if (block2.getComponent("sign") != undefined) {
-        form.textField(`Sign Front RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Front))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, { defaultValue: JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Front)) });
+        form.textField(`Sign Front RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign")?.getRawText(SignSide.Front))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, { defaultValue: JSON.stringify(block2.getComponent("sign")?.getRawText(SignSide.Front)) });
     }
     else {
         form.textField(`§4Sign Front RawText`, `§r§4Unavailable`);
     }
     form.toggle("setSignBackRawText Enabled", { defaultValue: false });
     if (block2.getComponent("sign") != undefined) {
-        form.textField(`Sign Back RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Back))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, { defaultValue: JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Back)) });
+        form.textField(`Sign Back RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign")?.getRawText(SignSide.Back))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, { defaultValue: JSON.stringify(block2.getComponent("sign")?.getRawText(SignSide.Back)) });
     }
     else {
         form.textField(`§4Sign Back RawText`, `§r§4Unavailable`);
     }
     form.toggle("setSignFrontText Enabled", { defaultValue: false });
     if (block2.getComponent("sign") != undefined) {
-        form.textField(`Sign Front Text\nRawText: §g${block2.getComponent("sign").getText(SignSide.Front)}`, `text`, {
-            defaultValue: block2.getComponent("sign").getText(SignSide.Front),
+        form.textField(`Sign Front Text\nRawText: §g${block2.getComponent("sign")?.getText(SignSide.Front)}`, `text`, {
+            defaultValue: block2.getComponent("sign")?.getText(SignSide.Front),
         });
     }
     else {
@@ -201,8 +209,8 @@ if (Number(index) != 0) {*/ /*
     }
     form.toggle("setSignBackText Enabled", { defaultValue: false });
     if (block2.getComponent("sign") != undefined) {
-        form.textField(`Sign Back Text\Text: §g${block2.getComponent("sign").getText(SignSide.Back)}`, `text`, {
-            defaultValue: block2.getComponent("sign").getText(SignSide.Back),
+        form.textField(`Sign Back Text\Text: §g${block2.getComponent("sign")?.getText(SignSide.Back)}`, `text`, {
+            defaultValue: block2.getComponent("sign")?.getText(SignSide.Back),
         });
     }
     else {
@@ -210,8 +218,8 @@ if (Number(index) != 0) {*/ /*
     }
     form.toggle("setSignFrontTextColor Enabled", { defaultValue: false });
     if (block2.getComponent("sign") != undefined) {
-        form.textField(`Sign Front Text Color\Text: §g${block2.getComponent("sign").getTextDyeColor(SignSide.Front)}`, `dye color`, {
-            defaultValue: block2.getComponent("sign").getTextDyeColor(SignSide.Front),
+        form.textField(`Sign Front Text Color\Text: §g${block2.getComponent("sign")?.getTextDyeColor(SignSide.Front)}`, `dye color`, {
+            defaultValue: block2.getComponent("sign")?.getTextDyeColor(SignSide.Front),
         });
     }
     else {
@@ -219,8 +227,8 @@ if (Number(index) != 0) {*/ /*
     }
     form.toggle("setSignBackTextColor Enabled", { defaultValue: false });
     if (block2.getComponent("sign") != undefined) {
-        form.textField(`Sign Back Text Color\Text: §g${block2.getComponent("sign").getTextDyeColor(SignSide.Back)}`, `dye color`, {
-            defaultValue: block2.getComponent("sign").getTextDyeColor(SignSide.Back),
+        form.textField(`Sign Back Text Color\Text: §g${block2.getComponent("sign")?.getTextDyeColor(SignSide.Back)}`, `dye color`, {
+            defaultValue: block2.getComponent("sign")?.getTextDyeColor(SignSide.Back),
         });
     }
     else {
@@ -285,7 +293,7 @@ clearVelocity*/, debug, fluidContainerColor, fluidContainerFillLevel, potionType
                 .setText(String(signBackText).replaceAll("\\n", "\n"), SignSide.Back);
         }
         if (block2.getComponent("sign") != undefined /*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/) {
-            /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/ block2.getComponent("sign").setWaxed(Boolean(setSignIsWaxed));
+            /*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/ block2.getComponent("sign")?.setWaxed(Boolean(setSignIsWaxed));
         }
         DyeColor.Blue; //make it save this DyeColor in the imports from @minecraft/server.
         if (signFrontTextColorEnabled &&

@@ -41,7 +41,7 @@ export async function manageEventSubscriptions_event(sourceEntity, eventType, pa
     const player = extractPlayerFromLooseEntityType(sourceEntity);
     var currentParameters = {
         player,
-        pagen,
+        pagen: pagen,
         maxentriesperpage,
         search,
         cachedEntries,
@@ -49,7 +49,7 @@ export async function manageEventSubscriptions_event(sourceEntity, eventType, pa
     while (true) {
         const { player, pagen, maxentriesperpage, search, cachedEntries } = currentParameters;
         const form = new ActionFormData();
-        const page = Math.max(0, pagen);
+        const page = Math.max(0, pagen ?? 0);
         let displayEntries = cachedEntries ?? [];
         if (cachedEntries === undefined) {
             displayEntries = loadedEventsOfTypeRef.filter((v) => !!search
@@ -100,7 +100,7 @@ export async function manageEventSubscriptions_event(sourceEntity, eventType, pa
             const r = await form.forceShow(player);
             if (r.canceled)
                 return 1;
-            switch (["search", "previous", "go", "next", "newSubscription", ""][r.selection] ??
+            switch (["search", "previous", "go", "next", "newSubscription", "", undefined][r.selection] ??
                 (!!displayEntriesB[r.selection - 6] ? "entry" : undefined) ??
                 ["back", "close", "refresh"][r.selection - displayEntriesB.length - 6]) {
                 case "search":
@@ -135,6 +135,8 @@ export async function manageEventSubscriptions_event(sourceEntity, eventType, pa
                         .textField(`Current Page: ${page + 1}\nPage # (Between 1 and ${numpages})`, "Page #")
                         .submitButton("Go To Page")
                         .forceShow(player));
+                    if (!r || r.canceled)
+                        continue;
                     currentParameters = {
                         player,
                         pagen: Math.max(1, Math.min(numpages, r.formValues?.[0]?.toNumber() ?? page + 1)) - 1,
@@ -554,7 +556,7 @@ export async function manageEventSubscriptions(sourceEntity) {
             eventCategories.forEach((e) => {
                 const length = [
                     Object.keys(Events.loadedEvents[e]["beforeEvents"]).map((eB) => Events.loadedEvents[e]["beforeEvents"][eB].length),
-                    Object.keys(Events.loadedEvents[e]["beforeEvents"]).map((eB) => Events.loadedEvents[e]["beforeEvents"][eB].length),
+                    Object.keys(Events.loadedEvents[e]["afterEvents"]).map((eB) => Events.loadedEvents[e]["afterEvents"][eB].length),
                 ]
                     .flat()
                     .reduce((a, b) => a + b, 0);

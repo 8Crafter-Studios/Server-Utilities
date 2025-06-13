@@ -1,8 +1,8 @@
 export declare class customFormUIElement {
     index: number;
-    type: String;
-    args: String[];
-    code: String;
+    type: string;
+    args: string[];
+    code: string;
     typeIndex: number;
-    constructor(index: number, type: String, args: String[]);
+    constructor(index: number, type: string, args: string[]);
 }

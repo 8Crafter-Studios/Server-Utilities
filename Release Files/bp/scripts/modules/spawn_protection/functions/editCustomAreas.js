@@ -77,6 +77,7 @@ export async function editCustomAreas(sourceEntitya) {
         }
         catch (e) {
             console.error(e, e.stack);
+            return 0;
         }
     });
 }

@@ -1,6 +1,14 @@
 import { Player, StructureSaveMode } from "@minecraft/server";
 import { getSuperUniqueID } from "modules/utilities/functions/getSuperUniqueID";
+/**
+ * The list of loaded redeemable codes.
+ *
+ * @type {RedeemableCode[]}
+ */
 let codes = [];
+/**
+ * Represents a redeemable code.
+ */
 export class RedeemableCode {
     /**
      * The code that users enter to redeem this code.
@@ -52,8 +60,9 @@ export class RedeemableCode {
             this.uses = savedDetails.uses;
             this.maxUses = savedDetails.maxUses;
             this.expirationTime = savedDetails.expirationTime;
+            this.id = savedDetails.id;
             Object.defineProperty(this, "id", {
-                value: savedDetails.id,
+                value: this.id,
                 configurable: true,
                 enumerable: true,
                 writable: false,
@@ -63,8 +72,9 @@ export class RedeemableCode {
             if (!!codes.find((c) => c.code === code)) {
                 throw new Error("Duplicate Code");
             }
+            this.id = getSuperUniqueID();
             Object.defineProperty(this, "id", {
-                value: getSuperUniqueID(),
+                value: this.id,
                 configurable: true,
                 enumerable: true,
                 writable: false,
@@ -77,7 +87,7 @@ export class RedeemableCode {
      * This method performs the following actions:
      * 1. Filters out any existing code that matches the current instance's code or id.
      * 2. Adds the current instance to the list of codes.
-     * 3. Calls the static method `saveCodes` to persist the updated list of codes.
+     * 3. Calls the static method {@link saveCodes} to persist the updated list of codes.
      */
     save() {
         codes = codes.filter((c) => c.code !== this.code && c.id !== this.id);

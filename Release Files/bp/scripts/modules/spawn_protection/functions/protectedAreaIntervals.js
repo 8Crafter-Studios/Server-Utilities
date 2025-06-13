@@ -95,6 +95,8 @@ async function executeZoneActions(players) {
                                 .filter((id) => id.startsWith("noPVPZoneActiveFromCustomAreaCategory:"))
                                 .some((id) => {
                                 const category = ProtectedAreas.areas.advancedAreaCategories.find((category) => category.id === id.split(":")[1]);
+                                if (!category)
+                                    return;
                                 if (new ProtectedAreaCategory("advancedArea", category.id).testIsInArea(player.location, player.dimension)) {
                                     return true;
                                 }
@@ -128,6 +130,8 @@ async function executeZoneActions(players) {
                                             .filter((id) => id.startsWith("tagZoneActiveFromCustomAreaCategory:"))
                                             .some((id) => {
                                             const category = ProtectedAreas.areas.advancedAreaCategories.find((category) => category.id === id.split(":")[1]);
+                                            if (!category)
+                                                return;
                                             if (category.tagZone !== false &&
                                                 category.tagZone !== undefined &&
                                                 category.tagZone.enabled !== false &&
@@ -169,6 +173,8 @@ async function executeZoneActions(players) {
                                             .filter((id) => id.startsWith("tagZoneActiveFromCustomAreaCategory:"))
                                             .some((id) => {
                                             const category = ProtectedAreas.areas.advancedAreaCategories.find((category) => category.id === id.split(":")[1]);
+                                            if (!category)
+                                                return;
                                             if (category.tagZone !== false &&
                                                 category.tagZone !== undefined &&
                                                 category.tagZone.enabled !== false &&

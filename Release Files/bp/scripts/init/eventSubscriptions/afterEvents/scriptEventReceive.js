@@ -1,7 +1,7 @@
 import { Vector3Utils } from "@minecraft/math.js";
 import { system, world, ItemStack, EntityInventoryComponent, EnchantmentTypes, ItemEnchantableComponent, Player, Entity, EquipmentSlot, EntityEquippableComponent, ItemDurabilityComponent, ItemLockMode, BlockInventoryComponent, BlockPermutation, SignSide, DyeColor, BlockTypes, Block, WeatherType, EntityMarkVariantComponent, EntityPushThroughComponent, EntityScaleComponent, EntitySkinIdComponent, EntityTameableComponent, EntityBreathableComponent, EntityColorComponent, EntityFlyingSpeedComponent, EntityFrictionModifierComponent, 
 // EntityGroundOffsetComponent,
-EntityHealthComponent, ScriptEventSource, MolangVariableMap, Effect, } from "@minecraft/server";
+EntityHealthComponent, ScriptEventSource, MolangVariableMap, Effect, ContainerSlot, } from "@minecraft/server";
 import { ModalFormData, ActionFormData, ModalFormResponse } from "@minecraft/server-ui";
 import { chatMessage } from "modules/chat/functions/chatMessage";
 import { chatSend } from "modules/chat/functions/chatSend";
@@ -398,7 +398,7 @@ subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive
                 catch (e) {
                     blockProperties = "§4None§a";
                 } /*
-        let effectsList = [players[playerTargetB].getComponents[0]]*/
+        let effectsList = [players[playerTargetB]!.getComponents[0]]*/
                 let distance = Vector3Utils.distance(players[playerViewerB].location, players[playerTargetB].location);
                 try {
                     entityViewedEntityType = players[playerTargetB].getEntitiesFromViewDirection()[0].entity.typeId;
@@ -616,7 +616,7 @@ subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive
                     return;
                 let [playerViewer, selectionType, entityUUID, blockLocationIndex, blockLocationCoordinates] = t.formValues;
                 let playerViewerB = Number(playerViewer);
-                let playerTargetB;
+                let playerTargetB = undefined;
                 let blockLocation = String(blockLocationCoordinates).split(", ");
                 if (selectionType == 0) {
                     playerTargetB = players[playerViewerB].getEntitiesFromViewDirection()[0].entity;
@@ -687,7 +687,7 @@ subscribedEvents.afterScriptEventReceive = system.afterEvents.scriptEventReceive
                 catch (e) {
                     console.error(e, e.stack);
                 } /*
-        let effectsList = [players[playerTargetB].getComponents[0]]*/
+        let effectsList = [players[playerTargetB]!.getComponents[0]]*/
                 try {
                     scoreboardIdentity = playerTargetB.scoreboardIdentity.id;
                 }
@@ -823,7 +823,7 @@ forceShow(form, players[players.findIndex((x) => x == sourceEntity)] as any).the
     // This will stop the code when the player closes the form
     if (r.canceled) return;
 
-    let response = r.selection;
+    let response = r.selection!;
     switch (response) {
         case 0:
             
@@ -974,7 +974,7 @@ break;*/ /*
                             if (r.canceled)
                                 return;
                             // This will assign every input their own variable
-                            let [commandId, commandDelay, debug] = r.formValues; /*
+                            let [commandId, commandDelay, debug] = r.formValues!; /*
                             console.warn(r.formValues);*/ /*
 system.runTimeout(() => {console.warn(
 (sourceEntity).runCommand(String(commandId)).successCount);}, Number(commandDelay))
@@ -1007,7 +1007,7 @@ console.error(e, e.stack);
                     const menuList = [*/ /*"noPistonExtensionArea:", */ /*"noExplosionArea:", "noInteractArea:", "noBlockInteractArea:", "noBlockBreakArea:", "protectedArea:", "noBlockPlaceArea:"]
 menuList.forEach((s)=>{form.button(s, "textures/ui/xyz_axis");})
 forceShow(form, (sourceEntity as Player)).then(la => {let l = (la as ActionFormResponse);
-    try {editAreas((sourceEntity as Player), menuList[l.selection]); }catch(e){console.error(e, e.stack);};})
+    try {editAreas((sourceEntity as Player), menuList[l.selection!]); }catch(e){console.error(e, e.stack);};})
     // Do something when button 2 is pressed
     break;
 
@@ -1038,6 +1038,7 @@ default:
 }).catch(e => {
 console.error(e, e.stack);
 });*/
+        assertIsDefined(sourceEntity);
         mainMenu(sourceEntity);
     }
     if (id == "andexdb:itemLoreInventoryModifier" || id == "andexdb:inventoryController" || id == "andexdb:itemModifier") {
@@ -1062,9 +1063,8 @@ console.error(e, e.stack);
             let [slotNumber, slotType, playerTarget, playerViewer, debug2] = t.formValues;
             let playerTargetB = Number(playerTarget);
             let playerViewerB = Number(playerViewer);
-            let inventory;
-            inventory = players[playerTargetB].getComponent("inventory"); /*
-try{inventory = players[playerTargetB].getComponent("equipment_inventory") as EntityEquipmentInventoryComponent;} catch(e){if (Boolean(debug2) == true) { console.error(e, e.stack); }};*/
+            let inventory = players[playerTargetB].getComponent("inventory"); /*
+try{inventory = players[playerTargetB]!.getComponent("equipment_inventory") as EntityEquipmentInventoryComponent;} catch(e){if (Boolean(debug2) == true) { console.error(e, e.stack); }};*/
             let item = inventory.container.getItem(Number(slotNumber));
             let equipmentPlayerSlotsList = [
                 EquipmentSlot.Head,
@@ -1340,7 +1340,7 @@ form.textField("Item Data", "Trigger Event", {defaultValue: ""});*/
                 let [itemName, itemLore, canDestroy, canPlaceOn, triggerEvent, setAmount, amount, keepOnDeath, lockMode, setLore, clearLore, newItem, newItemType, newItemCount /*, newItemData*/, moveItem, moveFromSlot, moveToSlot, moveFromContainerType, moveFromContainer, moveFromContainerBlock, moveToContainerType, moveToContainer, moveToContainerBlock, swapItems, swapSlot, swapOtherSlot, swapContainerType, swapContainer, swapContainerBlock, swapOtherContainerType, swapOtherContainer, swapOtherContainerBlock, transferItem, transferFromSlot, transferFromContainerType, transferFromContainer, transferFromContainerBlock, transferToContainerType, transferToContainer, transferToContainerBlock, debug,] = r.formValues; /*
 console.warn(r.formValues);*/
                 /*let item = inventory.container.getItem(Number(slotNumber));
-    if (Number(slotType) == 1) { try{let a = players[playerTargetB].getComponent("equipment_inventory") as EntityEquipmentInventoryComponent; item = a.getEquipmentSlot(equipmentPlayerSlotsList[Number(slotNumber)])} catch(e){if (Boolean(debug2) == true) { console.error(e, e.stack); }};};*/
+    if (Number(slotType) == 1) { try{let a = players[playerTargetB]!.getComponent("equipment_inventory") as EntityEquipmentInventoryComponent; item = a.getEquipmentSlot(equipmentPlayerSlotsList[Number(slotNumber)])} catch(e){if (Boolean(debug2) == true) { console.error(e, e.stack); }};};*/
                 let transferFromContainerBlockB = world.getDimension(String(transferFromContainerBlock).split(", ")[0]).getBlock({
                     x: Number(String(transferFromContainerBlock).split(", ")[1]),
                     y: Number(String(transferFromContainerBlock).split(", ")[2]),
@@ -1375,7 +1375,7 @@ console.warn(r.formValues);*/
                 let enchantments2 = getEnchantments(); /*
 for (const index in inventory.) {
 if (Number(index) != 0) {
-targetList = String([String(targetList), players[index].nameTag]).split(",");
+targetList = String([String(targetList), players[index]!.nameTag]).split(",");
 }
 }*/
                 let newItemNameTag = String(itemName).split("\\\\newline");
@@ -1467,7 +1467,8 @@ try{ durability2.damage = Number(10); } catch(e){if (Boolean(debug2) == true) { 
                         console.error(e, e.stack);
                     }
                 }
-                if (event.sourceEntity.hasTag("scriptDebugger")) {
+                assertIsDefined(sourceEntity);
+                if (sourceEntity.hasTag("scriptDebugger")) {
                     console.warn(item.typeId);
                 }
                 if (Number(slotType) == 1) {
@@ -1798,10 +1799,10 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     // Don't forget "break" for every case
                     break;*/:
                                 let form3 = new ModalFormData(); /*Z
-    let targetList = [players[0].nameTag]
+    let targetList = [players[0]!.nameTag]
     for (const index in players) {
         if (Number(index) != 0) {
-        targetList = String([String(targetList), players[index].nameTag]).split(",");
+        targetList = String([String(targetList), players[index]!.nameTag]).split(",");
         }
     }*/
                                 form3.dropdown("Transfer Type", ["Swap", "Transfer", "Move"], { defaultValueIndex: 0 });
@@ -1860,7 +1861,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                                 y: Number(String(fromPresetValues).split(", ")[2]),
                                                 z: Number(String(fromPresetValues).split(", ")[3]),
                                             })
-                                                .getComponent("inventory");
+                                                ?.getComponent("inventory");
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -1882,7 +1883,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                                 y: Number(String(toPresetValues).split(", ")[2]),
                                                 z: Number(String(toPresetValues).split(", ")[3]),
                                             })
-                                                .getComponent("inventory");
+                                                ?.getComponent("inventory");
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -1892,7 +1893,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 0:
                                             for (let index = 0; index < 27; index++) {
                                                 try {
-                                                    fromBlockPositionC.container.swapItems(Number(index), Number(index), toBlockPositionC.container);
+                                                    fromBlockPositionC.container?.swapItems(Number(index), Number(index), toBlockPositionC.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -1903,7 +1904,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 1:
                                             for (let index = 0; index < 27; index++) {
                                                 try {
-                                                    fromBlockPositionC.container.transferItem(Number(index), toBlockPositionC.container);
+                                                    fromBlockPositionC.container?.transferItem(Number(index), toBlockPositionC.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -1914,7 +1915,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 2:
                                             for (let index = 0; index < 27; index++) {
                                                 try {
-                                                    fromBlockPositionC.container.moveItem(Number(index), Number(index), toBlockPositionC.container);
+                                                    fromBlockPositionC.container?.moveItem(Number(index), Number(index), toBlockPositionC.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -2092,7 +2093,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                                 y: Number(String(presetValues).split(", ")[2]),
                                                 z: Number(String(presetValues).split(", ")[3]),
                                             })
-                                                .getComponent("inventory");
+                                                ?.getComponent("inventory");
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -2102,7 +2103,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 0:
                                             for (let index = 0; index < 27; index++) {
                                                 try {
-                                                    blockPositionC.container.swapItems(Number(index), Number(index + 9), toInventory.container);
+                                                    blockPositionC.container?.swapItems(Number(index), Number(index + 9), toInventory.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -2124,7 +2125,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 2:
                                             for (let index = 0; index < 27; index++) {
                                                 try {
-                                                    blockPositionC.container.transferItem(Number(index), toInventory.container);
+                                                    blockPositionC.container?.transferItem(Number(index), toInventory.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -2146,7 +2147,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 4:
                                             for (let index = 0; index < 27; index++) {
                                                 try {
-                                                    blockPositionC.container.moveItem(Number(index), Number(index + 9), toInventory.container);
+                                                    blockPositionC.container?.moveItem(Number(index), Number(index + 9), toInventory.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -2235,6 +2236,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                             break;
                                         case 2:
                                             try {
+                                                assertIsDefined(sourceEntity);
                                                 sourceEntity.runCommand(String("/scriptevent andexdb:debugScreen saqw"));
                                             }
                                             catch (e) {
@@ -2371,10 +2373,10 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                         switch (response) {
                             case 0:
                                 let form3 = new ModalFormData(); /*Z
-    let targetList = [players[0].nameTag]
+    let targetList = [players[0]!.nameTag]
     for (const index in players) {
         if (Number(index) != 0) {
-        targetList = String([String(targetList), players[index].nameTag]).split(",");
+        targetList = String([String(targetList), players[index]!.nameTag]).split(",");
         }
     }*/
                                 form3.dropdown("Transfer Type", ["Swap", "Transfer", "Move"], { defaultValueIndex: 0 });
@@ -2434,7 +2436,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                                 y: Number(String(fromPresetValues).split(", ")[2]),
                                                 z: Number(String(fromPresetValues).split(", ")[3]),
                                             })
-                                                .getComponent("inventory");
+                                                ?.getComponent("inventory");
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -2456,7 +2458,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                                 y: Number(String(toPresetValues).split(", ")[2]),
                                                 z: Number(String(toPresetValues).split(", ")[3]),
                                             })
-                                                .getComponent("inventory");
+                                                ?.getComponent("inventory");
                                         }
                                         catch (e) {
                                             console.error(e, e.stack);
@@ -2466,7 +2468,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 0:
                                             for (let index = 0; index < 9; index++) {
                                                 try {
-                                                    fromBlockPositionC.container.swapItems(Number(index + Number(inventoryRow) * 9), Number(index + Number(inventoryRow) * 9), toBlockPositionC.container);
+                                                    fromBlockPositionC.container?.swapItems(Number(index + Number(inventoryRow) * 9), Number(index + Number(inventoryRow) * 9), toBlockPositionC.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -2477,7 +2479,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 1:
                                             for (let index = 0; index < 9; index++) {
                                                 try {
-                                                    fromBlockPositionC.container.transferItem(Number(index + Number(inventoryRow) * 9), toBlockPositionC.container);
+                                                    fromBlockPositionC.container?.transferItem(Number(index + Number(inventoryRow) * 9), toBlockPositionC.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -2488,7 +2490,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                                         case 2:
                                             for (let index = 0; index < 9; index++) {
                                                 try {
-                                                    fromBlockPositionC.container.moveItem(Number(index + Number(inventoryRow) * 9), Number(index + Number(inventoryRow) * 9), toBlockPositionC.container);
+                                                    fromBlockPositionC.container?.moveItem(Number(index + Number(inventoryRow) * 9), Number(index + Number(inventoryRow) * 9), toBlockPositionC.container);
                                                 }
                                                 catch (e) {
                                                     console.error(e, e.stack);
@@ -2959,7 +2961,7 @@ console.warn(r.formValues);*/
                 let durability2 = getDurability(); /*
 for (const index in inventory.) {
 if (Number(index) != 0) {
-targetList = String([String(targetList), players[index].nameTag]).split(",");
+targetList = String([String(targetList), players[index]!.nameTag]).split(",");
 }
 }*/
                 let newItemNameTag = String(itemName).split("\\\\newline");
@@ -3202,7 +3204,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
             console.warn(index);*/
             if (Number(index) != 0) {
                 targetList = String([String(targetList), playerList[index].nameTag]).split(","); /*
-            targetList = String([String(targetList), playerList[index].nameTag]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.nameTag]).split(",");*/
             } /*
             console.warn(targetList);*/
         } /*
@@ -3213,25 +3215,25 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
         function playerControllerFormPopup(playerTargetB, playerViewerB) {
             let form = new ModalFormData();
             try {
-                dimension = String(playerList[playerTargetB].getSpawnPoint().dimension.id);
+                dimension = String(playerList[playerTargetB].getSpawnPoint()?.dimension.id);
             }
             catch (e) {
                 dimension = "";
             }
             try {
-                spawnXPosition = String(playerList[playerTargetB].getSpawnPoint().x);
+                spawnXPosition = String(playerList[playerTargetB].getSpawnPoint()?.x);
             }
             catch (e) {
                 spawnXPosition = "";
             }
             try {
-                spawnYPosition = String(playerList[playerTargetB].getSpawnPoint().y);
+                spawnYPosition = String(playerList[playerTargetB].getSpawnPoint()?.y);
             }
             catch (e) {
                 spawnYPosition = "";
             }
             try {
-                spawnZPosition = String(playerList[playerTargetB].getSpawnPoint().z);
+                spawnZPosition = String(playerList[playerTargetB].getSpawnPoint()?.z);
             }
             catch (e) {
                 spawnZPosition = "";
@@ -3274,9 +3276,9 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
             form2.dropdown("damageType", ["entity", "projectile"], 0)
             form2.dropdown("damageCause", ["anvil", "none"], 0)*/
             form.toggle("§eapplyImpulse", { defaultValue: false });
-            form.textField("§eX Velocity", "§eX Velocity" /*, String(playerList[playerTargetB].getVelocity().x)*/);
-            form.textField("§eY Velocity", "§eY Velocity" /*, String(playerList[playerTargetB].getVelocity().y)*/);
-            form.textField("§eZ Velocity", "§eZ Velocity" /*, String(playerList[playerTargetB].getVelocity().z)*/);
+            form.textField("§eX Velocity", "§eX Velocity" /*, String(playerList[playerTargetB]!.getVelocity().x)*/);
+            form.textField("§eY Velocity", "§eY Velocity" /*, String(playerList[playerTargetB]!.getVelocity().y)*/);
+            form.textField("§eZ Velocity", "§eZ Velocity" /*, String(playerList[playerTargetB]!.getVelocity().z)*/);
             form.toggle("applyKnockback", { defaultValue: false });
             form.textField("directionX", "directionX");
             form.textField("directionZ", "directionZ");
@@ -3326,7 +3328,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     newNameTag = String(nameTag).split("\\\\newline").join("\n");
                 }
                 /*
-            let scale = playerList[0].getComponent("scale") as EntityScaleComponent;
+            let scale = playerList[0]!.getComponent("scale") as EntityScaleComponent;
             scale.value = Number(scaleValue);*/ /**/
                 if (Boolean(changeNameTag) == true) {
                     try {
@@ -3560,10 +3562,10 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     catch (e) {
                         console.error(e, e.stack);
                     } /*
-            if (playerList[playerTargetB].hasTag("isSneaking")) {
+            if (playerList[playerTargetB]!.hasTag("isSneaking")) {
               system.runInterval( () => {
-              playerList[playerTargetB].isSneaking == true
-              if (playerList[playerTargetB].hasTag("isSneaking") == false) {
+              playerList[playerTargetB]!.isSneaking == true
+              if (playerList[playerTargetB]!.hasTag("isSneaking") == false) {
               return
               }
               }, 2)
@@ -3628,7 +3630,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
         console.warn(index);*/
             if (Number(index) != 0) {
                 targetList = String([String(targetList), playerList[index].nameTag]).split(","); /*
-        targetList = String([String(targetList), playerList[index].nameTag]).split(",");*/
+        targetList = String([String(targetList), playerList[index]!.nameTag]).split(",");*/
             } /*
         console.warn(targetList);*/
         } /*
@@ -3639,25 +3641,25 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
         function playerControllerFormPopup(playerTargetB, playerViewerB) {
             let form = new ModalFormData();
             try {
-                dimension = String(playerList[playerTargetB].getSpawnPoint().dimension);
+                dimension = String(playerList[playerTargetB].getSpawnPoint()?.dimension);
             }
             catch (e) {
                 dimension = "";
             }
             try {
-                spawnXPosition = String(playerList[playerTargetB].getSpawnPoint().x);
+                spawnXPosition = String(playerList[playerTargetB].getSpawnPoint()?.x);
             }
             catch (e) {
                 spawnXPosition = "";
             }
             try {
-                spawnYPosition = String(playerList[playerTargetB].getSpawnPoint().y);
+                spawnYPosition = String(playerList[playerTargetB].getSpawnPoint()?.y);
             }
             catch (e) {
                 spawnYPosition = "";
             }
             try {
-                spawnZPosition = String(playerList[playerTargetB].getSpawnPoint().z);
+                spawnZPosition = String(playerList[playerTargetB].getSpawnPoint()?.z);
             }
             catch (e) {
                 spawnZPosition = "";
@@ -3700,9 +3702,9 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
         form2.dropdown("damageType", ["entity", "projectile"], 0)
         form2.dropdown("damageCause", ["anvil", "none"], 0)*/
             form.toggle("§eapplyImpulse", { defaultValue: false });
-            form.textField("§eX Velocity", "§eX Velocity" /*, String(playerList[playerTargetB].getVelocity().x)*/);
-            form.textField("§eY Velocity", "§eY Velocity" /*, String(playerList[playerTargetB].getVelocity().y)*/);
-            form.textField("§eZ Velocity", "§eZ Velocity" /*, String(playerList[playerTargetB].getVelocity().z)*/);
+            form.textField("§eX Velocity", "§eX Velocity" /*, String(playerList[playerTargetB]!.getVelocity().x)*/);
+            form.textField("§eY Velocity", "§eY Velocity" /*, String(playerList[playerTargetB]!.getVelocity().y)*/);
+            form.textField("§eZ Velocity", "§eZ Velocity" /*, String(playerList[playerTargetB]!.getVelocity().z)*/);
             form.toggle("applyKnockback", { defaultValue: false });
             form.textField("directionX", "directionX");
             form.textField("directionZ", "directionZ");
@@ -3752,7 +3754,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     newNameTag = String(nameTag).split("\\\\newline").join("\n");
                 }
                 /*
-        let scale = playerList[0].getComponent("scale") as EntityScaleComponent;
+        let scale = playerList[0]!.getComponent("scale") as EntityScaleComponent;
         scale.value = Number(scaleValue);*/
                 playerList[playerTargetB].setOp(Boolean(setOp));
                 if (Boolean(changeNameTag) == true) {
@@ -3979,10 +3981,10 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     catch (e) {
                         console.error(e, e.stack);
                     } /*
-        if (playerList[playerTargetB].hasTag("isSneaking")) {
+        if (playerList[playerTargetB]!.hasTag("isSneaking")) {
           system.runInterval( () => {
-          playerList[playerTargetB].isSneaking == true
-          if (playerList[playerTargetB].hasTag("isSneaking") == false) {
+          playerList[playerTargetB]!.isSneaking == true
+          if (playerList[playerTargetB]!.hasTag("isSneaking") == false) {
           return
           }
           }, 2)
@@ -4077,7 +4079,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                 defaultValue: String(targetSelectorB(String(ts), "", Number(world.getAllPlayers()[0].id) ??
                     Number(world.getDimension("overworld").getEntities()[0].id) ??
                     Number(world.getDimension("nether").getEntities()[0].id) ??
-                    Number(world.getDimension("the_end").getEntities()[0].id)).getDynamicProperty(String(dpi))),
+                    Number(world.getDimension("the_end").getEntities()[0].id))?.getDynamicProperty(String(dpi))),
             });
             forceShow(form2, sourceEntity)
                 .then((ro2) => {
@@ -4088,7 +4090,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                 String(targetSelectorB(String(ts), "", Number(world.getAllPlayers()[0].id) ??
                     Number(world.getDimension("overworld").getEntities()[0].id) ??
                     Number(world.getDimension("nether").getEntities()[0].id) ??
-                    Number(world.getDimension("the_end").getEntities()[0].id)).setDynamicProperty(String(dpi), String(newValue)));
+                    Number(world.getDimension("the_end").getEntities()[0].id))?.setDynamicProperty(String(dpi), String(newValue)));
             })
                 .catch((e) => {
                 console.error(e, e.stack);
@@ -4130,18 +4132,23 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
         });
     }
     if (id == "andexdb:debugStick" || id == "andexdb:editorStick") {
+        assertIsDefined(sourceEntity);
         editorStick(sourceEntity, message);
     }
     if (id == "andexdb:evalAutoScriptSettings") {
+        assertIsDefined(sourceEntity);
         evalAutoScriptSettings(sourceEntity);
     }
     if (id == "andexdb:settings") {
+        assertIsDefined(sourceEntity);
         settings(sourceEntity);
     }
     if (id == "andexdb:generalSettings") {
+        assertIsDefined(sourceEntity);
         generalSettings(sourceEntity);
     }
     if (id == "andexdb:personalSettings") {
+        assertIsDefined(sourceEntity);
         personalSettings(sourceEntity);
     }
     if (id == "andexdb:customFormUIEditor") {
@@ -4201,12 +4208,13 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
     form.show(sourceEntity as Player).then(r => {
         if (r.canceled) return;
     
-        let [ blockDimension, blockX, blockY, blockZ ] = r.formValues;
+        let [ blockDimension, blockX, blockY, blockZ ] = r.formValues!;
         let blockPropertyValue2: any
         event.sourceEntity.runCommand("/scriptevent andexdb:debugStickB coordinates:"*/ /*"aslk"*/ /* + blockDimension + "|" + blockX + "|" + blockY + "|" + blockZ)
           }).catch(e => {
               console.error(e, e.stack);
           });*/
+        assertIsDefined(sourceEntity);
         editorStickMenuB(sourceEntity);
     }
     if (id == "andexdb:debugStickMenuC" || id == "andexdb:editorStickMenuC") {
@@ -4222,6 +4230,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
             let [includeLiquidBlocks, includePassableBlocks, maxDistance] = r.formValues;
             let blockPropertyValue2;
             console.warn(maxDistance);
+            assertIsDefined(sourceEntity);
             if (maxDistance !== "") {
                 console.warn("/scriptevent andexdb:debugStickC options:" /*"aslk"*/ +
                     String(includeLiquidBlocks) +
@@ -4229,7 +4238,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     String(includePassableBlocks) +
                     "|" +
                     String(maxDistance));
-                event.sourceEntity.runCommand("/scriptevent andexdb:debugStickC options:" /*"aslk"*/ +
+                sourceEntity.runCommand("/scriptevent andexdb:debugStickC options:" /*"aslk"*/ +
                     String(includeLiquidBlocks) +
                     "|" +
                     String(includePassableBlocks) +
@@ -4237,7 +4246,7 @@ try {console.warn(item.getCanPlaceOn());} catch(e){
                     String(maxDistance));
             }
             else {
-                event.sourceEntity.runCommand("/scriptevent andexdb:debugStickC options:" /*"aslk"*/ + String(includeLiquidBlocks) + "|" + String(includePassableBlocks));
+                sourceEntity.runCommand("/scriptevent andexdb:debugStickC options:" /*"aslk"*/ + String(includeLiquidBlocks) + "|" + String(includePassableBlocks));
             }
         })
             .catch((e) => {
@@ -4272,55 +4281,55 @@ if (Number(index) != 0) {*/ /*
         form.toggle("setProperty Enabled", false)*/ /*
         try {console.warn(block.block.permutation.getAllStates()) } catch(e){console.error(e, e.stack);}
         try {console.warn(block.block.permutation.getAllStates()[0]) } catch(e){console.error(e, e.stack);}
-        try {console.warn(block.block.permutation.getAllStates()[0][0]) } catch(e){console.error(e, e.stack);}*/
+        try {console.warn(block.block.permutation.getAllStates()[0]![0]) } catch(e){console.error(e, e.stack);}*/
         /*form.dropdown("Block Permutation To Set", block.getTags())*/ /*
         form.slider("Selected Slot", 0, 56, 1)*/ /*
                 form.toggle("isWaterlogged", block2.isWaterlogged)*/ /*
     form.toggle("Clear Velocity", false)*/ /*
         form.toggle("Debug", false)
         form.toggle("setWaterContainerProperties Enabled", false)
-        try{if(block2.getComponent("waterContainer") != undefined){form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("waterContainer").getCustomColor().red}\n§aGreen: §g${block2.getComponent("waterContainer").getCustomColor().green}\n§bBlue: §g${block2.getComponent("waterContainer").getCustomColor().blue}\n§dAlpha: §g${block2.getComponent("waterContainer").getCustomColor().alpha}\nFill Level: §g${block2.getComponent("waterContainer").fillLevel}`, `red, green, blue, alpha, fill level`, `${block2.getComponent("waterContainer").getCustomColor().red}, ${block2.getComponent("waterContainer").getCustomColor().green}, ${block2.getComponent("waterContainer").getCustomColor().blue}, ${block2.getComponent("waterContainer").getCustomColor().alpha}, ${block2.getComponent("waterContainer").fillLevel}`)}else{form.textField(`§4Cauldron Water RGBA Color`, `§4Unavailable`)}}catch{form.textField(`§4Cauldron Water RGBA Color/Fill Level`, `§4Unavailable`)}
+        try{if(block2.getComponent("waterContainer") != undefined){form.textField(`Cauldron Water RGBA Color/Fill Level\n§cRed: §g${block2.getComponent("waterContainer")?.getCustomColor().red}\n§aGreen: §g${block2.getComponent("waterContainer")?.getCustomColor().green}\n§bBlue: §g${block2.getComponent("waterContainer")?.getCustomColor().blue}\n§dAlpha: §g${block2.getComponent("waterContainer")?.getCustomColor().alpha}\nFill Level: §g${block2.getComponent("waterContainer")?.fillLevel}`, `red, green, blue, alpha, fill level`, `${block2.getComponent("waterContainer")?.getCustomColor().red}, ${block2.getComponent("waterContainer")?.getCustomColor().green}, ${block2.getComponent("waterContainer")?.getCustomColor().blue}, ${block2.getComponent("waterContainer")?.getCustomColor().alpha}, ${block2.getComponent("waterContainer")?.fillLevel}`)}else{form.textField(`§4Cauldron Water RGBA Color`, `§4Unavailable`)}}catch{form.textField(`§4Cauldron Water RGBA Color/Fill Level`, `§4Unavailable`)}
         form.toggle("setSnowContainerProperties Enabled", false)
-        if(block2.getComponent("snowContainer") != undefined){form.textField(`Cauldron Snow Fill Level\nFill Level: §g${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`, `${block2.getComponent("snowContainer").fillLevel}`)}else{form.textField(`§4Cauldron Snow Fill Level`, `§r§4Unavailable`)}
+        if(block2.getComponent("snowContainer") != undefined){form.textField(`Cauldron Snow Fill Level\nFill Level: §g${block2.getComponent("snowContainer")?.fillLevel}`, `${block2.getComponent("snowContainer")?.fillLevel}`, `${block2.getComponent("snowContainer")?.fillLevel}`)}else{form.textField(`§4Cauldron Snow Fill Level`, `§r§4Unavailable`)}
         form.toggle("setLavaContainerProperties Enabled", false)
-        if(block2.getComponent("lavaContainer") != undefined){form.textField(`Cauldron Lava Fill Level\nFill Level: §g${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`, `${block2.getComponent("lavaContainer").fillLevel}`)}else{form.textField(`§4Cauldron Lava Fill Level`, `§r§4Unavailable`)}
+        if(block2.getComponent("lavaContainer") != undefined){form.textField(`Cauldron Lava Fill Level\nFill Level: §g${block2.getComponent("lavaContainer")?.fillLevel}`, `${block2.getComponent("lavaContainer")?.fillLevel}`, `${block2.getComponent("lavaContainer")?.fillLevel}`)}else{form.textField(`§4Cauldron Lava Fill Level`, `§r§4Unavailable`)}
         form.toggle("setPotionContainerProperties Enabled", false)
-        if(block2.getComponent("potionContainer") != undefined){form.textField(`Cauldron Potion Type Contents/Fill Level\nFill Level: §g${block2.getComponent("potionContainer").fillLevel}`, `item type, fill level`, `item type, ${block2.getComponent("potionContainer").fillLevel}`)}else{form.textField(`§4Cauldron Potion Type Contents/Fill Level`, `§r§4Unavailable`)}
+        if(block2.getComponent("potionContainer") != undefined){form.textField(`Cauldron Potion Type Contents/Fill Level\nFill Level: §g${block2.getComponent("potionContainer")?.fillLevel}`, `item type, fill level`, `item type, ${block2.getComponent("potionContainer")?.fillLevel}`)}else{form.textField(`§4Cauldron Potion Type Contents/Fill Level`, `§r§4Unavailable`)}
         form.toggle("setSignFrontRawText Enabled", false)
-        if(block2.getComponent("sign") != undefined){form.textField(`Sign Front RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Front))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Front)))}else{form.textField(`§4Sign Front RawText`, `§r§4Unavailable`)}
+        if(block2.getComponent("sign") != undefined){form.textField(`Sign Front RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign")?.getRawText(SignSide.Front))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, JSON.stringify(block2.getComponent("sign")?.getRawText(SignSide.Front)))}else{form.textField(`§4Sign Front RawText`, `§r§4Unavailable`)}
         form.toggle("setSignBackRawText Enabled", false)
-        if(block2.getComponent("sign") != undefined){form.textField(`Sign Back RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Back))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, JSON.stringify(block2.getComponent("sign").getRawText(SignSide.Back)))}else{form.textField(`§4Sign Back RawText`, `§r§4Unavailable`)}
+        if(block2.getComponent("sign") != undefined){form.textField(`Sign Back RawText\nRawText: §g${JSON.stringify(block2.getComponent("sign")?.getRawText(SignSide.Back))}`, `{rawtext: [{text|translate|rawtext|score|with: value, ...}]}`, JSON.stringify(block2.getComponent("sign")?.getRawText(SignSide.Back)))}else{form.textField(`§4Sign Back RawText`, `§r§4Unavailable`)}
         form.toggle("setSignFrontText Enabled", false)
-        if(block2.getComponent("sign") != undefined){form.textField(`Sign Front Text\nRawText: §g${block2.getComponent("sign").getText(SignSide.Front)}`, `text`, block2.getComponent("sign").getText(SignSide.Front))}else{form.textField(`§4Sign Front Text`, `§r§4Unavailable`)}
+        if(block2.getComponent("sign") != undefined){form.textField(`Sign Front Text\nRawText: §g${block2.getComponent("sign")?.getText(SignSide.Front)}`, `text`, block2.getComponent("sign")?.getText(SignSide.Front))}else{form.textField(`§4Sign Front Text`, `§r§4Unavailable`)}
         form.toggle("setSignBackText Enabled", false)
-        if(block2.getComponent("sign") != undefined){form.textField(`Sign Back Text\Text: §g${block2.getComponent("sign").getText(SignSide.Back)}`, `text`, block2.getComponent("sign").getText(SignSide.Back))}else{form.textField(`§4Sign Back Text`, `§r§4Unavailable`)}
+        if(block2.getComponent("sign") != undefined){form.textField(`Sign Back Text\Text: §g${block2.getComponent("sign")?.getText(SignSide.Back)}`, `text`, block2.getComponent("sign")?.getText(SignSide.Back))}else{form.textField(`§4Sign Back Text`, `§r§4Unavailable`)}
         form.toggle("setSignFrontTextColor Enabled", false)
-        if(block2.getComponent("sign") != undefined){form.textField(`Sign Front Text Color\Text: §g${block2.getComponent("sign").getTextDyeColor(SignSide.Front)}`, `dye color`, block2.getComponent("sign").getTextDyeColor(SignSide.Front))}else{form.textField(`§4Sign Front Text Color`, `§r§4Unavailable`)}
+        if(block2.getComponent("sign") != undefined){form.textField(`Sign Front Text Color\Text: §g${block2.getComponent("sign")?.getTextDyeColor(SignSide.Front)}`, `dye color`, block2.getComponent("sign")?.getTextDyeColor(SignSide.Front))}else{form.textField(`§4Sign Front Text Color`, `§r§4Unavailable`)}
         form.toggle("setSignBackTextColor Enabled", false)
-        if(block2.getComponent("sign") != undefined){form.textField(`Sign Back Text Color\Text: §g${block2.getComponent("sign").getTextDyeColor(SignSide.Back)}`, `dye color`, block2.getComponent("sign").getTextDyeColor(SignSide.Back))}else{form.textField(`§4Sign Back Text Color`, `§r§4Unavailable`)}
+        if(block2.getComponent("sign") != undefined){form.textField(`Sign Back Text Color\Text: §g${block2.getComponent("sign")?.getTextDyeColor(SignSide.Back)}`, `dye color`, block2.getComponent("sign")?.getTextDyeColor(SignSide.Back))}else{form.textField(`§4Sign Back Text Color`, `§r§4Unavailable`)}
         form.toggle("setSignIsWaxed", block2.getComponent("sign")?.isWaxed)
   
-    form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]).then(r => {
+    form.show(playerList[playerList.findIndex((x) => x == sourceEntity)]!).then(r => {
         if (r.canceled) return;
     
-        let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled*/ /*, selectedSlotIndex*/ /*, isWaterlogged/*, clearVelocity*/ //, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues;
+        let [ setType, setTypeEnabled, blockPropertyIdentifier, blockPropertyValue, setPropertyEnabled*/ /*, selectedSlotIndex*/ /*, isWaterlogged/*, clearVelocity*/ //, debug, waterContainerEnabled, waterContainer, snowContainerEnabled, snowContainer, lavaContainerEnabled, lavaContainer, potionContainerEnabled, potionContainer, signFrontRawTextEnabled, signFrontRawText, signBackRawTextEnabled, signBackRawText, signFrontTextEnabled, signFrontText, signBackTextEnabled, signBackText, signFrontTextColorEnabled, signFrontTextColor, signBackTextColorEnabled, signBackTextColor, setSignIsWaxed ] = r.formValues!;
         /*let blockPropertyValue2: any
         blockPropertyValue2 = ""
         let blockPropertyValueArray: Array<any>
         blockPropertyValueArray = String(blockPropertyValue).split(", ")
         let blockPropertyValueLength = String(blockPropertyIdentifier).split(", ").length
-        if(waterContainerEnabled && block2.getComponent("waterContainer") != undefined){block2.getComponent("waterContainer").setCustomColor({red: Number(String(waterContainer).split(", ")[0]), green: Number(String(waterContainer).split(", ")[1]), blue: Number(String(waterContainer).split(", ")[2]), alpha: Number(String(waterContainer).split(", ")[3])}); block2.getComponent("waterContainer").fillLevel = Number(String(waterContainer).split(", ")[4]); }
-        if(snowContainerEnabled && block2.getComponent("snowContainer") != undefined){block2.getComponent("snowContainer").fillLevel = Number(String(snowContainer).split(", ")[0]); }
-        if(lavaContainerEnabled && block2.getComponent("lavaContainer") != undefined){block2.getComponent("lavaContainer").fillLevel = Number(String(lavaContainer).split(", ")[0]); }
-        if(potionContainerEnabled && block2.getComponent("potionContainer") != undefined){block2.getComponent("potionContainer").fillLevel = Number(String(potionContainer).split(", ")[1]); block2.getComponent("potionContainer").setPotionType(new ItemStack(String(String(potionContainer).split(", ")[0]), 255)); }
-        if(signFrontRawTextEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/ //){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign").setText(JSON.parse(String(signFrontRawText)), SignSide.Front); }
-        //if(signBackRawTextEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign").setText(JSON.parse(String(signBackRawText)), SignSide.Back); }
-        //if(signFrontTextEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign").setText(String(signFrontText).replaceAll("\\n", "\n"), SignSide.Front); }
-        //if(signBackTextEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign").setText(String(signBackText).replaceAll("\\n", "\n"), SignSide.Back); }
-        //if(block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/block2.getComponent("sign").setWaxed(Boolean(setSignIsWaxed)); }
+        if(waterContainerEnabled && block2.getComponent("waterContainer") != undefined){block2.getComponent("waterContainer")?.setCustomColor({red: Number(String(waterContainer).split(", ")[0]), green: Number(String(waterContainer).split(", ")[1]), blue: Number(String(waterContainer).split(", ")[2]), alpha: Number(String(waterContainer).split(", ")[3])}); block2.getComponent("waterContainer")?.fillLevel = Number(String(waterContainer).split(", ")[4]); }
+        if(snowContainerEnabled && block2.getComponent("snowContainer") != undefined){block2.getComponent("snowContainer")?.fillLevel = Number(String(snowContainer).split(", ")[0]); }
+        if(lavaContainerEnabled && block2.getComponent("lavaContainer") != undefined){block2.getComponent("lavaContainer")?.fillLevel = Number(String(lavaContainer).split(", ")[0]); }
+        if(potionContainerEnabled && block2.getComponent("potionContainer") != undefined){block2.getComponent("potionContainer")?.fillLevel = Number(String(potionContainer).split(", ")[1]); block2.getComponent("potionContainer")?.setPotionType(new ItemStack(String(String(potionContainer).split(", ")[0]), 255)); }
+        if(signFrontRawTextEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/ //){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign")?.setText(JSON.parse(String(signFrontRawText)), SignSide.Front); }
+        //if(signBackRawTextEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign")?.setText(JSON.parse(String(signBackRawText)), SignSide.Back); }
+        //if(signFrontTextEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign")?.setText(String(signFrontText).replaceAll("\\n", "\n"), SignSide.Front); }
+        //if(signBackTextEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign")?.setText(String(signBackText).replaceAll("\\n", "\n"), SignSide.Back); }
+        //if(block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/block2.getComponent("sign")?.setWaxed(Boolean(setSignIsWaxed)); }
         /*DyeColor.Blue//make it save this DyeColor in the imports from @minecraft/server.
-        if(signFrontTextColorEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/ //){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign").setTextDyeColor(eval(`DyeColor.${signFrontTextColor}`), SignSide.Back); }
-        //if(signBackTextColorEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/block2.getComponent("sign").setTextDyeColor(eval(`DyeColor.${signBackTextColor}`), SignSide.Front); }
+        if(signFrontTextColorEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/ //){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*///block2.getComponent("sign")?.setTextDyeColor(eval(`DyeColor.${signFrontTextColor}`), SignSide.Back); }
+        //if(signBackTextColorEnabled && block2.getComponent("sign") != undefined/*&&/^{(rawtext|score|text|translate|with):/.test((String(signText)))&&/}$/.test((String(signText)))*/){/*{ translate: "accessibility.list.or.two", with: ["Player 1", "Player 2"] }*/block2.getComponent("sign")?.setTextDyeColor(eval(`DyeColor.${signBackTextColor}`), SignSide.Front); }
         /*for (let index in blockPropertyValueArray) {
         if (String(blockPropertyValueArray[index]).startsWith("\"") && String(blockPropertyValueArray[index]).endsWith("\"")) {
             blockPropertyValueArray[index] = String(blockPropertyValueArray[index]).slice(1, (String(blockPropertyValueArray[index]).length - 1))
@@ -4337,34 +4346,34 @@ if (Number(index) != 0) {*/ /*
         if (setTypeEnabled == true) { try { block2.setType(BlockTypes.get(String(setType))/*String(setType)*/ //) } catch(e){console.error(e, e.stack)} };
         /*if (setPropertyEnabled == true) { switch(blockPropertyValueLength) {
             case 1:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0] })/*block2.permutation.clone().withState(String(blockPropertyIdentifier), blockPropertyValue2).clone().getAllStates()*/ // ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0] })/*block2.permutation.clone().withState(String(blockPropertyIdentifier), blockPropertyValue2).clone().getAllStates()*/ // ) } catch ( e ) { console.error(e, e.stack) }
         /*break;
             case 2:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             case 3:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]!]: blockPropertyValueArray[2] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             case 4:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]!]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]!]: blockPropertyValueArray[3] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             case 5:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]!]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]!]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]!]: blockPropertyValueArray[4] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             case 6:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]!]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]!]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]!]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]!]: blockPropertyValueArray[5] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             case 7:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]]: blockPropertyValueArray[6] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]!]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]!]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]!]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]!]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]!]: blockPropertyValueArray[6] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             case 8:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]]: blockPropertyValueArray[7] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]!]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]!]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]!]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]!]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]!]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]!]: blockPropertyValueArray[7] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             case 9:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]]: blockPropertyValueArray[7], [String(blockPropertyIdentifier).split(", ")[8]]: blockPropertyValueArray[8] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]!]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]!]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]!]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]!]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]!]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]!]: blockPropertyValueArray[7], [String(blockPropertyIdentifier).split(", ")[8]!]: blockPropertyValueArray[8] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             case 10:
-                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]]: blockPropertyValueArray[7], [String(blockPropertyIdentifier).split(", ")[8]]: blockPropertyValueArray[8], [String(blockPropertyIdentifier).split(", ")[9]]: blockPropertyValueArray[9] }) ) } catch ( e ) { console.error(e, e.stack) }
+                try { block2.setPermutation(BlockPermutation.resolve(block2.typeId, { [String(blockPropertyIdentifier).split(", ")[0]!]: blockPropertyValueArray[0], [String(blockPropertyIdentifier).split(", ")[1]!]: blockPropertyValueArray[1], [String(blockPropertyIdentifier).split(", ")[2]!]: blockPropertyValueArray[2], [String(blockPropertyIdentifier).split(", ")[3]!]: blockPropertyValueArray[3], [String(blockPropertyIdentifier).split(", ")[4]!]: blockPropertyValueArray[4], [String(blockPropertyIdentifier).split(", ")[5]!]: blockPropertyValueArray[5], [String(blockPropertyIdentifier).split(", ")[6]!]: blockPropertyValueArray[6], [String(blockPropertyIdentifier).split(", ")[7]!]: blockPropertyValueArray[7], [String(blockPropertyIdentifier).split(", ")[8]!]: blockPropertyValueArray[8], [String(blockPropertyIdentifier).split(", ")[9]!]: blockPropertyValueArray[9] }) ) } catch ( e ) { console.error(e, e.stack) }
             break;
             default:
             break;/*
@@ -4386,6 +4395,7 @@ if (Number(index) != 0) {*/ /*
   });*/
         let block2; /* = block.block*/
         let allCoordinates = [];
+        assertIsDefined(sourceEntity);
         if (message.startsWith("coordinates:") && message.includes("|") && message.slice(12).split("|").length == 4) {
             allCoordinates = message.slice(12).split("|");
             block2 = world.getDimension(String(allCoordinates[0])).getBlock({
@@ -4429,6 +4439,7 @@ if (Number(index) != 0) {*/ /*
         } /*
         console.warn(maxDistance)*/
         let playerList = world.getPlayers();
+        assertIsDefined(sourceEntity);
         let block = sourceEntity.getBlockFromViewDirection({
             includeLiquidBlocks: includeLiquidBlocks,
             includePassableBlocks: includePassableBlocks,
@@ -4508,7 +4519,7 @@ if (Number(index) != 0) {*/ /*
         form.toggle("setProperty Enabled", { defaultValue: false }); /*
         try {console.warn(block.block.permutation.getAllStates()) } catch(e){console.error(e, e.stack);}
         try {console.warn(block.block.permutation.getAllStates()[0]) } catch(e){console.error(e, e.stack);}
-        try {console.warn(block.block.permutation.getAllStates()[0][0]) } catch(e){console.error(e, e.stack);}*/
+        try {console.warn(block.block.permutation.getAllStates()[0]![0]) } catch(e){console.error(e, e.stack);}*/
         /*form.dropdown("Block Permutation To Set", block.getTags())*/ /*
         form.slider("Selected Slot", 0, 56, 1)*/
         form.toggle("isWaterlogged", { defaultValue: block2.isWaterlogged }); /*
@@ -4901,6 +4912,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
     if (id == "andexdb:debugScreen") {
         let form = new ModalFormData();
         let players = world.getPlayers();
+        assertIsDefined(sourceEntity);
         let block = sourceEntity.getBlockFromViewDirection();
         let entity = sourceEntity.getEntitiesFromViewDirection();
         form.title("Debug Screen");
@@ -4942,7 +4954,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             console.warn(index);*/
             if (Number(index) != 0) {
                 targetList = String([String(targetList), playerList[index].nameTag]).split(","); /*
-            targetList = String([String(targetList), playerList[index].nameTag]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.nameTag]).split(",");*/
             } /*
             console.warn(targetList);*/
         } /*
@@ -5049,7 +5061,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                     return;
                 let [changeNameTag, nameTag, triggerEvent, setProperty, propertyIdentifier, propertyValue, resetProperty, resetPropertyIdentifier, setDynamicProperty, dynamicPropertyIdentifier, dynamicPropertyValue, removeDynamicProperty, removeDynamicPropertyIdentifier, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, sendMessage, messageToSend, openTheItemModificationFormAfterwards, debug,] = r.formValues;
                 /*
-            let scale = playerList[0].getComponent("scale") as EntityScaleComponent;
+            let scale = playerList[0]!.getComponent("scale") as EntityScaleComponent;
             scale.value = Number(scaleValue);*/
                 if (Boolean(changeNameTag) == true) {
                     try {
@@ -5338,7 +5350,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
       let form = new ModalFormData();
       let players = world.getPlayers()
       let block = sourceEntity.getBlockFromViewDirection()
-      let entity = players[0].getEntitiesFromViewDirection()
+      let entity = players[0]!.getEntitiesFromViewDirection()
       form.title("Entity Controller");
       form.textField("Name Tag", "Name Tag", entity[0].entity.nameTag)
       form.textField("Trigger Event", "Trigger Event")*/ /*
@@ -5375,7 +5387,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
     form.show(players[players.findIndex((x) => x == sourceEntity)] as any).then(r => {
         if (r.canceled) return;
     
-        let [ nameTag, triggerEvent, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues;
+        let [ nameTag, triggerEvent, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, removeEffect, effectToRemove, removeTag, tagToRemove, setRot, rotX, rotY, teleport, teleportX, teleportY, teleportZ, tryTeleport, tryTeleportX, tryTeleportY, tryTeleportZ, openTheItemModificationFormAfterwards, debug ] = r.formValues!;
     
         let scale = sourceEntity.getComponent("scale") as EntityScaleComponent;*/ /*
         scale.value = Number(scaleValue);*/ /*
@@ -5404,7 +5416,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
     
     if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug")) {
       system.runInterval( () => {
-      players[0].onScreenDisplay.setActionBar("dimension: " + entity[0].entity.dimension + "\nfallDistance: " + entity[0].entity.fallDistance + "\nid: entity[0].entity.id: " + entity[0].entity.id + "\nisClimbing: " + entity[0].entity.isClimbing + "\nisFalling: " + entity[0].entity.isFalling + "\nisInWater: " + entity[0].entity.isInWater + "\nisOnGround: " + entity[0].entity.isOnGround + "\nisSleeping: " + entity[0].entity.isSleeping + "\nisSneaking: " + entity[0].entity.isSneaking + "\nisSprinting: " + entity[0].entity.isSprinting + "\nisSwimming: " + entity[0].entity.isSwimming + "\nlifetimeState: " + entity[0].entity.lifetimeState + "\nlocation: " + entity[0].entity.location + "\nnameTag: " + entity[0].entity.nameTag + "\nscoreboardIdentity(or_the_actor_id_very_long_complicated_number): " + entity[0].entity.scoreboardIdentity + "\ntarget: " + entity[0].entity.target + "\ntypeId: " + entity[0].entity.typeId + "\ngetBlockFromViewDirection(): " + entity[0].entity.getBlockFromViewDirection() + "\ngetComponents(): " + entity[0].entity.getComponents() + "\ngetEffects(): " + entity[0].entity.getEffects() + "\ngetEntitiesFromViewDirection(): " + entity[0].entity.getEntitiesFromViewDirection() + "\ngetHeadLocation(): " + entity[0].entity.getHeadLocation() + "\ngetRotation(): " + entity[0].entity.getRotation() + "\ngetTags(): " + entity[0].entity.getTags() + "\ngetVelocity(): " + entity[0].entity.getVelocity() + "\ngetViewDirection(): " + entity[0].entity.getViewDirection + "\nisValid(): " + entity[0].entity.isValid);
+      players[0]!.onScreenDisplay.setActionBar("dimension: " + entity[0].entity.dimension + "\nfallDistance: " + entity[0].entity.fallDistance + "\nid: entity[0].entity.id: " + entity[0].entity.id + "\nisClimbing: " + entity[0].entity.isClimbing + "\nisFalling: " + entity[0].entity.isFalling + "\nisInWater: " + entity[0].entity.isInWater + "\nisOnGround: " + entity[0].entity.isOnGround + "\nisSleeping: " + entity[0].entity.isSleeping + "\nisSneaking: " + entity[0].entity.isSneaking + "\nisSprinting: " + entity[0].entity.isSprinting + "\nisSwimming: " + entity[0].entity.isSwimming + "\nlifetimeState: " + entity[0].entity.lifetimeState + "\nlocation: " + entity[0].entity.location + "\nnameTag: " + entity[0].entity.nameTag + "\nscoreboardIdentity(or_the_actor_id_very_long_complicated_number): " + entity[0].entity.scoreboardIdentity + "\ntarget: " + entity[0].entity.target + "\ntypeId: " + entity[0].entity.typeId + "\ngetBlockFromViewDirection(): " + entity[0].entity.getBlockFromViewDirection() + "\ngetComponents(): " + entity[0].entity.getComponents() + "\ngetEffects(): " + entity[0].entity.getEffects() + "\ngetEntitiesFromViewDirection(): " + entity[0].entity.getEntitiesFromViewDirection() + "\ngetHeadLocation(): " + entity[0].entity.getHeadLocation() + "\ngetRotation(): " + entity[0].entity.getRotation() + "\ngetTags(): " + entity[0].entity.getTags() + "\ngetVelocity(): " + entity[0].entity.getVelocity() + "\ngetViewDirection(): " + entity[0].entity.getViewDirection + "\nisValid(): " + entity[0].entity.isValid);
       if (players[players.findIndex((x) => x == sourceEntity)] as any.hasTag("showDebug") == false) {
       return
       }
@@ -5438,7 +5450,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             console.warn(index);*/
             if (Number(index) != 0) {
                 targetList = String([String(targetList), playerList[index].nameTag]).split(","); /*
-            targetList = String([String(targetList), playerList[index].nameTag]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.nameTag]).split(",");*/
             } /*
             console.warn(targetList);*/
         } /*
@@ -5509,7 +5521,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                 return;
             let [setWeather, weatherType, weatherDimension, weatherDuration, brodcastClientMessage, clientMessageId, clientMessageValue, sendMessage, messageMessage, setAbsoluteTime, newAbsoluteTime, setDefaultSpawnLocation, spawnX, spawnY, spawnZ, setDynamicProperty, dynamicPropertyId, dynamicPropertyValue, setTimeOfDay, newTimeOfDay, spawnEntity, entityIdentifier, entityX, entityY, entityZ, entityDimension, debug,] = r.formValues;
             /*
-            let scale = playerList[0].getComponent("scale") as EntityScaleComponent;
+            let scale = playerList[0]!.getComponent("scale") as EntityScaleComponent;
             scale.value = Number(scaleValue);*/
             if (Boolean(setWeather) == true && weatherDuration == "") {
                 try {
@@ -5796,7 +5808,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         for (let i in playerName) {
             playerName[i] = playerName[i].replaceAll("\\l", "|").replaceAll("\\n", "\n").replaceAll("\\x", "");
         }
-        if (playerName.length == 1) {
+        if (playerName.length < 2) {
             try {
                 sourceEntity.sendMessage(
                 /*"§r§fplayerControllerCommandForm Command Format: <playerName: string>|<setPlayerNameTag: boolean>|<multilineNameTag: boolean>|<newPlayerNameTag: string>|<triggerEvent: boolean>|<eventId: string>|<addExperience: boolean>|<experienceAmount: int>|<>|<>"*/ "§r§fplayerControllerCommandForm Command Format: <targets: quotedTargetSelector>|<option: optionName>:<optionValue: optionValue>{list: list; listObject: |[<option: optionName>:<optionValue: optionValue>]}\nOptions: triggerEvent, setProperty, setPropertyInt, setPropertyBool, setDynamicProperty, setDynamicPropertyInt, setDynamicPropertyBool, setDynamicPropertyVector3");
@@ -5813,10 +5825,12 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             let entity = undefined; /*
         console.warn(playerName[0])*/
             if (sourceType == "Entity") {
+                assertIsDefined(sourceEntity);
                 position = String(sourceEntity.location.x) + " " + sourceEntity.location.y + " " + sourceEntity.location.z;
                 entity = sourceEntity;
             }
             else {
+                assertIsDefined(sourceBlock);
                 position = String(sourceBlock.location.x) + " " + sourceBlock.location.y + " " + sourceBlock.location.z;
             }
             let targets = targetSelectorAllListC(playerName[0], "", position, entity); /*
@@ -5826,7 +5840,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             console.warn(index);*/
                 if (Number(index) != 0) {
                     targetList = String([String(targetList), playerList[index].name]).split(","); /*
-            targetList = String([String(targetList), playerList[index].name]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.name]).split(",");*/
                 } /*
             console.warn(targetList);*/
             }
@@ -5866,7 +5880,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                             }
                             break; /*
     case "setPropertyVector3":
-    try {targets[l].setProperty(playerName.slice(1)[i].split(":")[1].replaceAll("\\c", ":"), Boolean(playerName.slice(1)[i].split(":").slice(2).join(":").replaceAll("\\c", ":")));} catch(e){console.error(e, e.stack);}
+    try {targets[l]!.setProperty(playerName.slice(1)[i]!.split(":")[1]!.replaceAll("\\c", ":"), Boolean(playerName.slice(1)[i]!.split(":").slice(2).join(":").replaceAll("\\c", ":")));} catch(e){console.error(e, e.stack);}
     break; */
                         case "setDynamicProperty":
                             try {
@@ -5905,12 +5919,12 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                             }
                             break; /*
     case "setVariant":
-    try {(targets[l].getComponent("minecraft:variant") as EntityVariantComponent).value = Number(playerName.slice(1)[i].split(":")[1]);} catch(e){console.error(e, e.stack);}
+    try {(targets[l]!.getComponent("minecraft:variant") as EntityVariantComponent).value = Number(playerName.slice(1)[i]!.split(":")[1]!);} catch(e){console.error(e, e.stack);}
     break; */
                         // case "setMarkVariant": // Broke in 1.21.80, switch to use entiiy scale.
                         //     try {
-                        //         (targets[l].getComponent("minecraft:mark_variant") as EntityMarkVariantComponent).value = Number(
-                        //             playerName.slice(1)[i].split(":")[1]
+                        //         (targets[l]!.getComponent("minecraft:mark_variant") as EntityMarkVariantComponent).value = Number(
+                        //             playerName.slice(1)[i]!.split(":")[1]
                         //         );
                         //     } catch (e) {
                         //         console.error(e, e.stack);
@@ -5918,8 +5932,8 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                         //     break;
                         // case "setPushThrough": // Broke in 1.21.80, switch to use entiiy scale.
                         //     try {
-                        //         (targets[l].getComponent("minecraft:push_through") as EntityPushThroughComponent).value = Number(
-                        //             playerName.slice(1)[i].split(":")[1]
+                        //         (targets[l]!.getComponent("minecraft:push_through") as EntityPushThroughComponent).value = Number(
+                        //             playerName.slice(1)[i]!.split(":")[1]
                         //         );
                         //     } catch (e) {
                         //         console.error(e, e.stack);
@@ -5938,7 +5952,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                             break;
                         // case "setSkinId": // Broke in 1.21.80, switch to use entiiy scale.
                         //     try {
-                        //         (targets[l].getComponent("minecraft:skin_id") as EntitySkinIdComponent).value = Number(playerName.slice(1)[i].split(":")[1]);
+                        //         (targets[l]!.getComponent("minecraft:skin_id") as EntitySkinIdComponent).value = Number(playerName.slice(1)[i]!.split(":")[1]!);
                         //     } catch (e) {
                         //         console.error(e, e.stack);
                         //     }
@@ -5977,8 +5991,8 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                             break;
                         // case "setFrictionModifier": // Broke in 1.21.80, switch to use entiiy scale.
                         //     try {
-                        //         (targets[l].getComponent("minecraft:friction_modifier") as EntityFrictionModifierComponent).value = Number(
-                        //             playerName.slice(1)[i].split(":")[1]
+                        //         (targets[l]!.getComponent("minecraft:friction_modifier") as EntityFrictionModifierComponent).value = Number(
+                        //             playerName.slice(1)[i]!.split(":")[1]
                         //         );
                         //     } catch (e) {
                         //         console.error(e, e.stack);
@@ -5986,8 +6000,8 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                         //     break;
                         // case "setGroundOffset": // Broke in 1.21.80, switch to use entiiy scale.
                         //     try {
-                        //         (targets[l].getComponent("minecraft:ground_offset") as EntityGroundOffsetComponent).value = Number(
-                        //             playerName.slice(1)[i].split(":")[1]
+                        //         (targets[l]!.getComponent("minecraft:ground_offset") as EntityGroundOffsetComponent).value = Number(
+                        //             playerName.slice(1)[i]!.split(":")[1]
                         //         );
                         //     } catch (e) {
                         //         console.error(e, e.stack);
@@ -6035,7 +6049,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         for (let i in playerName) {
             playerName[i] = playerName[i].replaceAll("\\l", "|").replaceAll("\\n", "\n").replaceAll("\\x", "");
         }
-        if (playerName.length == 1) {
+        if (playerName.length < 2) {
             try {
                 sourceEntity.sendMessage(
                 /*"§r§fplayerControllerCommandForm Command Format: <playerName: string>|<setPlayerNameTag: boolean>|<multilineNameTag: boolean>|<newPlayerNameTag: string>|<triggerEvent: boolean>|<eventId: string>|<addExperience: boolean>|<experienceAmount: int>|<>|<>"*/ "§r§fplayerControllerCommandForm Command Format: <targets: quotedTargetSelector>|<option: optionName>:<optionValue: optionValue>{list: list; listObject: |[<option: optionName>:<optionValue: optionValue>]}\nOptions: triggerEvent, setProperty, setPropertyInt, setPropertyBool, setDynamicProperty, setDynamicPropertyInt, setDynamicPropertyBool, setDynamicPropertyVector3");
@@ -6052,10 +6066,12 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             let entity = undefined; /*
         console.warn(playerName[0])*/
             if (sourceType == "Entity") {
+                assertIsDefined(sourceEntity);
                 position = String(sourceEntity.location.x) + " " + sourceEntity.location.y + " " + sourceEntity.location.z;
                 entity = sourceEntity;
             }
             else {
+                assertIsDefined(sourceBlock);
                 position = String(sourceBlock.location.x) + " " + sourceBlock.location.y + " " + sourceBlock.location.z;
             }
             let targets = targetSelectorAllListC(playerName[0], "", position, entity); /*
@@ -6065,7 +6081,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             console.warn(index);*/
                 if (Number(index) != 0) {
                     targetList = String([String(targetList), playerList[index].name]).split(","); /*
-            targetList = String([String(targetList), playerList[index].name]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.name]).split(",");*/
                 } /*
             console.warn(targetList);*/
             }
@@ -6122,7 +6138,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         for (let i in playerName) {
             playerName[i] = playerName[i].replaceAll("\\l", "|").replaceAll("\\n", "\n").replaceAll("\\x", "");
         }
-        if (playerName.length == 1) {
+        if (playerName.length < 2) {
             try {
                 sourceEntity.sendMessage("§r§fsetPlayerNameTag Command Format: playerName|newPlayerNameTag");
             }
@@ -6139,7 +6155,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             console.warn(index);*/
                 if (Number(index) != 0) {
                     targetList = String([String(targetList), playerList[index].name]).split(","); /*
-            targetList = String([String(targetList), playerList[index].name]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.name]).split(",");*/
                 } /*
             console.warn(targetList);*/
             }
@@ -6153,7 +6169,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
     }
     if (id == "andexdb:playerControllerCommandForm") {
         let playerName = message.split("|");
-        if (playerName.length == 1) {
+        if (playerName.length < 2) {
             try {
                 sourceEntity.sendMessage(
                 /*"§r§fplayerControllerCommandForm Command Format: <playerName: string>|<setPlayerNameTag: boolean>|<multilineNameTag: boolean>|<newPlayerNameTag: string>|<triggerEvent: boolean>|<eventId: string>|<addExperience: boolean>|<experienceAmount: int>|<>|<>"*/ "§r§fplayerControllerCommandForm Command Format: <playerName: string>|<option: optionName>:<optionValue: optionValue>{list: list; listObject: |[<option: optionName>:<optionValue: optionValue>]}");
@@ -6168,7 +6184,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             console.warn(index);*/
                 if (Number(index) != 0) {
                     targetList = String([String(targetList), playerList[index].name]).split(","); /*
-            targetList = String([String(targetList), playerList[index].name]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.name]).split(",");*/
                 } /*
             console.warn(targetList);*/
             }
@@ -6226,7 +6242,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
     }
     if (id == "andexdb:playerControllerCommandForm") {
         let playerName = message.split("|");
-        if (playerName.length == 1) {
+        if (playerName.length < 2) {
             try {
                 sourceEntity.sendMessage(
                 /*"§r§fplayerControllerCommandForm Command Format: <playerName: string>|<setPlayerNameTag: boolean>|<multilineNameTag: boolean>|<newPlayerNameTag: string>|<triggerEvent: boolean>|<eventId: string>|<addExperience: boolean>|<experienceAmount: int>|<>|<>"*/ "§r§fplayerControllerCommandForm Command Format: <playerName: string>|<option: optionName>:<optionValue: optionValue>{list: list; listObject: |[<option: optionName>:<optionValue: optionValue>]}");
@@ -6241,7 +6257,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             console.warn(index);*/
                 if (Number(index) != 0) {
                     targetList = String([String(targetList), playerList[index].name]).split(","); /*
-            targetList = String([String(targetList), playerList[index].name]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.name]).split(",");*/
                 } /*
             console.warn(targetList);*/
             }
@@ -6311,7 +6327,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         for (let i in playerName) {
             playerName[i] = playerName[i].replaceAll("\\l", "|").replaceAll("\\n", "\n").replaceAll("\\x", "");
         }
-        if (playerName.length == 1) {
+        if (playerName.length < 2) {
             try {
                 sourceEntity.sendMessage(
                 /*"§r§fplayerControllerCommandForm Command Format: <playerName: string>|<setPlayerNameTag: boolean>|<multilineNameTag: boolean>|<newPlayerNameTag: string>|<triggerEvent: boolean>|<eventId: string>|<addExperience: boolean>|<experienceAmount: int>|<>|<>"*/ "§r§fplayerControllerCommandForm Command Format: <targets: quotedTargetSelector>|<option: optionName>:<optionValue: optionValue>{list: list; listObject: |[<option: optionName>:<optionValue: optionValue>]}");
@@ -6328,10 +6344,12 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             let entity = undefined; /*
         console.warn(playerName[0])*/
             if (sourceType == "Entity") {
+                assertIsDefined(sourceEntity);
                 position = String(sourceEntity.location.x) + " " + sourceEntity.location.y + " " + sourceEntity.location.z;
                 entity = sourceEntity;
             }
             else {
+                assertIsDefined(sourceBlock);
                 position = String(sourceBlock.location.x) + " " + sourceBlock.location.y + " " + sourceBlock.location.z;
             }
             let targets = targetSelectorAllListE(playerName[0], position); /*
@@ -6341,7 +6359,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             console.warn(index);*/
                 if (Number(index) != 0) {
                     targetList = String([String(targetList), playerList[index].name]).split(","); /*
-            targetList = String([String(targetList), playerList[index].name]).split(",");*/
+            targetList = String([String(targetList), playerList[index]!.name]).split(",");*/
                 } /*
             console.warn(targetList);*/
             }
@@ -6397,7 +6415,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                             }
                             break; /*
     case "setPropertyVector3":
-    try {targets[l].setProperty(playerName.slice(1)[i].split(":")[1], Boolean(playerName.slice(1)[i].split(":").slice(2).join(":")));} catch(e){console.error(e, e.stack);}
+    try {targets[l]!.setProperty(playerName.slice(1)[i]!.split(":")[1]!, Boolean(playerName.slice(1)[i]!.split(":").slice(2).join(":")));} catch(e){console.error(e, e.stack);}
     break; */
                         case "setDynamicProperty":
                             try {
@@ -6436,7 +6454,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                             }
                             break;
                         case "clearVelocity" /*
-            if(playerName.slice(1)[i].split(":")[1].toLowerCase() == "true"){*/:
+            if(playerName.slice(1)[i]!.split(":")[1]!.toLowerCase() == "true"){*/:
                             try {
                                 targets[l].clearVelocity();
                             }
@@ -6705,8 +6723,8 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
     }
     if (id == "andexdb:getRedstone") {
         let dynamicProperty = message.split("|");
-        let block;
-        block = undefined;
+        let block = undefined;
+        assertIsDefined(sourceEntity);
         try {
             block = sourceEntity.getBlockFromViewDirection({
                 includePassableBlocks: true,
@@ -6714,14 +6732,14 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         }
         catch (e) { }
         try {
-            event.sourceEntity.onScreenDisplay.setActionBar("§cRedstone Power: §a" + block.block.getRedstonePower());
+            event.sourceEntity.onScreenDisplay.setActionBar("§cRedstone Power: §a" + block?.block.getRedstonePower());
         }
         catch (e) { }
     }
     if (id == "andexdb:getRedstoneAndLiquid") {
         let dynamicProperty = message.split("|");
-        let block;
-        block = undefined;
+        let block = undefined;
+        assertIsDefined(sourceEntity);
         try {
             block = sourceEntity.getBlockFromViewDirection({
                 includePassableBlocks: true,
@@ -6730,14 +6748,14 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         }
         catch (e) { }
         try {
-            event.sourceEntity.onScreenDisplay.setActionBar("§cRedstone Power: §a" + block.block.getRedstonePower());
+            event.sourceEntity.onScreenDisplay.setActionBar("§cRedstone Power: §a" + block?.block.getRedstonePower());
         }
         catch (e) { }
     }
     if (id == "andexdb:getBlockStates") {
         let dynamicProperty = message.split("|");
-        let block;
-        block = undefined;
+        let block = undefined;
+        assertIsDefined(sourceEntity);
         let blockStatesFullList; /*
         try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
         try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
@@ -6749,7 +6767,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         }
         catch (e) { }
         try {
-            BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates());
+            BlockPermutation.resolve("minecraft:bedrock", block?.block.permutation.getAllStates());
         }
         catch (e) {
             if (String(e).includes('Error: Failed to resolve block "minecraft:bedrock" with properties')) {
@@ -6768,14 +6786,14 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             }
         }
         try {
-            event.sourceEntity.onScreenDisplay.setActionBar("§eBlock States For §c" + block.block.typeId + "§e: §a\n" + blockStatesFullList);
+            event.sourceEntity.onScreenDisplay.setActionBar("§eBlock States For §c" + block?.block.typeId + "§e: §a\n" + blockStatesFullList);
         }
         catch (e) { }
     }
     if (id == "andexdb:getBlockStatesNoLiquid") {
         let dynamicProperty = message.split("|");
-        let block;
-        block = undefined;
+        let block = undefined;
+        assertIsDefined(sourceEntity);
         let blockStatesFullList; /*
         try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]); } catch(e){console.error(e, e.stack);}
         try {blockStatesFullList = String([String(blockStatesFullList), block.block.permutation.getAllStates()]).split(","); } catch(e){console.error(e, e.stack);}*/
@@ -6786,7 +6804,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         }
         catch (e) { }
         try {
-            BlockPermutation.resolve("minecraft:bedrock", block.block.permutation.getAllStates());
+            BlockPermutation.resolve("minecraft:bedrock", block?.block.permutation.getAllStates());
         }
         catch (e) {
             if (String(e).includes('Error: Failed to resolve block "minecraft:bedrock" with properties')) {
@@ -6805,7 +6823,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             }
         }
         try {
-            event.sourceEntity.onScreenDisplay.setActionBar("§eBlock States For §c" + block.block.typeId + "§e: §a\n" + blockStatesFullList);
+            event.sourceEntity.onScreenDisplay.setActionBar("§eBlock States For §c" + block?.block.typeId + "§e: §a\n" + blockStatesFullList);
         }
         catch (e) { }
     }
@@ -7166,7 +7184,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             }
         }
         world.setDynamicProperty("andexdbGametest:scriptEvalInternalCode", parameters[0].replaceAll("\\vl", "|"));
-        console.warn(location2);
+        // console.warn(location2!);
         try {
             world
                 .getDimension(parameters[2] ?? (initiator ?? sourceEntity ?? sourceBlock)?.dimension.id ?? "overworld")
@@ -7180,6 +7198,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
         let message2 = message.split("|");
         let message3;
         if (sourceType == "Entity") {
+            assertIsDefined(sourceEntity);
             message3 = coordinates(message2[1].split(";")[0].replaceAll(", ", " "), {
                 x: Number(message2[1]
                     .split(";")
@@ -7205,6 +7224,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             });
         }
         if (sourceType == "NPCDialogue") {
+            assertIsDefined(sourceEntity);
             message3 = coordinates(message2[1].split(";")[0].replaceAll(", ", " "), {
                 x: Number(message2[1]
                     .split(";")
@@ -7255,6 +7275,7 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
             });
         }
         if (sourceType == "Block") {
+            assertIsDefined(sourceBlock);
             message3 = coordinates(message2[1].split(";")[0].replaceAll(", ", " "), {
                 x: Number(message2[1]
                     .split(";")
@@ -7327,8 +7348,8 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                             catch (e) {
                                 console.error(e, e.stack);
                             } /*
-            console.warn(message2[index].slice(13).split(":")[0], {alpha: Number(message2[index].slice(13).split(":")[4]), blue: Number(message2[index].slice(13).split(":")[3]), green: Number(message2[index].slice(13).split(":")[2]), red: Number(message2[index].slice(13).split(":")[1])})
-            console.warn(message2[index].slice(13).split(":")[0] + "," + Number(message2[index].slice(13).split(":")[4]) + "," + Number(message2[index].slice(13).split(":")[3]) + "," + Number(message2[index].slice(13).split(":")[2]) + "," + Number(message2[index].slice(13).split(":")[1]))*/
+            console.warn(message2[index]!.slice(13).split(":")[0], {alpha: Number(message2[index]!.slice(13).split(":")[4]), blue: Number(message2[index]!.slice(13).split(":")[3]), green: Number(message2[index]!.slice(13).split(":")[2]), red: Number(message2[index]!.slice(13).split(":")[1])})
+            console.warn(message2[index]!.slice(13).split(":")[0] + "," + Number(message2[index]!.slice(13).split(":")[4]) + "," + Number(message2[index]!.slice(13).split(":")[3]) + "," + Number(message2[index]!.slice(13).split(":")[2]) + "," + Number(message2[index]!.slice(13).split(":")[1]))*/
                         }
                         else {
                             if (String(message2[index]).startsWith("setVector3:")) {
@@ -7387,8 +7408,8 @@ GameTest.register("StarterTests", "simpleMobTest", (test: GameTest.Test) => {
                                             catch (e) {
                                                 console.error(e, e.stack);
                                             } /*
-                console.warn(message2[index].slice(13).split(":")[0], {alpha: Number(message2[index].slice(13).split(":")[4]), blue: Number(message2[index].slice(13).split(":")[3]), green: Number(message2[index].slice(13).split(":")[2]), red: Number(message2[index].slice(13).split(":")[1])})
-                console.warn(message2[index].slice(13).split(":")[0] + "," + Number(message2[index].slice(13).split(":")[4]) + "," + Number(message2[index].slice(13).split(":")[3]) + "," + Number(message2[index].slice(13).split(":")[2]) + "," + Number(message2[index].slice(13).split(":")[1]))*/
+                console.warn(message2[index]!.slice(13).split(":")[0], {alpha: Number(message2[index]!.slice(13).split(":")[4]), blue: Number(message2[index]!.slice(13).split(":")[3]), green: Number(message2[index]!.slice(13).split(":")[2]), red: Number(message2[index]!.slice(13).split(":")[1])})
+                console.warn(message2[index]!.slice(13).split(":")[0] + "," + Number(message2[index]!.slice(13).split(":")[4]) + "," + Number(message2[index]!.slice(13).split(":")[3]) + "," + Number(message2[index]!.slice(13).split(":")[2]) + "," + Number(message2[index]!.slice(13).split(":")[1]))*/
                                         }
                                         else {
                                             if (String(message2[index]).startsWith("v3:")) {

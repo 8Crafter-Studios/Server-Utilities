@@ -1,2 +1,2 @@
 import { Structure } from "@minecraft/server";
-export declare function removeAirFromStructure(structure: Structure): Generator<void, void, unknown>;
+export declare function removeAirFromStructure(structure: Structure): Generator<void, void, void>;

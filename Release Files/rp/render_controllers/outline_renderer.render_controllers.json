@@ -1,0 +1,56 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.andexdb:outline_renderer.main": {
+      "arrays": {
+        "textures": {
+          "Array.textures": [
+            "Texture.pos1",
+            "Texture.cyan_gradient"
+          ],
+          "Array.textures_emissive": [
+            "Texture.pos1_emissive"/* ,
+            "Texture.cyan_gradient_emissive" */
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [ { "*": "material.default" }/* , { "*": "material.emissive" } */ ],
+      "textures": [ "Array.textures[variable.texture_id ?? 0.0]"/* , "Array.textures_emissive[variable.texture_id ?? 0.0]" */ ],
+      "ignore_lighting": true,
+      "color": {
+        "r": "(variable.color_r ?? 1.0)",
+        "g": "(variable.color_g ?? 1.0)",
+        "b": "(variable.color_b ?? 1.0)",
+        "a": "(variable.color_a ?? 1.0)"
+      }/* ,
+      "part_visibility": [
+        { "*": "" }
+      ] */
+    }/* ,
+    "controller.render.andexdb:outline_renderer.main_emissivity": {
+      "arrays": {
+        "textures": {
+          "Array.textures": [
+            "Texture.pos1",
+            "Texture.cyan_gradient"
+          ],
+          "Array.textures_emissive": [
+            "Texture.pos1_emissive",
+            "Texture.cyan_gradient_emissive"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [ { "*": "material.emissive" }, { "*": "material.emissive" } ],
+      "textures": [ "Array.textures[variable.texture_id ?? 0.0]", "Array.textures_emissive[variable.texture_id ?? 0.0]" ],
+      "ignore_lighting": true,
+      "color": {
+        "r": "(variable.color_r ?? 1.0)",
+        "g": "(variable.color_g ?? 1.0)",
+        "b": "(variable.color_b ?? 1.0)",
+        "a": "0"
+      }
+    } */
+  }
+}

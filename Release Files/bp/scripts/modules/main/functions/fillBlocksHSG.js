@@ -33,12 +33,12 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
                 try {
                     if (!!v.dimension
                         .getBlock(v)
-                        .getComponent("inventory")) {
+                        ?.getComponent("inventory")) {
                         clearContainer(v.dimension
                             .getBlock(v)
-                            .getComponent("inventory").container);
+                            ?.getComponent("inventory")?.container);
                     }
-                    v.dimension.getBlock(v).setPermutation(blockb);
+                    v.dimension.getBlock(v)?.setPermutation(blockb);
                     counter++;
                 }
                 catch (e) {
@@ -53,7 +53,7 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
         else {
             system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
                 try {
-                    v.dimension.getBlock(v).setPermutation(blockb);
+                    v.dimension.getBlock(v)?.setPermutation(blockb);
                     counter++;
                 }
                 catch (e) {
@@ -73,14 +73,14 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
                 try {
                     if (!!options?.matchingBlockStates
                         ? BlockTypes.get(options?.matchingBlock) ==
-                            v.dimension.getBlock(v).type &&
+                            v.dimension.getBlock(v)?.type &&
                             matchingblockb.getAllStates() ==
                                 Object.fromEntries(Object.entries(Object.assign(v.dimension
                                     .getBlock(v)
                                     ?.permutation?.getAllStates(), blockStates)).filter((v) => !!Object.entries(blockb.getAllStates()).find((s) => v[0] == s[0])))
                         : BlockTypes.get(options?.matchingBlock) ==
-                            v.dimension.getBlock(v).type) {
-                        v.dimension.getBlock(v).setPermutation(blockb);
+                            v.dimension.getBlock(v)?.type) {
+                        v.dimension.getBlock(v)?.setPermutation(blockb);
                         counter++;
                     }
                 }
@@ -98,21 +98,21 @@ export async function fillBlocksHSG(center, radius, dimension, block, blockState
                 try {
                     if (!!v.dimension
                         .getBlock(v)
-                        .getComponent("inventory")) {
+                        ?.getComponent("inventory")) {
                         clearContainer(v.dimension
                             .getBlock(v)
-                            .getComponent("inventory").container);
+                            ?.getComponent("inventory")?.container);
                     }
                     if (!!options?.matchingBlockStates
                         ? BlockTypes.get(options?.matchingBlock) ==
-                            v.dimension.getBlock(v).type &&
+                            v.dimension.getBlock(v)?.type &&
                             matchingblockb.getAllStates() ==
                                 Object.fromEntries(Object.entries(Object.assign(v.dimension
                                     .getBlock(v)
                                     ?.permutation?.getAllStates(), blockStates)).filter((v) => !!Object.entries(blockb.getAllStates()).find((s) => v[0] == s[0])))
                         : BlockTypes.get(options?.matchingBlock) ==
-                            v.dimension.getBlock(v).type) {
-                        v.dimension.getBlock(v).setPermutation(blockb);
+                            v.dimension.getBlock(v)?.type) {
+                        v.dimension.getBlock(v)?.setPermutation(blockb);
                         counter++;
                     }
                 }

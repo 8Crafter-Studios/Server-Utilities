@@ -3,6 +3,73 @@ import { BlockPattern } from "modules/commands/classes/BlockPattern";
 import { parseBlockMatcherType } from "modules/commands/functions/parseBlockMatcherType";
 import { getParametersFromString } from "modules/utilities/functions/getParametersFromString";
 import { extractSelectors } from "./extractSelectors";
+export const flagsParameterFlagKeysList = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "!",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "<",
+    ">",
+    ",",
+    ".",
+    "~",
+];
 /**
  * Evaluates the parameters of a command string.
  *
@@ -64,9 +131,14 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                             .map((v) => [v, false])));
                     }
                     else {
-                        addValueToArgumentsA(p.key, null);
+                        addValueToArgumentsA(p.key, undefined);
                     }
                     return;
+                }
+                break;
+            case p.type == "placeholder":
+                {
+                    addValueToArgumentsA(p.key, undefined);
                 }
                 break;
             case p.type == "presetText":
@@ -128,7 +200,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
-                            addValueToArgumentsA(p.key, null);
+                            addValueToArgumentsA(p.key, undefined);
                         }
                     }
                     else {
@@ -150,7 +222,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
-                            addValueToArgumentsA(p.key, null);
+                            addValueToArgumentsA(p.key, undefined);
                         }
                     }
                     else {
@@ -213,7 +285,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
-                        addValueToArgumentsA(p.key, null);
+                        addValueToArgumentsA(p.key, undefined);
                     }
                 }
                 break;
@@ -232,7 +304,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
-                            addValueToArgumentsA(p.key, null);
+                            addValueToArgumentsA(p.key, undefined);
                         }
                     }
                     else {
@@ -243,7 +315,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                         }
                         catch (e) {
                             ea.push([e, e.stack]);
-                            addValueToArgumentsA(p.key, null);
+                            addValueToArgumentsA(p.key, undefined);
                         }
                     }
                 }
@@ -257,7 +329,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
-                        addValueToArgumentsA(p.key, null);
+                        addValueToArgumentsA(p.key, undefined);
                     }
                 }
                 break;
@@ -270,7 +342,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
-                        addValueToArgumentsA(p.key, null);
+                        addValueToArgumentsA(p.key, undefined);
                     }
                 }
                 break;
@@ -283,7 +355,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
-                        addValueToArgumentsA(p.key, null);
+                        addValueToArgumentsA(p.key, undefined);
                     }
                 }
                 break;
@@ -299,7 +371,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
-                                addValueToArgumentsA(p.key, null);
+                                addValueToArgumentsA(p.key, undefined);
                             }
                         }
                         else {
@@ -316,7 +388,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
-                                addValueToArgumentsA(p.key, null);
+                                addValueToArgumentsA(p.key, undefined);
                             }
                         }
                         else {
@@ -327,7 +399,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                             }
                             catch (e) {
                                 ea.push([e, e.stack]);
-                                addValueToArgumentsA(p.key, null);
+                                addValueToArgumentsA(p.key, undefined);
                             }
                         }
                     }
@@ -345,7 +417,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
-                        addValueToArgumentsA(p.key, null);
+                        addValueToArgumentsA(p.key, undefined);
                     }
                 }
                 break;
@@ -361,7 +433,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
-                        addValueToArgumentsA(p.key, null);
+                        addValueToArgumentsA(p.key, undefined);
                     }
                 }
                 break;
@@ -377,7 +449,7 @@ export function evaluateParameters(commandstring, parameters, useOldNamedIgnorab
                     }
                     catch (e) {
                         ea.push([e, e.stack]);
-                        addValueToArgumentsA(p.key, null);
+                        addValueToArgumentsA(p.key, undefined);
                     }
                 }
                 break;

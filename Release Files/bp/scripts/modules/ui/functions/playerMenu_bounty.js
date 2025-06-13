@@ -28,6 +28,8 @@ export async function playerMenu_bounty(sourceEntitya, totalBounty, targetPlayer
         }
     }
     const target = targetPlayer ?? totalBounty.getLinkedTargetSavedPlayer();
+    if (!target)
+        throw new ReferenceError("[playerMenu_bounty] No target player found.");
     const menuConfig = config.ui.menus.playerMenu_leaderboards;
     // menuConfig.buttons.map(k=>[k, menuButtonIds.mainMenu.buttons[k]])
     let form = new ActionFormData();
@@ -61,6 +63,7 @@ export async function playerMenu_bounty(sourceEntitya, totalBounty, targetPlayer
             case "close":
                 return 0;
             default:
+                throw new Error("Invalid selection: " + r.selection);
         }
     })
         .catch((e) => {

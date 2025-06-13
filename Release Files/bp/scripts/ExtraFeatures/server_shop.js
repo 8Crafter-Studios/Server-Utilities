@@ -177,13 +177,16 @@ export class ServerShop {
                         if (v == 1) {
                             return await this.openShop(player, "sell", showBackButton);
                         }
+                        return 1;
                     });
                 }
                 else if (item.type == "page") {
                     if ((await this.openShopPage(player, data, ["sell", String(r.selection)])) == 1) {
                         return await this.openShop(player, "sell", showBackButton);
                     }
+                    return 1;
                 }
+                return 1;
             });
         }
         else if (mode == "buy") {
@@ -221,13 +224,16 @@ export class ServerShop {
                         if (v == 1) {
                             return await this.openShop(player, "buy", showBackButton);
                         }
+                        return 1;
                     });
                 }
                 else if (item.type == "page") {
                     if ((await this.openShopPage(player, data, ["buy", String(r.selection)])) == 1) {
                         return await this.openShop(player, "buy", showBackButton);
                     }
+                    return 1;
                 }
+                return 1;
             });
         }
         else if (mode == "none") {
@@ -247,6 +253,7 @@ export class ServerShop {
             form.button2("Cancel");
             return ((await form.forceShow(player)).selection != 1).toNumber();
         }
+        return 1;
     }
     /**
      * Opens the shop UI for the specified player.
@@ -320,6 +327,7 @@ export class ServerShop {
                         return 0;
                     }
                 }
+                return 1;
             });
         }
         else if (mode == "buy") {
@@ -383,8 +391,10 @@ export class ServerShop {
                         return 0;
                     }
                 }
+                return 1;
             });
         }
+        return 1;
     }
     editShopElements(mode, data) {
         saveStringToDynamicProperties(JSON.stringify(data), mode + "Shop:" + this.id);
@@ -470,7 +480,7 @@ export class ServerShop {
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`);
                     }
-                    const itemStack = entity.getComponent("inventory").container.getItem(0);
+                    const itemStack = entity.getComponent("inventory")?.container.getItem(0);
                     entity.remove();
                     infoForm.body(!!!itemStack
                         ? `§a${item.title}
@@ -491,14 +501,14 @@ export class ServerShop {
                                 ? "§a"
                                 : itemStack.getComponent("durability").damage < itemStack.getComponent("durability").maxDurability / 1.5
                                     ? "§e"
-                                    : "§c"}{itemStack.getComponent("durability").maxDurability-itemStack.getComponent("durability").damage}/${itemStack.getComponent("durability").maxDurability}`
+                                    : "§c"}{itemStack.getComponent("durability")?.maxDurability-itemStack.getComponent("durability")?.damage}/${itemStack.getComponent("durability")?.maxDurability}`
                             : ""}${itemStack.hasComponent("potion")
-                            ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion").potionEffectType.id}
-§r§bPotion Liquid Type: §9${itemStack.getComponent("potion").potionLiquidType.id}
-§r§bPotion Modifier Type: §e${itemStack.getComponent("potion").potionModifierType.id}`
+                            ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion")?.potionEffectType.id}
+§r§bPotion Liquid Type: §9${itemStack.getComponent("potion")?.potionLiquidType.id}
+§r§bPotion Modifier Type: §e${itemStack.getComponent("potion")?.potionModifierType.id}`
                             : ""}
 §r§bEnchantments: ${itemStack.hasComponent("enchantable")
-                            ? itemStack.getComponent("enchantable").getEnchantments().length == 0
+                            ? itemStack.getComponent("enchantable")?.getEnchantments().length == 0
                                 ? "§d{}"
                                 : "\n§d{\n" +
                                     itemStack
@@ -563,7 +573,7 @@ export class ServerShop {
                     if (!!item.canPlaceOn) {
                         newItem.setCanPlaceOn(item.canPlaceOn);
                     }
-                    player.getComponent("inventory").container.addItem(newItem);
+                    player.getComponent("inventory")?.container.addItem(newItem);
                     MoneySystem.get(player.id).removeMoney(item.price * r.formValues[0]);
                     return 1;
                     // this.openShop(player, "sell")
@@ -582,10 +592,10 @@ export class ServerShop {
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${item.entityID} was found inside of the specified structure.`);
                     }
-                    const itemStack = entity.getComponent("inventory").container.getItem(0);
+                    const itemStack = entity.getComponent("inventory")?.container.getItem(0);
                     entity.remove();
                     for (let i = 0; i < r.formValues[0]; i++) {
-                        let b = player.getComponent("inventory").container.addItem(itemStack);
+                        let b = player.getComponent("inventory")?.container.addItem(itemStack);
                         if (!!b) {
                             catchtry(() => player.dimension.spawnItem(b, player.location));
                         }
@@ -593,6 +603,7 @@ export class ServerShop {
                     MoneySystem.get(player.id).removeMoney(item.price * r.formValues[0]);
                     return 1;
                 }
+                return 1;
             }
             else {
                 const form = new MessageFormData();
@@ -610,6 +621,7 @@ export class ServerShop {
         }
         catch (e) {
             console.error(e, e.stack);
+            return 0;
         }
     }
     /**
@@ -1220,9 +1232,9 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     shop.mainSellPageBodyText = newDataB.mainSellPageBodyText;
                     shop.mainBuyPageBodyText = newDataB.mainBuyPageBodyText;
                     shop.name = newDataB.name;
-                    shop.buyShop = newDataB.buyShop;
-                    shop.sellShop = newDataB.sellShop;
-                    shop.publicShop = newDataB.publicShop;
+                    shop.buyShop = newDataB.buyShop ?? true;
+                    shop.sellShop = newDataB.sellShop ?? true;
+                    shop.publicShop = newDataB.publicShop ?? true;
                     shop.save();
                     return await ServerShopManager.manageServerShop(sourceEntity, shop);
                 case sourceEntity.hasTag("admin") && config.system.debugMode ? 7 : -7:
@@ -1444,7 +1456,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                         });
                         const entityID = getSuperUniqueID();
                         entity.setDynamicProperty("andexdb:saved_shop_item_save_id", entityID);
-                        entity.getComponent("inventory").container.setItem(0, item.item.getItem());
+                        entity.getComponent("inventory")?.container.setItem(0, item?.item.getItem());
                         world.structureManager.createFromWorld("andexdbSavedShopItem:" + entityID, sourceEntity.dimension, {
                             x: Math.floor(sourceEntity.location.x),
                             y: Math.floor(sourceEntity.location.y),
@@ -1480,14 +1492,14 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                             structureID: "andexdbSavedShopItem:" + entityID,
                             entityID: entityID,
                             itemDetails: {
-                                damage: tryget(() => item.item.getItem().getComponent("durability").damage) ?? NaN,
-                                maxDurability: tryget(() => item.item.getItem().getComponent("durability").maxDurability) ?? NaN,
-                                keepOnDeath: item.item.keepOnDeath,
-                                lockMode: item.item.lockMode,
-                                loreLineCount: item.item.getLore().length,
-                                typeId: item.item.typeId,
-                                nameTag: item.item.nameTag,
-                                enchantments: tryget(() => item.item.getItem().getComponent("enchantable").getEnchantments()) ??
+                                damage: tryget(() => item?.item.getItem()?.getComponent("durability")?.damage) ?? NaN,
+                                maxDurability: tryget(() => item?.item.getItem()?.getComponent("durability")?.maxDurability) ?? NaN,
+                                keepOnDeath: item?.item.keepOnDeath,
+                                lockMode: item?.item.lockMode,
+                                loreLineCount: item?.item.getLore().length,
+                                typeId: item?.item.typeId,
+                                nameTag: item?.item.nameTag,
+                                enchantments: tryget(() => item?.item.getItem()?.getComponent("enchantable")?.getEnchantments()) ??
                                     "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable.",
                             },
                         };
@@ -1780,10 +1792,10 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`);
                     }
-                    itemStack = entity.getComponent("inventory").container.getItem(0);
+                    itemStack = entity.getComponent("inventory")?.container.getItem(0);
                     item.itemDetails ??= {};
-                    (item.itemDetails.damage = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").damage) ?? NaN),
-                        (item.itemDetails.maxDurability = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").maxDurability) ?? NaN),
+                    (item.itemDetails.damage = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability")?.damage) ?? NaN),
+                        (item.itemDetails.maxDurability = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability")?.maxDurability) ?? NaN),
                         (item.itemDetails.keepOnDeath = !!!itemStack ? null : itemStack.keepOnDeath),
                         (item.itemDetails.lockMode = !!!itemStack ? null : itemStack.lockMode),
                         (item.itemDetails.loreLineCount = !!!itemStack ? null : itemStack.getLore().length),
@@ -1791,7 +1803,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                         (item.itemDetails.nameTag = !!!itemStack ? null : itemStack.nameTag),
                         (item.itemDetails.enchantments = !!!itemStack
                             ? null
-                            : tryget(() => itemStack.getComponent("enchantable").getEnchantments()) ??
+                            : tryget(() => itemStack.getComponent("enchantable")?.getEnchantments()) ??
                                 "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable.");
                 }
                 catch (e) {
@@ -1946,7 +1958,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`);
                     }
-                    itemStack = entity.getComponent("inventory").container.getItem(0);
+                    itemStack = entity.getComponent("inventory")?.container.getItem(0);
                 }
                 catch (e) {
                     console.error(e, e?.stack);
@@ -1968,8 +1980,8 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     structureID: JSON.parse('"' + structureID.replaceAll('"', '\\"') + '"'),
                     entityID: JSON.parse('"' + (entityID.replaceAll('"', '\\"') + '"')),
                     itemDetails: {
-                        damage: !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").damage) ?? NaN,
-                        maxDurability: !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").maxDurability) ?? NaN,
+                        damage: !!!itemStack ? null : tryget(() => itemStack.getComponent("durability")?.damage) ?? NaN,
+                        maxDurability: !!!itemStack ? null : tryget(() => itemStack.getComponent("durability")?.maxDurability) ?? NaN,
                         keepOnDeath: !!!itemStack ? null : itemStack.keepOnDeath,
                         lockMode: !!!itemStack ? null : itemStack.lockMode,
                         loreLineCount: !!!itemStack ? null : itemStack.getLore().length,
@@ -1977,7 +1989,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                         nameTag: !!!itemStack ? null : itemStack.nameTag,
                         enchantments: !!!itemStack
                             ? null
-                            : tryget(() => itemStack.getComponent("enchantable").getEnchantments()) ??
+                            : tryget(() => itemStack.getComponent("enchantable")?.getEnchantments()) ??
                                 "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable.",
                     },
                 };
@@ -2272,7 +2284,7 @@ Texture: ${page.texture}`);
                     });
                     const entityID = getSuperUniqueID();
                     entity.setDynamicProperty("andexdb:saved_shop_item_save_id", entityID);
-                    entity.getComponent("inventory").container.setItem(0, item.item.getItem());
+                    entity.getComponent("inventory")?.container.setItem(0, item?.item.getItem());
                     world.structureManager.createFromWorld("andexdbSavedShopItem:" + entityID, sourceEntity.dimension, {
                         x: Math.floor(sourceEntity.location.x),
                         y: Math.floor(sourceEntity.location.y),
@@ -2605,9 +2617,9 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`);
                     }
-                    (itemStack = entity.getComponent("inventory").container.getItem(0)),
-                        (item.itemDetails.damage = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").damage) ?? NaN),
-                        (item.itemDetails.maxDurability = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").maxDurability) ?? NaN),
+                    (itemStack = entity.getComponent("inventory")?.container.getItem(0)),
+                        (item.itemDetails.damage = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability")?.damage) ?? NaN),
+                        (item.itemDetails.maxDurability = !!!itemStack ? null : tryget(() => itemStack.getComponent("durability")?.maxDurability) ?? NaN),
                         (item.itemDetails.keepOnDeath = !!!itemStack ? null : itemStack.keepOnDeath),
                         (item.itemDetails.lockMode = !!!itemStack ? null : itemStack.lockMode),
                         (item.itemDetails.loreLineCount = !!!itemStack ? null : itemStack.getLore().length),
@@ -2615,7 +2627,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                         (item.itemDetails.nameTag = !!!itemStack ? null : itemStack.nameTag),
                         (item.itemDetails.enchantments = !!!itemStack
                             ? null
-                            : tryget(() => itemStack.getComponent("enchantable").getEnchantments()) ??
+                            : tryget(() => itemStack.getComponent("enchantable")?.getEnchantments()) ??
                                 "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable.");
                 }
                 catch (e) {
@@ -2774,7 +2786,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     if (!!!entity) {
                         throw new ReferenceError(`No entity with a andexdb:saved_shop_item_save_id dynamic property set to ${entityID} was found inside of the specified structure.`);
                     }
-                    itemStack = entity.getComponent("inventory").container.getItem(0);
+                    itemStack = entity.getComponent("inventory")?.container.getItem(0);
                 }
                 catch (e) {
                     console.error(e, e?.stack);
@@ -2796,8 +2808,8 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                     structureID: JSON.parse('"' + structureID.replaceAll('"', '\\"') + '"'),
                     entityID: JSON.parse('"' + entityID.replaceAll('"', '\\"') + '"'),
                     itemDetails: {
-                        damage: !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").damage) ?? NaN,
-                        maxDurability: !!!itemStack ? null : tryget(() => itemStack.getComponent("durability").maxDurability) ?? NaN,
+                        damage: !!!itemStack ? null : tryget(() => itemStack.getComponent("durability")?.damage) ?? NaN,
+                        maxDurability: !!!itemStack ? null : tryget(() => itemStack.getComponent("durability")?.maxDurability) ?? NaN,
                         keepOnDeath: !!!itemStack ? null : itemStack.keepOnDeath,
                         lockMode: !!!itemStack ? null : itemStack.lockMode,
                         loreLineCount: !!!itemStack ? null : itemStack.getLore().length,
@@ -2805,7 +2817,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                         nameTag: !!!itemStack ? null : itemStack.nameTag,
                         enchantments: !!!itemStack
                             ? null
-                            : tryget(() => itemStack.getComponent("enchantable").getEnchantments()) ??
+                            : tryget(() => itemStack.getComponent("enchantable")?.getEnchantments()) ??
                                 "N/A, This item may have enchantments but they cannot be read because this item is not normally enchantable.",
                     },
                 };

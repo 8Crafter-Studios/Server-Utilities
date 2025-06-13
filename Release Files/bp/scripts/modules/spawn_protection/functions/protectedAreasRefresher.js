@@ -107,9 +107,8 @@ export function stopProtectedAreasRefresher() {
     try {
         system.clearRun(repeatingIntervals.protectedAreasRefresher);
         protectedAreasRefresherIntervalID = null;
-        repeatingIntervals.protectedAreasRefresher = null;
         repeatingIntervals.protectedAreasRefresher =
-            protectedAreasRefresherIntervalID;
+            protectedAreasRefresherIntervalID ?? undefined;
         return 1;
     }
     catch {

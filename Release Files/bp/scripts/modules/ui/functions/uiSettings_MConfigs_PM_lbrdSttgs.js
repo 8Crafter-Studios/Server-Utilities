@@ -673,6 +673,7 @@ Default Button Index: ${statistic.type === "built-in" ? defaultPlayerMenuLeaderb
                 return 0;
             }
         }
+        return 1;
     }
     catch (e) {
         console.error(e, e.stack);
@@ -1160,7 +1161,7 @@ export async function uiSettings_menuConfigurations_playerMenu_leaderboardsSetti
     const form = new ModalFormData();
     form.title(customFormUICodes.modal.titles.formStyles.medium + "Advanced Statistic Options");
     const formOptionsMap = {
-        getterFunction: () => form.textField("§l§fGetter Function§r§c*§f\nA JavaScript function that will get a player's score for this statistic, it should accept one parameter of type savedPlayer, if you don't want a specific player appearing in the leaderboard, then have the function return undefined for them.\nThe type definitions for the savedPlayer class can be found in the declaration folder of the behavior pack, at §bBP/declaration/modules/player_save/classes/savedPlayer.d.ts§r.\nType: §f(§6player§b: §esavedPlayer§f) §d=> §cstring §b| §6undefined§r", "(player: savedPlayer) => string | undefined", { defaultValue: statistic.getterFunction.toString() }),
+        getterFunction: () => form.textField("§l§fGetter Function§r§c*§f\nA JavaScript function that will get a player's score for this statistic, it should accept one parameter of type savedPlayer, if you don't want a specific player appearing in the leaderboard, then have the function return undefined for them.\nThe type definitions for the savedPlayer class can be found in the declaration folder of the behavior pack, at §bBP/declaration/modules/player_save/classes/savedPlayer.d.ts§r.\nType: §f(§6player§b: §esavedPlayer§f) §d=> §cstring §b| §6undefined§r", "(player: savedPlayer) => string | undefined", { defaultValue: statistic.getterFunction?.toString() }),
         valueType: () => form.dropdown("§l§fValue Type§r§c*§f\nThe value type for the scores of this leaderboard statistic, choose string if it is not numerical, choose number if it needs to be able to have decimal places, and choose bigint if you want to be able to have infinitely large integers.\nNote: If you choose string, then the preset Ascending and Descending options below for the sort type will not sort based on numerical value, and instead sort it based off of alphabetical order. So if you choose string and do not want it sorting like that then you must choose the Function sort type and put in a custom JavaScript function for it.\nThe default is bigint.", ["string", "number", "bigint"], {
             defaultValueIndex: ["string", "number", "bigint"].indexOf(statistic.valueType.toLowerCase()) !== -1
                 ? ["string", "number", "bigint"].indexOf(statistic.valueType.toLowerCase())
@@ -1324,7 +1325,7 @@ export async function uiSettings_menuConfigurations_playerMenu_leaderboardsSetti
     })){
         throw new ReferenceError(`Error when parsing statistic.`);
     } */
-    let type = undefined;
+    let type;
     const typeSelection = await showActions(sourceEntity, customFormUICodes.action.titles.formStyles.medium + "New Statistic", "Would you like to create a simple or advanced leaderboard statistic? Unless you are good at JavaScript, it is not recommended for you to create an advanced statistic.", [customFormUICodes.action.buttons.positions.main_only + "Simple"], [customFormUICodes.action.buttons.positions.main_only + "Advanced"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"]);
     if (typeSelection.canceled || typeSelection.selection === 2) {
         return 1;

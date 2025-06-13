@@ -30,7 +30,7 @@ export default class GameTestExtensions {
         });
     }
     giveItem(player, itemType, amount, slot) {
-        const inventoryContainer = player.getComponent("inventory").container;
+        const inventoryContainer = player.getComponent("inventory")?.container;
         inventoryContainer.addItem(new ItemStack(itemType, amount ?? 1));
         player.selectedSlot = slot ?? 0;
     }

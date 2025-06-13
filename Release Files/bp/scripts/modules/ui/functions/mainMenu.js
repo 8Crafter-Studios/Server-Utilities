@@ -129,7 +129,7 @@ export async function mainMenu(sourceEntity) {
             // This will stop the code when the player closes the form
             if (r.canceled)
                 return 1;
-            switch (buttons[r.selection]?.[0] ?? ["close"][r.selection - buttons.length]) {
+            switch ((buttons[r.selection]?.[0] ? buttons[r.selection][0] : undefined) ?? ["close"][r.selection - buttons.length]) {
                 case "editorStick":
                     editorStick(player);
                     return 0;

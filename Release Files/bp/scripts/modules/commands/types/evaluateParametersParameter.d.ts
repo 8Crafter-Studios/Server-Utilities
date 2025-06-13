@@ -13,7 +13,7 @@ export type objectEvaluateParametersParameter = {
     /**
      * The type of the parameter.
      */
-    type: "presetText" | "number" | "boolean" | "neboolean" | "string" | "non-booleanString" | "json" | "Vector" | "Vector1" | "Vector2" | "Vector3" | "Vector4" | "Vector5" | "Vector6" | "Vector7" | "Vector8" | "targetSelector" | "blockStates" | "blockPattern" | "block" | "blockMask" | "dimension" | `-${string}` | `f-${string}`;
+    type: "placeholder" | "presetText" | "number" | "boolean" | "neboolean" | "string" | "non-booleanString" | "json" | "Vector" | "Vector1" | "Vector2" | "Vector3" | "Vector4" | "Vector5" | "Vector6" | "Vector7" | "Vector8" | "targetSelector" | "blockStates" | "blockPattern" | "block" | "blockMask" | "dimension" | `-${string}` | `f-${string}`;
     /**
      * The key to use for this parameter.
      *
@@ -135,4 +135,4 @@ export type objectEvaluateParametersParameter = {
  *
  * This is for paramter types that are specified by just a string.
  */
-export type stringEvaluateParametersParameter = "presetText" | "number" | "boolean" | "neboolean" | "string" | "non-booleanString" | "json" | "Vector" | "Vector1" | "Vector2" | "Vector3" | "Vector4" | "Vector5" | "Vector6" | "Vector7" | "Vector8" | "targetSelector" | "blockStates" | "blockPattern" | "block" | "blockMask" | "dimension" | `-${string}` | `f-${string}`;
+export type stringEvaluateParametersParameter = "placeholder" | "presetText" | "number" | "boolean" | "neboolean" | "string" | "non-booleanString" | "json" | "Vector" | "Vector1" | "Vector2" | "Vector3" | "Vector4" | "Vector5" | "Vector6" | "Vector7" | "Vector8" | "targetSelector" | "blockStates" | "blockPattern" | "block" | "blockMask" | "dimension" | `-${string}` | `f-${string}`;

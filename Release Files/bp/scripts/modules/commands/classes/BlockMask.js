@@ -1,3 +1,4 @@
+import { Player } from "@minecraft/server";
 import { Block, BlockPermutation, BlockType, BlockTypes } from "@minecraft/server";
 export const knownContainerTypes = [
     "minecraft:yellow_shulker_box",
@@ -89,14 +90,24 @@ export const customMaskGroupPresets = {
             "tag:plant",
             "short_grass",
             "tall_grass",
+            "fern",
+            "large_fern",
+            "dead_bush",
             "vine",
             "dandelion",
             "allium",
+            "poppy",
+            "cactus",
+            "cactus_flower",
+            "short_dry_grass",
+            "tall_dry_grass",
             "brown_mushroom_block",
             "red_mushroom_block",
             "mushroom_stem",
             "crimson_roots",
             "warped_roots",
+            "melon_block",
+            "pumpkin",
             "bee_nest", // TO-DO
         ]),
     ],
@@ -220,7 +231,7 @@ export class BlockMask {
             },
             get rawsb() {
                 return `${this.type}${!!this.states
-                    ? `[${Object.entries(this.states)
+                    ? `[${Object.entries(this.states ?? {})
                         .map(([k, v]) => JSON.stringify(k) + "=" + JSON.stringify(v))
                         .join(",")}]`
                     : ""}`;
@@ -279,14 +290,14 @@ export class BlockMask {
             : v.type == "any"
                 ? undefined
                 : {
-                    type: v.type == "keep" ? "minecraft:air" : tryget(() => BlockTypes.get(v.type).id) ?? v.type,
+                    type: v.type == "keep" ? "minecraft:air" : tryget(() => BlockTypes.get(v.type)?.id) ?? v.type,
                     states: v.states,
                     get raw() {
                         return `${this.type}${!!this.states ? `${JSON.stringify(this.states)}` : ""}`;
                     },
                     get rawsb() {
                         return `${this.type}${!!this.states
-                            ? `[${Object.entries(this.states)
+                            ? `[${Object.entries(this.states ?? {})
                                 .map(([k, v]) => JSON.stringify(k) + "=" + JSON.stringify(v))
                                 .join(",")}]`
                             : ""}`;
@@ -312,7 +323,7 @@ export class BlockMask {
             },
             get rawsb() {
                 return `${this.type}${!!this.states
-                    ? `[${Object.entries(this.states)
+                    ? `[${Object.entries(this.states ?? {})
                         .map(([k, v]) => JSON.stringify(k) + "=" + JSON.stringify(v))
                         .join(",")}]`
                     : ""}`;
@@ -341,7 +352,7 @@ export class BlockMask {
             },
             get rawsb() {
                 return `${this.type}${!!this.states
-                    ? `[${Object.entries(this.states)
+                    ? `[${Object.entries(this.states ?? {})
                         .map(([k, v]) => JSON.stringify(k) + "=" + JSON.stringify(v))
                         .join(",")}]`
                     : ""}`;
@@ -474,7 +485,10 @@ export class BlockMask {
                     case "false":
                         return false;
                     default:
-                        if (block.typeId == (tryget(() => BlockTypes.get(b.type).id) ?? "invalid")) {
+                        if (b.type.startsWith("tag:")) {
+                            return block.hasTag(b.type.slice(4));
+                        }
+                        else if (block.typeId == (tryget(() => BlockTypes.get(b.type)?.id) ?? "invalid")) {
                             if (b.states != undefined) {
                                 return BlockMask.testForStatesMatch(block.permutation.getAllStates(), b.states);
                             }
@@ -580,7 +594,7 @@ export class BlockMask {
                         if (b.type.startsWith("tag:")) {
                             return block.hasTag(b.type.slice(4));
                         }
-                        else if (block.type.id == (tryget(() => BlockTypes.get(b.type).id) ?? "invalid")) {
+                        else if (block.type.id == (tryget(() => BlockTypes.get(b.type)?.id) ?? "invalid")) {
                             if (b.states != undefined) {
                                 return BlockMask.testForStatesMatch(block.getAllStates(), b.states);
                             }
@@ -661,7 +675,7 @@ export class BlockMask {
                         if (b.type.startsWith("tag:")) {
                             return BlockPermutation.resolve(block.id).hasTag(b.type.slice(4));
                         }
-                        else if (block.id == (tryget(() => BlockTypes.get(b.type).id) ?? "invalid")) {
+                        else if (block.id == (tryget(() => BlockTypes.get(b.type)?.id) ?? "invalid")) {
                             return true;
                         }
                         else {
@@ -707,7 +721,7 @@ export class BlockMask {
                     case "canBeWaterlogged":
                     case "isWaterloggable":
                     case "waterloggable":
-                        if (tryget(() => BlockPermutation.resolve(BlockTypes.get(block).id).canContainLiquid(modules.mcServer.LiquidType.Water)) ??
+                        if (tryget(() => BlockPermutation.resolve(BlockTypes.get(block)?.id).canContainLiquid(modules.mcServer.LiquidType.Water)) ??
                             false) {
                             return true;
                         }
@@ -739,7 +753,7 @@ export class BlockMask {
                         if (b.type.startsWith("tag:")) {
                             return BlockPermutation.resolve(block).hasTag(b.type.slice(4));
                         }
-                        else if (block == (tryget(() => BlockTypes.get(b.type).id) ?? "invalid")) {
+                        else if (block == (tryget(() => BlockTypes.get(b.type)?.id) ?? "invalid")) {
                             return true;
                         }
                         else {
@@ -796,7 +810,7 @@ export class BlockMask {
                     case "waterloggable":
                         if (tryget(() => block.type instanceof BlockType
                             ? BlockPermutation.resolve(block.type.id).canContainLiquid(modules.mcServer.LiquidType.Water)
-                            : BlockPermutation.resolve(BlockTypes.get(block.type).id).canContainLiquid(modules.mcServer.LiquidType.Water)) ??
+                            : BlockPermutation.resolve(BlockTypes.get(block.type)?.id).canContainLiquid(modules.mcServer.LiquidType.Water)) ??
                             false) {
                             if (b.states != undefined && block.states != undefined) {
                                 return BlockMask.testForStatesMatch(block.states, b.states);
@@ -843,7 +857,7 @@ export class BlockMask {
                         if (b.type.startsWith("tag:")) {
                             return BlockPermutation.resolve(block.type instanceof BlockType ? block.type.id : block.type).hasTag(b.type.slice(4));
                         }
-                        else if ((block.type instanceof BlockType ? block.type.id : block.type) == (tryget(() => BlockTypes.get(b.type).id) ?? "invalid")) {
+                        else if ((block.type instanceof BlockType ? block.type.id : block.type) == (tryget(() => BlockTypes.get(b.type)?.id) ?? "invalid")) {
                             if (b.states != undefined && block.states != undefined) {
                                 return BlockMask.testForStatesMatch(block.states, b.states);
                             }
@@ -858,6 +872,7 @@ export class BlockMask {
             }) != undefined;
             return mode == "exclude" ? !resultFound : resultFound;
         }
+        return undefined;
     }
     /**
      * Tests if the states in the first parameter extend the states in the second parameter.
@@ -1061,7 +1076,7 @@ function extractCustomMaskType(str) {
                 mode = "exclude";
             }
             let type = match.trim();
-            let states = null;
+            let states = undefined;
             // Extract states if present
             const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
             if (!!statesMatch) {
@@ -1099,7 +1114,7 @@ function extractCustomMaskType(str) {
                 type = stringMatch[1].trim() /*.escapeCharactersB()*/;
             }
             maskTypes.push({
-                type: tryget(() => BlockTypes.get(type).id) ?? type,
+                type: tryget(() => BlockTypes.get(type)?.id) ?? type,
                 states,
             });
         });
@@ -1125,7 +1140,7 @@ function extractCustomMaskTypes(str) {
                     mode = "exclude";
                 }
                 let type = match.trim();
-                let states = null;
+                let states = undefined;
                 // Extract states if present
                 const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
                 if (!!statesMatch) {
@@ -1163,7 +1178,7 @@ function extractCustomMaskTypes(str) {
                     type = stringMatch[1].trim() /*.escapeCharactersB()*/;
                 }
                 maskTypes.push({
-                    type: tryget(() => BlockTypes.get(type).id) ?? type,
+                    type: tryget(() => BlockTypes.get(type)?.id) ?? type,
                     states,
                 });
             });

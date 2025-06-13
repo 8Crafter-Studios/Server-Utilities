@@ -1,3 +1,3 @@
-import type { Player } from "@minecraft/server";
+import type { ContainerSlot, Player } from "@minecraft/server";
 import type { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
-export declare function getPlayerselectedSlotIndex(player: Player | executeCommandPlayerW): import("@minecraft/server").ContainerSlot;
+export declare function getPlayerselectedSlotIndex(player: Player | executeCommandPlayerW): ContainerSlot;

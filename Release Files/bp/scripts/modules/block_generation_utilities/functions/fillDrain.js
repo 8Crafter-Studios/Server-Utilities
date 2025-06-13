@@ -33,7 +33,7 @@ export async function fillDrain(begin, end, dimension, options) {
                             if (Math.random() <= integrity / 100) {
                                 try {
                                     const b = dimension.getBlock({ x, y, z });
-                                    if ([
+                                    if (b && [
                                         "minecraft:water",
                                         "minecraft:flowing_water",
                                         "minecraft:lava",
@@ -41,7 +41,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                     ].includes(b.typeId)) {
                                         b.setType("minecraft:air");
                                     }
-                                    else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                                    else if (b && b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                         b.isWaterlogged) {
                                         b.setWaterlogged(false);
                                     }
@@ -68,7 +68,7 @@ export async function fillDrain(begin, end, dimension, options) {
                         for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
                             try {
                                 const b = dimension.getBlock({ x, y, z });
-                                if ([
+                                if (b && [
                                     "minecraft:water",
                                     "minecraft:flowing_water",
                                     "minecraft:lava",
@@ -76,7 +76,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                 ].includes(b.typeId)) {
                                     b.setType("minecraft:air");
                                 }
-                                else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                                else if (b && b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                     b.isWaterlogged) {
                                     b.setWaterlogged(false);
                                 }
@@ -106,7 +106,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                 const b = dimension.getBlock({ x, y, z });
                                 if (options.blockMask.testIfMatches(b)) {
                                     if (Math.random() <= integrity / 100) {
-                                        if ([
+                                        if (b && [
                                             "minecraft:water",
                                             "minecraft:flowing_water",
                                             "minecraft:lava",
@@ -114,7 +114,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                         ].includes(b.typeId)) {
                                             b.setType("minecraft:air");
                                         }
-                                        else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                                        else if (b && b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                             b.isWaterlogged) {
                                             b.setWaterlogged(false);
                                         }
@@ -143,7 +143,7 @@ export async function fillDrain(begin, end, dimension, options) {
                             try {
                                 const b = dimension.getBlock({ x, y, z });
                                 if (options.blockMask.testIfMatches(b)) {
-                                    if ([
+                                    if (b && [
                                         "minecraft:water",
                                         "minecraft:flowing_water",
                                         "minecraft:lava",
@@ -151,7 +151,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                     ].includes(b.typeId)) {
                                         b.setType("minecraft:air");
                                     }
-                                    else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                                    else if (b && b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                         b.isWaterlogged) {
                                         b.setWaterlogged(false);
                                     }
@@ -185,7 +185,7 @@ export async function fillDrain(begin, end, dimension, options) {
                             if (Math.random() <= integrity / 100) {
                                 try {
                                     const b = dimension.getBlock({ x, y, z });
-                                    if ([
+                                    if (b && [
                                         "minecraft:water",
                                         "minecraft:flowing_water",
                                         "minecraft:lava",
@@ -194,7 +194,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                         b.setType("minecraft:air");
                                         counter++; // Increase the counter.
                                     }
-                                    else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                                    else if (b && b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                         b.isWaterlogged) {
                                         b.setWaterlogged(false);
                                         counter++; // Increase the counter.
@@ -222,7 +222,7 @@ export async function fillDrain(begin, end, dimension, options) {
                         for (let z = Math.min(begin.z, end.z); z <= Math.max(begin.z, end.z); z++) {
                             try {
                                 const b = dimension.getBlock({ x, y, z });
-                                if ([
+                                if (b && [
                                     "minecraft:water",
                                     "minecraft:flowing_water",
                                     "minecraft:lava",
@@ -231,7 +231,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                     b.setType("minecraft:air");
                                     counter++; // Increase the counter.
                                 }
-                                else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                                else if (b && b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                     b.isWaterlogged) {
                                     b.setWaterlogged(false);
                                     counter++; // Increase the counter.
@@ -262,7 +262,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                 const b = dimension.getBlock({ x, y, z });
                                 if (options.blockMask.testIfMatches(b)) {
                                     if (Math.random() <= integrity / 100) {
-                                        if ([
+                                        if (b && [
                                             "minecraft:water",
                                             "minecraft:flowing_water",
                                             "minecraft:lava",
@@ -271,7 +271,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                             b.setType("minecraft:air");
                                             counter++; // Increase the counter.
                                         }
-                                        else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                                        else if (b && b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                             b.isWaterlogged) {
                                             b.setWaterlogged(false);
                                             counter++; // Increase the counter.
@@ -301,7 +301,7 @@ export async function fillDrain(begin, end, dimension, options) {
                             try {
                                 const b = dimension.getBlock({ x, y, z });
                                 if (options.blockMask.testIfMatches(b)) {
-                                    if ([
+                                    if (b && [
                                         "minecraft:water",
                                         "minecraft:flowing_water",
                                         "minecraft:lava",
@@ -310,7 +310,7 @@ export async function fillDrain(begin, end, dimension, options) {
                                         b.setType("minecraft:air");
                                         counter++; // Increase the counter.
                                     }
-                                    else if (b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                                    else if (b && b.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
                                         b.isWaterlogged) {
                                         b.setWaterlogged(false);
                                         counter++; // Increase the counter.

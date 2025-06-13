@@ -37,8 +37,7 @@ export async function playerMenu_bounties(sourceEntitya) {
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
     return await forceShow(form, sourceEntity)
-        .then(async (ra) => {
-        let r = ra;
+        .then(async (r) => {
         // This will stop the code when the player closes the form
         if (r.canceled)
             return 1;
@@ -76,6 +75,7 @@ export async function playerMenu_bounties(sourceEntitya) {
             case "close":
                 return 0;
             default:
+                throw new Error("Invalid selection: " + r.selection);
         }
     })
         .catch(async (e) => {

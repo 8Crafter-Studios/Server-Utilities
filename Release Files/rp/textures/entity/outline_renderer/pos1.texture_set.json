@@ -1,0 +1,8 @@
+{
+    "format_version": "1.21.30",
+    "minecraft:texture_set": {
+        "color": "pos1",
+        "metalness_emissive_roughness": "pos1_mer",
+        "heightmap": "pos1_mer"
+    }
+}

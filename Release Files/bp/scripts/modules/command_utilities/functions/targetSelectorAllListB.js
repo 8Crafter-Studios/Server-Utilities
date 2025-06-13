@@ -4,22 +4,22 @@ export function targetSelectorAllListB(selector, filters, UUID) {
     world
         .getAllPlayers()
         .find((currentlySelectedPlayerEntity) => Number(currentlySelectedPlayerEntity.id) == UUID)
-        .runCommand("/execute as " +
+        ?.runCommand("/execute as " +
         selector +
         filters +
         " at @s run /scoreboard players set @s andexdbDebug " +
         scoreboardUUID);
-    let selectedEntity;
-    for (let i in world.scoreboard.getObjective("andexdbDebug").getScores()) {
+    let selectedEntity = [];
+    for (let i in world.scoreboard.getObjective("andexdbDebug")?.getScores()) {
         selectedEntity.push(world.scoreboard
             .getObjective("andexdbDebug")
-            .getScores()
+            ?.getScores()
             .filter((score) => score.score == scoreboardUUID)[i].participant.getEntity());
     }
     world
         .getAllPlayers()
         .find((currentlySelectedPlayerEntity) => Number(currentlySelectedPlayerEntity.id) == UUID)
-        .runCommand("/execute as " +
+        ?.runCommand("/execute as " +
         selector +
         filters +
         " at @s run /scoreboard players set @s andexdbDebug 0");

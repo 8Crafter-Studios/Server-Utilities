@@ -1467,7 +1467,7 @@ GameTest.registerAsync("APITests", "entity_hurt_event_skeleton_kills_player", as
   const player = test.spawnSimulatedPlayer({ x: 1, y: 2, z: 1 });
   const skeleton = test.spawn("skeleton", { x: 3, y: 2, z: 3 });
 
-  player.getComponent("health").setCurrent(1);
+  player.getComponent("health")?.setCurrent(1);
 
   let hurtCallback = world.afterEvents.entityHurt.subscribe((e) => {
     if (e.hurtEntity === player) {
@@ -1478,7 +1478,7 @@ GameTest.registerAsync("APITests", "entity_hurt_event_skeleton_kills_player", as
       test.assert(e.cause === EntityDamageCause.projectile, "Expected cause to be entity_attack but got " + e.cause);
       test.assert(e.projectile.id === "minecraft:arrow", "Expected projectile to be arrow but got " + e.cause);
       test.assert(e.damage > 0, "Expected damage to be greater than 0, but got " + e.damage);
-      const health = player.getComponent("health").current;
+      const health = player.getComponent("health")?.current;
       test.assert(health < 0, "Expected negative player health, but got " + health);
       world.afterEvents.entityHurt.unsubscribe(hurtCallback);
       test.succeed();

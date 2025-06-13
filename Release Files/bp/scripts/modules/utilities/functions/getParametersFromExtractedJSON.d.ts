@@ -1,6 +1,6 @@
 export declare function getParametersFromExtractedJSON(rawdata: RegExpMatchArray[]): {
     input: RegExpMatchArray[];
-    originalinput: string;
+    originalinput: string | undefined;
     resultAndTypeList: {
         t: "json" | "non-json";
         v: any;

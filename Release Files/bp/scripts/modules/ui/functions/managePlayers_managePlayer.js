@@ -146,7 +146,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                                     "§r§f, lore: " +
                                     JSONStringify(item[1].getLore() ?? [], true) +
                                     "§r§f, enchantments: " +
-                                    JSONStringify(tryget(() => item[1].getComponent("enchantable").getEnchantments()) ?? "N/A", true)));
+                                    JSONStringify(tryget(() => item[1].getComponent("enchantable")?.getEnchantments()) ?? "N/A", true)));
                             }
                             else {
                                 slotsArray = slotsArray.concat("slot: " + item[0] + ", item: minecraft:air");
@@ -154,8 +154,8 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                         });
                     }
                     else {
-                        let items = targetPlayer.items.inventory.concat(targetPlayer.items.equipment);
-                        items.forEach((item) => {
+                        let items = targetPlayer.items?.inventory?.concat(targetPlayer.items.equipment);
+                        items?.forEach((item) => {
                             if (item.count !== 0) {
                                 slotsArray = slotsArray.concat(String("slot: " +
                                     item.slot +
@@ -229,14 +229,14 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                     const items = targetPlayer.getItems(player);
                     const block2 = player.dimension.getBlock(player.location);
                     const block = player.dimension.getBlock(Vector.add(player.location, Vector.up));
-                    if (!!!block.getComponent("inventory")) {
+                    if (block && !block.getComponent("inventory")) {
                         block.setType("barrel");
                     }
-                    if (!!!block2.getComponent("inventory")) {
+                    if (block2 && !block2.getComponent("inventory")) {
                         block2.setType("barrel");
                     }
-                    const bc = block.getComponent("inventory").container;
-                    const bc2 = block2.getComponent("inventory").container;
+                    const bc = block.getComponent("inventory")?.container;
+                    const bc2 = block2.getComponent("inventory")?.container;
                     for (let i = 0; i < 27; i++) {
                         bc.setItem(i, items[i]);
                     }
@@ -281,7 +281,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
                             .forceShow(player);
                         if (r.canceled)
                             continue;
-                        if (!!r.formValues[0].toBigInt()) {
+                        if (!!r.formValues[0]?.toBigInt()) {
                             MoneySystem.get(targetPlayer.id).setMoney(r.formValues[0].toBigInt());
                         }
                         else {
@@ -383,29 +383,29 @@ export async function managePlayers_managePlayer_managePermissions(sourceEntity,
         form.title(`${targetPlayer.name}'s Permissions`);
         form.toggle(`canUseChatCommands${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseChatCommands")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseChatCommands").value}§a when the player joins)`
-            : ""}`, { defaultValue: targetPlayer.playerPermissions.canUseChatCommands });
+            : ""}`, { defaultValue: targetPlayer.playerPermissions?.canUseChatCommands });
         form.toggle(`canUseDangerousCommands${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseDangerousCommands")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseDangerousCommands").value}§a when the player joins)`
-            : ""}`, { defaultValue: targetPlayer.playerPermissions.canUseDangerousCommands });
+            : ""}`, { defaultValue: targetPlayer.playerPermissions?.canUseDangerousCommands });
         form.toggle(`canUseScriptEval${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseScriptEval")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseScriptEval").value}§a when the player joins)`
-            : ""}`, { defaultValue: targetPlayer.playerPermissions.canUseScriptEval });
+            : ""}`, { defaultValue: targetPlayer.playerPermissions?.canUseScriptEval });
         form.toggle(`canUseCommands${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseCommands")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canUseCommands").value}§a when the player joins)`
-            : ""}`, { defaultValue: targetPlayer.playerPermissions.canUseCommands });
+            : ""}`, { defaultValue: targetPlayer.playerPermissions?.canUseCommands });
         form.toggle(`canBypassProtectedAreas${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canBypassProtectedAreas")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "canBypassProtectedAreas").value}§a when the player joins)`
-            : ""}`, { defaultValue: targetPlayer.playerPermissions.canBypassProtectedAreas });
+            : ""}`, { defaultValue: targetPlayer.playerPermissions?.canBypassProtectedAreas });
         form.toggle(`getAllChatCommands${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "getAllChatCommands")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "getAllChatCommands").value}§a when the player joins)`
-            : ""}`, { defaultValue: targetPlayer.playerPermissions.getAllChatCommands });
+            : ""}`, { defaultValue: targetPlayer.playerPermissions?.getAllChatCommands });
         form.toggle(`admin${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "admin")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "admin").value}§a when the player joins)`
-            : ""}`, { defaultValue: targetPlayer.playerPermissions.admin });
+            : ""}`, { defaultValue: targetPlayer.playerPermissions?.admin });
         form.slider(`permissionLevel${!!targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "permissionLevel")
             ? `§a (Will be set to §b${targetPlayer.onJoinActions.find((a) => a.type == "set_permission" && a.permission == "permissionLevel").value}§a when the player joins)`
             : ""}`, 0, 10, {
-            defaultValue: targetPlayer.playerPermissions.permissionLevel,
+            defaultValue: targetPlayer.playerPermissions?.permissionLevel,
             valueStep: 1,
         });
         form.submitButton("Save");
@@ -422,6 +422,7 @@ export async function managePlayers_managePlayer_managePermissions(sourceEntity,
             targetPlayer.playerPermissions.getAllChatCommands = r.formValues[5];
             targetPlayer.playerPermissions.admin = r.formValues[6];
             targetPlayer.playerPermissions.permissionLevel = r.formValues[7];
+            return 1;
         }
         else {
             if ((await new MessageFormData()

@@ -17,7 +17,7 @@ export class ScoreboardV2 {
     }
     static removeObjective(objectiveId) {
         const objective = objectiveId instanceof ScoreboardV2Objective ? objectiveId : new ScoreboardV2Objective(objectiveId);
-        if (objective.isValid) {
+        if (objective.isValid()) {
             objective.delete();
             return true;
         }
@@ -32,7 +32,7 @@ export class ScoreboardV2Objective {
     scores = {};
     constructor(id) {
         this.id = id;
-        if (this.isValid) {
+        if (this.isValid()) {
             this.load();
         }
     }
@@ -100,7 +100,7 @@ export class ScoreboardV2Objective {
     }
     static get(objectiveId) {
         const objective = new ScoreboardV2Objective(objectiveId);
-        if (objective.isValid) {
+        if (objective.isValid()) {
             return objective;
         }
         else {
@@ -109,7 +109,7 @@ export class ScoreboardV2Objective {
     }
     static new(objectiveId, displayName = objectiveId) {
         const objective = new ScoreboardV2Objective(objectiveId);
-        if (objective.isValid) {
+        if (objective.isValid()) {
             throw new Error("Duplicate Objective ID");
         }
         else {

@@ -1,0 +1,2351 @@
+{
+    "format_version": "1.14.0",
+    "sound_definitions": {
+        "record.pigstep.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/pigstep_master",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.otherside.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/otherside",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.blocks.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/blocks",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.5.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/5",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.11.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/11",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.13.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/13",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.ward.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/ward",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.chirp.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/chirp",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.mall.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/mall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.mellohi.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/mellohi",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.cat.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/cat",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.far.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/far",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.relic.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/relic",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.stal.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/stal",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.strad.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/strad",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.wait.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/wait",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.precipice.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/precipice",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.creator.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/creator",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "record.creator_music_box.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/creator_music_box",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.featherfall": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/featherfall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.watcher": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/watcher",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.puzzlebox": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/puzzlebox",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.komorebi": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/komorebi",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.pokopoko": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/pokopoko",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.yakusoku": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/yakusoku",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.deeper": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/deeper",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.eld_unknown": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/eld_unknown",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.endless": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/endless",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.a_familiar_room": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/a_familiar_room",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.aerie": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/aerie",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.an_ordinary_day": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/an_ordinary_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.ancestry": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/ancestry",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.bromeliad": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/bromeliad",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.calm1": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/calm1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.calm2": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/calm2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.calm3": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/calm3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.comforting_memories": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/comforting_memories",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.crescent_dunes": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/crescent_dunes",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.echo_in_the_wind": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/echo_in_the_wind",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.firebugs": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/firebugs",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.floating_dream": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/floating_dream",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.hal1": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/hal1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.hal2": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/hal2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.hal3": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/hal3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.hal4": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/hal4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.infinite_amethyst": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/infinite_amethyst",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.labyrinthine": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/labyrinthine",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.left_to_bloom": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/left_to_bloom",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nuance1": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nuance1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nuance2": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nuance2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.one_more_day": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/one_more_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.piano1": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/piano1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.piano2": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/piano2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.piano3": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/piano3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.stand_tall": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/stand_tall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.wending": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/wending",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.water.axolotl": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/water/axolotl",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.water.dragon_fish": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/water/dragon_fish",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.water.shuniji": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/water/shuniji",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.creative.creative1": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/creative/creative1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.creative.creative2": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/creative/creative2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.creative.creative3": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/creative/creative3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.creative.creative4": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/creative/creative4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.creative.creative5": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/creative/creative5",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.creative.creative6": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/creative/creative6",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nether.chrysopoeia": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nether/chrysopoeia",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nether.nether1": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nether/nether1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nether.nether2": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nether/nether2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nether.nether3": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nether/nether3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nether.nether4": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nether/nether4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nether.rubedo": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nether/rubedo",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.nether.so_below": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nether/so_below",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.end.end": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/end/end",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.end.boss": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/end/boss",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.end.credits": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/end/credits",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.menu.menu1": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/menu/menu1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.menu.menu2": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/menu/menu2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.menu.menu3": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/menu/menu3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.menu.menu4": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/menu/menu4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.survival.vanilla.overworld.random": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/featherfall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/watcher",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/puzzlebox",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/komorebi",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/a_familiar_room",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/aerie",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/an_ordinary_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/ancestry",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/bromeliad",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/comforting_memories",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/crescent_dunes",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/echo_in_the_wind",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/firebugs",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/floating_dream",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/infinite_amethyst",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/labyrinthine",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/left_to_bloom",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nuance1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nuance2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/one_more_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/stand_tall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/wending",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.survival.vanilla.nether.random": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/nether/chrysopoeia",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/rubedo",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/so_below",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.survival.vanilla.end.random": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/end/boss",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/credits",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/end",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.survival.vanilla.all_dimensions.random": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/featherfall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/watcher",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/puzzlebox",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/komorebi",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/yakusoku",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/a_familiar_room",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/aerie",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/an_ordinary_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/ancestry",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/bromeliad",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/comforting_memories",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/crescent_dunes",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/echo_in_the_wind",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/firebugs",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/floating_dream",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/infinite_amethyst",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/labyrinthine",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/left_to_bloom",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nuance1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nuance2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/one_more_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/stand_tall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/wending",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/chrysopoeia",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/rubedo",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/so_below",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/boss",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/credits",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/end",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/axolotl",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/dragon_fish",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/shuniji",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.records.vanilla.random": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/5",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/11",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/13",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/blocks",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/cat",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/chirp",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/far",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/mall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/mellohi",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/otherside",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/pigstep_master",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/relic",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/stal",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/strad",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/wait",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/ward",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/precipice",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/creator",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/creator_music_box",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.creative.vanilla.random": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/creative/creative1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative5",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative6",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.all_gamemodes.vanilla.all_dimensions.random": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/featherfall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/watcher",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/puzzlebox",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/komorebi",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/pokopoko",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/yakusoku",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/deeper",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/eld_unknown",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/endless",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/a_familiar_room",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/aerie",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/an_ordinary_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/ancestry",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/bromeliad",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/comforting_memories",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/crescent_dunes",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/echo_in_the_wind",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/firebugs",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/floating_dream",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/infinite_amethyst",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/labyrinthine",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/left_to_bloom",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nuance1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nuance2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/one_more_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/stand_tall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/wending",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/chrysopoeia",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/rubedo",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/so_below",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/boss",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/credits",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/end",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/axolotl",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/dragon_fish",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/shuniji",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative5",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative6",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "music.game.all.random": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/featherfall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/watcher",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/puzzlebox",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/komorebi",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/pokopoko",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/yakusoku",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/deeper",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/eld_unknown",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/endless",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/a_familiar_room",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/aerie",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/an_ordinary_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/ancestry",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/bromeliad",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/calm3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/comforting_memories",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/crescent_dunes",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/echo_in_the_wind",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/firebugs",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/floating_dream",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/hal4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/infinite_amethyst",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/labyrinthine",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/left_to_bloom",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nuance1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nuance2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/one_more_day",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/piano3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/stand_tall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/wending",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/chrysopoeia",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/nether4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/rubedo",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/nether/so_below",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/boss",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/credits",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/end/end",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/axolotl",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/dragon_fish",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/water/shuniji",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative5",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/creative/creative6",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/5",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/11",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/13",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/blocks",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/cat",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/chirp",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/far",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/mall",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/mellohi",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/otherside",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/pigstep_master",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/relic",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/stal",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/strad",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/wait",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/game/records/ward",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },/* 
+                {
+                    "name": "sounds/music/game/calm4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }, */
+                {
+                    "name": "sounds/music/menu/menu1",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/menu/menu2",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/menu/menu3",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                },
+                {
+                    "name": "sounds/music/menu/menu4",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "block.false_permissions.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/block/permissions/shimmer/shimmerblock",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "block.false_permissions.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/block/permissions/shimmer/shimmerblock",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "block.false_permissions.player.not3d": {
+            "category": "player",
+            "sounds": [
+                {
+                    "name": "sounds/block/permissions/shimmer/shimmerblock",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "block.false_permissions.player": {
+            "category": "player",
+            "sounds": [
+                {
+                    "name": "sounds/block/permissions/shimmer/shimmerblock",
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "block.false_permissions.neutral.not3d": {
+            "category": "neutral",
+            "sounds": [
+                {
+                    "name": "sounds/block/permissions/shimmer/shimmerblock",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "block.false_permissions.neutral": {
+            "category": "neutral",
+            "sounds": [
+                {
+                    "name": "sounds/block/permissions/shimmer/shimmerblock",
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "random.hurt.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/random/hurt",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "random.hurt.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/random/hurt",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "random.hurt.player.not3d": {
+            "category": "player",
+            "sounds": [
+                {
+                    "name": "sounds/random/hurt",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "random.hurt.player": {
+            "category": "player",
+            "sounds": [
+                {
+                    "name": "sounds/random/hurt",
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "random.hurt.neutral.not3d": {
+            "category": "neutral",
+            "sounds": [
+                {
+                    "name": "sounds/random/hurt",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "random.hurt.neutral": {
+            "category": "neutral",
+            "sounds": [
+                {
+                    "name": "sounds/random/hurt",
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.banjo.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/banjo",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.bass.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/bass",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.bassattack.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/bassattack",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.bd.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/bd",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.bell.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/bell",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.bit.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/bit",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.cow_bell.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/cow_bell",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.didgeridoo.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/didgeridoo",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.flute.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/flute",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.guitar.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/guitar",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.harp.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/harp",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.hat.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/hat",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.icechime.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/icechime",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.iron_xylophone.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/iron_xylophone",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.pling.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/pling",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.snare.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/snare",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        },
+        "note.xylobone.ui": {
+            "category": "ui",
+            "sounds": [
+                {
+                    "name": "sounds/note/xylobone",
+                    "is3D": false,
+                    "load_on_low_memory": true
+                }
+            ]
+        }
+    }
+}

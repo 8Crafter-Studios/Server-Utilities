@@ -28,6 +28,8 @@ export async function playerMenu_bounty_from_individual(sourceEntitya, bounty, t
         }
     }
     const target = targetPlayer ?? bounty.getLinkedTargetSavedPlayer();
+    if (!target)
+        throw new ReferenceError("[playerMenu_bounty_from_individual] No target player found.");
     let form = new ActionFormData();
     form.title(customFormUICodes.action.titles.formStyles.medium + sourceEntity.name);
     form.body(`Target: ${target.name}\n${target.isOnline
@@ -135,6 +137,7 @@ export async function playerMenu_bounty_from_individual(sourceEntitya, bounty, t
             case "close":
                 return 0;
             default:
+                throw new Error("Invalid selection: " + r.selection);
         }
     })
         .catch((e) => {

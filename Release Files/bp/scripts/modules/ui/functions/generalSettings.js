@@ -137,9 +137,9 @@ export async function generalSettings(sourceEntity) {
                 case "spawnCommandLocation":
                     config.spawnCommandLocation = {
                         ...config.spawnCommandLocation,
-                        x: options[v].split(" ")[0]?.toNumber(),
-                        y: options[v].split(" ")[1]?.toNumber(),
-                        z: options[v].split(" ")[2]?.toNumber(),
+                        x: options[v].split(" ")[0]?.toNumber() ?? null,
+                        y: options[v].split(" ")[1]?.toNumber() ?? null,
+                        z: options[v].split(" ")[2]?.toNumber() ?? null,
                     };
                     break;
                 case "useLegacyPlayerInventoryDataSaveSystem":
@@ -164,6 +164,7 @@ export async function generalSettings(sourceEntity) {
             const r = await showMessage(player, "Restart Required", `The following settings require a restart of this world/server/realm to apply properly: ${optionsRequiringRestartToApplyProperly.join(", ")}.\nIf you are on a realm or do not have access to the /reload command, please click the restart button below. Otherwise, run the /reload command.`, "Cancel", "Restart");
             if (r.selection === 1) {
                 let buffer = new ArrayBuffer(250000000); // Uses all of the currently available scripting memory, forcefully shutting down the world/realm/server.
+                throw new InternalError("The server should have been shut down due to exceeding the scripting memory limit, but was not, this is likely due to an increased scripting memory limit, so please restart the world/realm/server manually.");
             }
         }
         return 1;

@@ -23,7 +23,7 @@ world.beforeEvents.dataDrivenEntityTriggerEvent.subscribe(event => {
     }
     ;
     try {
-        world.getAllPlayers().filter((player) => { player.hasTag("getEntityTriggerEventNotifications"); }).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.id + ", getComponentGroupsToAdd: " + event.getModifiers()[0].addedComponentGroups + ", getComponentGroupsToRemove: " + event.getModifiers()[0].removedComponentGroups + ", getTriggers: " + event.getModifiers()[0].triggers); });
+        world.getAllPlayers().filter((player) => { player.hasTag("getEntityTriggerEventNotifications"); }).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.id + ", getComponentGroupsToAdd: " + event.getModifiers()[0]!.addedComponentGroups + ", getComponentGroupsToRemove: " + event.getModifiers()[0]!.removedComponentGroups + ", getTriggers: " + event.getModifiers()[0]!.triggers); });
         if (event.id == "andexsa:friction_modifier_0.9") {
             let componentGroups = event.getModifiers()[0]; */ /*
 console.warn(event.id)
@@ -31,7 +31,7 @@ console.warn(componentGroups.getComponentGroupsToAdd())*/ /*
 componentGroups.addedComponentGroups = ["andexsa:player_is_baby"]; */ /*
 console.warn(componentGroups.getComponentGroupsToAdd())*/ /*
 event.setModifiers([componentGroups]);
-console.warn(event.getModifiers()[0].addedComponentGroups);
+console.warn(event.getModifiers()[0]!.addedComponentGroups);
 }
 }
 catch { }
@@ -39,7 +39,7 @@ catch { }
 /*
   world.beforeEvents.pistonActivate.subscribe(event => {
     try{eval(String(world.getDynamicProperty("evalBeforeEvents:pistonActivate")))}catch(e){console.error(e, e.stack); world.getAllPlayers().forEach((currentplayer)=>{if(currentplayer.hasTag("pistonActivateBeforeEventDebugErrors")){currentplayer.sendMessage(e + e.stack)}})}
-      world.getAllPlayers().filter((player) => ( player.hasTag("getEntityTriggerEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.block.typeId + ", getComponentGroupsToAdd: " + event.piston.getAttachedBlocks()[0].x + ", getComponentGroupsToRemove: " + event.isExpanding) + ", getTriggers: " + event.dimension; });
+      world.getAllPlayers().filter((player) => ( player.hasTag("getEntityTriggerEventNotifications"))).forEach((currentPlayer) => { currentPlayer.sendMessage("id: " + event.block.typeId + ", getComponentGroupsToAdd: " + event.piston.getAttachedBlocks()[0]!.x + ", getComponentGroupsToRemove: " + event.isExpanding) + ", getTriggers: " + event.dimension; });
       if (testIsWithinRanges(noPistonExtensionAreas, event.block.location) == true) {
         event.cancel = true*/ /*
   console.warn(event.isExpanding);

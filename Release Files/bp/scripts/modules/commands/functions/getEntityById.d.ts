@@ -1,1 +1,1 @@
-export declare function getEntityById(entityId: string | number): import("@minecraft/server").Entity;
+export declare function getEntityById(entityId: string | number): import("@minecraft/server").Entity | undefined;

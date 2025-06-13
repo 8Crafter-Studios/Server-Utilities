@@ -6,6 +6,12 @@
 import { Entity, ScoreboardIdentity, ScoreboardObjective, world } from "@minecraft/server";
 import { savedPlayer } from "modules/player_save/classes/savedPlayer";
 import * as ipc from "ipc";
+// const incapacitatedEffects
+// system.runInterval(() => {
+//     world.getAllPlayers().forEach((player) => {
+//         if(player?.hasTag("hasBeenIncapacitated") && player?.getComponent("health")?.currentValue >= 20){
+//             player.removeTag("hasBeenIncapacitated");
+//         }
 /**
  * Represents the money system.
  */
@@ -186,8 +192,8 @@ export class MoneySystem {
      * @returns {boolean} Returns true if the operation was successful.
      */
     transferFromScoreboard(scoreboard) {
-        const identity = tryget(() => world.getAllPlayers().find((p) => p.id === this.playerID).scoreboardIdentity) ??
-            tryget(() => world.scoreboard.getParticipants().find((p) => p?.id === savedPlayer.getSavedPlayer("player: " + this.playerID).scoreboardIdentity));
+        const identity = tryget(() => world.getAllPlayers().find((p) => p.id === this.playerID)?.scoreboardIdentity) ??
+            tryget(() => world.scoreboard.getParticipants().find((p) => p?.id === savedPlayer.getSavedPlayer("player: " + this.playerID)?.scoreboardIdentity));
         if (identity !== undefined) {
             const score = scoreboard.getScore(identity);
             if (score !== undefined) {

@@ -22,7 +22,7 @@ export function* splitArea(area, sizes = { x: 64, y: 128, z: 64 }) {
                         y: yRange[1],
                         z: partialRanges[1].z,
                     },
-                    Object.assign({}, indices),
+                    { ...indices },
                     {
                         x: partialRanges[0].x - area.from.x,
                         y: yRange[0] - area.from.y,

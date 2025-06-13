@@ -215,7 +215,7 @@ export async function playerMenu(sourceEntity) {
                 case "close":
                     return 0;
                 default:
-                    return 0;
+                    throw new Error("Invalid selection: " + r.selection);
             }
         }
         catch (e) {

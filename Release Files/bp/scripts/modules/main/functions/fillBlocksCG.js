@@ -6,8 +6,8 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
     var timea = Date.now();
     var mainArray = Array.from(new BlockVolume(begin, end).getBlockLocationIterator());
     var counter = 0;
-    var block = BlockTypes.get(matchingBlock).id;
-    var blockmatching = BlockTypes.get(matchingBlock).id;
+    var block = BlockTypes.get(matchingBlock)?.id;
+    var blockmatching = BlockTypes.get(matchingBlock)?.id;
     if (overrideAllBlockStates) {
         if (!!matchingBlock) {
             //console.warn("3");
@@ -30,7 +30,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                         //console.warn("5");
                                         dimension
                                             .getBlock(mainArray[i])
-                                            .setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                            ?.setPermutation(BlockPermutation.resolve(blocktype, blockStates));
                                         counter++; //; console.warn("6");
                                     }
                                 }
@@ -58,7 +58,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                         //console.warn("5");
                                         dimension
                                             .getBlock(mainArray[i])
-                                            .setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                            ?.setPermutation(BlockPermutation.resolve(blocktype, blockStates));
                                         counter++; //; console.warn("6");
                                     }
                                 }
@@ -86,7 +86,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                     //console.warn("14");
                                     dimension
                                         .getBlock(mainArray[i])
-                                        .setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                        ?.setPermutation(BlockPermutation.resolve(blocktype, blockStates));
                                     counter++; //; console.warn("8");
                                 }
                             }
@@ -109,7 +109,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                     //console.warn("14");
                                     dimension
                                         .getBlock(mainArray[i])
-                                        .setPermutation(BlockPermutation.resolve(blocktype));
+                                        ?.setPermutation(BlockPermutation.resolve(blocktype));
                                     counter++; //; console.warn("8");
                                 }
                             }
@@ -133,7 +133,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                             //console.warn("2");
                             dimension
                                 .getBlock(mainArray[i])
-                                .setPermutation(BlockPermutation.resolve(blocktype, blockStates));
+                                ?.setPermutation(BlockPermutation.resolve(blocktype, blockStates));
                             counter++; //; console.warn("11");
                         }
                     }
@@ -150,7 +150,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                         //console.warn("1");
                         if (dimension.getBlock(mainArray[i])?.typeId != block) {
                             //console.warn("2");
-                            dimension.getBlock(mainArray[i]).setType(blocktype);
+                            dimension.getBlock(mainArray[i])?.setType(blocktype);
                             counter++; //; console.warn("13");
                         }
                     }
@@ -174,7 +174,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                             //console.warn("1");
                             if (dimension.getBlock(mainArray[i])?.permutation !=
                                 BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                    BlockTypes.get(blocktype).id ==
+                                    BlockTypes.get(blocktype)?.id ==
                                         dimension.getBlock(mainArray[i])
                                             ?.typeId
                                     ? Object.fromEntries(Object.entries(Object.assign(dimension
@@ -182,7 +182,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                         ?.permutation?.getAllStates(), blockStates)).filter((v) => !!Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find((s) => v[0] == s[0])))
                                     : blockStates)) {
                                 //console.warn("2");
-                                if (BlockTypes.get(matchingBlock).id ==
+                                if (BlockTypes.get(matchingBlock)?.id ==
                                     dimension.getBlock(mainArray[i])?.typeId) {
                                     //console.warn("14");
                                     if (Object.entries(matchingBlockStates).every((p) => Object.entries(dimension
@@ -191,8 +191,8 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                         //console.warn("5");
                                         dimension
                                             .getBlock(mainArray[i])
-                                            .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                            BlockTypes.get(blocktype).id ==
+                                            ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                            BlockTypes.get(blocktype)?.id ==
                                                 dimension.getBlock(mainArray[i])?.typeId
                                             ? Object.fromEntries(Object.entries(Object.assign(dimension
                                                 .getBlock(mainArray[i])
@@ -216,7 +216,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                             //console.warn("1");
                             if (dimension.getBlock(mainArray[i])?.permutation !=
                                 BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                    BlockTypes.get(blocktype).id ==
+                                    BlockTypes.get(blocktype)?.id ==
                                         dimension.getBlock(mainArray[i])
                                             ?.typeId
                                     ? Object.fromEntries(Object.entries(dimension
@@ -224,7 +224,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                         ?.permutation?.getAllStates()).filter((v) => !!Object.entries(BlockPermutation.resolve(blocktype).getAllStates()).find((s) => v[0] == s[0])))
                                     : blockStates)) {
                                 //console.warn("2");
-                                if (BlockTypes.get(matchingBlock).id ==
+                                if (BlockTypes.get(matchingBlock)?.id ==
                                     dimension.getBlock(mainArray[i])?.typeId) {
                                     //console.warn("14");
                                     if (Object.entries(matchingBlockStates).every((p) => Object.entries(dimension
@@ -233,8 +233,8 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                         //console.warn("5");
                                         dimension
                                             .getBlock(mainArray[i])
-                                            .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                            BlockTypes.get(blocktype).id ==
+                                            ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                            BlockTypes.get(blocktype)?.id ==
                                                 dimension.getBlock(mainArray[i])?.typeId
                                             ? Object.fromEntries(Object.entries(dimension
                                                 .getBlock(mainArray[i])
@@ -275,9 +275,9 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                     //console.warn("14");
                                     dimension
                                         .getBlock(mainArray[i])
-                                        .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                        ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
                                         BlockTypes.get(blocktype)
-                                            .id ==
+                                            ?.id ==
                                             dimension.getBlock(mainArray[i])?.typeId
                                         ? Object.fromEntries(Object.entries(Object.assign(dimension
                                             .getBlock(mainArray[i])
@@ -313,9 +313,9 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                                     //console.warn("14");
                                     dimension
                                         .getBlock(mainArray[i])
-                                        .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                        ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
                                         BlockTypes.get(blocktype)
-                                            .id ==
+                                            ?.id ==
                                             dimension.getBlock(mainArray[i])?.typeId
                                         ? Object.fromEntries(Object.entries(dimension
                                             .getBlock(mainArray[i])
@@ -343,7 +343,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                         //console.warn("1");
                         if (dimension.getBlock(mainArray[i])?.permutation !=
                             BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                BlockTypes.get(blocktype).id ==
+                                BlockTypes.get(blocktype)?.id ==
                                     dimension.getBlock(mainArray[i])?.typeId
                                 ? Object.fromEntries(Object.entries(Object.assign(dimension
                                     .getBlock(mainArray[i])
@@ -352,8 +352,8 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                             //console.warn("2");
                             dimension
                                 .getBlock(mainArray[i])
-                                .setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
-                                BlockTypes.get(blocktype).id ==
+                                ?.setPermutation(BlockPermutation.resolve(blocktype, !overrideAllBlockStates &&
+                                BlockTypes.get(blocktype)?.id ==
                                     dimension.getBlock(mainArray[i])
                                         ?.typeId
                                 ? Object.fromEntries(Object.entries(Object.assign(dimension
@@ -376,7 +376,7 @@ export function* fillBlocksCG(begin, end, dimension, blocktype = "air", blockSta
                         //console.warn("1");
                         if (dimension.getBlock(mainArray[i])?.typeId != block) {
                             //console.warn("2");
-                            dimension.getBlock(mainArray[i]).setType(blocktype);
+                            dimension.getBlock(mainArray[i])?.setType(blocktype);
                             counter++; //; console.warn("13");
                         }
                     }

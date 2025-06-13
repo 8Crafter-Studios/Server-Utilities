@@ -8,7 +8,7 @@ import { getNextTopSolidBlockAbovePosition } from "modules/main/functions/getNex
 import { getTopSolidBlock } from "modules/main/functions/getTopSolidBlock";
 repeatingIntervals.worldBorderSystem = system.runInterval(() => {
     if (config.worldBorder.overworld.enabled) {
-        const borderSettings = config.toJSON.apply(config.worldBorder.overworld);
+        const borderSettings = config.toJSON(config.worldBorder.overworld);
         world
             .getAllPlayers()
             .filter((p) => p.dimension.id == "minecraft:overworld")
@@ -644,7 +644,7 @@ repeatingIntervals.worldBorderSystem = system.runInterval(() => {
         });
     }
     if (config.worldBorder.nether.enabled) {
-        const borderSettings = config.toJSON.apply(config.worldBorder.nether);
+        const borderSettings = config.toJSON(config.worldBorder.nether);
         world
             .getAllPlayers()
             .filter((p) => p.dimension.id == "minecraft:nether")
@@ -1280,7 +1280,7 @@ repeatingIntervals.worldBorderSystem = system.runInterval(() => {
         });
     }
     if (config.worldBorder.the_end.enabled) {
-        const borderSettings = config.toJSON.apply(config.worldBorder.the_end);
+        const borderSettings = config.toJSON(config.worldBorder.the_end);
         world
             .getAllPlayers()
             .filter((p) => p.dimension.id == "minecraft:the_end")

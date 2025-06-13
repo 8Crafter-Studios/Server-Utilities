@@ -10,7 +10,7 @@ export async function itemSelector(sourceEntitya, targetPlayer, backFunction, ..
     let form = new ActionFormData();
     form.title(customFormUICodes.action.titles.formStyles.fullscreen + "Select Item");
     let itemsList = [];
-    for (let i = 0; i < targetPlayer.getComponent("inventory").inventorySize; i++) {
+    for (let i = 0; i < (targetPlayer.getComponent("inventory")?.inventorySize ?? 0); i++) {
         itemsList.push({
             slot: i,
             item: targetPlayer.getComponent("inventory").container.getSlot(i),
@@ -29,7 +29,7 @@ export async function itemSelector(sourceEntitya, targetPlayer, backFunction, ..
             ][i],
             item: targetPlayer
                 .getComponent("equippable")
-                .getEquipmentSlot([
+                ?.getEquipmentSlot([
                 EquipmentSlot.Mainhand,
                 EquipmentSlot.Offhand,
                 EquipmentSlot.Head,
@@ -56,7 +56,7 @@ export async function itemSelector(sourceEntitya, targetPlayer, backFunction, ..
         }
         switch (r.selection) {
             case slotsList.length:
-                return backFunction(...(functionargs.length == 0
+                return (backFunction ?? (() => { }))(...(functionargs.length == 0
                     ? [sourceEntity]
                     : functionargs ?? [sourceEntity]));
                 break;

@@ -1,0 +1,17 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.andexdb.outline_renderer.scale_handler": {
+			"loop": "hold_on_last_frame",
+			"bones": {
+				"body": {
+					"scale": [
+						"q.has_property('andexdb:scale_x') ? q.property('andexdb:scale_x') : (v.scale_x ?? 1.0)",
+						"q.has_property('andexdb:scale_y') ? q.property('andexdb:scale_y') : (v.scale_y ?? 1.0)",
+						"q.has_property('andexdb:scale_z') ? q.property('andexdb:scale_z') : (v.scale_z ?? 1.0)"
+					]
+				}
+			}
+		}
+	}
+}

@@ -90,7 +90,7 @@ export interface chatSendMessageEvaluator_prePlayersOutput {
      *
      * @default undefined
      */
-    readonly messageGradientMode: keyof typeof patternFunctionList;
+    readonly messageGradientMode?: keyof typeof patternFunctionList;
     /**
      * The name formatting to use.
      *
@@ -115,7 +115,7 @@ export interface chatSendMessageEvaluator_prePlayersOutput {
      *
      * @default undefined
      */
-    readonly nameGradientMode: keyof typeof patternFunctionList;
+    readonly nameGradientMode?: keyof typeof patternFunctionList;
     /**
      * The separator formatting to use.
      *
@@ -140,7 +140,7 @@ export interface chatSendMessageEvaluator_prePlayersOutput {
      *
      * @default undefined
      */
-    readonly separatorGradientMode: keyof typeof patternFunctionList;
+    readonly separatorGradientMode?: keyof typeof patternFunctionList;
     /**
      * Whether to show the player's dimension in the message.
      *
@@ -245,7 +245,7 @@ export interface TagChatMessageFormat {
      *
      * @default undefined
      */
-    messageGradientMode: keyof typeof patternFunctionList;
+    messageGradientMode: keyof typeof patternFunctionList | undefined;
     /**
      * The name formatting to use.
      *
@@ -270,7 +270,7 @@ export interface TagChatMessageFormat {
      *
      * @default undefined
      */
-    nameGradientMode: keyof typeof patternFunctionList;
+    nameGradientMode: keyof typeof patternFunctionList | undefined;
     /**
      * The separator formatting to use.
      *
@@ -295,7 +295,7 @@ export interface TagChatMessageFormat {
      *
      * @default undefined
      */
-    separatorGradientMode: keyof typeof patternFunctionList;
+    separatorGradientMode: keyof typeof patternFunctionList | undefined;
     /**
      * Whether to show the player's dimension in the message.
      *
@@ -342,5 +342,5 @@ export declare function chatSend_generatePartialPlayerTypeForChatSendEvaluationF
     hasTag(tag: string): boolean;
     getTags(): string[];
 };
-export declare function chatSend_getPlayerPersonalSettings(player: Player): Parameters<typeof chatSendMessageEvaluator>[2]["playerPersonalSettings"] & Parameters<typeof chatSend_getDisplayNameFromPlayer>[1]["playerPersonalSettings"];
-export declare function chatSend_getTargetPlayerSettings(player: Player): Parameters<typeof chatSendMessageEvaluator>[2]["targetPlayerSettings"];
+export declare function chatSend_getPlayerPersonalSettings(player: Player): NonNullable<Parameters<typeof chatSendMessageEvaluator>[2]>["playerPersonalSettings"] & NonNullable<Parameters<typeof chatSend_getDisplayNameFromPlayer>[1]>["playerPersonalSettings"];
+export declare function chatSend_getTargetPlayerSettings(player: Player): NonNullable<Parameters<typeof chatSendMessageEvaluator>[2]>["targetPlayerSettings"];

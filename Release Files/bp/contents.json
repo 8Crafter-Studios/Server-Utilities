@@ -154,6 +154,9 @@
          "path" : "dialogue/scene.json"
       },
       {
+         "path" : "entities/outline_renderer.json"
+      },
+      {
          "path" : "entities/player_inventory_save_storage.json"
       },
       {
@@ -373,6 +376,15 @@
          "path" : "node_modules/.package-lock.json"
       },
       {
+         "path" : "node_modules/@esbuild/linux-x64/README.md"
+      },
+      {
+         "path" : "node_modules/@esbuild/linux-x64/bin/esbuild"
+      },
+      {
+         "path" : "node_modules/@esbuild/linux-x64/package.json"
+      },
+      {
          "path" : "node_modules/@esbuild/win32-x64/README.md"
       },
       {
@@ -563,21 +575,6 @@
       },
       {
          "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/tsconfig.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server/.eslintrc.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server/README.md"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server/index.d.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server/tsconfig.json"
       },
       {
          "path" : "node_modules/@minecraft/server-net/package.json"
@@ -3899,21 +3896,6 @@
       },
       {
          "path" : "node_modules/mcbe-ipc/dist/proto.js"
-      },
-      {
-         "path" : "node_modules/mcbe-ipc/node_modules/@minecraft/server/.eslintrc.json"
-      },
-      {
-         "path" : "node_modules/mcbe-ipc/node_modules/@minecraft/server/README.md"
-      },
-      {
-         "path" : "node_modules/mcbe-ipc/node_modules/@minecraft/server/index.d.ts"
-      },
-      {
-         "path" : "node_modules/mcbe-ipc/node_modules/@minecraft/server/package.json"
-      },
-      {
-         "path" : "node_modules/mcbe-ipc/node_modules/@minecraft/server/tsconfig.json"
       },
       {
          "path" : "node_modules/mcbe-ipc/package.json"
@@ -11779,6 +11761,51 @@
          "path" : "scripts/init/classes/moduleImportsConfig.js.map"
       },
       {
+         "path" : "scripts/init/commands/WorldEdit/--backuparea.command.d.ts"
+      },
+      {
+         "path" : "scripts/init/commands/WorldEdit/--backuparea.command.js"
+      },
+      {
+         "path" : "scripts/init/commands/WorldEdit/--backuparea.command.js.map"
+      },
+      {
+         "path" : "scripts/init/commands/misc/-debugcustomcommands.command.d.ts"
+      },
+      {
+         "path" : "scripts/init/commands/misc/-debugcustomcommands.command.js"
+      },
+      {
+         "path" : "scripts/init/commands/misc/-debugcustomcommands.command.js.map"
+      },
+      {
+         "path" : "scripts/init/commands/misc/-help.command.d.ts"
+      },
+      {
+         "path" : "scripts/init/commands/misc/-help.command.js"
+      },
+      {
+         "path" : "scripts/init/commands/misc/-help.command.js.map"
+      },
+      {
+         "path" : "scripts/init/commands/misc/debugcustomcommands.command.d.ts"
+      },
+      {
+         "path" : "scripts/init/commands/misc/debugcustomcommands.command.js"
+      },
+      {
+         "path" : "scripts/init/commands/misc/debugcustomcommands.command.js.map"
+      },
+      {
+         "path" : "scripts/init/commands/misc/help.command.d.ts"
+      },
+      {
+         "path" : "scripts/init/commands/misc/help.command.js"
+      },
+      {
+         "path" : "scripts/init/commands/misc/help.command.js.map"
+      },
+      {
          "path" : "scripts/init/constants/dimensions.d.ts"
       },
       {
@@ -14866,6 +14893,15 @@
          "path" : "scripts/modules/coordinates/classes/AreaBackups.js.map"
       },
       {
+         "path" : "scripts/modules/coordinates/classes/BlockClipboard.d.ts"
+      },
+      {
+         "path" : "scripts/modules/coordinates/classes/BlockClipboard.js"
+      },
+      {
+         "path" : "scripts/modules/coordinates/classes/BlockClipboard.js.map"
+      },
+      {
          "path" : "scripts/modules/coordinates/classes/TeleportRequest.d.ts"
       },
       {
@@ -14882,15 +14918,6 @@
       },
       {
          "path" : "scripts/modules/coordinates/classes/WorldPosition.js.map"
-      },
-      {
-         "path" : "scripts/modules/coordinates/classes/blockClipboard.d.ts"
-      },
-      {
-         "path" : "scripts/modules/coordinates/classes/blockClipboard.js"
-      },
-      {
-         "path" : "scripts/modules/coordinates/classes/blockClipboard.js.map"
       },
       {
          "path" : "scripts/modules/coordinates/classes/undoClipboard.d.ts"
@@ -18376,6 +18403,15 @@
          "path" : "scripts/modules/utilities/functions/toBase.js.map"
       },
       {
+         "path" : "scripts/modules/utilities/types/EscRegExp.d.ts"
+      },
+      {
+         "path" : "scripts/modules/utilities/types/EscRegExp.js"
+      },
+      {
+         "path" : "scripts/modules/utilities/types/EscRegExp.js.map"
+      },
+      {
          "path" : "scripts/modules/utilities/types/loosePlayerType.d.ts"
       },
       {
@@ -18647,6 +18683,15 @@
       },
       {
          "path" : "src/init/classes/moduleImportsConfig.ts"
+      },
+      {
+         "path" : "src/init/commands/WorldEdit/--backuparea.command.ts"
+      },
+      {
+         "path" : "src/init/commands/misc/-debugcustomcommands.command.ts"
+      },
+      {
+         "path" : "src/init/commands/misc/-help.command.ts"
       },
       {
          "path" : "src/init/constants/dimensions.ts"
@@ -19675,13 +19720,13 @@
          "path" : "src/modules/coordinates/classes/AreaBackups.ts"
       },
       {
+         "path" : "src/modules/coordinates/classes/BlockClipboard.ts"
+      },
+      {
          "path" : "src/modules/coordinates/classes/TeleportRequest.ts"
       },
       {
          "path" : "src/modules/coordinates/classes/WorldPosition.ts"
-      },
-      {
-         "path" : "src/modules/coordinates/classes/blockClipboard.ts"
       },
       {
          "path" : "src/modules/coordinates/classes/undoClipboard.ts"
@@ -20843,6 +20888,9 @@
       },
       {
          "path" : "src/modules/utilities/functions/toBase.ts"
+      },
+      {
+         "path" : "src/modules/utilities/types/EscRegExp.ts"
       },
       {
          "path" : "src/modules/utilities/types/loosePlayerType.ts"

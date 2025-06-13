@@ -566,11 +566,15 @@ ex. ${command.dp}summon 5 sheep<spawn_baby> ~~~~~ true "Baby Sheep That Won't De
     "remotheritemenchants": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
     "removeotheritemenchantments": `${command.dp}remotheritemenchants <enchantmentTypesToKeep: StringArray>`,
     "brush": `${command.dp}brush [-l] none
-${command.dp}brush [-l] <brushType: sphere|cube|square>` /*+` [-h]`*/ + ` <blockPattern: BlockPattern> [radius: float] [mask: Mask]
-${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface> [-h] <blockPattern: BlockPattern> [radius: float] [decay: float] [mask: Mask]` /*+`
-        ${command.dp}brush [-l] <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]`*/
-        + `
-${command.dp}brush [-l] <brushType: extinguish|ex|remexp> [radius: float]`,
+${command.dp}brush [-l] <brushType: sphere|cube|square>` /*+` [-h]`*/ + ` <blockPattern: BlockPattern> [radius: float[?=3]] [mask: Mask]
+${command.dp}brush [-l] <brushType: splatter|splattercube|splattersquare|splattersurface|splattercubesurface|splattersquaresurface|overlaysurface|overlaycubesurface|overlaysquaresurface> [-h] <blockPattern: BlockPattern> [radius: float[?=3]] [decay: float[?=0]] [mask: Mask]
+${command.dp}brush [-l] <brushType: flattenfill|flattensquarefill> [-r] <flattenDirection: {up}|{down}|{north}|{south}|{east}|{west}|{auto}|{autor}> <blockPattern: BlockPattern> [radius: float[?=3]] [decay: float[?=0]] [mask: Mask]
+${command.dp}brush [-l] <brushType: flatten|flattensquare> [-rw] <flattenDirection: {up}|{down}|{north}|{south}|{east}|{west}|{auto}|{autor}> [radius: float[?=3]] [decay: float[?=0]] [mask: Mask]
+${command.dp}brush [-l] <brushType: nudge|nudgecube> [-t] <nudgeDirection: {up}|{down}|{north}|{south}|{east}|{west}|{auto}|{autor}> [radius: float[?=3]] [decay: float[?=0]] [mask: Mask]
+${command.dp}brush [-l] <brushType: copy|copycube> [-a] {[clipboard: (string|{global})[?=PersonalWorldEditBrushClipboardID]]} [radius: float[?=3]] [decay: float[?=0]] [mask: Mask]
+${command.dp}brush [-l] <brushType: paste> {[clipboard: (string|{global})[?=PersonalWorldEditBrushClipboardID]]}
+${command.dp}brush [-l] <brushType: ex|extinguish|remexp|remexpe|remexpne> [radius: float[?=10]]` /*+`
+        ${command.dp}brush [-l] <brushType: raise|lower> <shape: sphere|cube§c|squarex|squarey|squarez§r> [radius: float]`*/,
     "butcher": `${command.dp}butcher [-abfgnprtwipceh] [radius: float]`,
     "butcherdespawn": `${command.dp}butcherdespawn [-abfgnprtwipceh] [radius: float]`,
     "chunkinfo": `${command.dp}chunkinfo`,
@@ -594,10 +598,10 @@ ${command.dp}snapshot list`,
     "\\\\listpos": `${command.dp}\\listpos`,
     "\\\\loadpos": `${command.dp}\\loadpos <selectionID: string>`,
     "\\\\savepos": `${command.dp}\\savepos <selectionID: string>`,
-    "\\\\cut": `${command.dp}\\cut [-meb]`,
-    "\\\\copy": `${command.dp}\\copy [-meb]`,
-    "\\\\paste": `${command.dp}\\paste [-webxzh] [integrity: float] [integritySeed: string] [rotation: 0|90|180|270] [animationMode: none|blocks|layers] [animationSeconds: float]`,
-    "\\\\undo": `${command.dp}\\undo [-kt]`,
+    "\\\\cut": `${command.dp}\\cut [-meb] {[clipboard: (string|{global})[?=PersonalClipboardID]]}`,
+    "\\\\copy": `${command.dp}\\copy [-meb] {[clipboard: (string|{global})[?=PersonalClipboardID]]}`,
+    "\\\\paste": `${command.dp}\\paste [-webxzh] {[clipboard: (string|{global})[?=PersonalClipboardID]]} [integrity: float[?=1]] [integritySeed: string] [rotation: (0|90|180|270)[?=0]] [animationMode: {none}|{blocks}|{layers}] [animationSeconds: float[?=0]]`,
+    "\\\\undo": `${command.dp}\\undo [-ktg] {[undoClipboard: string[?=PersonalClipboardID]]}`,
     "\\\\protectarea": `${command.dp}\\protectarea <areaType: string> <name: string> [mode: 0|1(default=0)] [icon_path: string]`,
     "\\\\backuparea": `${command.dp}\\backuparea <id: string>`,
     "\\\\pos1": `${command.dp}\\pos1 [location: x y z]`,

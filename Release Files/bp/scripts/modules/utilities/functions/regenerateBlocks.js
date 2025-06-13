@@ -10,7 +10,7 @@ export function regenerateBlocks(corner1, corner2, dimension, radius, ignoreAir 
         for (let y = minY; y <= maxY; y++) {
             for (let z = minZ; z <= maxZ; z++) {
                 const block = dimension.getBlock({ x, y, z });
-                if (!onlyReplaceAir || block.typeId === 'minecraft:air') {
+                if (block && (!onlyReplaceAir || block.typeId === 'minecraft:air')) {
                     const surroundingBlocks = [];
                     for (let dx = -radius; dx <= radius; dx++) {
                         for (let dy = -radius; dy <= radius; dy++) {
@@ -18,7 +18,7 @@ export function regenerateBlocks(corner1, corner2, dimension, radius, ignoreAir 
                                 if (dx === 0 && dy === 0 && dz === 0)
                                     continue;
                                 const surroundingBlock = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
-                                if (!ignoreAir || surroundingBlock.typeId !== 'minecraft:air') {
+                                if (surroundingBlock && (!ignoreAir || surroundingBlock.typeId !== 'minecraft:air')) {
                                     surroundingBlocks.push(surroundingBlock);
                                 }
                             }
@@ -36,6 +36,8 @@ export function regenerateBlocks(corner1, corner2, dimension, radius, ignoreAir 
                         const mostCommonPattern = Object.keys(blockPattern).reduce((a, b) => blockPattern[a] > blockPattern[b] ? a : b);
                         const [dx, dy, dz] = mostCommonPattern.split(',').map(Number);
                         const patternBlock = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
+                        if (!patternBlock)
+                            continue;
                         dimension.setBlockType({ x, y, z }, patternBlock.typeId);
                     }
                 }

@@ -28,6 +28,8 @@ export async function playerMenu_bounty_on_individual(sourceEntitya, bounty, sou
         }
     }
     const source = sourcePlayer ?? bounty.getLinkedSourceSavedPlayer();
+    if (!source)
+        throw new ReferenceError("[playerMenu_bounty] No source player found.");
     let form = new ActionFormData();
     form.title(customFormUICodes.action.titles.formStyles.medium + sourceEntity.name);
     form.body(`Target: ${sourceEntity.name}\nPlaced By: ${source.name}\nPlaced On: ${new Date(bounty.creationTime).formatDateTime(sourceEntity.timeZone, false, true)}\nReward: ${numberFormatter(bounty.value, { currencyPrefix: config.ui.menus.playerMenu_leaderboards.builtInStats.money.displayOptions.currencyPrefix, addCommaSeparators: true }, 0)}`);
@@ -45,6 +47,7 @@ export async function playerMenu_bounty_on_individual(sourceEntitya, bounty, sou
             case "close":
                 return 0;
             default:
+                throw new Error("Invalid selection: " + r.selection);
         }
     })
         .catch((e) => {

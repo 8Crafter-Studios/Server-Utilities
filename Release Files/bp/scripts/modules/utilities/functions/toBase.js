@@ -8,8 +8,9 @@ export function toBase(num, radix = 10, keysa = radix > 62
         return keys[0].repeat(num.toNumber());
     if (!(radix >= 2 && radix <= keys.length))
         throw new RangeError("toBase() radix argument must be between 2 and " + keys.length);
+    let isNegative = false;
     if (num.toNumber() < 0)
-        var isNegative = true;
+        isNegative = true;
     if (isNaN((num = Math.abs(+num))))
         return NaN;
     let output = [];
@@ -18,7 +19,7 @@ export function toBase(num, radix = 10, keysa = radix > 62
         output.unshift(keys[index]);
         num = Math.trunc(num / radix);
     } while (num != 0);
-    if (isNegative ?? false)
+    if (isNegative)
         output.unshift("-");
     return output.join("");
 }

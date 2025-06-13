@@ -4,20 +4,20 @@ export function targetSelector(selector, filters, UUID) {
     world
         .getAllPlayers()
         .find((currentlySelectedPlayerEntity) => Number(currentlySelectedPlayerEntity.id) == UUID)
-        .runCommand("/execute as " +
+        ?.runCommand("/execute as " +
         selector +
         filters +
         " at @s run /scoreboard players set @s andexdbDebug " +
         scoreboardUUID);
     let selectedEntityUUIDValue = world.scoreboard
         .getObjective("andexdbDebug")
-        .getScores()
+        ?.getScores()
         .find((score) => score.score == scoreboardUUID)
-        .participant.getEntity().id;
+        ?.participant.getEntity()?.id;
     world
         .getAllPlayers()
         .find((currentlySelectedPlayerEntity) => Number(currentlySelectedPlayerEntity.id) == UUID)
-        .runCommand("/execute as " +
+        ?.runCommand("/execute as " +
         selector +
         filters +
         " at @s run /scoreboard players set @s andexdbDebug 0");

@@ -18,6 +18,16 @@
       "textures": [
         "textures/blocks/friction_block"
       ]
+    },
+    "invalid_block_placeholder": {
+      "textures": [
+        "textures/blocks/invalid_block_placeholder"
+      ]
+    },
+    "invalid_block_placeholder_lit": {
+      "textures": [
+        "textures/blocks/invalid_block_placeholder_lit"
+      ]
     }
   }
 }

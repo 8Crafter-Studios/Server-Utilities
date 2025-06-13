@@ -141,7 +141,7 @@ export async function playerMenu_leaderboard(sourceEntitya, leaderboard, pagen =
         let r = ra;
         if (r.canceled)
             return 1;
-        switch (["search", "previous", "go", "next", "", ""][r.selection] ??
+        switch (["search", "previous", "go", "next", "", "", undefined][r.selection] ??
             (!!displayPlayersB[r.selection - 6] ? "player" : undefined) ??
             ["back", "close", "refresh"][r.selection - displayPlayersB.length - 6]) {
             case "search":
@@ -177,6 +177,8 @@ export async function playerMenu_leaderboard(sourceEntitya, leaderboard, pagen =
                     .textField(`Current Page: ${page + 1}\nPage # (Between 1 and ${numpages})`, "Page #")
                     .submitButton("Go To Page")
                     .forceShow(sourceEntity));
+                if (!rb || rb.canceled)
+                    return await playerMenu_leaderboard(sourceEntity, leaderboard, page, maxplayersperpage, search, displayPlayers);
                 return await playerMenu_leaderboard(sourceEntity, leaderboard, Math.max(1, Math.min(numpages, rb.formValues?.[0]?.toNumber() ?? page + 1)) - 1, maxplayersperpage, search, displayPlayers);
             }
             case "next":

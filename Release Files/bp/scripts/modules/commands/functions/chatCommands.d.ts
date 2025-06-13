@@ -4,7 +4,7 @@ import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPl
 export declare function chatCommands(params: {
     returnBeforeChatSend: boolean | undefined;
     player: Player | executeCommandPlayerW | undefined;
-    eventData: ChatSendBeforeEvent;
+    eventData?: ChatSendBeforeEvent;
     event: ChatSendBeforeEvent | undefined;
     newMessage: string | undefined;
     fromExecute?: boolean;

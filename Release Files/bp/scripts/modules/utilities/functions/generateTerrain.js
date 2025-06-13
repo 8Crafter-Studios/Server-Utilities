@@ -369,12 +369,12 @@ export async function generateTerrainV2(corner1, corner2, dimension, biome, seed
                     case "]":
                         // pop state from stack
                         const state = fractal.pop();
-                        x = state.x;
-                        y = state.y;
-                        z = state.z;
-                        dx = state.dx;
-                        dy = state.dy;
-                        dz = state.dz;
+                        x = state?.x;
+                        y = state?.y;
+                        z = state?.z;
+                        dx = state?.dx;
+                        dy = state?.dy;
+                        dz = state?.dz;
                         break;
                 }
             }
@@ -1157,7 +1157,7 @@ export async function placeOres(options) {
                 let remainingBlocks = spawnSizeToMaxBlocksMap[blockTypeData.spawnSize];
                 // const radius = Math.ceil(blockTypeData.spawnSize + 0.1);
                 const radius = Math.ceil(Math.sqrt(blockTypeData.spawnSize) * 1.5 + 0.1);
-                if (!(blockTypeData.canReplace ? blockTypeData.canReplace.includes(options.dimension.getBlock(blobLocation).typeId) : true)) {
+                if (!(blockTypeData.canReplace ? blockTypeData.canReplace.includes(options.dimension.getBlock(blobLocation)?.typeId) : true)) {
                     continue;
                 }
                 if (blockTypeData.oreFeatureCategory === "blob") {
@@ -1208,7 +1208,7 @@ export async function placeOres(options) {
                                                 const noiseValue = noise.noise4D((blockX / 100) * (options.scale?.x ?? 1), (blockY / 100) * (options.scale?.y ?? 1), (blockZ / 100) * (options.scale?.z ?? 1), bti * (i + 1) * 10);
                                                 if (Math.abs(noiseValue) % 0.125 < 0.0625) {
                                                     if (blockTypeData.canReplace
-                                                        ? blockTypeData.canReplace.includes(options.dimension.getBlock({ x: blockX, y: blockY, z: blockZ }).typeId)
+                                                        ? blockTypeData.canReplace.includes(options.dimension.getBlock({ x: blockX, y: blockY, z: blockZ })?.typeId)
                                                         : true) {
                                                         oresAttemptedToBePlaced++;
                                                         if (blockX >= minX &&
@@ -1284,7 +1284,7 @@ export async function placeOres(options) {
                                         const noiseValue = noise.noise4D((x / 100) * (options.scale?.x ?? 1), (y / 100) * (options.scale?.y ?? 1), (z / 100) * (options.scale?.z ?? 1), bti * (i + 1) * 10);
                                         if (Math.abs(noiseValue) < 0.25) {
                                             if (blockTypeData.canReplace
-                                                ? blockTypeData.canReplace.includes(options.dimension.getBlock({ x, y, z }).typeId)
+                                                ? blockTypeData.canReplace.includes(options.dimension.getBlock({ x, y, z })?.typeId)
                                                 : true) {
                                                 oresAttemptedToBePlaced++;
                                                 if (x >= minX && x <= maxX && y >= minY && y <= maxY && z >= minZ && z <= maxZ) {
@@ -1491,7 +1491,7 @@ export function getBlockType(y, baseHeight, biome, noiseValue) {
         return "dirt";
     }
     else {
-        return biomePresets[biome](y, baseHeight);
+        return biomePresets[biome]?.(y, baseHeight) ?? "andexdb:invalid_block_placeholder";
     }
 }
 /* type BiomeUndergroundBlockDistributionBiomes = "normal" | "badlands";

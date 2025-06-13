@@ -11,6 +11,9 @@ import { getChunkIndexD } from "modules/coordinates/functions/getChunkIndexD";
 import { deleteStringFromEntityDynamicProperties } from "modules/utilities/functions/deleteStringFromEntityDynamicProperties";
 import { getStringFromEntityDynamicProperties } from "modules/utilities/functions/getStringFromEntityDynamicProperties";
 import { saveStringToEntityDynamicProperties } from "modules/utilities/functions/saveStringToEntityDynamicProperties";
+/**
+ * Represents a player to be used for the `\execute` command without the `name` and `id` properties.
+ */
 export class executeCommandPlayerW {
     player;
     sendErrorsTo;
@@ -57,6 +60,7 @@ export class executeCommandPlayerW {
             this.modifieddimension = player.dimension;
             this.rotation = player.getRotation();
             this.isFromWorldPosition = false;
+            this.fromPlayerWorldPosition = false;
             this.fromEntityWorldPosition = false;
             this.fromBlockWorldPosition = false;
             this.fromPlayer = player instanceof Player;
@@ -200,31 +204,57 @@ export class executeCommandPlayerW {
         return this.getComponent("cursor_inventory");
     }
     get heldItem() {
-        if (!!!this.getComponent("equippable")) {
-            return undefined;
-        }
-        else {
-            return this.getComponent("equippable").getEquipment(EquipmentSlot.Mainhand);
-        }
+        return this.getComponent("equippable")?.getEquipment(EquipmentSlot.Mainhand);
     }
     get activeSlot() {
-        if (!!!this.getComponent("equippable")) {
-            return undefined;
-        }
-        else {
-            return this.getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand);
-        }
+        return this.getComponent("equippable")?.getEquipmentSlot(EquipmentSlot.Mainhand);
     }
+    /**
+     * Returns an instance of the {@link MoneySystem} class that is associated with this entity.
+     *
+     * @author 8Crafter
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player.
+     */
     get moneySystem() {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.moneySystem::get]] This getter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
         return MoneySystem.get(this.player.id);
     }
+    /**
+     * Returns an instance of the {@link PlayerNotifications} class that is associated with this entity.
+     *
+     * @author 8Crafter
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player.
+     */
     get playerNotifications() {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.playerNotifications::get]] This getter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
         return new PlayerNotifications(this.player);
     }
+    /**
+     * Returns an instance of the {@link PlayerPermissions} class that is associated with this entity.
+     *
+     * @author 8Crafter
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player.
+     */
     get playerPermissions() {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.playerPermissions::get]] This getter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
         return new PlayerPermissions(this.player);
     }
+    /**
+     * Returns an instance of the {@link WorldEditSelection} class that is associated with this entity.
+     *
+     * @author 8Crafter
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player.
+     */
     get worldEditSelection() {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.worldEditSelection::get]] This getter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
         return new WorldEditSelection(this.player);
     }
     get dimensionLocation() {
@@ -282,7 +312,7 @@ export class executeCommandPlayerW {
         return this.rotation?.y ?? this.player?.getRotation?.()?.y;
     }
     get timeZone() {
-        return (this.getDynamicProperty("andexdbPersonalSettings:timeZone") ?? config.system.timeZone).toString().toNumber();
+        return this.getDynamicProperty("andexdbPersonalSettings:timeZone")?.toString().toNumber() ?? config.system.timeZone;
     }
     set timeZone(timezone) {
         this.setDynamicProperty("andexdbPersonalSettings:timeZone", !!timezone ? timezone.toString() : undefined);
@@ -334,10 +364,18 @@ export class executeCommandPlayerW {
     get onScreenDisplay() {
         return this.player?.onScreenDisplay;
     }
+    /**
+     * @remarks
+     * This property can't be edited in read-only mode.
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player when using the setter.
+     */
     get selectedSlotIndex() {
         return this.player?.selectedSlotIndex;
     }
     set selectedSlotIndex(slotNumber) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.selectedSlotIndex::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
         this.player.selectedSlotIndex = slotNumber;
     }
     get totalXpNeededForNextLevel() {
@@ -346,10 +384,21 @@ export class executeCommandPlayerW {
     get xpEarnedAtCurrentLevel() {
         return this.player?.xpEarnedAtCurrentLevel;
     }
+    /**
+     * @remarks
+     * Whether the entity is sneaking - that is, moving more slowly
+     * and more quietly.
+     *
+     * This property can't be edited in read-only mode.
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player when using the setter.
+     */
     get isSneaking() {
         return this.player?.isSneaking;
     }
     set isSneaking(isSneaking) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.isSneaking::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
         this.player.isSneaking = isSneaking;
     }
     get typeId() {
@@ -359,6 +408,8 @@ export class executeCommandPlayerW {
         return this.player?.nameTag;
     }
     set nameTag(nameTag) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.nameTag::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
         this.player.nameTag = nameTag;
     }
     get inputPermissions() {

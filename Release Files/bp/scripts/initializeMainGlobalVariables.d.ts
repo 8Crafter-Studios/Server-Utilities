@@ -6,7 +6,7 @@ export declare namespace mainGlobalVariables {
     /**
      * The version of the add-on.
      */
-    const current_format_version = "1.36.6";
+    const current_format_version = "1.37.0";
     /**
      * The version of Minecraft Bedrock Edition supported by the add-on.
      */
@@ -93,7 +93,7 @@ declare global {
             /**
              * Other intervals.
              */
-            [intervalName: string]: number;
+            [intervalName: string]: number | undefined;
         };
         /**
          * The version of {@link https://modbay.org/mods/1218-8crafters-entity-scale-and-morph-addon.html Entity Scale} that is active on the world/realm/server, will only detect versions `v1.14.0` and above.

@@ -8,10 +8,10 @@ import { chatSend_getChatMessageFormatFromPlayerTags, chatSend_getDisplayNameFro
 import { ModerationActions } from "modules/moderation/classes/ModerationActions";
 import { andexdb_ModifiedChatMessageFormatBeforeEvent, andexdb_ModifiedChatMessageFormatBeforeEventSignal, andexdb_ModifiedChatMessageFormatFinalizationBeforeEvent, andexdb_ModifiedChatMessageFormatFinalizationBeforeEventSignal, andexdb_ModifiedChatMessageSendAfterEvent, andexdb_ModifiedChatMessageSendAfterEventSignal, andexdb_ModifiedChatMessageSendBeforeEvent, andexdb_ModifiedChatMessageSendBeforeEventSignal, } from "init/classes/events";
 export function chatSend(params) {
-    let returnBeforeChatSend = params.returnBeforeChatSend;
+    let returnBeforeChatSend = params.returnBeforeChatSend ?? false;
     let player = params.player;
-    let eventData = params.eventData;
-    let event = params.event;
+    let eventData = params.eventData ?? params.event;
+    let event = params.event ?? params.eventData;
     let newMessage = params.newMessage;
     if (config.antiSpamSystem.antispamEnabled) {
         if (!player.hasTag("canBypassAntiSpam")) {

@@ -48,7 +48,8 @@ x: mirror structure x axis
 z: mirror structure z axis
 h: makes the copied structure be pasted at your current location instead of the selected location`,
     "\\\\undo": `k: don't remove the undo save point after finishing the undo
-t: spawn in a ticking area before running the undo command`,
+t: spawn in a ticking area before running the undo command
+g: undo the last action from any undo clipboard, so the newest action by any player`,
     execute: `f: sends the feedback of the commands to the source of the execute command instead of the targeted entity
 s: silences all command feedback
 q: runs the commands in silent mode so that each entity does not send a notification in the chat to players with the getAllChatCommands tag

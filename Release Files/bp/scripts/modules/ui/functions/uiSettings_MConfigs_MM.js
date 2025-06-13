@@ -6,6 +6,7 @@ import { securityVariables } from "security/ultraSecurityModeUtils";
 import { showMessage } from "modules/utilities/functions/showMessage";
 import { customFormUICodes } from "../constants/customFormUICodes";
 import { uiSettings_menuConfigurations_mainMenu_mainSettings } from "./uiSettings_MConfigs_MM_MSttgs";
+import { extractPlayerFromLooseEntityType } from "modules/utilities/functions/extractPlayerFromLooseEntityType";
 /**
  * Displays and handles the main menu settings form for a given entity.
  *
@@ -24,7 +25,7 @@ import { uiSettings_menuConfigurations_mainMenu_mainSettings } from "./uiSetting
  * 6. Returns the appropriate status code based on the outcome.
  */
 export async function uiSettings_menuConfigurations_mainMenu(sourceEntity) {
-    const player = sourceEntity instanceof executeCommandPlayerW ? sourceEntity.player : sourceEntity;
+    const player = extractPlayerFromLooseEntityType(sourceEntity);
     while (true) {
         try {
             if (securityVariables.ultraSecurityModeEnabled) {

@@ -1,1 +1,1 @@
-export type commandCategory = "items" | "misc" | "invsee" | "players" | "containers/inventories" | "entities" | "warps" | "world" | "uis" | "shop_system" | "dangerous" | "Entity Scale Add-On" | "built-in" | "custom" | "all";
+export type commandCategory = "items" | "misc" | "invsee" | "players" | "containers/inventories" | "entities" | "warps" | "system" | "world" | "server" | "uis" | "shop_system" | "dangerous" | "worldedit" | "Entity Scale Add-On" | "built-in" | "custom" | "all";

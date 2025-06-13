@@ -109,6 +109,8 @@ export async function playerMenu_bounty_new(sourceEntitya, pagen = 0, maxplayers
                     .textField(`Current Page: ${page + 1}\nPage # (Between 1 and ${numpages})`, "Page #")
                     .submitButton("Go To Page")
                     .forceShow(sourceEntity));
+                if (!rb || rb.canceled)
+                    return await playerMenu_bounty_new(sourceEntity, page, maxplayersperpage, search, displayPlayers);
                 return await playerMenu_bounty_new(sourceEntity, Math.max(1, Math.min(numpages, rb.formValues?.[0]?.toNumber() ?? page + 1)) - 1, maxplayersperpage, search, displayPlayers);
             }
             case "next":
@@ -121,7 +123,7 @@ export async function playerMenu_bounty_new(sourceEntitya, pagen = 0, maxplayers
                         return await playerMenu_bounty_new(sourceEntity, page, maxplayersperpage, search, displayPlayers);
                     }
                     else {
-                        Bounty.getBountiesFromPlayer(sourceEntity.id).find((b) => b.targetId === player.id).cancel();
+                        Bounty.getBountiesFromPlayer(sourceEntity.id).find((b) => b.targetId === player.id)?.cancel();
                     }
                     ;
                 }
@@ -188,6 +190,7 @@ Please enter the amount of money you would like to place on the bounty below.`, 
             case "close":
                 return 0;
             default:
+                throw new Error("Invalid selection: " + r.selection);
         }
     })
         .catch(async (e) => {

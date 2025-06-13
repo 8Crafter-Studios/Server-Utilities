@@ -2,7 +2,7 @@ import { BlockTypes } from "@minecraft/server";
 export function parseBlockMatcherType(matcher) {
     let raw = matcher
         .trim()
-        .match(/(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\s])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[\s]|$)/)[0];
+        .match(/(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[\s])?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[\s]|$)/)?.[0];
     let type = raw.trim();
     const statesMatch = type.match(/[\[\{]([^\]\}]*)[\]\}]/);
     let states = undefined;
@@ -43,7 +43,7 @@ export function parseBlockMatcherType(matcher) {
     return {
         raw: raw,
         block: {
-            id: tryget(() => BlockTypes.get(type).id) ?? type,
+            id: tryget(() => BlockTypes.get(type)?.id) ?? type,
             states: states,
         },
     };

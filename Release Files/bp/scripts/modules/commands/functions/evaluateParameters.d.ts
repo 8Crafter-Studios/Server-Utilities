@@ -2,6 +2,11 @@ import type { Dimension } from "@minecraft/server";
 import { BlockMask } from "modules/commands/classes/BlockMask";
 import { BlockPattern } from "modules/commands/classes/BlockPattern";
 import type { evaluateParametersParameter, objectEvaluateParametersParameter as objectEvaluateParametersParameter } from "modules/commands/types/evaluateParametersParameter";
+export declare const flagsParameterFlagKeysList: readonly ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "!", "@", "#", "$", "%", "^", "&", "*", "<", ">", ",", ".", "~"];
+/**
+ * A union type of all the valid flag keys for the flags parameter.
+ */
+export type FlagsParamterFlagKeys = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "!" | "@" | "#" | "$" | "%" | "^" | "&" | "*" | "<" | ">" | "," | "." | "~";
 /**
  * The result of the {@link evaluateParameters} function.
  *
@@ -60,7 +65,7 @@ export interface EvalutateParamtersResult<T extends evaluateParametersParameter[
  *
  * @template {evaluateParametersParameter[] | [evaluateParametersParameter]} T The paramter types.
  */
-export type EvaluateParamtersParamterTypeMapper<T extends evaluateParametersParameter> = T extends "presetText" ? string | undefined : T extends "number" ? number | undefined : T extends "boolean" ? boolean | undefined : T extends "neboolean" ? boolean | undefined : T extends "string" ? string | undefined : T extends "non-booleanString" ? string | undefined : T extends "json" ? any | undefined : T extends "Vector" ? string | undefined : T extends "Vector1" ? string | undefined : T extends "Vector2" ? string | undefined : T extends "Vector3" ? string | undefined : T extends "Vector4" ? string | undefined : T extends "Vector5" ? string | undefined : T extends "Vector6" ? string | undefined : T extends "Vector7" ? string | undefined : T extends "Vector8" ? string | undefined : T extends "Vectors" ? string | undefined : T extends "targetSelector" ? string | undefined : T extends "blockStates" ? {
+export type EvaluateParamtersParamterTypeMapper<T extends evaluateParametersParameter> = T extends "placeholder" ? undefined : T extends "presetText" ? string | undefined : T extends "number" ? number | undefined : T extends "boolean" ? boolean | undefined : T extends "neboolean" ? boolean | undefined : T extends "string" ? string | undefined : T extends "non-booleanString" ? string | undefined : T extends "json" ? any | undefined : T extends "Vector" ? string | undefined : T extends "Vector1" ? string | undefined : T extends "Vector2" ? string | undefined : T extends "Vector3" ? string | undefined : T extends "Vector4" ? string | undefined : T extends "Vector5" ? string | undefined : T extends "Vector6" ? string | undefined : T extends "Vector7" ? string | undefined : T extends "Vector8" ? string | undefined : T extends "Vectors" ? string | undefined : T extends "targetSelector" ? string | undefined : T extends "blockStates" ? {
     [id: string]: string | number | boolean;
 } | undefined : T extends "blockPattern" ? BlockPattern | undefined : T extends "block" ? {
     id: string;
@@ -68,8 +73,10 @@ export type EvaluateParamtersParamterTypeMapper<T extends evaluateParametersPara
         [id: string]: string | number | boolean;
     };
 } | undefined : T extends "blockMask" ? BlockMask | undefined : T extends "dimension" ? Dimension | undefined : T extends `-${string}` ? string : T extends `f-${string}` ? T extends `f-${infer Flags}` ? {
-    [key in Split<Flags>[number]]: boolean;
+    [key in Split<Flags>[number] as key extends FlagsParamterFlagKeys ? key : never]: boolean;
 } : never : T extends {
+    type: "placeholder";
+} ? undefined : T extends {
     type: "number";
     key?: infer PK extends string;
 } ? number | undefined : T extends {
@@ -135,7 +142,7 @@ export type EvaluateParamtersParamterTypeMapper<T extends evaluateParametersPara
 } ? T extends {
     type: `f-${infer Flags}`;
 } ? {
-    [key in Split<Flags>[number]]: boolean;
+    [key in Split<Flags>[number] as key extends FlagsParamterFlagKeys ? key : never]: boolean;
 } : never : T extends {
     type: `ignorableNamedParameter`;
 } ? T extends {

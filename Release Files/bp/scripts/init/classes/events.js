@@ -4403,6 +4403,9 @@ export class andexdb_ModifiedChatMessageSendBeforeEvent {
         this.sender = data?.sender;
         this.targets = data?.targets;
         this.originalMessage = data?.originalMessage;
+        this.tokenData = data?.tokenData;
+        this.formatOptions = data?.formatOptions;
+        this.nameTag = data?.nameTag;
     }
     /**
      * @remarks
@@ -4919,7 +4922,7 @@ var exports;
                 loadedEventsOfTypeRef = loadedEventsOfTypeRef[key];
             });
             loadedEventsOfTypeRef.push(subscription);
-            if (initialize) {
+            if (initialize && data.enabled !== false) {
                 system.run(() => {
                     try {
                         subscription.initialize();

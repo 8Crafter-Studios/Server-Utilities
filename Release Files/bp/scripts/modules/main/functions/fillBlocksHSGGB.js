@@ -30,14 +30,14 @@ export async function fillBlocksHSGGB(from, to, skygridSize, dimension, block, o
                 try {
                     if (!!v.dimension
                         .getBlock(v)
-                        .getComponent("inventory")) {
+                        ?.getComponent("inventory")) {
                         clearContainer(v.dimension
                             .getBlock(v)
-                            .getComponent("inventory").container);
+                            ?.getComponent("inventory")?.container);
                     }
                     v.dimension
                         .getBlock(v)
-                        .setPermutation(block(v, index));
+                        ?.setPermutation(block(v, index));
                     counter++;
                 }
                 catch (e) {
@@ -56,7 +56,7 @@ export async function fillBlocksHSGGB(from, to, skygridSize, dimension, block, o
                 try {
                     v.dimension
                         .getBlock(v)
-                        .setPermutation(block(v, index));
+                        ?.setPermutation(block(v, index));
                     counter++;
                 }
                 catch (e) {
@@ -81,17 +81,17 @@ export async function fillBlocksHSGGB(from, to, skygridSize, dimension, block, o
                             states: options?.matchingBlockStates,
                         })
                         : options?.matchingBlock ==
-                            v.dimension.getBlock(v).typeId) {
+                            v.dimension.getBlock(v)?.typeId) {
                         if (!!v.dimension
                             .getBlock(v)
-                            .getComponent("inventory")) {
+                            ?.getComponent("inventory")) {
                             clearContainer(v.dimension
                                 .getBlock(v)
-                                .getComponent("inventory").container);
+                                ?.getComponent("inventory")?.container);
                         }
                         v.dimension
                             .getBlock(v)
-                            .setPermutation(block(v, index));
+                            ?.setPermutation(block(v, index));
                         counter++;
                     }
                 }
@@ -111,10 +111,10 @@ export async function fillBlocksHSGGB(from, to, skygridSize, dimension, block, o
                 try {
                     if (!!v.dimension
                         .getBlock(v)
-                        .getComponent("inventory")) {
+                        ?.getComponent("inventory")) {
                         clearContainer(v.dimension
                             .getBlock(v)
-                            .getComponent("inventory").container);
+                            ?.getComponent("inventory")?.container);
                     }
                     if (!!options?.matchingBlockStates
                         ? testBlockForMatch(v.dimension.getBlock(v), {
@@ -122,10 +122,10 @@ export async function fillBlocksHSGGB(from, to, skygridSize, dimension, block, o
                             states: options?.matchingBlockStates,
                         })
                         : options?.matchingBlock ==
-                            v.dimension.getBlock(v).typeId) {
+                            v.dimension.getBlock(v)?.typeId) {
                         v.dimension
                             .getBlock(v)
-                            .setPermutation(block(v, index));
+                            ?.setPermutation(block(v, index));
                         counter++;
                     }
                 }

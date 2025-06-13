@@ -1,9 +1,18 @@
+/**
+ * Sequences of invisible characters used to customize the form UIs.
+ */
 export declare const customFormUICodes: {
     /**
-     * Styles for {@link modules.mcServerUi.ActionFormData ActionFormData} UIs.
+     * Styles for {@link modules.mcServerUi.ActionFormData | ActionFormData} UIs.
      */
     action: {
+        /**
+         * Codes to put in the {@link modules.mcServerUi.ActionFormData.prototype.title | title} of the form.
+         */
         titles: {
+            /**
+             * Title codes that customize the style of the entire UI.
+             */
             formStyles: {
                 /**
                  * General custom form style.
@@ -101,6 +110,9 @@ export declare const customFormUICodes: {
                  */
                 fullscreen_status_bar: string;
             };
+            /**
+             * Title codes for options for the UI.
+             */
             options: {
                 /**
                  * Removes the X button from the top right corner.
@@ -108,6 +120,9 @@ export declare const customFormUICodes: {
                 removeXButton: string;
             };
         };
+        /**
+         * Codes to put in the text of the {@link modules.mcServerUi.ActionFormData.prototype.button | buttons} of the form.
+         */
         buttons: {
             /**
              * The position of the button.
@@ -198,6 +213,9 @@ export declare const customFormUICodes: {
                  */
                 status_bar_right_only: string;
             };
+            /**
+             * Options for the button.
+             */
             options: {
                 /**
                  * Makes the button unable to be clicked. Also makes the button display grayed out.
@@ -212,6 +230,9 @@ export declare const customFormUICodes: {
                  */
                 startSelected: string;
             };
+            /**
+             * Styles for the button.
+             */
             styles: {
                 /**
                  * Makes the button display as plain text, will also make the button unable to be clicked.
@@ -230,7 +251,13 @@ export declare const customFormUICodes: {
      * Styles for {@link modules.mcServerUi.ModalFormData ModalFormData} UIs.
      */
     modal: {
+        /**
+         * Codes to put in the {@link modules.mcServerUi.ModalFormData.prototype.title | title} of the form.
+         */
         titles: {
+            /**
+             * Title codes that customize the style of the entire UI.
+             */
             formStyles: {
                 /**
                  * General custom modal form style.
@@ -259,6 +286,9 @@ export declare const customFormUICodes: {
                  */
                 fullscreen: string;
             };
+            /**
+             * Title codes for options for the UI.
+             */
             options: {
                 /**
                  * Removes the X button from the top right corner.

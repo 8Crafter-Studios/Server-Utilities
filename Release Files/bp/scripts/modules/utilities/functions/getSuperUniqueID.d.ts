@@ -1,1 +1,1 @@
-export declare function getSuperUniqueID(): string;
+export declare function getSuperUniqueID(): `${number}_${number}_${number}`;

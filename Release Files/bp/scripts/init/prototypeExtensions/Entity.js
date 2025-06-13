@@ -33,7 +33,7 @@ Object.defineProperties(Entity.prototype, {
                 return undefined;
             }
             else {
-                return this.getComponent("equippable").getEquipment(EquipmentSlot.Mainhand);
+                return this.getComponent("equippable")?.getEquipment(EquipmentSlot.Mainhand);
             }
         },
         configurable: true,
@@ -45,7 +45,7 @@ Object.defineProperties(Entity.prototype, {
                 return undefined;
             }
             else {
-                return this.getComponent("equippable").getEquipmentSlot(EquipmentSlot.Mainhand);
+                return this.getComponent("equippable")?.getEquipmentSlot(EquipmentSlot.Mainhand);
             }
         },
         configurable: true,

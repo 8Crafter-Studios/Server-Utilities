@@ -3,7 +3,17 @@ import { command } from "modules/commands/classes/command";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
 import moment from "moment";
 import { securityVariables } from "security/ultraSecurityModeUtils";
+/**
+ * An array of active teleport requests.
+ *
+ * @type {TeleportRequest[]}
+ */
 const activeRequests = [];
+/**
+ * The current teleport request ID.
+ *
+ * @type {bigin}
+ */
 let currentId = 0n;
 /**
  * The TeleportRequest class, it is used to handle teleport requests.
@@ -11,40 +21,69 @@ let currentId = 0n;
 export class TeleportRequest {
     /**
      * The unique identifier of this teleport request.
+     *
+     * @type {bigint}
      */
     id;
     /**
      * The player who sent this teleport request.
+     *
+     * @type {Player}
      */
     player;
     /**
      * The player this teleport request was sent to.
+     *
+     * @type {Player}
      */
     target;
     /**
      * When this teleport request was sent.
+     *
+     * @type {number}
      */
     sendTime;
     /**
      * Whether or not this teleport request is valid.
+     *
+     * @type {boolean}
+     *
+     * @default true
      */
     valid = true;
     /**
      * Whether or not this teleport request has been accepted.
+     *
+     * @type {boolean}
+     *
+     * @default false
      */
     accepted = false;
+    /**
+     * Creates a new teleport request.
+     *
+     * @param {Player} player The player who sent this teleport request.
+     * @param {Player} target The player this teleport request was sent to.
+     * @param {number} [sendTime=Date.now()] When this teleport request was sent.
+     */
     constructor(player, target, sendTime = Date.now()) {
         this.player = player;
         this.target = target;
         this.sendTime = sendTime;
+        this.id = currentId++;
         Object.defineProperty(this, "id", {
-            value: currentId++,
+            value: this.id,
             configurable: true,
             enumerable: true,
             writable: false,
         });
         this.init();
     }
+    /**
+     * Initializes this teleport request.
+     *
+     * @returns {Promise<void>} A promise that resolves when this teleport request is accepted, denied, made invalid, or timed out.
+     */
     async init() {
         activeRequests.push(this);
         while (this.valid && !this.accepted) {
@@ -55,6 +94,11 @@ export class TeleportRequest {
             await waitTick();
         }
     }
+    /**
+     * Deletes this teleport request.
+     *
+     * @returns {boolean} Whether or not this teleport request was deleted.
+     */
     delete() {
         if (this.valid) {
             this.valid = false;
@@ -65,6 +109,11 @@ export class TeleportRequest {
             return false;
         }
     }
+    /**
+     * Cancels this teleport request.
+     *
+     * @returns {boolean} Whether or not this teleport request was canceled.
+     */
     cancel() {
         if (this.valid) {
             this.cancelSequence();
@@ -75,6 +124,11 @@ export class TeleportRequest {
             return false;
         }
     }
+    /**
+     * Times out this teleport request.
+     *
+     * @returns {boolean} Whether or not this teleport request was timed out.
+     */
     timeOut() {
         if (this.valid) {
             this.timeOutSequence();
@@ -85,6 +139,11 @@ export class TeleportRequest {
             return false;
         }
     }
+    /**
+     * Denies this teleport request.
+     *
+     * @returns {boolean} Whether or not this teleport request was denied.
+     */
     deny() {
         if (this.valid) {
             this.denySequence();
@@ -95,6 +154,11 @@ export class TeleportRequest {
             return false;
         }
     }
+    /**
+     * Accepts this teleport request.
+     *
+     * @returns {Promise<boolean>} Whether or not this teleport request was accepted.
+     */
     async accept() {
         if (this.valid) {
             this.delete();
@@ -106,17 +170,31 @@ export class TeleportRequest {
             return false;
         }
     }
+    /**
+     * Runs the cancel sequence for this teleport request.
+     */
     cancelSequence() {
         this.target.sendMessage(`§c${this.player.name} canceled their teleport request to you.`);
     }
+    /**
+     * Runs the time out sequence for this teleport request.
+     */
     timeOutSequence() {
         this.target.sendMessage(`§c${this.player.name}'s teleport request timed out.`);
         this.player.sendMessage(`§cThe teleport request to ${this.target.name} timed out.`);
     }
+    /**
+     * Runs the deny sequence for this teleport request.
+     */
     denySequence() {
         this.target.sendMessage(`§cDenied ${this.player.name}'s teleport request.`);
         this.player.sendMessage(`§c${this.target.name} denied your teleport request.`);
     }
+    /**
+     * Runs the teleport sequence for this teleport request.
+     *
+     * @returns {Promise<0 | 1>} A promise that resolves with `1` when the teleport sequence is complete, or `0` if the teleport sequence fails.
+     */
     async teleportSequence() {
         const canBypassTeleportCooldowns = securityVariables.ultraSecurityModeEnabled
             ? securityVariables.testPlayerForPermission(this.player, "andexdb.bypassTeleportCooldowns")
@@ -198,19 +276,34 @@ export class TeleportRequest {
                     this.player.teleport(this.target.location, { dimension: this.target.dimension });
                     this.player.setDynamicProperty("lastTeleportTime", Date.now());
                     this.player.sendMessage(`§aSuccessfully teleported to ${this.target.name}.`);
+                    return 1;
                 }
                 catch (e) {
                     this.player.sendMessage("§cAn error occurred while trying to teleport you to your home: " + e + e.stack);
                     this.target.sendMessage(`§cAn error occurred while ${this.target.name} was trying to teleport to you.`);
+                    return 0;
                 }
             }
             else {
                 this.player.sendMessage("§cTeleport canceled.");
                 this.target.sendMessage(`§c${this.player.name} moved so their teleport to you was canceled.`);
                 this.delete();
+                return 0;
             }
         }
+        return 0;
     }
+    /**
+     * Sends a teleport request from one player to another.
+     *
+     * @param {Player | executeCommandPlayerW} fromPlayer The player who sent this teleport request.
+     * @param {Player | executeCommandPlayerW} toPlayer The player this teleport request was sent to.
+     * @param {number} [sendTime=Date.now()] When this teleport request was sent. Defaults to the current time.
+     * @returns {TeleportRequest} The teleport request that was sent.
+     *
+     * @throws {TypeError} If the {@link fromPlayer} or {@link toPlayer} parameter is not an instance of the {@link Player} class, or an instance of the {@link executeCommandPlayerW} class with a {@link Player} linked to it.
+     * @throws {Error} If there is already a teleport request from the {@link fromPlayer} to the {@link toPlayer}.
+     */
     static send(fromPlayer, toPlayer, sendTime = Date.now()) {
         const player = fromPlayer instanceof executeCommandPlayerW ? fromPlayer.player : fromPlayer;
         const target = toPlayer instanceof executeCommandPlayerW ? toPlayer.player : toPlayer;
@@ -246,8 +339,22 @@ export class TeleportRequest {
                 ? "-" + moment().preciseDiff(moment(Date.now() + config.tpaSystem.timeoutDuration * 1000))
                 : moment().preciseDiff(moment(Date.now() + config.tpaSystem.timeoutDuration * 1000))}.`);
         }
+        return request;
     }
+    /**
+     * Gets all teleport requests from a player.
+     *
+     * @param {Player | executeCommandPlayerW} fromPlayer The player to get the teleport requests from.
+     * @returns {TeleportRequest[]} The array of teleport requests sent by the player.
+     *
+     * @throws {TypeError} If the player is not an instance of the {@link Player} class, or an instance of the {@link executeCommandPlayerW} class with a {@link Player} linked to it.
+     */
     static getRequestsFromPlayer(fromPlayer) {
+        /**
+         * The player to get the teleport requests from.
+         *
+         * @type {Player | undefined}
+         */
         const player = fromPlayer instanceof executeCommandPlayerW ? fromPlayer.player : fromPlayer;
         if (!(player instanceof Player)) {
             throw new TypeError("Invalid Player. Expected an instance of the Player class, or an instance of the executeCommandPlayerW class with a Player linked to it, but instead got " +
@@ -260,7 +367,20 @@ export class TeleportRequest {
         }
         return activeRequests.filter((r) => r.player === player);
     }
+    /**
+     * Gets all teleport requests to a player.
+     *
+     * @param {Player | executeCommandPlayerW} toPlayer The player to get the teleport requests to.
+     * @returns {TeleportRequest[]} The array of teleport requests sent to the player.
+     *
+     * @throws {TypeError} If the player is not an instance of the {@link Player} class, or an instance of the {@link executeCommandPlayerW} class with a {@link Player} linked to it.
+     */
     static getRequestsToPlayer(toPlayer) {
+        /**
+         * The player to get the teleport requests to.
+         *
+         * @type {Player | undefined}
+         */
         const target = toPlayer instanceof executeCommandPlayerW ? toPlayer.player : toPlayer;
         if (!(target instanceof Player)) {
             throw new TypeError("Invalid Player. Expected an instance of the Player class, or an instance of the executeCommandPlayerW class with a Player linked to it, but instead got " +
@@ -273,6 +393,11 @@ export class TeleportRequest {
         }
         return activeRequests.filter((r) => r.target === target);
     }
+    /**
+     * Gets all active teleport requests.
+     *
+     * @returns {TeleportRequest[]} The array of active teleport requests.
+     */
     static getAllRequests() {
         return activeRequests.filter((b) => b.valid);
     }

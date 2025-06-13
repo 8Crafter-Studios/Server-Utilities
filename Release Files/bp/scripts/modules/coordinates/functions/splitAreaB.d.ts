@@ -13,11 +13,7 @@ export declare function splitAreaB(area: {
         y: number;
         z: number;
     };
-    indices: {
-        x: number;
-        y: number;
-        z: number;
-    };
+    indices: Vector3;
     offset: {
         x: number;
         y: number;

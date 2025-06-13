@@ -1,0 +1,1 @@
+{"version":3,"file":"dirreversemap.js","sourceRoot":"","sources":["../../../../src/modules/coordinates/functions/dirreversemap.ts"],"names":[],"mappings":"AAEA,MAAM,UAAU,aAAa,CACzB,SAAY;IAcZ,OACI;QACI,KAAK,EAAE,OAAO;QACd,KAAK,EAAE,OAAO;QACd,IAAI,EAAE,MAAM;QACZ,IAAI,EAAE,MAAM;QACZ,KAAK,EAAE,OAAO;QACd,KAAK,EAAE,OAAO;KAErB,CAAC,SAAS,CAAC,iBAAiB,EAAE,CAYpB,CAAC;AAChB,CAAC"}

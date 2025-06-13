@@ -12,7 +12,7 @@ export function fillBlocksHC(center, radius, dimension, axis /*"x"|"y"|"z"|"ns"|
         mainArray
             .filter((v) => !!v.getComponent("inventory"))
             .forEach((v) => {
-            clearContainer(v.getComponent("inventory").container);
+            clearContainer(v.getComponent("inventory")?.container);
         });
     } /*
     console.warn(JSONStringify(mainArray))*/

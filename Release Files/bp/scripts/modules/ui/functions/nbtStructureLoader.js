@@ -39,9 +39,9 @@ export async function nbtStructureLoader(sourceEntity) {
         //let newsnbta = JSONParse((snbt as string).replaceAll(/(?<!(?<!^([^"]*["][^"]*)+)(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*)(?<prefix>[\{\,])[\s\n]*(?<identifier>[\-\_a-zA-Z0-9\.\+]*)[\s\n]*\:[\s\n]*(?!([^"]*(?<!([^\\])(\\\\)*?\\)")[^"]*(([^"]*(?<!([^\\])(\\\\)*?\\)"){2})*(?!([^"]*["][^"]*)+$))/g, "$<prefix>\"$<identifier>\":"))
         generateNBTFileD({
             dimension: dimensions[dimension] ?? player.dimension,
-            x: x.toNumber() ?? player.location.x,
-            y: y.toNumber() ?? player.location.y,
-            z: z.toNumber() ?? player.location.z,
+            x: x?.toNumber() ?? player.location.x,
+            y: y?.toNumber() ?? player.location.y,
+            z: z?.toNumber() ?? player.location.z,
         }, newsnbta, player);
         return 1;
     }

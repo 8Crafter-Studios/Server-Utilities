@@ -7,7 +7,7 @@
  * @param   {number}  h       The hue
  * @param   {number}  s       The saturation
  * @param   {number}  l       The lightness
- * @return  {Array}           The RGB representation
+ * @returns  {Array}          The RGB representation
  */
 export declare function HSLToRGB(h: number, s: number, l: number): [r: number, g: number, b: number];
 export declare function HueToRGB(p: number, q: number, t: number): number;

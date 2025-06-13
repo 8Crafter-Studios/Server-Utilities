@@ -170,7 +170,7 @@ export async function chatRanksSettings_old(sourceEntity) {
                     config.chatRanks.rankEvaluatorMode_nameTags = rankEvaluatorModes[options[v]];
                     break;
                 case "rankMode":
-                    config.chatRanks.rankMode = Object.entries(rankModes).find((m) => m[1] === rankModesArray[options[v]])[0];
+                    config.chatRanks.rankMode = Object.entries(rankModes).find((m) => m[1] === rankModesArray[options[v]])?.[0];
                     break;
                 case "rankTemplateString":
                     config.chatRanks.rankTemplateString = options[v] === "" ? undefined : options[v];

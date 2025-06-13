@@ -7,6 +7,7 @@ import { coordinatesB } from "modules/coordinates/functions/coordinatesB";
 import { securityVariables } from "security/ultraSecurityModeUtils";
 import { extractPlayerFromLooseEntityType } from "modules/utilities/functions/extractPlayerFromLooseEntityType";
 import { customFormUICodes } from "../constants/customFormUICodes";
+import { selectTexturePreset } from "./selectTexturePreset";
 /**
  * Shows the manage warps UI to the player.
  *
@@ -68,7 +69,21 @@ export async function manageWarps(sourceEntity) {
                 case "warp": {
                     const warp = warps[r.selection];
                     const warpsb = warps.filter((w) => w !== warp);
-                    switch (["move", "edit", "delete", "back", "close"][(await showActions(player, customFormUICodes.action.titles.formStyles.medium + "Warp Details", `${warp.displayName}\nDimension: ${dimensionTypeDisplayFormattingD[warp.dimension]}\nLocation: ${vTStr(warp.location)}\nIcon: ${warp.icon}`, [customFormUICodes.action.buttons.positions.main_only + "Move", "textures/ui/move"], [customFormUICodes.action.buttons.positions.main_only + "Edit", "textures/ui/pencil_edit_icon"], [customFormUICodes.action.buttons.positions.main_only + "Delete", "textures/ui/trash_default"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"])).selection]) {
+                    switch (["applyIconTexturePreset", "move", "edit", "delete", "back", "close"][(await showActions(player, customFormUICodes.action.titles.formStyles.medium + "Warp Details", `${warp.displayName}\nDimension: ${dimensionTypeDisplayFormattingD[warp.dimension]}\nLocation: ${vTStr(warp.location)}\nIcon: ${warp.icon}`, [customFormUICodes.action.buttons.positions.main_only + "Apply Icon Texture Preset", "textures/items/map_locked"], [customFormUICodes.action.buttons.positions.main_only + "Move", "textures/ui/move"], [customFormUICodes.action.buttons.positions.main_only + "Edit", "textures/ui/pencil_edit_icon"], [customFormUICodes.action.buttons.positions.main_only + "Delete", "textures/ui/trash_default"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"]))?.selection ?? 4]) {
+                        case "applyIconTexturePreset": {
+                            const r = await selectTexturePreset(player);
+                            if (r === 1) {
+                                continue;
+                            }
+                            else if (r === 0) {
+                                return 0;
+                            }
+                            else {
+                                warp.icon = r;
+                                config.warpsSystem.warps = warps;
+                                continue;
+                            }
+                        }
                         case "move": {
                             const r = await showActions(player, customFormUICodes.action.titles.formStyles.medium + "Move Warp", "Would you like to move this warp above or below another warp?", [customFormUICodes.action.buttons.positions.main_only + "Move Above", "textures/ui/chevron_white_up"], [customFormUICodes.action.buttons.positions.main_only + "Move Below", "textures/ui/chevron_white_down"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"]);
                             if (r.canceled || r.selection === 2) {
@@ -150,14 +165,16 @@ export async function manageWarps(sourceEntity) {
                             continue;
                         case "close":
                             return 0;
+                        default:
+                            throw new Error("Invalid selection: " + r.selection);
                     }
                 }
                 case "newWarp": {
                     const r = await new ModalFormData()
                         .title(customFormUICodes.modal.titles.formStyles.medium + "New Warp")
                         .textField(`Please enter the name for the new warp below.`, "Warp Name")
-                        .textField(`Please enter the coordinates for the new warp below. ex. 172.41 76 29.5`, "x y z")
-                        .dropdown("Please select the dimension for the new warp below.", dimensionsd.map((d) => dimensionTypeDisplayFormattingE[d]))
+                        .textField(`Please enter the coordinates for the new warp below (put ~~~ to use your current location). ex. 172.41 76 29.5`, "x y z")
+                        .dropdown("Please select the dimension for the new warp below.", dimensionsd.map((d) => dimensionTypeDisplayFormattingE[d]), { defaultValueIndex: dimensions.indexOf(player.dimension) })
                         .textField(`Enter the path to an icon for the warp button below. (Optional)`, "textures/items/ender_pearl")
                         .submitButton("Create Warp")
                         .forceShow(player);

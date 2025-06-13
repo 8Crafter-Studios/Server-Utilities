@@ -1,4 +1,7 @@
 import { Player, type DimensionLocation, type ItemStack } from "@minecraft/server";
+/**
+ * Represents a redeemable code.
+ */
 export declare class RedeemableCode {
     /**
      * The code that users enter to redeem this code.
@@ -56,7 +59,7 @@ export declare class RedeemableCode {
      * This method performs the following actions:
      * 1. Filters out any existing code that matches the current instance's code or id.
      * 2. Adds the current instance to the list of codes.
-     * 3. Calls the static method `saveCodes` to persist the updated list of codes.
+     * 3. Calls the static method {@link saveCodes} to persist the updated list of codes.
      */
     save(): void;
     /**

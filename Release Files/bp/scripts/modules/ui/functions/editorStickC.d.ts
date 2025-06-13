@@ -1,3 +1,3 @@
 import { Entity, Player } from "@minecraft/server";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
-export declare function editorStickC(sourceEntitya: Entity | executeCommandPlayerW | Player, includeLiquidBlocks?: boolean, includePassableBlocks?: boolean, maxDistance?: number): void;
+export declare function editorStickC(sourceEntitya: Entity | executeCommandPlayerW | Player, includeLiquidBlocks?: boolean, includePassableBlocks?: boolean, maxDistance?: number | undefined): Promise<void>;

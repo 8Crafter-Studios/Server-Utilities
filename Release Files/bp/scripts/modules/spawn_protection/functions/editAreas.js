@@ -162,6 +162,8 @@ export async function editAreas(player, prefix) {
                             return await editAreas(player, prefix);
                         case 3:
                             return 0;
+                        default:
+                            return 1;
                     }
                 });
             default:

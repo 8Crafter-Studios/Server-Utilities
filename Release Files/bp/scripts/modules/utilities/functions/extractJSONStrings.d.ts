@@ -1,1 +1,1 @@
-export declare function extractJSONStrings(inputString: string, includeOtherResultData?: boolean): (string | RegExpExecArray)[];
+export declare function extractJSONStrings(inputString: string, includeOtherResultData?: boolean): (string | RegExpExecArray | undefined)[];

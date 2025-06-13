@@ -19,13 +19,13 @@ export async function fillBlocksHFFGB(begin, end, dimension, options, integrity 
     const id = generatorProgressIdGenerator();
     system.runJob(generateFillBG(begin, end, dimension, id, options?.minMSBetweenYields ?? 2000, (v) => {
         try {
-            if (v.dimension.getBlock(v).typeId == "minecraft:air") {
-                v.dimension.getBlock(v).setType("minecraft:water");
+            if (v.dimension.getBlock(v)?.typeId == "minecraft:air") {
+                v.dimension.getBlock(v)?.setType("minecraft:water");
                 counter++;
             }
-            else if (v.dimension.getBlock(v).canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
-                !v.dimension.getBlock(v).isWaterlogged) {
-                v.dimension.getBlock(v).setWaterlogged(true);
+            else if (v.dimension.getBlock(v)?.canContainLiquid(modules.mcServer.LiquidType.Water) == true &&
+                !v.dimension.getBlock(v)?.isWaterlogged) {
+                v.dimension.getBlock(v)?.setWaterlogged(true);
                 counter++;
             }
         }

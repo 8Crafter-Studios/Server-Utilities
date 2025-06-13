@@ -20,12 +20,12 @@ export declare function rankNameTagEvaluator(displayName: ReturnType<typeof rank
 }): string;
 export declare function rankNameTagEvaluator_prePlayers(displayName: ReturnType<typeof rankNameTagEvaluator_getDisplayNameFromPlayer>, options?: Exclude<Parameters<typeof rankNameTagEvaluator>[1], "targetPlayerSettings">): {
     nameFormatting: string;
-    nameGradientMode: string;
+    nameGradientMode: string | undefined;
     showHealth: boolean;
-    currentHealth: number;
-    maxHealth: number;
+    currentHealth: number | undefined;
+    maxHealth: number | undefined;
     rank: string;
-    ranksListWithDefault: string[];
+    ranksListWithDefault: string[] | undefined;
     displayName: {
         value?: string;
         hidden: boolean;
@@ -39,7 +39,7 @@ export declare function rankNameTagEvaluator_getChatMessageFormatFromPlayerTags(
     getTags: () => string[];
 }): {
     nameFormatting: string;
-    nameGradientMode: string;
+    nameGradientMode?: string;
     showHealth: boolean;
 };
 export declare function rankNameTagEvaluator_getRanksFromPlayerTags(player: Player | {
@@ -75,4 +75,4 @@ export declare function rankNameTagEvaluator_generatePartialPlayerTypeForRankNam
     hasTag(tag: string): boolean;
     getTags(): string[];
 };
-export declare function rankNameTagEvaluator_getPlayerPersonalSettings(player: Player): Parameters<typeof rankNameTagEvaluator>[1]["playerPersonalSettings"] & Parameters<typeof rankNameTagEvaluator_getDisplayNameFromPlayer>[1]["playerPersonalSettings"];
+export declare function rankNameTagEvaluator_getPlayerPersonalSettings(player: Player): NonNullable<Parameters<typeof rankNameTagEvaluator>[1]>["playerPersonalSettings"] & NonNullable<Parameters<typeof rankNameTagEvaluator_getDisplayNameFromPlayer>[1]>["playerPersonalSettings"];

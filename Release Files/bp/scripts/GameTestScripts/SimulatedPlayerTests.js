@@ -450,7 +450,7 @@ GameTest.register("SimulatedPlayerTests", "use_item_in_slot", (test) => {
     let useCount = 0;
     const slot = 0;
     const snowballCount = 10;
-    const inventoryContainer = player.getComponent("inventory").container;
+    const inventoryContainer = player.getComponent("inventory")?.container;
     player.setItem(new ItemStack(MinecraftItemTypes.snowball, snowballCount), slot, true);
     test
         .startSequence()
@@ -522,7 +522,7 @@ GameTest.register("SimulatedPlayerTests", "give_item", (test) => {
     .tag(GameTest.Tags.suiteDefault);
 GameTest.register("SimulatedPlayerTests", "give_item_full_inventory", (test) => {
     const player = test.spawnSimulatedPlayer({ x: 1, y: 2, z: 1 });
-    const containerSize = player.getComponent("inventory").container.size;
+    const containerSize = player.getComponent("inventory")?.container.size;
     for (let i = 0; i < containerSize; i++) {
         test.assert(player.giveItem(new ItemStack(MinecraftItemTypes.dirt, 64), false), "");
     }
@@ -558,7 +558,7 @@ GameTest.register("SimulatedPlayerTests", "set_item", (test) => {
     .tag(GameTest.Tags.suiteDefault);
 GameTest.register("SimulatedPlayerTests", "set_item_full_inventory", (test) => {
     const player = test.spawnSimulatedPlayer({ x: 1, y: 2, z: 1 });
-    const containerSize = player.getComponent("inventory").container.size;
+    const containerSize = player.getComponent("inventory")?.container.size;
     for (let i = 0; i < containerSize; i++) {
         test.assert(player.giveItem(new ItemStack(MinecraftItemTypes.dirt, 64), false), "");
     }
@@ -1149,7 +1149,7 @@ const player = test.spawnSimulatedPlayer(new BlockLocationIterator(1, 2, 0));
 const wallLoc = new BlockLocationIterator(1, 3, 2);
 const slabLoc = new BlockLocationIterator(1, 3, 1);
 const woodenSlabSlot = 1;
-const inventoryContainer = player.getComponent("inventory").container;
+const inventoryContainer = player.getComponent("inventory")?.container;
 
 test
   .startSequence()

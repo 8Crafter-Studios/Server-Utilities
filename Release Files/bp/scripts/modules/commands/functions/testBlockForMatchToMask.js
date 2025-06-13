@@ -1,5 +1,7 @@
 import { Block, BlockPermutation } from "@minecraft/server";
 export function testBlockForMatchToMask(block, matches) {
+    if (!block || !matches)
+        return false;
     if (matches instanceof Array) {
         if (!!matches.find((v) => v.type == "isAir")) {
             return block.isAir;

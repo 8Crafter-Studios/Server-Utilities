@@ -1,54 +1,64 @@
 import { Block, BlockPermutation } from "@minecraft/server";
-export function testBlockForMatch(block, matches) {
-    if (matches instanceof Array) {
-        if (!!matches.find((v) => v.id == "isAir")) {
-            return block.isAir;
-        }
-        if (!!matches.find((v) => v.id == "isWaterlogged")) {
-            return block.isWaterlogged;
-        }
-        if (!!matches.find((v) => v.id == "isLiquid")) {
-            return block.isLiquid;
-        }
-        if (!!matches.find((v) => v.id == "isSolid")) {
-            return block.isSolid;
-        }
-        if (!!matches.find((v) => v.id == "isValid")) {
-            return block.isValid;
-        }
-        if (!!matches.find((v) => v.id == "true")) {
+/**
+ * Tests if a block matches the any of the specified types.
+ *
+ * Tests a block against objects with a block ID and block states, and returns true if any of them are satisfied by the block.
+ *
+ * @param {Block} [block] The block to test, if not specified the function will always return false.
+ * @param {TestForBlockMatchMasks} [masks] A mask or array of masks to test against the block, if not specified the function will always return false.
+ * @returns {boolean} Whether the block matches any of the provided masks.
+ */
+export function testBlockForMatch(block, masks) {
+    if (!block || !masks)
+        return false;
+    if (masks instanceof Array) {
+        if (masks.find((v) => v.id == "isAir") && block.isAir) {
             return true;
         }
-        if (!!matches.find((v) => v.id == "false")) {
-            return false;
+        if (masks.find((v) => v.id == "isWaterlogged") && block.isWaterlogged) {
+            return true;
         }
-        return (matches.map((v) => v.id).includes(block.typeId) &&
-            !!matches.find((matches) => testForObjectExtension(block.permutation.getAllStates() ?? {}, Object.fromEntries(Object.entries(matches.states ?? {}).filter((v) => !!Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find((s) => v[0] == s[0]))))));
+        if (!!masks.find((v) => v.id == "isLiquid") && block.isLiquid) {
+            return true;
+        }
+        if (!!masks.find((v) => v.id == "isSolid") && block.isSolid) {
+            return true;
+        }
+        if (!!masks.find((v) => v.id == "isValid") && block.isValid) {
+            return true;
+        }
+        if (!!masks.find((v) => v.id == "true")) {
+            return true;
+        }
+        return (masks.map((v) => v.id).includes(block.typeId) &&
+            !!masks.filter(v => v.id !== "false" && v.id !== undefined).find((matches) => testForObjectExtension(block.permutation.getAllStates() ?? {}, Object.fromEntries(Object.entries(matches.states ?? {}).filter((v) => !!Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find((s) => v[0] == s[0]))))));
     }
     else {
-        if (matches.id == "isAir") {
+        if (masks.id == "isAir") {
             return block.isAir;
         }
-        if (matches.id == "isWaterlogged") {
+        if (masks.id == "isWaterlogged") {
             return block.isWaterlogged;
         }
-        if (matches.id == "isLiquid") {
+        if (masks.id == "isLiquid") {
             return block.isLiquid;
         }
-        if (matches.id == "isSolid") {
+        if (masks.id == "isSolid") {
             return block.isSolid;
         }
-        if (matches.id == "isValid") {
+        if (masks.id == "isValid") {
             return block.isValid;
         }
-        if (matches.id == "true") {
+        if (masks.id == "true") {
             return true;
         }
-        if (matches.id == "false") {
+        if (masks.id == "false") {
             return false;
         }
-        return (block.typeId == matches.id &&
-            testForObjectExtension(block.permutation.getAllStates() ?? {}, Object.fromEntries(Object.entries(matches.states ?? {}).filter((v) => !!Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find((s) => v[0] == s[0])))));
+        if (masks.id === undefined)
+            return false;
+        return (block.typeId == masks.id &&
+            testForObjectExtension(block.permutation.getAllStates() ?? {}, Object.fromEntries(Object.entries(masks.states ?? {}).filter((v) => !!Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find((s) => v[0] == s[0])))));
     }
 }
 //# sourceMappingURL=testBlockForMatch.js.map

@@ -30,7 +30,7 @@ form12.title({rawtext: [{text: "hi"}]})*/
         try {
             rb = r;
             eval(customUI.code);
-            // let a = new MessageFormData(); a.body("Are you sure you want to send a teleport requrest to " + world.getAllPlayers()[r.formValues[0]]?.name); a.button1("yes"); a.button2("no"); a.forceShow(player).then(rb=>{if(rb.selection==0){player.runCommandAsync("/scriptevent andexdb:silentCmd \\tpa "+world.getAllPlayers()[r.formValues[0]]?.name)}})
+            // let a = new MessageFormData(); a.body("Are you sure you want to send a teleport requrest to " + world.getAllPlayers()[r.formValues![0]]?.name); a.button1("yes"); a.button2("no"); a.forceShow(player).then(rb=>{if(rb.selection==0){player.runCommandAsync("/scriptevent andexdb:silentCmd \\tpa "+world.getAllPlayers()[r.formValues![0]]?.name)}})
             // /scriptevent andexdb:showCustomUI tpMenu
         }
         catch (e) {

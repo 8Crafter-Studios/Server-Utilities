@@ -41,7 +41,7 @@ export async function playerMenu_leaderboard_player(sourceEntitya, leaderboard, 
             ? s.getterFunction(player)
             : world.scoreboard
                 .getObjective(s.scoreboardObjective)
-                .getScore(world.scoreboard.getParticipants().find((v) => tryget(() => v.getEntity()?.id) == player.id) ??
+                ?.getScore(world.scoreboard.getParticipants().find((v) => tryget(() => v.getEntity()?.id) == player.id) ??
                 world.scoreboard.getParticipants().find((v) => v.id == player.scoreboardIdentity))
                 ?.toString());
         if (value === undefined) {
@@ -78,6 +78,7 @@ export async function playerMenu_leaderboard_player(sourceEntitya, leaderboard, 
             case "close":
                 return 0;
             default:
+                throw new Error("Invalid selection: " + r.selection);
         }
     })
         .catch((e) => {

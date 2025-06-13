@@ -1,2 +1,2 @@
-import { Entity } from "@minecraft/server";
-export declare function getEntityHeldItemSlot(entity: Entity): import("@minecraft/server").ContainerSlot;
+import { ContainerSlot, Entity } from "@minecraft/server";
+export declare function getEntityHeldItemSlot(entity: Entity): ContainerSlot | undefined;

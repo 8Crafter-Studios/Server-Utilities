@@ -10,8 +10,9 @@ export function fromBaseToBase(num, base = 10, radix = 10, keysa = radix > 62
     if (!(radix >= 2 && radix <= keys.length))
         throw new RangeError("fromBaseToBase() radix argument must be between 2 and " +
             keys.length);
+    let isNegative = false;
     if (num.toNumber() < 0)
-        var isNegative = true;
+        isNegative = true;
     if (isNaN((num = Math.abs(+num))))
         return NaN;
     let output = [];

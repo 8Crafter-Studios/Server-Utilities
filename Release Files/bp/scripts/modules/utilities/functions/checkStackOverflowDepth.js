@@ -1,7 +1,7 @@
 export function checkStackOverflowDepth(i) {
-    var i = i || 1;
+    i ??= 1;
     try {
-        checkStackOverflowDepth(i + 1);
+        return checkStackOverflowDepth(i + 1);
     }
     catch (e) {
         if (e instanceof InternalError) {

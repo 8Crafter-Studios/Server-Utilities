@@ -167,6 +167,8 @@ export async function managePlayers(sourceEntity, pagen = 0, maxplayersperpage =
                     .textField(`Current Page: ${page + 1}\nPage # (Between 1 and ${numpages})`, "Page #")
                     .submitButton("Go To Page")
                     .forceShow(player));
+                if (!rb || rb.canceled)
+                    return await managePlayers(player, pagen, maxplayersperpage, search, displayPlayers);
                 return await managePlayers(player, Math.max(1, Math.min(numpages, rb.formValues?.[0]?.toNumber() ?? page + 1)) - 1, maxplayersperpage, search, displayPlayers);
             }
             case 3:

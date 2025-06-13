@@ -18,12 +18,8 @@ subscribedEvents.afterPlayerJoin = world.afterEvents.playerJoin.subscribe((event
             }
             await waitTick();
         }
-        if (!!(ban
-            ?.getValidBans()
-            ?.idBans?.find((_) => _?.playerId == event?.playerId) ??
-            ban
-                .getValidBans()
-                .nameBans.find((_) => _.playerName == event.playerName))) {
+        if (!!(ban?.getValidBans()?.idBans?.find((_) => _?.playerId == event?.playerId) ??
+            ban.getValidBans().nameBans.find((_) => _.playerName == event.playerName))) {
             try {
                 let pName = event?.playerName;
                 let pId = event?.playerId;
@@ -38,7 +34,7 @@ subscribedEvents.afterPlayerJoin = world.afterEvents.playerJoin.subscribe((event
                 let reason = b?.reason;
                 try {
                     reason =
-                        String(eval(b?.reason)
+                        tryget(() => String(eval(b?.reason)
                             ?.replaceAll("{timeRemaining}", `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms`)
                             ?.replaceAll("{timeRemainingDays}", String(b?.timeRemaining.days))
                             ?.replaceAll("{timeRemainingHours}", String(b?.timeRemaining.hours))
@@ -51,7 +47,7 @@ subscribedEvents.afterPlayerJoin = world.afterEvents.playerJoin.subscribe((event
                             ?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toUTCString() + " UTC"))
                             ?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toUTCString() + " UTC"))
                             ?.replaceAll("{type}", String(b?.type))
-                            ?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw)) ?? b?.reason) ?? b?.reason;
+                            ?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw)) ?? b?.reason)) ?? b?.reason;
                 }
                 catch (e) {
                     reason =
@@ -65,16 +61,13 @@ subscribedEvents.afterPlayerJoin = world.afterEvents.playerJoin.subscribe((event
                             ?.replaceAll("{bannedBy}", String(b?.bannedByName))
                             ?.replaceAll("{bannedByName}", String(b?.bannedByName))
                             ?.replaceAll("{bannedById}", String(b?.bannedById))
-                            ?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toUTCString() +
-                            " UTC"))
+                            ?.replaceAll("{banDate}", String(new Date(Number(b?.banDate)).toUTCString() + " UTC"))
                             ?.replaceAll("{unbanDate}", String(new Date(Number(b?.unbanDate)).toUTCString() + " UTC"))
                             ?.replaceAll("{type}", String(b?.type))
                             ?.replaceAll("{timeRemainingRaw}", String(b?.timeRemainingRaw))
                             ?.escapeCharactersB(true)?.v ?? b?.reason;
                 }
-                world
-                    .getDimension("overworld")
-                    .runCommand(`/kick ${JSON.stringify(pName)} ${reason}`);
+                world.getDimension("overworld").runCommand(`/kick ${JSON.stringify(pName)} ${reason}`);
             }
             catch (e) {
                 console.error(e, e.stack);

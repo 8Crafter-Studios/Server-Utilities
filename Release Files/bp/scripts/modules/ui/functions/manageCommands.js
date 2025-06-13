@@ -388,7 +388,7 @@ export async function manageCommands(sourceEntitya) {
                                                 manageCommands(sourceEntity);
                                                 return;
                                             }
-                                            h.formValues.forEach((v, i) => {
+                                            h.formValues?.forEach((v, i) => {
                                                 world.setDynamicProperty("customCommandCode:" + commandsItem.commandName + ":" + i, v);
                                             });
                                             world
@@ -457,7 +457,7 @@ export async function manageCommands(sourceEntitya) {
                                             commandsItem.settings.save({
                                                 requiredTags: h.formValues[0] == ""
                                                     ? commandsItem.type == "built-in"
-                                                        ? tryget(() => commandsItem.settings.defaultSettings.requiredTags) ?? []
+                                                        ? tryget(() => commandsItem.settings.defaultSettings?.requiredTags) ?? []
                                                         : []
                                                     : JSONParse(String(h.formValues[0])),
                                                 requiredPermissionLevel: Number(h.formValues[1]),

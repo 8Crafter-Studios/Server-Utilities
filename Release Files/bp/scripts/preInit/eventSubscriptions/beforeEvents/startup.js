@@ -1,29 +1,80 @@
-import { system } from "@minecraft/server";
+import { CommandPermissionLevel, CustomCommandParamType, CustomCommandStatus, system } from "@minecraft/server";
 /*
 let a = world.getDimension("the_end").getBlock({x: 0, y: 0, z: 0}).permutation
 let c = a as BlockStates
 c*/
 /*convertToCompoundBlockVolume(String(world.getDynamicProperty("noPistonExtensionAreas")))*/ /*
-let b = a[Number(world.getAllPlayers()[0].getDynamicProperty("debugStickPropertyIndex"))]*/
+let b = a[Number(world.getAllPlayers()[0]!.getDynamicProperty("debugStickPropertyIndex"))]*/
 /*
-world.getAllPlayers().forEach((pi, ia)=>{console.warn(pi.getComponent("inventory").inventorySize); for(let i = 0; i<pi.getComponent("inventory").inventorySize; i++){let item = pi.getComponent("inventory").container.getSlot(i); console.warn(i); if(item.typeId == "minecraft:skull"){world.getAllPlayers().forEach((pn)=>{if(item.nameTag == `§r§f${pn.name}'s Head§§`){item.setLore([`§r§aLocation: ${JSON.stringify(pn.location)}`, `Velocity: ${JSON.stringify(pn.getVelocity())}`, `Rotation: ${JSON.stringify(pn.getRotation())}`, `View Direction: ${JSON.stringify(pn.getViewDirection())}`, `Sleeping: ${pn.isSleeping}`, `Sneaking: ${pn.isSneaking}`, `Sprinting: ${pn.isSprinting}`, `Swimming: ${pn.isSwimming}`])}})}}})
-world.getAllPlayers().forEach((pi, ia)=>{console.warn(pi.getComponent("inventory").inventorySize); for(let i = 0; i<pi.getComponent("inventory").inventorySize; i++){let item = pi.getComponent("inventory").container.getSlot(i); console.warn(i); }})
+world.getAllPlayers().forEach((pi, ia)=>{console.warn(pi.getComponent("inventory")?.inventorySize); for(let i = 0; i<pi.getComponent("inventory")?.inventorySize; i++){let item = pi.getComponent("inventory")?.container.getSlot(i); console.warn(i); if(item.typeId == "minecraft:skull"){world.getAllPlayers().forEach((pn)=>{if(item.nameTag == `§r§f${pn.name}'s Head§§`){item.setLore([`§r§aLocation: ${JSON.stringify(pn.location)}`, `Velocity: ${JSON.stringify(pn.getVelocity())}`, `Rotation: ${JSON.stringify(pn.getRotation())}`, `View Direction: ${JSON.stringify(pn.getViewDirection())}`, `Sleeping: ${pn.isSleeping}`, `Sneaking: ${pn.isSneaking}`, `Sprinting: ${pn.isSprinting}`, `Swimming: ${pn.isSwimming}`])}})}}})
+world.getAllPlayers().forEach((pi, ia)=>{console.warn(pi.getComponent("inventory")?.inventorySize); for(let i = 0; i<pi.getComponent("inventory")?.inventorySize; i++){let item = pi.getComponent("inventory")?.container.getSlot(i); console.warn(i); }})
  */
 const eventUnsubscribeCallback = system.beforeEvents.startup.subscribe((event) => {
+    /*
+        try {
+            eval(
+                String(
+                    world.getDynamicProperty("evalBeforeEvents:worldInitialize")
+                )
+            );
+        } catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => {
+                if (currentplayer.hasTag("worldInitializeBeforeEventDebugErrors")) {
+                    currentplayer.sendMessage(e + e.stack);
+                }
+            });
+        }
+        try {
+            eval(
+                String(
+                    world.getDynamicProperty("evalBeforeEvents:startup")
+                )
+            );
+        } catch (e) {
+            console.error(e, e.stack);
+            world.getAllPlayers().forEach((currentplayer) => {
+                if (currentplayer.hasTag("startupBeforeEventDebugErrors")) {
+                    currentplayer.sendMessage(e + e.stack);
+                }
+            });
+        } */
     globalThis.beforeInitializeTick = system.currentTick;
     event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use_on", {
         onUseOn: (event) => { },
     });
-    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use", {
-        onUse: (event) => { },
-    });
-    event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:selection_tool", {
+    /* event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:animate_use", {
+        onUse: (event) => {},
+    }); */
+    /* event.itemComponentRegistry.registerCustomComponent("andexdbcomponents:selection_tool", {
         onUseOn: (event) => {
             console.log(3);
         },
         onUse: (event) => {
             console.log(4);
         },
+    }); */
+    event.customCommandRegistry.registerCommand({
+        name: "andexdb:scripteval",
+        description: "Runs the provided JavaScript code.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+        mandatoryParameters: [{ name: "JavaScript", type: CustomCommandParamType.String }],
+    }, (origin, code, ...restArgs) => {
+        const { sourceType, initiator, sourceBlock, sourceEntity } = origin;
+        dcsend([origin, code, restArgs]);
+        try {
+            eval(code);
+        }
+        catch (e) {
+            return {
+                status: CustomCommandStatus.Failure,
+                message: e + e.stack,
+            };
+        }
+        return {
+            status: CustomCommandStatus.Success,
+            message: "Executed code.",
+        };
     });
 });
 system.runTimeout(() => {

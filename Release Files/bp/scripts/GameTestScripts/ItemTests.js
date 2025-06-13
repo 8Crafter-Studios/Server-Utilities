@@ -3,7 +3,7 @@ import * as GameTest from "@minecraft/server-gametest";
 import { BlockLocationIterator, MinecraftBlockTypes, Direction, MinecraftItemTypes, ItemStack, world } from "@minecraft/server";
 import GameTestExtensions from "./GameTestExtensions.js";
 function giveItem(player, itemType, amount, slot) {
-    const inventoryContainer = player.getComponent("inventory").container;
+    const inventoryContainer = player.getComponent("inventory")?.container;
     inventoryContainer.addItem(new ItemStack(itemType, amount ?? 1));
     player.selectedSlot = slot ?? 0;
 }
@@ -79,7 +79,7 @@ GameTest.register("ItemTests", "item_use_event_canceled_stops_action", (test) =>
     let initialHealth = blazeHealth.current;
     const slot = 0;
     const snowballCount = 10;
-    const inventoryContainer = player.getComponent("inventory").container;
+    const inventoryContainer = player.getComponent("inventory")?.container;
     giveItem(player, MinecraftItemTypes.snowball, snowballCount, slot);
     let eventReceived = false;
     let beforeEventReceived = false;
@@ -216,7 +216,7 @@ GameTest.register("ItemTests", "before_item_use_event_modifies_inventory_item", 
     });
     testEx.giveItem(player, MinecraftItemTypes.diamondSword);
     player.useItemInSlot(0);
-    const sword = player.getComponent("inventory").container.getItem(0);
+    const sword = player.getComponent("inventory")?.container.getItem(0);
     test.assert(sword.getLore()[0] === "Lore", "Lore should have been added to sword");
     world.events.beforeItemUse.unsubscribe(beforeItemUseCallback);
     test.succeed();
@@ -231,7 +231,7 @@ GameTest.register("ItemTests", "before_item_use_on_event_modifies_inventory_item
     });
     testEx.giveItem(player, MinecraftItemTypes.planks, 16);
     player.useItemInSlotOnBlock(0, new BlockLocationIterator(1, 2, 2));
-    const planks = player.getComponent("inventory").container.getItem(0);
+    const planks = player.getComponent("inventory")?.container.getItem(0);
     test.assert(planks.getLore()[0] === "Lore", "Lore should have been added to planks");
     world.events.beforeItemUse.unsubscribe(beforeItemUseOnCallback);
     test.succeed();

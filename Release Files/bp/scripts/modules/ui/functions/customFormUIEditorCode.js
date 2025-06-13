@@ -20,9 +20,9 @@ export function customFormUIEditorCode(UIId, player, goBackToMenu = false) {
         let t = to;
         if (t.canceled)
             return;
-        let elementValues = t.formValues.slice(0, -2);
+        let elementValues = t.formValues?.slice(0, -2);
         console.warn(elementValues);
-        elementValues.forEach((v, i) => {
+        elementValues?.forEach((v, i) => {
             switch (i % 2) {
                 case 0:
                     world.setDynamicProperty(`customUICode:${formId}|${form.indexListB[Math.floor(i / 2)]}`, `${String(elementValues[i])}`);
@@ -34,8 +34,8 @@ export function customFormUIEditorCode(UIId, player, goBackToMenu = false) {
                     break;
             }
         });
-        if (t.formValues[t.formValues.length - 2]) {
-            world.setDynamicProperty(`customUICode:${formId}|${Number(t.formValues[t.formValues.length - 1]) ??
+        if (t.formValues[t.formValues?.length - 2]) {
+            world.setDynamicProperty(`customUICode:${formId}|${Number(t.formValues[t.formValues?.length - 1]) ??
                 (form.indexListB[form.indexListB.length - 1] ?? -1) + 1}`, "");
         }
         if (goBackToMenu == true) {

@@ -3,7 +3,7 @@ import { EquipmentSlots } from "modules/command_utilities/constants/EquipmentSlo
 export function equippableToItemStackArray(equippable, includeMainhand = false) {
     let itemList = [];
     for (let i = 0; i < 5 + Number(includeMainhand); i++) {
-        itemList.push(equippable?.getEquipment(includeMainhand ? EquipmentSlots[i] : OtherEquipmentSlots[i]));
+        itemList.push(equippable.getEquipment(includeMainhand ? EquipmentSlots[i] : OtherEquipmentSlots[i]));
     }
     return itemList;
 }

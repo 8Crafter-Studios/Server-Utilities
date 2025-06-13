@@ -2,7 +2,7 @@
 import * as GameTest from "@minecraft/server-gametest";
 import { BlockLocationIterator, MinecraftBlockTypes, ItemStack, MinecraftItemTypes, Direction } from "@minecraft/server";
 function giveItem(player, itemType, amount, slot) {
-    const inventoryContainer = player.getComponent("inventory").container;
+    const inventoryContainer = player.getComponent("inventory")?.container;
     inventoryContainer.addItem(new ItemStack(itemType, amount ?? 1));
     player.selectedSlot = slot ?? 0;
 }

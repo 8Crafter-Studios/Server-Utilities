@@ -6,6 +6,9 @@ import { WorldEditSelection } from "init/classes/WorldEditSelection";
 import "init/classes/config";
 import { WorldPosition } from "modules/coordinates/classes/WorldPosition";
 import type { RotationLocation } from "modules/coordinates/interfaces/RotationLocation";
+/**
+ * Represents a player to be used for the `\execute` command without the `name` and `id` properties.
+ */
 export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"> {
     player?: Player;
     sendErrorsTo?: Player | Console | Player[] | (() => Player | Player[] | Console) | null | undefined;
@@ -26,14 +29,42 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     run(command: string): void;
     sendError(error: any, sendErrorAsIs?: boolean, sendErrorsTo?: Player | Console | Player[] | (() => Player | Player[] | Console) | null | undefined): void;
     sendMessageB(message: string | RawMessage | (string | RawMessage)[], sendErrorsTo?: Player | Console | Player[] | (() => Player | Player[] | Console) | null | undefined): void;
-    get inventory(): EntityInventoryComponent | undefined;
-    get equippable(): EntityEquippableComponent | undefined;
-    get cursorInventory(): PlayerCursorInventoryComponent | undefined;
+    get inventory(): EntityInventoryComponent;
+    get equippable(): EntityEquippableComponent;
+    get cursorInventory(): PlayerCursorInventoryComponent;
     get heldItem(): ItemStack | undefined;
-    get activeSlot(): ContainerSlot | undefined;
+    get activeSlot(): ContainerSlot;
+    /**
+     * Returns an instance of the {@link MoneySystem} class that is associated with this entity.
+     *
+     * @author 8Crafter
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player.
+     */
     get moneySystem(): MoneySystem;
+    /**
+     * Returns an instance of the {@link PlayerNotifications} class that is associated with this entity.
+     *
+     * @author 8Crafter
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player.
+     */
     get playerNotifications(): PlayerNotifications;
+    /**
+     * Returns an instance of the {@link PlayerPermissions} class that is associated with this entity.
+     *
+     * @author 8Crafter
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player.
+     */
     get playerPermissions(): PlayerPermissions;
+    /**
+     * Returns an instance of the {@link WorldEditSelection} class that is associated with this entity.
+     *
+     * @author 8Crafter
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player.
+     */
     get worldEditSelection(): WorldEditSelection;
     get dimensionLocation(): Vector3 & {
         dimension: Dimension;
@@ -67,18 +98,33 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     get isSleeping(): boolean;
     get isSprinting(): boolean;
     get isSwimming(): boolean;
-    get scoreboardIdentity(): import("@minecraft/server").ScoreboardIdentity;
+    get scoreboardIdentity(): import("@minecraft/server").ScoreboardIdentity | undefined;
     get level(): number;
     get onScreenDisplay(): import("@minecraft/server").ScreenDisplay;
+    /**
+     * @remarks
+     * This property can't be edited in read-only mode.
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player when using the setter.
+     */
     get selectedSlotIndex(): number;
     set selectedSlotIndex(slotNumber: number);
     get totalXpNeededForNextLevel(): number;
     get xpEarnedAtCurrentLevel(): number;
+    /**
+     * @remarks
+     * Whether the entity is sneaking - that is, moving more slowly
+     * and more quietly.
+     *
+     * This property can't be edited in read-only mode.
+     *
+     * @throws {ReferenceError} If the executeCommandPlayerW instance does not have a linked player when using the setter.
+     */
     get isSneaking(): boolean;
     set isSneaking(isSneaking: boolean);
     get typeId(): string;
-    get nameTag(): string | undefined | null;
-    set nameTag(nameTag: string | undefined | null);
+    get nameTag(): string;
+    set nameTag(nameTag: string);
     get inputPermissions(): import("@minecraft/server").PlayerInputPermissions;
     get clientSystemInfo(): import("@minecraft/server").ClientSystemInfo;
     get inputInfo(): InputInfo;
@@ -95,77 +141,77 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
      *
      * {@link InvalidEntityError}
      */
-    get graphicsMode(): GraphicsMode | undefined;
+    get graphicsMode(): GraphicsMode;
     get isValid(): boolean;
     get localizationKey(): string;
-    addEffect(effectType: string | EffectType, duration: number, options?: EntityEffectOptions): import("@minecraft/server").Effect;
+    addEffect(effectType: string | EffectType, duration: number, options?: EntityEffectOptions): import("@minecraft/server").Effect | undefined;
     addExperience(amount: number): number;
     getRotation(): Vector2;
     getViewDirection(): Vector3;
     addLevels(amount: number): number;
-    eatItem(itemStack: ItemStack): void;
+    eatItem(itemStack: ItemStack): void | undefined;
     getGameMode(): GameMode;
     getItemCooldown(itemCategory: string): number;
     getSpawnPoint(): DimensionLocation;
     getTotalXp(): number;
     isOp(): boolean;
-    lookAt(targetLocation: Vector3): void;
-    playMusic(trackId: string, musicOptions?: MusicOptions): void;
-    playSound(soundId: string, soundOptions?: PlayerSoundOptions): void;
-    postClientMessage(id: string, value: string): void;
-    queueMusic(trackId: string, musicOptions?: MusicOptions): void;
-    resetLevel(): void;
-    sendMessage(message: string | RawMessage | (string | RawMessage)[]): void;
-    setGameMode(gameMode?: GameMode | number): void;
-    setOp(isOp: boolean): void;
-    setSpawnPoint(spawnPoint?: DimensionLocation): void;
-    spawnParticle(effectName: string, location: Vector3, molangVariables?: MolangVariableMap): void;
-    startItemCooldown(itemCategory: string, tickDuration: number): void;
-    stopMusic(): void;
+    lookAt(targetLocation: Vector3): void | undefined;
+    playMusic(trackId: string, musicOptions?: MusicOptions): void | undefined;
+    playSound(soundId: string, soundOptions?: PlayerSoundOptions): void | undefined;
+    postClientMessage(id: string, value: string): void | undefined;
+    queueMusic(trackId: string, musicOptions?: MusicOptions): void | undefined;
+    resetLevel(): never;
+    sendMessage(message: string | RawMessage | (string | RawMessage)[]): void | undefined;
+    setGameMode(gameMode?: GameMode | number): void | undefined;
+    setOp(isOp: boolean): void | undefined;
+    setSpawnPoint(spawnPoint?: DimensionLocation): void | undefined;
+    spawnParticle(effectName: string, location: Vector3, molangVariables?: MolangVariableMap): void | undefined;
+    startItemCooldown(itemCategory: string, tickDuration: number): void | undefined;
+    stopMusic(): never;
     addTag(tag: string): boolean;
     applyDamage(amount: number, options?: EntityApplyDamageByProjectileOptions | EntityApplyDamageOptions): boolean;
     applyImpulse(vector: Vector3): void;
-    applyKnockback(horizontalForce: VectorXZ, verticalStrength: number): void;
-    clearDynamicProperties(): void;
-    clearVelocity(): void;
+    applyKnockback(horizontalForce: VectorXZ, verticalStrength: number): void | undefined;
+    clearDynamicProperties(): never;
+    clearVelocity(): never;
     extinguishFire(useEffects?: boolean): boolean;
     getAimAssist(): import("@minecraft/server").PlayerAimAssist;
-    getBlockFromViewDirection(options?: BlockRaycastOptions): import("@minecraft/server").BlockRaycastHit;
+    getBlockFromViewDirection(options?: BlockRaycastOptions): import("@minecraft/server").BlockRaycastHit | undefined;
     getComponent<T extends keyof EntityComponentTypeMap>(componentId: T): EntityComponentTypeMap[T] | undefined;
     getComponent<T extends keyof BlockComponentTypeMap>(componentId: T): BlockComponentTypeMap[T] | undefined;
     getComponent<T extends string>(componentId: T): EntityComponentReturnType<T> | undefined;
     getComponents(): import("@minecraft/server").EntityComponent[];
-    getDynamicProperty(identifier: string): string | number | boolean | Vector3;
+    getDynamicProperty(identifier: string): string | number | boolean | Vector3 | undefined;
     getDynamicPropertyIds(): string[];
     getDynamicPropertyTotalByteCount(): number;
-    getEffect(effectType: string | EffectType): import("@minecraft/server").Effect;
+    getEffect(effectType: string | EffectType): import("@minecraft/server").Effect | undefined;
     getEffects(): import("@minecraft/server").Effect[];
     getEntitiesFromViewDirection(options?: EntityRaycastOptions): import("@minecraft/server").EntityRaycastHit[];
     getHeadLocation(): Vector3;
-    getProperty(identifier: string): string | number | boolean;
+    getProperty(identifier: string): string | number | boolean | undefined;
     getTags(): string[];
     getVelocity(): Vector3;
     hasComponent(componentId: string): boolean;
     hasTag(tag: string): boolean;
     kill(): boolean;
     matches(options: EntityQueryOptions): boolean;
-    playAnimation(animationName: string, options?: PlayAnimationOptions): void;
-    remove(): void;
+    playAnimation(animationName: string, options?: PlayAnimationOptions): void | undefined;
+    remove(): never;
     removeEffect(effectType: string | EffectType): boolean;
     removeTag(tag: string): boolean;
     resetProperty(identifier: string): string | number | boolean;
     runCommand(commandString: string): import("@minecraft/server").CommandResult;
-    setDynamicProperty(identifier: string, value?: string | number | boolean | Vector3): void;
-    setDynamicProperties(values: Record<string, boolean | number | string | Vector3>): void;
+    setDynamicProperty(identifier: string, value?: string | number | boolean | Vector3): void | undefined;
+    setDynamicProperties(values: Record<string, boolean | number | string | Vector3>): void | undefined;
     setOnFire(seconds: number, useEffects?: boolean): boolean;
-    setProperty(identifier: string, value: string | number | boolean): void;
-    setRotation(rotation: Vector2): void;
-    teleport(location: Vector3, teleportOptions?: TeleportOptions): void;
-    triggerEvent(eventName: string): void;
+    setProperty(identifier: string, value: string | number | boolean): void | undefined;
+    setRotation(rotation: Vector2): void | undefined;
+    teleport(location: Vector3, teleportOptions?: TeleportOptions): void | undefined;
+    triggerEvent(eventName: string): void | undefined;
     tryTeleport(location: Vector3, teleportOptions?: TeleportOptions): boolean;
-    setPropertyOverrideForEntity(targetEntity: Entity, identifier: string, value: boolean | number | string): void;
-    removePropertyOverrideForEntity(targetEntity: Entity, identifier: string): void;
-    clearPropertyOverridesForEntity(targetEntity: Entity): void;
+    setPropertyOverrideForEntity(targetEntity: Entity, identifier: string, value: boolean | number | string): void | undefined;
+    removePropertyOverrideForEntity(targetEntity: Entity, identifier: string): void | undefined;
+    clearPropertyOverridesForEntity(targetEntity: Entity): void | undefined;
     saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
     getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
     deleteStringFromDynamicProperties(propertyName: string): void;

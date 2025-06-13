@@ -32,11 +32,11 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                 system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                     try {
                         const currentBlock = block(v, index);
-                        if (v.dimension.getBlock(v).permutation ==
+                        if (v.dimension.getBlock(v)?.permutation ==
                             currentBlock) {
                             if (!!v.dimension
                                 .getBlock(v)
-                                .getComponent("inventory")) {
+                                ?.getComponent("inventory")) {
                                 clearContainer(v.dimension
                                     .getBlock(v)
                                     .getComponent("inventory")
@@ -44,7 +44,7 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                             }
                             v.dimension
                                 .getBlock(v)
-                                .setPermutation(currentBlock);
+                                ?.setPermutation(currentBlock);
                             counter++;
                         }
                     }
@@ -60,11 +60,11 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                 system.runJob(generateMinecraftSphereBG(center, radius, dimension, id, options?.minMSBetweenYields ?? 2000, (v, index) => {
                     try {
                         const currentBlock = block(v, index);
-                        if (v.dimension.getBlock(v).permutation ==
+                        if (v.dimension.getBlock(v)?.permutation ==
                             currentBlock) {
                             v.dimension
                                 .getBlock(v)
-                                .setPermutation(currentBlock);
+                                ?.setPermutation(currentBlock);
                             counter++;
                         }
                     }
@@ -87,10 +87,10 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                                 states: options?.matchingBlockStates,
                             })
                             : options?.matchingBlock ==
-                                v.dimension.getBlock(v).typeId) {
+                                v.dimension.getBlock(v)?.typeId) {
                             if (!!v.dimension
                                 .getBlock(v)
-                                .getComponent("inventory")) {
+                                ?.getComponent("inventory")) {
                                 clearContainer(v.dimension
                                     .getBlock(v)
                                     .getComponent("inventory")
@@ -98,7 +98,7 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                             }
                             v.dimension
                                 .getBlock(v)
-                                .setPermutation(block(v, index));
+                                ?.setPermutation(block(v, index));
                             counter++;
                         }
                     }
@@ -119,10 +119,10 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                                 states: options?.matchingBlockStates,
                             })
                             : options?.matchingBlock ==
-                                v.dimension.getBlock(v).typeId) {
+                                v.dimension.getBlock(v)?.typeId) {
                             v.dimension
                                 .getBlock(v)
-                                .setPermutation(block(v, index));
+                                ?.setPermutation(block(v, index));
                             counter++;
                         }
                     }
@@ -143,14 +143,14 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                     try {
                         if (!!v.dimension
                             .getBlock(v)
-                            .getComponent("inventory")) {
+                            ?.getComponent("inventory")) {
                             clearContainer(v.dimension
                                 .getBlock(v)
-                                .getComponent("inventory").container);
+                                ?.getComponent("inventory")?.container);
                         }
                         v.dimension
                             .getBlock(v)
-                            .setPermutation(block(v, index));
+                            ?.setPermutation(block(v, index));
                         counter++;
                     }
                     catch (e) {
@@ -166,7 +166,7 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                     try {
                         v.dimension
                             .getBlock(v)
-                            .setPermutation(block(v, index));
+                            ?.setPermutation(block(v, index));
                         counter++;
                     }
                     catch (e) {
@@ -188,10 +188,10 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                                 states: options?.matchingBlockStates,
                             })
                             : options?.matchingBlock ==
-                                v.dimension.getBlock(v).typeId) {
+                                v.dimension.getBlock(v)?.typeId) {
                             if (!!v.dimension
                                 .getBlock(v)
-                                .getComponent("inventory")) {
+                                ?.getComponent("inventory")) {
                                 clearContainer(v.dimension
                                     .getBlock(v)
                                     .getComponent("inventory")
@@ -199,7 +199,7 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                             }
                             v.dimension
                                 .getBlock(v)
-                                .setPermutation(block(v, index));
+                                ?.setPermutation(block(v, index));
                             counter++;
                         }
                     }
@@ -220,10 +220,10 @@ export async function fillBlocksHSGB(center, radius, dimension, block, options, 
                                 states: options?.matchingBlockStates,
                             })
                             : options?.matchingBlock ==
-                                v.dimension.getBlock(v).typeId) {
+                                v.dimension.getBlock(v)?.typeId) {
                             v.dimension
                                 .getBlock(v)
-                                .setPermutation(block(v, index));
+                                ?.setPermutation(block(v, index));
                             counter++;
                         }
                     }

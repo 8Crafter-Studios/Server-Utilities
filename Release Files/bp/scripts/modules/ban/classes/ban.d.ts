@@ -54,7 +54,7 @@ export declare class ban {
     get durationString(): string;
     get isTemporary(): boolean;
     get isPermanent(): boolean;
-    get kickMessage(): string;
+    get kickMessage(): string | undefined;
     save(): void;
     remove(): void;
     static getBanIds(banType?: string): string[];
@@ -76,7 +76,7 @@ export declare class ban {
         ban_format_version?: string | number;
         banId?: string;
     } | ban): void;
-    static getBan(banId: string): ban;
+    static getBan(banId: string): ban | undefined;
     static getBans(): {
         idBans: ban[];
         nameBans: ban[];

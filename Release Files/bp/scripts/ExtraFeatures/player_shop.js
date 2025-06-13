@@ -598,7 +598,7 @@ ${item.itemDetails.enchantments instanceof Array
                         item.remainingStock -= r.formValues[0];
                         itemStack.amount = r.formValues[0];
                         let b = (player.getComponent("inventory")?.container).addItem(itemStack);
-                        if (!!b) {
+                        if (b) {
                             catchtry(() => player.dimension.spawnItem(b, player.location));
                         }
                         MoneySystem.get(player.id).removeMoney(item.price * r.formValues[0]);
@@ -944,7 +944,7 @@ ${item.itemDetails.enchantments instanceof Array
                     }
                     finally {
                         try {
-                            otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+                            otherEntities?.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
                         }
                         catch { }
                         try {
@@ -1043,7 +1043,7 @@ ${item.itemDetails.enchantments instanceof Array
         }
         finally {
             try {
-                otherEntities.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
+                otherEntities?.forEach((v, i) => tryrun(() => v.teleport(locs[i], { keepVelocity: false })));
             }
             catch { }
             try {
@@ -1865,7 +1865,7 @@ Is Buy Shop: ${shop.buyShop ? "§aTrue" : "§cFalse"}
                     const type = mode == "buy" ? "player_shop_saved" : "player_shop_sellable";
                     if (type == "player_shop_saved") {
                         const item = await itemSelector(sourceEntity, sourceEntity, () => { } /*, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode*/);
-                        if (!item.item.hasItem()) {
+                        if (!item?.item.hasItem()) {
                             if ((await showMessage(sourceEntity, "", `You cannot sell this item because that slot is empty.`, "Back", "Close"))
                                 .selection != 0) {
                                 return await PlayerShopManager.managePlayerShop_contents(sourceEntity, shop, mode);
@@ -2125,7 +2125,7 @@ ${mode == "buy" ? "Price" : "Value"}: ${mode == "buy" ? item.price : item.value}
                 }
                 case "restock": {
                     const itemb = await itemSelector(sourceEntity, sourceEntity, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode);
-                    if (!itemb.item.hasItem()) {
+                    if (!itemb?.item.hasItem()) {
                         if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected slot because that slot is empty`, "Back", "Close")).selection != 1) {
                             return await PlayerShopManager.managePlayerShop_manageItem(sourceEntity, shop, item, itemIndex, mode);
                         }
@@ -2885,7 +2885,7 @@ Texture: ${page.texture}`);
                 const type = mode == "buy" ? "player_shop_saved" : "player_shop_sellable";
                 if (type == "player_shop_saved") {
                     const item = await itemSelector(sourceEntity, sourceEntity, () => 1 /*, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode*/);
-                    if (!item.item.hasItem()) {
+                    if (!item?.item.hasItem()) {
                         if ((await showMessage(sourceEntity, "", `You cannot sell this item because that slot is empty.`, "Back", "Close"))
                             .selection != 0) {
                             return await PlayerShopManager.managePlayerShopPage_contents(sourceEntity, shop, path);
@@ -3143,7 +3143,7 @@ Texture: ${page.texture}`);
                 }
                 case "restock": {
                     const itemb = await itemSelector(sourceEntity, sourceEntity, PlayerShopManager.managePlayerShop_contents, sourceEntity, shop, mode);
-                    if (!itemb.item.hasItem()) {
+                    if (!itemb?.item.hasItem()) {
                         if ((await showMessage(sourceEntity, "", `You cannot restock this item with the selected slot because that slot is empty`, "Back", "Close")).selection != 1) {
                             return await PlayerShopManager.managePlayerShopPage_manageItem(sourceEntity, shop, path, item, itemIndex);
                         }

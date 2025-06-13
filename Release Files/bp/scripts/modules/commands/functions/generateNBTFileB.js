@@ -10,8 +10,8 @@ export function generateNBTFileB(location, nbt) {
     /* .replace("minecraft:coarse_dirt", "minecraft:dirt") */
     ),
         // Not needed any more as coarse_dirt is now a valid block id.
-        /* nbt.palette[b.state].Name == "minecraft:coarse_dirt" ||
-            nbt.palette[b.state].Name == "coarse_dirt"
+        /* nbt.palette[b.state]!.Name == "minecraft:coarse_dirt" ||
+            nbt.palette[b.state]!.Name == "coarse_dirt"
             ? location.dimension.setBlockPermutation(
                 Vector3Utils.add(location, {
                     x: b.pos[0],

@@ -130,6 +130,8 @@ export async function playerMenu_homes(sourceEntitya) {
                         return await playerMenu_homes(sourceEntity);
                     case "close":
                         return 0;
+                    default:
+                        return await playerMenu_homes(sourceEntity);
                 }
             case "newHome": {
                 if (sourceEntity.dimension !== overworld && !config.homeSystem.allowHomesInOtherDimensions) {

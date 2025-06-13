@@ -1,0 +1,52 @@
+{
+  "format_version": "1.21.80",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "andexdb:outline_renderer",
+      "materials": {
+        "default": "entity_alphablend_v2",
+        "emissive": "entity_emissive_alpha"
+      },
+      "textures": {
+        "pos1": "textures/entity/outline_renderer/pos1",
+        "cyan_gradient": "textures/entity/outline_renderer/cyan_gradient",
+        "pos1_emissive": "textures/entity/outline_renderer/pos1_emissive"/* ,
+        "cyan_gradient_emissive": "textures/entity/outline_renderer/cyan_gradient_emissive" */
+      },
+      "geometry": {
+        "default": "geometry.andexdb.outline_renderer",
+        "backface_culling": "geometry.andexdb.outline_renderer_backface_culling"
+      },
+      "scripts": {
+        "scale": "variable.scale",
+        "initialize": [
+          "variable.scale = q.has_property('andexdb:scale') ? q.property('andexdb:scale') : 1.0;",
+          "variable.scale_x = q.has_property('andexdb:scale_x') ? q.property('andexdb:scale_x') : 1.0;",
+          "variable.scale_y = q.has_property('andexdb:scale_y') ? q.property('andexdb:scale_y') : 1.0;",
+          "variable.scale_z = q.has_property('andexdb:scale_z') ? q.property('andexdb:scale_z') : 1.0;",
+          "variable.texture_id = q.has_property('andexdb:texture_id') ? q.property('andexdb:texture_id') : 0.0;",
+          "variable.color_r = 1.0;",
+          "variable.color_g = 1.0;",
+          "variable.color_b = 1.0;",
+          "variable.color_a = 1.0;"
+        ],
+        "pre_animation": [
+          "variable.scale = q.has_property('andexdb:scale') ? q.property('andexdb:scale') : 1.0;",
+          "variable.scale_x = q.has_property('andexdb:scale_x') ? q.property('andexdb:scale_x') : 1.0;",
+          "variable.scale_y = q.has_property('andexdb:scale_y') ? q.property('andexdb:scale_y') : 1.0;",
+          "variable.scale_z = q.has_property('andexdb:scale_z') ? q.property('andexdb:scale_z') : 1.0;",
+          "variable.texture_id = q.has_property('andexdb:texture_id') ? q.property('andexdb:texture_id') : 0.0;"
+        ],
+        "animate": [
+          "scale_handler"
+        ]
+      },
+      "animations": {
+        "scale_handler": "animation.andexdb.outline_renderer.scale_handler"
+      },
+      "render_controllers": [
+        "controller.render.andexdb:outline_renderer.main"
+      ]
+    }
+  }
+}

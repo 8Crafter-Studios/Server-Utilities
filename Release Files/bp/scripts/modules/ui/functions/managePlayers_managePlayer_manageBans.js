@@ -190,7 +190,7 @@ export async function managePlayers_managePlayer_manageBans(sourceEntity, player
                     : "playerName"}: §6${ba.type == "id"
                     ? ba.originalPlayerName
                     : ba.playerName}\n§r§bbannedByName: §a${ba.bannedByName}\n§r§bbannedById: §6${ba.bannedById}\n§r§bremoveAfterBanExpires: §d${ba.removeAfterBanExpires}\n§r§breason: §r§f${ba.reason}\n§r§b${
-                /*JSON.stringify(banList[g.selection]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/ ""}`);
+                /*JSON.stringify(banList[g.selection!]).replaceAll(/(?<!\\)(?![},:](\"|{\"))\"/g, "§r§f\"")*/ ""}`);
                 form4.button("Unban");
                 form4.button("Back");
                 return await forceShow(form4, sourceEntity)

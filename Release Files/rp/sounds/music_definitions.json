@@ -1,0 +1,138 @@
+{
+    "record.pigstep.music": {
+        "event_name": "record.pigstep.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.otherside.music": {
+        "event_name": "record.otherside.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.5.music": {
+        "event_name": "record.5.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.11.music": {
+        "event_name": "record.11.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.13.music": {
+        "event_name": "record.13.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.relic.music": {
+        "event_name": "record.relic.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.ward.music": {
+        "event_name": "record.ward.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.mall.music": {
+        "event_name": "record.mall.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.mellohi.music": {
+        "event_name": "record.mellohi.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.blocks.music": {
+        "event_name": "record.blocks.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.cat.music": {
+        "event_name": "record.cat.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.chirp.music": {
+        "event_name": "record.chirp.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.far.music": {
+        "event_name": "record.far.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.stal.music": {
+        "event_name": "record.stal.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.strad.music": {
+        "event_name": "record.strad.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.wait.music": {
+        "event_name": "record.wait.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.precipice.music": {
+        "event_name": "record.precipice.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.creator.music": {
+        "event_name": "record.creator.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.creator_music_box.music": {
+        "event_name": "record.creator_music_box.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "music.game.all.random": {
+        "event_name": "music.game.all.random",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "music.game.all_gamemodes.vanilla.all_dimensions.random": {
+        "event_name": "music.game.all_gamemodes.vanilla.all_dimensions.random",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "music.game.creative.vanilla.random": {
+        "event_name": "music.game.creative.vanilla.random",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "music.game.records.vanilla.random": {
+        "event_name": "music.game.all.random",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "music.game.survival.vanilla.all_dimensions.random": {
+        "event_name": "music.game.survival.vanilla.all_dimensions.random",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "music.game.survival.vanilla.end.random": {
+        "event_name": "music.game.survival.vanilla.end.random",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "music.game.survival.vanilla.nether.random": {
+        "event_name": "music.game.survival.vanilla.nether.random",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "music.game.survival.vanilla.overworld.random": {
+        "event_name": "music.game.survival.vanilla.overworld.random",
+        "max_delay": 20,
+        "min_delay": 10
+    }
+}
+

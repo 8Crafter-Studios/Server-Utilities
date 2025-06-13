@@ -7,7 +7,7 @@ export declare class ScoreboardV2 {
     static removeObjective(objectiveId: ScoreboardV2Objective | string): boolean;
 }
 export declare class ScoreboardV2Objective {
-    displayName: string;
+    displayName?: string;
     id: string;
     private scores;
     constructor(id: string);
@@ -31,7 +31,7 @@ export declare class ScoreboardV2Objective {
     delete(): void;
     toJSON(): {
         id: string;
-        displayName: string;
+        displayName: string | undefined;
         scores: {
             [playerId: string]: bigint;
         };

@@ -70,7 +70,10 @@ declare namespace exports {
          *
          * Dynamic Property ID: `andexdbSettings:gametestStructureDefaultSpawnLocation`
          *
-         * @default { x: 1000000000, y: 100, z: 1000000000 }
+         * @default
+         * ```typescript
+         * { x: 1000000000, y: 100, z: 1000000000 }
+         * ```
          */
         static get gametestStructureDefaultSpawnLocation(): Vector3;
         static set gametestStructureDefaultSpawnLocation(gametestStructureDefaultSpawnLocation: Partial<Vector3> | undefined);
@@ -79,7 +82,10 @@ declare namespace exports {
          *
          * Dynamic Property ID: `andexdbSettings:spawnCommandLocation`
          *
-         * @default { x: null, y: null, z: null, dimension: overworld }
+         * @default
+         * ```typescript
+         * { x: null, y: null, z: null, dimension: overworld }
+         * ```
          */
         static get spawnCommandLocation(): DimensionLocation | {
             x: null;
@@ -114,13 +120,28 @@ declare namespace exports {
              */
             readonly overworld: {
                 new (): {};
-                enabled: boolean;
+                /**
+                 * Whether or not the world border is enabled for the overworld.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.enabled`
+                 *
+                 * @default false
+                 */
+                get enabled(): boolean;
+                set enabled(enabled: boolean | undefined);
+                /**
+                 * The minimum x and z coordinates of the world border for the overworld.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.from`
+                 *
+                 * @default
+                 * ```typescript
+                 * { x: -29999984, z: -29999984 }
+                 * ```
+                 */
                 get from(): {
                     x: number;
                     z: number;
-                } | {
-                    x: null;
-                    z: null;
                 };
                 set from(from: {
                     x: number;
@@ -129,12 +150,19 @@ declare namespace exports {
                     x: null;
                     z: null;
                 } | undefined);
+                /**
+                 * The maximum x and z coordinates of the world border for the overworld.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.to`
+                 *
+                 * @default
+                 * ```typescript
+                 * { x: 29999984, z: 29999984 }
+                 * ```
+                 */
                 get to(): {
                     x: number;
                     z: number;
-                } | {
-                    x: null;
-                    z: null;
                 };
                 set to(to: {
                     x: number;
@@ -143,29 +171,120 @@ declare namespace exports {
                     x: null;
                     z: null;
                 } | undefined);
-                mode: number;
-                damage: number;
-                knockbackH: number;
-                knockbackV: number;
-                preventWorldInteractionOutsideBorder: boolean;
-                tintIntensity: number;
+                /**
+                 * The mode of the world border for the overworld.
+                 *
+                 * `0` - Teleport Players\
+                 * `1` - Yeet Players\
+                 * `2` - Damage Players
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.mode`
+                 *
+                 * @default 1
+                 */
+                get mode(): number;
+                set mode(mode: number | undefined);
+                /**
+                 * The amount of damage the overworld world border does to players when the {@link mode} is set to `2` (Damage Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.damageMode.damage`
+                 *
+                 * @default 1
+                 */
+                get damage(): number;
+                set damage(damage: number | undefined);
+                /**
+                 * The amount of horizontal knockback the overworld world border does to players when the {@link mode} is set to `1` (Yeet Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.knockbackMode.knockbackH`
+                 *
+                 * @default 2.5
+                 */
+                get knockbackH(): number;
+                set knockbackH(horizontalKnockback: number | undefined);
+                /**
+                 * The amount of vertical knockback the overworld world border does to players when the {@link mode} is set to `1` (Yeet Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.knockbackMode.knockbackV`
+                 *
+                 * @default 1.25
+                 */
+                get knockbackV(): number;
+                set knockbackV(verticalKnockback: number | undefined);
+                /**
+                 * Whether or not to prevent players from interacting with the world outside of the world border for the overworld.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.preventWorldInteractionOutsideBorder`
+                 *
+                 * @default false
+                 */
+                get preventWorldInteractionOutsideBorder(): boolean;
+                set preventWorldInteractionOutsideBorder(preventWorldInteractionOutsideBorder: boolean | undefined);
+                /**
+                 * The tint intensity of the world border for the overworld.
+                 *
+                 * This is how many tint particles will be spawned in front of the player when they are outside of the world border.
+                 *
+                 * Should be an integer of at least `0`.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.tintIntensity`
+                 *
+                 * @default 1
+                 */
+                get tintIntensity(): number;
+                set tintIntensity(tintIntensity: number | undefined);
                 /**
                  * d
                  * @todo
                  */
-                warnPlayersInChat: boolean;
+                get warnPlayersInChat(): boolean;
+                /**
+                 * c
+                 * @todo
+                 */
+                set warnPlayersInChat(warnPlayersInChat: boolean | undefined);
                 /**
                  * b
                  * @todo
                  */
-                showActionbarWarningWhenOutsideBorder: boolean;
-                showRedScreenOutlineWhenOutsideBorder: boolean;
-                showBorderParticles: boolean;
+                get showActionbarWarningWhenOutsideBorder(): boolean;
+                /**
+                 * a
+                 * @todo
+                 */
+                set showActionbarWarningWhenOutsideBorder(showActionbarWarningWhenOutsideBorder: boolean | undefined);
+                /**
+                 * Whether or not to show tint particles when the player is outside of the world border for the overworld.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.showRedScreenOutlineWhenOutsideBorder`
+                 *
+                 * @default true
+                 */
+                get showRedScreenOutlineWhenOutsideBorder(): boolean;
+                set showRedScreenOutlineWhenOutsideBorder(showRedScreenOutlineWhenOutsideBorder: boolean | undefined);
+                /**
+                 * Whether or not to show border particles at the edges of the world border for the overworld.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.showBorderParticles`
+                 *
+                 * @default true
+                 */
+                get showBorderParticles(): boolean;
+                set showBorderParticles(showBorderParticles: boolean | undefined);
                 /**
                  * @deprecated
                  */
-                useShadersCompatibleBorderParticles: boolean;
-                buffer: number;
+                get useShadersCompatibleBorderParticles(): boolean;
+                set useShadersCompatibleBorderParticles(useShadersCompatibleBorderParticles: boolean | undefined);
+                /**
+                 * The minimum distance outside of the overworld world border that the player has to be before they start taking damage when the {@link mode} is set to `2` (Damage Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:overworld.buffer`
+                 *
+                 * @default 5
+                 */
+                get buffer(): number;
+                set buffer(buffer: number | undefined);
             };
             /**
              * The world border settings for the nether.
@@ -173,13 +292,28 @@ declare namespace exports {
              */
             readonly nether: {
                 new (): {};
-                enabled: boolean;
+                /**
+                 * Whether or not the world border is enabled for the nether.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.enabled`
+                 *
+                 * @default false
+                 */
+                get enabled(): boolean;
+                set enabled(enabled: boolean | undefined);
+                /**
+                 * The minimum x and z coordinates of the world border for the nether.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.from`
+                 *
+                 * @default
+                 * ```typescript
+                 * { x: -29999984, z: -29999984 }
+                 * ```
+                 */
                 get from(): {
                     x: number;
                     z: number;
-                } | {
-                    x: null;
-                    z: null;
                 };
                 set from(from: {
                     x: number;
@@ -188,12 +322,19 @@ declare namespace exports {
                     x: null;
                     z: null;
                 } | undefined);
+                /**
+                 * The maximum x and z coordinates of the world border for the nether.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.to`
+                 *
+                 * @default
+                 * ```typescript
+                 * { x: 29999984, z: 29999984 }
+                 * ```
+                 */
                 get to(): {
                     x: number;
                     z: number;
-                } | {
-                    x: null;
-                    z: null;
                 };
                 set to(to: {
                     x: number;
@@ -202,27 +343,120 @@ declare namespace exports {
                     x: null;
                     z: null;
                 } | undefined);
-                mode: number;
-                damage: number;
-                knockbackH: number;
-                knockbackV: number;
-                preventWorldInteractionOutsideBorder: boolean;
-                tintIntensity: number;
                 /**
+                 * The mode of the world border for the nether.
+                 *
+                 * `0` - Teleport Players\
+                 * `1` - Yeet Players\
+                 * `2` - Damage Players
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.mode`
+                 *
+                 * @default 1
+                 */
+                get mode(): number;
+                set mode(mode: number | undefined);
+                /**
+                 * The amount of damage the nether world border does to players when the {@link mode} is set to `2` (Damage Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.damageMode.damage`
+                 *
+                 * @default 1
+                 */
+                get damage(): number;
+                set damage(damage: number | undefined);
+                /**
+                 * The amount of horizontal knockback the nether world border does to players when the {@link mode} is set to `1` (Yeet Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.knockbackMode.knockbackH`
+                 *
+                 * @default 2.5
+                 */
+                get knockbackH(): number;
+                set knockbackH(horizontalKnockback: number | undefined);
+                /**
+                 * The amount of vertical knockback the nether world border does to players when the {@link mode} is set to `1` (Yeet Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.knockbackMode.knockbackV`
+                 *
+                 * @default 1.25
+                 */
+                get knockbackV(): number;
+                set knockbackV(verticalKnockback: number | undefined);
+                /**
+                 * Whether or not to prevent players from interacting with the world outside of the world border for the nether.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.preventWorldInteractionOutsideBorder`
+                 *
+                 * @default false
+                 */
+                get preventWorldInteractionOutsideBorder(): boolean;
+                set preventWorldInteractionOutsideBorder(preventWorldInteractionOutsideBorder: boolean | undefined);
+                /**
+                 * The tint intensity of the world border for the nether.
+                 *
+                 * This is how many tint particles will be spawned in front of the player when they are outside of the world border.
+                 *
+                 * Should be an integer of at least `0`.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.tintIntensity`
+                 *
+                 * @default 1
+                 */
+                get tintIntensity(): number;
+                set tintIntensity(tintIntensity: number | undefined);
+                /**
+                 * d
                  * @todo
                  */
-                warnPlayersInChat: boolean;
+                get warnPlayersInChat(): boolean;
                 /**
+                 * c
                  * @todo
                  */
-                showActionbarWarningWhenOutsideBorder: boolean;
-                showRedScreenOutlineWhenOutsideBorder: boolean;
-                showBorderParticles: boolean;
+                set warnPlayersInChat(warnPlayersInChat: boolean | undefined);
+                /**
+                 * b
+                 * @todo
+                 */
+                get showActionbarWarningWhenOutsideBorder(): boolean;
+                /**
+                 * a
+                 * @todo
+                 */
+                set showActionbarWarningWhenOutsideBorder(showActionbarWarningWhenOutsideBorder: boolean | undefined);
+                /**
+                 * Whether or not to show tint particles when the player is outside of the world border for the nether.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.showRedScreenOutlineWhenOutsideBorder`
+                 *
+                 * @default true
+                 */
+                get showRedScreenOutlineWhenOutsideBorder(): boolean;
+                set showRedScreenOutlineWhenOutsideBorder(showRedScreenOutlineWhenOutsideBorder: boolean | undefined);
+                /**
+                 * Whether or not to show border particles at the edges of the world border for the nether.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.showBorderParticles`
+                 *
+                 * @default true
+                 */
+                get showBorderParticles(): boolean;
+                set showBorderParticles(showBorderParticles: boolean | undefined);
                 /**
                  * @deprecated
                  */
-                useShadersCompatibleBorderParticles: boolean;
-                buffer: number;
+                get useShadersCompatibleBorderParticles(): boolean;
+                set useShadersCompatibleBorderParticles(useShadersCompatibleBorderParticles: boolean | undefined);
+                /**
+                 * The minimum distance outside of the nether world border that the player has to be before they start taking damage when the {@link mode} is set to `2` (Damage Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:nether.buffer`
+                 *
+                 * @default 5
+                 */
+                get buffer(): number;
+                set buffer(buffer: number | undefined);
             };
             /**
              * The world border settings for the end.
@@ -230,13 +464,28 @@ declare namespace exports {
              */
             readonly the_end: {
                 new (): {};
-                enabled: boolean;
+                /**
+                 * Whether or not the world border is enabled for the end.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.enabled`
+                 *
+                 * @default false
+                 */
+                get enabled(): boolean;
+                set enabled(enabled: boolean | undefined);
+                /**
+                 * The minimum x and z coordinates of the world border for the end.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.from`
+                 *
+                 * @default
+                 * ```typescript
+                 * { x: -29999984, z: -29999984 }
+                 * ```
+                 */
                 get from(): {
                     x: number;
                     z: number;
-                } | {
-                    x: null;
-                    z: null;
                 };
                 set from(from: {
                     x: number;
@@ -245,12 +494,19 @@ declare namespace exports {
                     x: null;
                     z: null;
                 } | undefined);
+                /**
+                 * The maximum x and z coordinates of the world border for the end.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.to`
+                 *
+                 * @default
+                 * ```typescript
+                 * { x: 29999984, z: 29999984 }
+                 * ```
+                 */
                 get to(): {
                     x: number;
                     z: number;
-                } | {
-                    x: null;
-                    z: null;
                 };
                 set to(to: {
                     x: number;
@@ -259,27 +515,120 @@ declare namespace exports {
                     x: null;
                     z: null;
                 } | undefined);
-                mode: number;
-                damage: number;
-                knockbackH: number;
-                knockbackV: number;
-                preventWorldInteractionOutsideBorder: boolean;
-                tintIntensity: number;
                 /**
+                 * The mode of the world border for the end.
+                 *
+                 * `0` - Teleport Players\
+                 * `1` - Yeet Players\
+                 * `2` - Damage Players
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.mode`
+                 *
+                 * @default 1
+                 */
+                get mode(): number;
+                set mode(mode: number | undefined);
+                /**
+                 * The amount of damage the end world border does to players when the {@link mode} is set to `2` (Damage Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.damageMode.damage`
+                 *
+                 * @default 1
+                 */
+                get damage(): number;
+                set damage(damage: number | undefined);
+                /**
+                 * The amount of horizontal knockback the end world border does to players when the {@link mode} is set to `1` (Yeet Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.knockbackMode.knockbackH`
+                 *
+                 * @default 2.5
+                 */
+                get knockbackH(): number;
+                set knockbackH(horizontalKnockback: number | undefined);
+                /**
+                 * The amount of vertical knockback the end world border does to players when the {@link mode} is set to `1` (Yeet Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.knockbackMode.knockbackV`
+                 *
+                 * @default 1.25
+                 */
+                get knockbackV(): number;
+                set knockbackV(verticalKnockback: number | undefined);
+                /**
+                 * Whether or not to prevent players from interacting with the world outside of the world border for the end.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.preventWorldInteractionOutsideBorder`
+                 *
+                 * @default false
+                 */
+                get preventWorldInteractionOutsideBorder(): boolean;
+                set preventWorldInteractionOutsideBorder(preventWorldInteractionOutsideBorder: boolean | undefined);
+                /**
+                 * The tint intensity of the world border for the end.
+                 *
+                 * This is how many tint particles will be spawned in front of the player when they are outside of the world border.
+                 *
+                 * Should be an integer of at least `0`.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.tintIntensity`
+                 *
+                 * @default 1
+                 */
+                get tintIntensity(): number;
+                set tintIntensity(tintIntensity: number | undefined);
+                /**
+                 * d
                  * @todo
                  */
-                warnPlayersInChat: boolean;
+                get warnPlayersInChat(): boolean;
                 /**
+                 * c
                  * @todo
                  */
-                showActionbarWarningWhenOutsideBorder: boolean;
-                showRedScreenOutlineWhenOutsideBorder: boolean;
-                showBorderParticles: boolean;
+                set warnPlayersInChat(warnPlayersInChat: boolean | undefined);
+                /**
+                 * b
+                 * @todo
+                 */
+                get showActionbarWarningWhenOutsideBorder(): boolean;
+                /**
+                 * a
+                 * @todo
+                 */
+                set showActionbarWarningWhenOutsideBorder(showActionbarWarningWhenOutsideBorder: boolean | undefined);
+                /**
+                 * Whether or not to show tint particles when the player is outside of the world border for the end.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.showRedScreenOutlineWhenOutsideBorder`
+                 *
+                 * @default true
+                 */
+                get showRedScreenOutlineWhenOutsideBorder(): boolean;
+                set showRedScreenOutlineWhenOutsideBorder(showRedScreenOutlineWhenOutsideBorder: boolean | undefined);
+                /**
+                 * Whether or not to show border particles at the edges of the world border for the end.
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.showBorderParticles`
+                 *
+                 * @default true
+                 */
+                get showBorderParticles(): boolean;
+                set showBorderParticles(showBorderParticles: boolean | undefined);
                 /**
                  * @deprecated
                  */
-                useShadersCompatibleBorderParticles: boolean;
-                buffer: number;
+                get useShadersCompatibleBorderParticles(): boolean;
+                set useShadersCompatibleBorderParticles(useShadersCompatibleBorderParticles: boolean | undefined);
+                /**
+                 * The minimum distance outside of the end world border that the player has to be before they start taking damage when the {@link mode} is set to `2` (Damage Players).
+                 *
+                 * Dynamic Property ID: `andexdbWorldBorderSettings:the_end.buffer`
+                 *
+                 * @default 5
+                 */
+                get buffer(): number;
+                set buffer(buffer: number | undefined);
             };
         };
         /**
@@ -301,7 +650,8 @@ declare namespace exports {
                  *
                  * @default false
                  */
-                enabled: boolean;
+                get enabled(): boolean;
+                set enabled(enabled: boolean | undefined);
             };
             /**
              * The player shop system settings.
@@ -316,7 +666,8 @@ declare namespace exports {
                  *
                  * @default false
                  */
-                enabled: boolean;
+                get enabled(): boolean;
+                set enabled(enabled: boolean | undefined);
                 /**
                  * The maximum amount of shops a player can have.
                  *
@@ -324,7 +675,8 @@ declare namespace exports {
                  *
                  * @default 5
                  */
-                maxShopsPerPlayer: number;
+                get maxShopsPerPlayer(): number;
+                set maxShopsPerPlayer(maxShopsPerPlayer: number | undefined);
                 /**
                  * Whether or not players can sell items that are locked to a specific slot in their inventory.
                  *
@@ -332,7 +684,8 @@ declare namespace exports {
                  *
                  * @default false
                  */
-                allowSellingLockInSlotItems: boolean;
+                get allowSellingLockInSlotItems(): boolean;
+                set allowSellingLockInSlotItems(allowSellingLockInSlotItems: boolean | undefined);
                 /**
                  * Whether or not players can sell items that are locked to inventory.
                  *
@@ -340,7 +693,8 @@ declare namespace exports {
                  *
                  * @default false
                  */
-                allowSellingLockInInventoryItems: boolean;
+                get allowSellingLockInInventoryItems(): boolean;
+                set allowSellingLockInInventoryItems(allowSellingLockInInventoryItems: boolean | undefined);
                 /**
                  * Whether or not players can sell items that have the keepOnDeath component set to true.
                  *
@@ -348,7 +702,8 @@ declare namespace exports {
                  *
                  * @default true
                  */
-                allowSellingKeepOnDeathItems: boolean;
+                get allowSellingKeepOnDeathItems(): boolean;
+                set allowSellingKeepOnDeathItems(allowSellingKeepOnDeathItems: boolean | undefined);
             };
             /**
              * The sign shop system settings.
@@ -368,7 +723,8 @@ declare namespace exports {
                  *
                  * @default false
                  */
-                enabled: boolean;
+                get enabled(): boolean;
+                set enabled(enabled: boolean | undefined);
             };
         };
         /**
@@ -388,7 +744,8 @@ declare namespace exports {
              *
              * @default true
              */
-            allowCrossDimensionalTeleport: boolean;
+            get allowCrossDimensionalTeleport(): boolean;
+            set allowCrossDimensionalTeleport(enabled: boolean | undefined);
             /**
              * How long in seconds after teleporting that the player has to wait before they can teleport again.
              *
@@ -398,7 +755,8 @@ declare namespace exports {
              *
              * @default 30
              */
-            teleportCooldown: number;
+            get teleportCooldown(): number;
+            set teleportCooldown(maxHomes: number | undefined);
             /**
              * How long in seconds that the player has to stand still before they can teleport, if they move during this time period, the teleportation is canceled.
              *
@@ -408,7 +766,8 @@ declare namespace exports {
              *
              * @default 5
              */
-            standStillTimeToTeleport: number;
+            get standStillTimeToTeleport(): number;
+            set standStillTimeToTeleport(maxHomes: number | undefined);
             /**
              * How long in seconds after getting damaged by another player that the player has to wait before they can teleport with the player menu or commands such as `\spawn`, `\home`, `\gohome`, `\tpa`, and `\rtp`.
              *
@@ -418,7 +777,8 @@ declare namespace exports {
              *
              * @default 15
              */
-            pvpCooldownToTeleport: number;
+            get pvpCooldownToTeleport(): number;
+            set pvpCooldownToTeleport(invalidChatCommandAction: number | undefined);
         };
         /**
          * The home system settings.
@@ -433,7 +793,8 @@ declare namespace exports {
              *
              * @default true
              */
-            homeSystemEnabled: boolean;
+            get homeSystemEnabled(): boolean;
+            set homeSystemEnabled(enabled: boolean | undefined);
             /**
              * The maximum number of homes a player can have.
              *
@@ -441,7 +802,8 @@ declare namespace exports {
              *
              * @default Infinity
              */
-            maxHomesPerPlayer: number;
+            get maxHomesPerPlayer(): number;
+            set maxHomesPerPlayer(maxHomes: number | undefined);
             /**
              * Whether or not you can teleport to a home that is in a different dimension than you.
              *
@@ -449,7 +811,8 @@ declare namespace exports {
              *
              * @default true
              */
-            allowCrossDimensionalTeleport: boolean;
+            get allowCrossDimensionalTeleport(): boolean;
+            set allowCrossDimensionalTeleport(enabled: boolean | undefined);
             /**
              * Whether or not homes are allowed in dimensions other than the overworld.
              *
@@ -457,7 +820,8 @@ declare namespace exports {
              *
              * @default true
              */
-            allowHomesInOtherDimensions: boolean;
+            get allowHomesInOtherDimensions(): boolean;
+            set allowHomesInOtherDimensions(enabled: boolean | undefined);
         };
         /**
          * The teleport request system settings.
@@ -472,7 +836,8 @@ declare namespace exports {
              *
              * @default true
              */
-            tpaSystemEnabled: boolean;
+            get tpaSystemEnabled(): boolean;
+            set tpaSystemEnabled(enabled: boolean | undefined);
             /**
              * The number of seconds after a teleport request is sent before it will time out.
              *
@@ -480,7 +845,8 @@ declare namespace exports {
              *
              * @default 60
              */
-            timeoutDuration: number;
+            get timeoutDuration(): number;
+            set timeoutDuration(timeoutDuration: number | undefined);
             /**
              * Whether or not you can teleport to a player who is in a different dimension than you.
              *
@@ -488,7 +854,8 @@ declare namespace exports {
              *
              * @default true
              */
-            allowCrossDimensionalTeleport: boolean;
+            get allowCrossDimensionalTeleport(): boolean;
+            set allowCrossDimensionalTeleport(enabled: boolean | undefined);
         };
         /**
          * The chat and name tags settings.
@@ -496,11 +863,16 @@ declare namespace exports {
          */
         static get chatRanks(): {
             new (): {};
-            chatRankPrefix: string;
-            chatSudoPrefix: string;
-            chatDisplayTimeStamp: boolean;
-            showRanksOnPlayerNameTags: boolean;
-            showHealthOnPlayerNameTags: boolean;
+            get chatRankPrefix(): string;
+            set chatRankPrefix(chatRankPrefix: string | undefined);
+            get chatSudoPrefix(): string;
+            set chatSudoPrefix(chatSudoPrefix: string | undefined);
+            get chatDisplayTimeStamp(): boolean;
+            set chatDisplayTimeStamp(chatDisplayTimeStampEnabled: boolean | undefined);
+            get showRanksOnPlayerNameTags(): boolean;
+            set showRanksOnPlayerNameTags(showRanksOnPlayerNameTags: boolean | undefined);
+            get showHealthOnPlayerNameTags(): boolean;
+            set showHealthOnPlayerNameTags(showHealthOnPlayerNameTags: boolean | undefined);
             /**
              * The maximum number of decimal places to display on the health display on player name tags.
              *
@@ -512,15 +884,24 @@ declare namespace exports {
              */
             get playerNameTagHealthPrecision(): 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20;
             set playerNameTagHealthPrecision(playerNameTagHealthPrecision: number | undefined);
-            rankMode: keyof typeof rankModes;
-            rankEvaluatorMode_chat: (typeof rankEvaluatorModes)[number];
-            rankEvaluatorMode_nameTags: (typeof rankEvaluatorModes)[number];
-            rankDisplayPrefix: string;
-            rankDisplaySuffix: string;
-            nameDisplayPrefix: string;
-            nameDisplaySuffix: string;
-            chatNameAndMessageSeparator: string;
-            rankDisplaySeparator: string;
+            get rankMode(): keyof typeof rankModes;
+            set rankMode(rankMode: keyof typeof rankModes | undefined);
+            get rankEvaluatorMode_chat(): (typeof rankEvaluatorModes)[number];
+            set rankEvaluatorMode_chat(rankEvaluatorMode_chat: (typeof rankEvaluatorModes)[number] | undefined);
+            get rankEvaluatorMode_nameTags(): (typeof rankEvaluatorModes)[number];
+            set rankEvaluatorMode_nameTags(rankEvaluatorMode_nameTags: (typeof rankEvaluatorModes)[number] | undefined);
+            get rankDisplayPrefix(): string;
+            set rankDisplayPrefix(rankDisplayPrefix: string | undefined);
+            get rankDisplaySuffix(): string;
+            set rankDisplaySuffix(rankDisplaySuffix: string | undefined);
+            get nameDisplayPrefix(): string;
+            set nameDisplayPrefix(nameDisplayPrefix: string | undefined);
+            get nameDisplaySuffix(): string;
+            set nameDisplaySuffix(nameDisplaySuffix: string | undefined);
+            get chatNameAndMessageSeparator(): string;
+            set chatNameAndMessageSeparator(chatNameAndMessageSeparator: string | undefined);
+            get rankDisplaySeparator(): string;
+            set rankDisplaySeparator(rankDisplaySeparator: string | undefined);
             /**
              * The template string for displaying a player's dimension in the chat.
              *
@@ -530,24 +911,37 @@ declare namespace exports {
              *
              * @default "[${dimension}§r] "
              */
-            chatDimensionTemplateString: string;
+            get chatDimensionTemplateString(): string;
+            set chatDimensionTemplateString(chatDimensionTemplateString: string | undefined);
             /**
              * The template string for individual ranks.
              *
              * @default "[${rank}§r]"
              */
-            rankTemplateString: string;
-            messageTemplateString: string;
-            nameTagTemplateString: string;
-            defaultRank: string;
-            defaultMessageFormatting: string;
-            defaultNameFormatting: string;
-            defaultSeparatorFormatting: string;
-            disableCustomChatMessages: boolean;
-            allowCustomChatMessagesMuting: boolean;
-            autoEscapeChatMessages: boolean;
-            autoURIEscapeChatMessages: boolean;
-            allowChatEscapeCodes: boolean;
+            get rankTemplateString(): string;
+            set rankTemplateString(rankTemplateString: string | undefined);
+            get messageTemplateString(): string;
+            set messageTemplateString(messageTemplateString: string | undefined);
+            get nameTagTemplateString(): string;
+            set nameTagTemplateString(nameTagTemplateString: string | undefined);
+            get defaultRank(): string;
+            set defaultRank(defaultRank: string | undefined);
+            get defaultMessageFormatting(): string;
+            set defaultMessageFormatting(defaultMessageFormatting: string | undefined);
+            get defaultNameFormatting(): string;
+            set defaultNameFormatting(defaultNameFormatting: string | undefined);
+            get defaultSeparatorFormatting(): string;
+            set defaultSeparatorFormatting(defaultSeparatorFormatting: string | undefined);
+            get disableCustomChatMessages(): boolean;
+            set disableCustomChatMessages(disableCustomChatMessages: boolean | undefined);
+            get allowCustomChatMessagesMuting(): boolean;
+            set allowCustomChatMessagesMuting(allowCustomChatMessagesMuting: boolean | undefined);
+            get autoEscapeChatMessages(): boolean;
+            set autoEscapeChatMessages(autoEscapeChatMessages: boolean | undefined);
+            get autoURIEscapeChatMessages(): boolean;
+            set autoURIEscapeChatMessages(autoURIEscapeChatMessages: boolean | undefined);
+            get allowChatEscapeCodes(): boolean;
+            set allowChatEscapeCodes(allowChatEscapeCodes: boolean | undefined);
         };
         /**
          * The money system settings.
@@ -566,7 +960,8 @@ declare namespace exports {
              *
              * @default false
              */
-            useScoreboardBasedMoneySystem: boolean;
+            get useScoreboardBasedMoneySystem(): boolean;
+            set useScoreboardBasedMoneySystem(enabled: boolean | undefined);
             /**
              * The name of the scoreboard to use for the money system.
              *
@@ -574,7 +969,8 @@ declare namespace exports {
              *
              * @default "andexdb:money"
              */
-            scoreboardName: string;
+            get scoreboardName(): string;
+            set scoreboardName(enabled: string | undefined);
         };
         /**
          * The bounty system settings.
@@ -589,7 +985,8 @@ declare namespace exports {
              *
              * @default true
              */
-            enabled: boolean;
+            get enabled(): boolean;
+            set enabled(enabled: boolean | undefined);
             /**
              * Whether to show the time that a player was last online in the stats list that is shown when a player clicks on the bounty for another player in the bounty list.
              *
@@ -597,7 +994,8 @@ declare namespace exports {
              *
              * @default false
              */
-            showLastOnlineTimeInBountyDetailsList: boolean;
+            get showLastOnlineTimeInBountyDetailsList(): boolean;
+            set showLastOnlineTimeInBountyDetailsList(show: boolean | undefined);
         };
         /**
          * The warps system settings.
@@ -612,7 +1010,8 @@ declare namespace exports {
              *
              * @default true
              */
-            enabled: boolean;
+            get enabled(): boolean;
+            set enabled(enabled: boolean | undefined);
             /**
              * List of saved warps.
              *
@@ -622,7 +1021,8 @@ declare namespace exports {
              *
              * @throws {TypeError} The setter throws if the input is not an array of warp interface objects or undefined.
              */
-            warps: Warp[];
+            get warps(): Warp[];
+            set warps(warps: Warp[] | undefined);
         };
         /**
          * The money transfer system settings.
@@ -637,7 +1037,8 @@ declare namespace exports {
              *
              * @default true
              */
-            enabled: boolean;
+            get enabled(): boolean;
+            set enabled(enabled: boolean | undefined);
         };
         /**
          * The anti-spam system settings.
@@ -652,7 +1053,8 @@ declare namespace exports {
              *
              * @default false
              */
-            antispamEnabled: boolean;
+            get antispamEnabled(): boolean;
+            set antispamEnabled(enabled: boolean | undefined);
             /**
              * Whether or not to restart the anti-spam mute timer when a message is sent during a mute.
              *
@@ -660,7 +1062,8 @@ declare namespace exports {
              *
              * @default false
              */
-            restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute: boolean;
+            get restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(): boolean;
+            set restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute(restartAntiSpamMuteTimerUponAttemptedMessageSendDuringMute: boolean | undefined);
             /**
              * The wait time in seconds before a player can send another chat message.
              *
@@ -668,7 +1071,8 @@ declare namespace exports {
              *
              * @default 60
              */
-            waitTimeAfterAntispamActivation: number;
+            get waitTimeAfterAntispamActivation(): number;
+            set waitTimeAfterAntispamActivation(waitTimeInSeconds: number | undefined);
             /**
              * The maximum time in seconds between individual messages to trigger anti-spam.
              *
@@ -676,7 +1080,8 @@ declare namespace exports {
              *
              * @default 5
              */
-            maxTimeBewteenMessagesToTriggerAntiSpam: number;
+            get maxTimeBewteenMessagesToTriggerAntiSpam(): number;
+            set maxTimeBewteenMessagesToTriggerAntiSpam(maxTimeInSeconds: number | undefined);
             /**
              * The message count to trigger anti-spam.
              *
@@ -684,7 +1089,8 @@ declare namespace exports {
              *
              * @default 4
              */
-            antispamTriggerMessageCount: number;
+            get antispamTriggerMessageCount(): number;
+            set antispamTriggerMessageCount(messageCount: number | undefined);
         };
         /**
          * The moderation settings.
@@ -705,7 +1111,8 @@ declare namespace exports {
                  *
                  * @default true
                  */
-                enabled: boolean;
+                get enabled(): boolean;
+                set enabled(enabled: boolean | undefined);
                 /**
                  * How long it has to be since the last ban refresh before the bans list will be automatically refreshed, when getting the bans list or checking if a player is banned.
                  *
@@ -713,7 +1120,8 @@ declare namespace exports {
                  *
                  * @default 1000
                  */
-                minimumAutoRefresh: number | undefined;
+                get minimumAutoRefresh(): number;
+                set minimumAutoRefresh(minimumAutoRefresh: number | undefined);
             };
         };
         /**
@@ -743,7 +1151,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showDeprecatedButtons: boolean;
+                    get showDeprecatedButtons(): boolean;
+                    set showDeprecatedButtons(show: boolean | undefined);
                     /**
                      * Whether to show the buttons marked as deprecated on the main menu.
                      *
@@ -751,7 +1160,8 @@ declare namespace exports {
                      *
                      * @default true
                      */
-                    showExperimentalButtons: boolean;
+                    get showExperimentalButtons(): boolean;
+                    set showExperimentalButtons(show: boolean | undefined);
                     /**
                      * Whether to show the buttons marked as deprecated on the main menu.
                      *
@@ -759,7 +1169,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showUnusedButtons: boolean;
+                    get showUnusedButtons(): boolean;
+                    set showUnusedButtons(show: boolean | undefined);
                     /**
                      * Whether to show the buttons for features that are planned to be added in a future update on the main menu.
                      *
@@ -767,7 +1178,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showUpcomingButtons: boolean;
+                    get showUpcomingButtons(): boolean;
+                    set showUpcomingButtons(show: boolean | undefined);
                     /**
                      * Whether to show the buttons for features that are non-functional on the main menu.
                      *
@@ -775,7 +1187,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showNonFunctionalButtons: boolean;
+                    get showNonFunctionalButtons(): boolean;
+                    set showNonFunctionalButtons(show: boolean | undefined);
                 };
                 /**
                  * The player menu settings.
@@ -790,7 +1203,8 @@ declare namespace exports {
                      *
                      * @default true
                      */
-                    enabled: boolean;
+                    get enabled(): boolean;
+                    set enabled(enabled: boolean | undefined);
                     /**
                      * The buttons to show on the player menu. They will appear in the order that they are specified in this option.
                      *
@@ -809,7 +1223,8 @@ declare namespace exports {
                      *    )
                      *)
                      */
-                    buttons: (keyof typeof menuButtonIds.playerMenu.buttons)[];
+                    get buttons(): (keyof typeof menuButtonIds.playerMenu.buttons)[];
+                    set buttons(buttonList: (keyof typeof menuButtonIds.playerMenu.buttons)[] | undefined);
                     /**
                      * The item name for the item that opens the player menu.
                      *
@@ -817,7 +1232,8 @@ declare namespace exports {
                      *
                      * @default "Menu"
                      */
-                    itemName: string;
+                    get itemName(): string;
+                    set itemName(itemName: string | undefined);
                     /**
                      * Whether to show the buttons marked as deprecated on the player menu.
                      *
@@ -825,7 +1241,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showDeprecatedButtons: boolean;
+                    get showDeprecatedButtons(): boolean;
+                    set showDeprecatedButtons(show: boolean | undefined);
                     /**
                      * Whether to show the buttons marked as deprecated on the player menu.
                      *
@@ -833,7 +1250,8 @@ declare namespace exports {
                      *
                      * @default true
                      */
-                    showExperimentalButtons: boolean;
+                    get showExperimentalButtons(): boolean;
+                    set showExperimentalButtons(show: boolean | undefined);
                     /**
                      * Whether to show the buttons marked as deprecated on the player menu.
                      *
@@ -841,7 +1259,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showUnusedButtons: boolean;
+                    get showUnusedButtons(): boolean;
+                    set showUnusedButtons(show: boolean | undefined);
                     /**
                      * Whether to show the buttons for features that are planned to be added in a future update on the player menu.
                      *
@@ -849,7 +1268,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showUpcomingButtons: boolean;
+                    get showUpcomingButtons(): boolean;
+                    set showUpcomingButtons(show: boolean | undefined);
                     /**
                      * Whether to show the buttons for features that are non-functional on the player menu.
                      *
@@ -857,7 +1277,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showNonFunctionalButtons: boolean;
+                    get showNonFunctionalButtons(): boolean;
+                    set showNonFunctionalButtons(show: boolean | undefined);
                 };
                 /**
                  * The settings for the player menu leaderboards.
@@ -884,7 +1305,8 @@ declare namespace exports {
                              *
                              * @default true
                              */
-                            enabled: boolean;
+                            get enabled(): boolean;
+                            set enabled(enabled: boolean | undefined);
                             /**
                              * The display options for the built-in `money` leaderboard statistic.
                              * @group Subclasses
@@ -900,7 +1322,8 @@ declare namespace exports {
                                  *
                                  * @default "$"
                                  */
-                                currencyPrefix: string;
+                                get currencyPrefix(): string;
+                                set currencyPrefix(currencyPrefix: string | undefined);
                                 /**
                                  * Whether or not to add comma separators to the displayed value for this statistic.
                                  *
@@ -910,7 +1333,8 @@ declare namespace exports {
                                  *
                                  * @default true
                                  */
-                                addCommaSeparators: boolean;
+                                get addCommaSeparators(): boolean;
+                                set addCommaSeparators(addCommaSeparators: boolean | undefined);
                             };
                         };
                     };
@@ -921,7 +1345,8 @@ declare namespace exports {
                      *
                      * @default []
                      */
-                    customStats: playerMenuLeaderboardStatistic<"custom" | "customAdvanced">[];
+                    get customStats(): playerMenuLeaderboardStatistic<"custom" | "customAdvanced">[];
+                    set customStats(buttonList: playerMenuLeaderboardStatistic<"custom" | "customAdvanced">[] | undefined);
                     /**
                      * The statistics that are displayed when a player clicks on another player inside of the player menu leaderboard, they will be displayed in the order they are in this array.
                      *
@@ -933,7 +1358,8 @@ declare namespace exports {
                      *
                      * @default defaultPlayerMenuLeaderboardStatistics.map((s) => s.id)
                      */
-                    trackedStats: string[];
+                    get trackedStats(): string[];
+                    set trackedStats(buttonList: string[] | undefined);
                     /**
                      * The list of statistics that have their own leaderboards, they will be displayed in the order they are in this array.
                      *
@@ -945,7 +1371,8 @@ declare namespace exports {
                      *
                      * @default defaultPlayerMenuLeaderboardStatistics.map((s) => s.id)
                      */
-                    leaderboards: string[];
+                    get leaderboards(): string[];
+                    set leaderboards(buttonList: string[] | undefined);
                     /**
                      * Whether to show the time that a player was last online in the stats list that is shown when a player click on another player in a leaderboard.
                      *
@@ -953,7 +1380,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showLastOnlineTimeInPlayerStatsList: boolean;
+                    get showLastOnlineTimeInPlayerStatsList(): boolean;
+                    set showLastOnlineTimeInPlayerStatsList(show: boolean | undefined);
                     /**
                      * Whether to show banned players inside of the leaderboards.
                      *
@@ -961,7 +1389,8 @@ declare namespace exports {
                      *
                      * @default false
                      */
-                    showBannedPlayersInLeaderboards: boolean;
+                    get showBannedPlayersInLeaderboards(): boolean;
+                    set showBannedPlayersInLeaderboards(show: boolean | undefined);
                 };
             };
             /**
@@ -980,15 +1409,18 @@ declare namespace exports {
                 /**
                  * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
                  */
-                maxPlayersPerManagePlayersPage: number;
+                get maxPlayersPerManagePlayersPage(): number;
+                set maxPlayersPerManagePlayersPage(maxPlayersPerManagePlayersPage: number | undefined);
                 /**
                  * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
                  */
-                maxBansPerManageBansPage: number;
+                get maxBansPerManageBansPage(): number;
+                set maxBansPerManageBansPage(maxBansPerManageBansPage: number | undefined);
                 /**
                  * Moved from {@link config} to {@link config.ui.pages} in version 1.23.0-preview.20+BUILD.1 on 10/04/2024 at 3:10:37 PM PDT.
                  */
-                maxHomesPerManageHomesPage: number;
+                get maxHomesPerManageHomesPage(): number;
+                set maxHomesPerManageHomesPage(maxHomesPerManageHomesPage: number | undefined);
             };
             /**
              * Other UI settings.
@@ -1005,7 +1437,8 @@ declare namespace exports {
          */
         static get system(): {
             new (): {};
-            artificialLagMS: number;
+            get artificialLagMS(): number;
+            set artificialLagMS(artificialLagMS: number | undefined);
             /**
              * The default minimum time between tick waits, in milliseconds.
              *
@@ -1015,9 +1448,12 @@ declare namespace exports {
              *
              * @default 2500
              */
-            defaultMinMSBetweenTickWaits: number;
-            timeZone: number;
-            playerDataRefreshRate: number;
+            get defaultMinMSBetweenTickWaits(): number;
+            set defaultMinMSBetweenTickWaits(defaultMinMSBetweenTickWaits: number | undefined);
+            get timeZone(): number;
+            set timeZone(timeZone: number | undefined);
+            get playerDataRefreshRate(): number;
+            set playerDataRefreshRate(playerDataRefreshRate: number | undefined);
             /**
              * How often to refresh protected areas.
              *
@@ -1027,7 +1463,8 @@ declare namespace exports {
              *
              * @deprecated
              */
-            protectedAreasRefreshRate: number;
+            get protectedAreasRefreshRate(): number;
+            set protectedAreasRefreshRate(protectedAreasRefreshRate: number | undefined);
             /**
              * Whether to enable zone actions for protected areas.
              *
@@ -1035,7 +1472,8 @@ declare namespace exports {
              *
              * @default true
              */
-            protectedAreasZoneActionsEnabled: boolean;
+            get protectedAreasZoneActionsEnabled(): boolean;
+            set protectedAreasZoneActionsEnabled(protectedAreasZoneActionsEnabled: boolean | undefined);
             /**
              * How often in ticks to execute the zone actions.
              *
@@ -1043,7 +1481,8 @@ declare namespace exports {
              *
              * @default 5
              */
-            protectedAreasZoneActionsInterval: number;
+            get protectedAreasZoneActionsInterval(): number;
+            set protectedAreasZoneActionsInterval(protectedAreasZoneActionsInterval: number | undefined);
             /**
              * How often in milliseconds to refresh the list of protected areas zones with zone actions.
              *
@@ -1051,7 +1490,8 @@ declare namespace exports {
              *
              * @default 200
              */
-            protectedAreasZoneRefreshInterval: number;
+            get protectedAreasZoneRefreshInterval(): number;
+            set protectedAreasZoneRefreshInterval(protectedAreasZoneRefreshInterval: number | undefined);
             /**
              * How often in ticks to check for banned players.
              *
@@ -1059,8 +1499,10 @@ declare namespace exports {
              *
              * @default 20
              */
-            bannedPlayersRefreshRate: number;
-            debugMode: boolean;
+            get bannedPlayersRefreshRate(): number;
+            set bannedPlayersRefreshRate(bannedPlayersRefreshRate: number | undefined);
+            get debugMode(): boolean;
+            set debugMode(debugMode: boolean | undefined);
             /**
              * It is recommended to leave this set to false.
              *
@@ -1068,7 +1510,8 @@ declare namespace exports {
              *
              * @default false
              */
-            allowWatchdogTerminationCrash: boolean;
+            get allowWatchdogTerminationCrash(): boolean;
+            set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash: boolean | undefined);
             /**
              * It is recommended to leave this set to false.
              *
@@ -1076,8 +1519,10 @@ declare namespace exports {
              *
              * @default false
              */
-            hideWatchdogTerminationCrashEnabledWarningsOnStartup: boolean;
-            autoSavePlayerData: boolean;
+            get hideWatchdogTerminationCrashEnabledWarningsOnStartup(): boolean;
+            set hideWatchdogTerminationCrashEnabledWarningsOnStartup(hideWatchdogTerminationCrashEnabledWarningsOnStartup: boolean | undefined);
+            get autoSavePlayerData(): boolean;
+            set autoSavePlayerData(autoSavePlayerData: boolean | undefined);
             /**
              * It is recommended to leave this set to false.
              *
@@ -1085,28 +1530,42 @@ declare namespace exports {
              *
              * @default false
              */
-            useLegacyPlayerInventoryDataSaveSystem: boolean;
-            playerInventoryDataSaveSystemEnabled: boolean;
-            spreadPlayerInventoryDataSavesOverMultipleTicks: boolean;
-            playerDataSavePerformanceMode: PlayerDataSaveMode;
-            showEntityScaleNotFoundConsoleLog: boolean;
-            showEntityScaleFoundConsoleLog: boolean;
-            showEntityScaleNotFoundChatLog: boolean;
-            showEntityScaleFoundChatLog: boolean;
-            showBlueModsAnticheatNotFoundConsoleLog: boolean;
-            showBlueModsAnticheatFoundConsoleLog: boolean;
-            showBlueModsAnticheatNotFoundChatLog: boolean;
-            showBlueModsAnticheatFoundChatLog: boolean;
+            get useLegacyPlayerInventoryDataSaveSystem(): boolean;
+            set useLegacyPlayerInventoryDataSaveSystem(useLegacyPlayerInventoryDataSaveSystem: boolean | undefined);
+            get playerInventoryDataSaveSystemEnabled(): boolean;
+            set playerInventoryDataSaveSystemEnabled(playerInventoryDataSaveSystemEnabled: boolean | undefined);
+            get spreadPlayerInventoryDataSavesOverMultipleTicks(): boolean;
+            set spreadPlayerInventoryDataSavesOverMultipleTicks(spreadPlayerInventoryDataSavesOverMultipleTicks: boolean | undefined);
+            get playerDataSavePerformanceMode(): PlayerDataSaveMode;
+            set playerDataSavePerformanceMode(playerDataSavePerformanceMode: PlayerDataSaveMode | undefined);
+            get showEntityScaleNotFoundConsoleLog(): boolean;
+            set showEntityScaleNotFoundConsoleLog(showEntityScaleNotFoundConsoleLog: boolean | undefined);
+            get showEntityScaleFoundConsoleLog(): boolean;
+            set showEntityScaleFoundConsoleLog(showEntityScaleFoundConsoleLog: boolean | undefined);
+            get showEntityScaleNotFoundChatLog(): boolean;
+            set showEntityScaleNotFoundChatLog(showEntityScaleNotFoundChatLog: boolean | undefined);
+            get showEntityScaleFoundChatLog(): boolean;
+            set showEntityScaleFoundChatLog(showEntityScaleFoundChatLog: boolean | undefined);
+            get showBlueModsAnticheatNotFoundConsoleLog(): boolean;
+            set showBlueModsAnticheatNotFoundConsoleLog(showBlueModsAnticheatNotFoundConsoleLog: boolean | undefined);
+            get showBlueModsAnticheatFoundConsoleLog(): boolean;
+            set showBlueModsAnticheatFoundConsoleLog(showBlueModsAnticheatFoundConsoleLog: boolean | undefined);
+            get showBlueModsAnticheatNotFoundChatLog(): boolean;
+            set showBlueModsAnticheatNotFoundChatLog(showBlueModsAnticheatNotFoundChatLog: boolean | undefined);
+            get showBlueModsAnticheatFoundChatLog(): boolean;
+            set showBlueModsAnticheatFoundChatLog(showBlueModsAnticheatFoundChatLog: boolean | undefined);
             /**
              * Sets whether or not the add-on is allowed to connect to and communicate with the entity scale add-on.
              * @warning It is HIGHLY DISCOURAGED to disable this option.
              */
-            allowConnectingToEntityScale: boolean;
+            get allowConnectingToEntityScale(): boolean;
+            set allowConnectingToEntityScale(allowConnectingToEntityScale: boolean | undefined);
             /**
              * Sets whether or not the add-on is allowed to connect to and communicate with the BlueMods Anticheat add-on.
              * @warning It is HIGHLY DISCOURAGED to disable this option.
              */
-            allowConnectingToBlueModsAnticheat: boolean;
+            get allowConnectingToBlueModsAnticheat(): boolean;
+            set allowConnectingToBlueModsAnticheat(allowConnectingToBlueModsAnticheat: boolean | undefined);
         };
         /**
          * Resets the specified subsection of the config, or the entire config if no subsection is specified.
@@ -1142,9 +1601,12 @@ declare namespace exports {
         static applySettings<T extends FilterKey<typeof config, ["prototype", "reset", "applySettings", "toJSON"]>>(settings: DeepPartial<T>): void;
         /**
          * Converts the config object to a JSON-serializable object.
-         * @returns {FilterKey<typeof config, ["prototype", "reset", "applySettings", "toJSON"]>} An object that can be serialized to JSON, containing all the properties of the config object except for the ones with the names "prototype", "reset", "applySettings", and "toJSON", and the ones that are not enumerable.
+         *
+         * @template {object} T The type of the settings category to convert to JSON.
+         * @param {T} [subconfig=this] The subconfig to convert to JSON. If not specified, the entire config will be converted to JSON.
+         * @returns {FilterKey<T, ["prototype", "reset", "applySettings", "toJSON"]>} An object that can be serialized to JSON, containing all the properties of the config object except for the ones with the names "prototype", "reset", "applySettings", and "toJSON", and the ones that are not enumerable.
          */
-        static toJSON(): FilterKey<typeof config, ["prototype", "reset", "applySettings", "toJSON"]>;
+        static toJSON<T extends object = typeof config>(subconfig?: T): FilterKey<T, ["prototype", "reset", "applySettings", "toJSON"]>;
     }
 }
 export import config = exports.config;
@@ -1153,7 +1615,8 @@ export import config = exports.config;
  */
 export declare const system: {
     new (): {};
-    artificialLagMS: number;
+    get artificialLagMS(): number;
+    set artificialLagMS(artificialLagMS: number | undefined);
     /**
      * The default minimum time between tick waits, in milliseconds.
      *
@@ -1163,9 +1626,12 @@ export declare const system: {
      *
      * @default 2500
      */
-    defaultMinMSBetweenTickWaits: number;
-    timeZone: number;
-    playerDataRefreshRate: number;
+    get defaultMinMSBetweenTickWaits(): number;
+    set defaultMinMSBetweenTickWaits(defaultMinMSBetweenTickWaits: number | undefined);
+    get timeZone(): number;
+    set timeZone(timeZone: number | undefined);
+    get playerDataRefreshRate(): number;
+    set playerDataRefreshRate(playerDataRefreshRate: number | undefined);
     /**
      * How often to refresh protected areas.
      *
@@ -1175,7 +1641,8 @@ export declare const system: {
      *
      * @deprecated
      */
-    protectedAreasRefreshRate: number;
+    get protectedAreasRefreshRate(): number;
+    set protectedAreasRefreshRate(protectedAreasRefreshRate: number | undefined);
     /**
      * Whether to enable zone actions for protected areas.
      *
@@ -1183,7 +1650,8 @@ export declare const system: {
      *
      * @default true
      */
-    protectedAreasZoneActionsEnabled: boolean;
+    get protectedAreasZoneActionsEnabled(): boolean;
+    set protectedAreasZoneActionsEnabled(protectedAreasZoneActionsEnabled: boolean | undefined);
     /**
      * How often in ticks to execute the zone actions.
      *
@@ -1191,7 +1659,8 @@ export declare const system: {
      *
      * @default 5
      */
-    protectedAreasZoneActionsInterval: number;
+    get protectedAreasZoneActionsInterval(): number;
+    set protectedAreasZoneActionsInterval(protectedAreasZoneActionsInterval: number | undefined);
     /**
      * How often in milliseconds to refresh the list of protected areas zones with zone actions.
      *
@@ -1199,7 +1668,8 @@ export declare const system: {
      *
      * @default 200
      */
-    protectedAreasZoneRefreshInterval: number;
+    get protectedAreasZoneRefreshInterval(): number;
+    set protectedAreasZoneRefreshInterval(protectedAreasZoneRefreshInterval: number | undefined);
     /**
      * How often in ticks to check for banned players.
      *
@@ -1207,8 +1677,10 @@ export declare const system: {
      *
      * @default 20
      */
-    bannedPlayersRefreshRate: number;
-    debugMode: boolean;
+    get bannedPlayersRefreshRate(): number;
+    set bannedPlayersRefreshRate(bannedPlayersRefreshRate: number | undefined);
+    get debugMode(): boolean;
+    set debugMode(debugMode: boolean | undefined);
     /**
      * It is recommended to leave this set to false.
      *
@@ -1216,7 +1688,8 @@ export declare const system: {
      *
      * @default false
      */
-    allowWatchdogTerminationCrash: boolean;
+    get allowWatchdogTerminationCrash(): boolean;
+    set allowWatchdogTerminationCrash(allowWatchdogTerminationCrash: boolean | undefined);
     /**
      * It is recommended to leave this set to false.
      *
@@ -1224,8 +1697,10 @@ export declare const system: {
      *
      * @default false
      */
-    hideWatchdogTerminationCrashEnabledWarningsOnStartup: boolean;
-    autoSavePlayerData: boolean;
+    get hideWatchdogTerminationCrashEnabledWarningsOnStartup(): boolean;
+    set hideWatchdogTerminationCrashEnabledWarningsOnStartup(hideWatchdogTerminationCrashEnabledWarningsOnStartup: boolean | undefined);
+    get autoSavePlayerData(): boolean;
+    set autoSavePlayerData(autoSavePlayerData: boolean | undefined);
     /**
      * It is recommended to leave this set to false.
      *
@@ -1233,28 +1708,42 @@ export declare const system: {
      *
      * @default false
      */
-    useLegacyPlayerInventoryDataSaveSystem: boolean;
-    playerInventoryDataSaveSystemEnabled: boolean;
-    spreadPlayerInventoryDataSavesOverMultipleTicks: boolean;
-    playerDataSavePerformanceMode: PlayerDataSaveMode;
-    showEntityScaleNotFoundConsoleLog: boolean;
-    showEntityScaleFoundConsoleLog: boolean;
-    showEntityScaleNotFoundChatLog: boolean;
-    showEntityScaleFoundChatLog: boolean;
-    showBlueModsAnticheatNotFoundConsoleLog: boolean;
-    showBlueModsAnticheatFoundConsoleLog: boolean;
-    showBlueModsAnticheatNotFoundChatLog: boolean;
-    showBlueModsAnticheatFoundChatLog: boolean;
+    get useLegacyPlayerInventoryDataSaveSystem(): boolean;
+    set useLegacyPlayerInventoryDataSaveSystem(useLegacyPlayerInventoryDataSaveSystem: boolean | undefined);
+    get playerInventoryDataSaveSystemEnabled(): boolean;
+    set playerInventoryDataSaveSystemEnabled(playerInventoryDataSaveSystemEnabled: boolean | undefined);
+    get spreadPlayerInventoryDataSavesOverMultipleTicks(): boolean;
+    set spreadPlayerInventoryDataSavesOverMultipleTicks(spreadPlayerInventoryDataSavesOverMultipleTicks: boolean | undefined);
+    get playerDataSavePerformanceMode(): PlayerDataSaveMode;
+    set playerDataSavePerformanceMode(playerDataSavePerformanceMode: PlayerDataSaveMode | undefined);
+    get showEntityScaleNotFoundConsoleLog(): boolean;
+    set showEntityScaleNotFoundConsoleLog(showEntityScaleNotFoundConsoleLog: boolean | undefined);
+    get showEntityScaleFoundConsoleLog(): boolean;
+    set showEntityScaleFoundConsoleLog(showEntityScaleFoundConsoleLog: boolean | undefined);
+    get showEntityScaleNotFoundChatLog(): boolean;
+    set showEntityScaleNotFoundChatLog(showEntityScaleNotFoundChatLog: boolean | undefined);
+    get showEntityScaleFoundChatLog(): boolean;
+    set showEntityScaleFoundChatLog(showEntityScaleFoundChatLog: boolean | undefined);
+    get showBlueModsAnticheatNotFoundConsoleLog(): boolean;
+    set showBlueModsAnticheatNotFoundConsoleLog(showBlueModsAnticheatNotFoundConsoleLog: boolean | undefined);
+    get showBlueModsAnticheatFoundConsoleLog(): boolean;
+    set showBlueModsAnticheatFoundConsoleLog(showBlueModsAnticheatFoundConsoleLog: boolean | undefined);
+    get showBlueModsAnticheatNotFoundChatLog(): boolean;
+    set showBlueModsAnticheatNotFoundChatLog(showBlueModsAnticheatNotFoundChatLog: boolean | undefined);
+    get showBlueModsAnticheatFoundChatLog(): boolean;
+    set showBlueModsAnticheatFoundChatLog(showBlueModsAnticheatFoundChatLog: boolean | undefined);
     /**
      * Sets whether or not the add-on is allowed to connect to and communicate with the entity scale add-on.
      * @warning It is HIGHLY DISCOURAGED to disable this option.
      */
-    allowConnectingToEntityScale: boolean;
+    get allowConnectingToEntityScale(): boolean;
+    set allowConnectingToEntityScale(allowConnectingToEntityScale: boolean | undefined);
     /**
      * Sets whether or not the add-on is allowed to connect to and communicate with the BlueMods Anticheat add-on.
      * @warning It is HIGHLY DISCOURAGED to disable this option.
      */
-    allowConnectingToBlueModsAnticheat: boolean;
+    get allowConnectingToBlueModsAnticheat(): boolean;
+    set allowConnectingToBlueModsAnticheat(allowConnectingToBlueModsAnticheat: boolean | undefined);
 };
 declare global {
     namespace globalThis {

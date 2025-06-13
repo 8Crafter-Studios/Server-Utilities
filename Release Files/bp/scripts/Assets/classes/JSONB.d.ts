@@ -3,11 +3,14 @@
  * An improved version of {@link JSON}
  * @module
  * @description This file contains the `JSONB` class.
+ * @author 8Crafter
  */
 /**
  * An intrinsic object that provides functions to convert JavaScript values to and from the JavaScript Object Notation (JSON) format.
  *
  * This is an improved version of {@link JSON}.
+ *
+ * @author 8Crafter
  */
 export declare const JSONB: globalThis.JSONB;
 declare global {
@@ -15,6 +18,8 @@ declare global {
      * An intrinsic object that provides functions to convert JavaScript values to and from the JavaScript Object Notation (JSON) format.
      *
      * This is an improved version of {@link JSON}.
+     *
+     * @author 8Crafter
      *
      * @ignore
      */
@@ -43,6 +48,8 @@ declare global {
          * Warning: This option is currently ignored as it is non-functional.
          *
          * @returns A JavaScript value, usually an object or array, that represents the JSONB that was parsed from the specified string.
+         *
+         * @author 8Crafter
          */
         parse(text: string, reviver?: (this: any, key: string, value: any) => any, options?: {
             bigint?: boolean;
@@ -73,6 +80,8 @@ declare global {
          *
          * Warning: This option is currently ignored as it is non-functional.
          * @returns A JavaScript Object Notation B (JSONB) string that represents the value passed in.
+         *
+         * @author 8Crafter
          */
         stringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number, options?: {
             bigint?: boolean;
@@ -103,6 +112,8 @@ declare global {
          *
          * Warning: This option is currently ignored as it is non-functional.
          * @returns A JavaScript Object Notation B (JSONB) string that represents the value passed in.
+         *
+         * @author 8Crafter
          */
         stringify(value: any, replacer?: (number | string)[] | null, space?: string | number, options?: {
             bigint?: boolean;
@@ -120,6 +131,8 @@ declare global {
      * An intrinsic object that provides functions to convert JavaScript values to and from the JavaScript Object Notation (JSON) format.
      *
      * This is an improved version of {@link JSON}.
+     *
+     * @author 8Crafter
      *
      * @namespace
      */

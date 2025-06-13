@@ -293,7 +293,7 @@ export declare class BlockMask {
      * @param {string} str The string to extract the raw block mask from.
      * @returns {string | null} The raw block mask, or null if no raw block mask was found.
      */
-    static extractRaw(str: string): string | null;
+    static extractRaw(str: string): string | undefined;
     /**
      * Extracts a block mask from a string.
      *

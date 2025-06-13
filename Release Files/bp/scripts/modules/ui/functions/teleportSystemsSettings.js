@@ -62,13 +62,13 @@ export async function teleportSystemsSettings(sourceEntity) {
                     menuConfig.allowCrossDimensionalTeleport = options[v];
                     break;
                 case "pvpCooldownToTeleport":
-                    menuConfig.pvpCooldownToTeleport = options[v].toNumber();
+                    menuConfig.pvpCooldownToTeleport = options[v]?.toNumber();
                     break;
                 case "standStillTimeToTeleport":
-                    menuConfig.standStillTimeToTeleport = options[v].toNumber();
+                    menuConfig.standStillTimeToTeleport = options[v]?.toNumber();
                     break;
                 case "teleportCooldown":
-                    menuConfig.teleportCooldown = options[v].toNumber();
+                    menuConfig.teleportCooldown = options[v]?.toNumber();
                     break;
                 default:
                     throw new Error(`Save action for setting ${JSON.stringify(v)} was not defined.`);

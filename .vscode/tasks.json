@@ -1,0 +1,157 @@
+{
+    "version": "2.0.0",
+    "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+    },
+    "tasks": [
+        {
+            "label": "Create terminals",
+            "dependsOn": ["Main", "BP", "RP", "BP PV", "RP PV", "Release Files"],
+            // Mark as the default build task so cmd/ctrl+shift+b will create them
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            // Try start the task on folder open
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
+        },
+        {
+            // The name that shows up in terminal tab
+            "label": "Main",
+            // The task will launch a shell
+            "type": "shell",
+            "command": "",
+            "icon": {
+                "id": "root-folder",
+                "color": "terminal.ansiMagenta"
+            },
+            // Set the shell type
+            "options": {
+                "cwd": "./",
+                "shell": {
+                    "executable": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+                    "args": ["-NoExit", "-Command", "Set-ExecutionPolicy Bypass -Scope Process"]
+                }
+            },
+            // Mark as a background task to avoid the spinner animation on the terminal tab
+            "isBackground": true,
+            "problemMatcher": [],
+            // Create the tasks in a terminal group
+            "presentation": {
+                // "group": "my-group"
+            },
+            "runOptions": {"reevaluateOnRerun": false, "instanceLimit": 1},
+        },
+        {
+            "label": "BP",
+            "type": "shell",
+            "command": "",
+            "icon": {
+                "id": "file-submodule",
+                "color": "terminal.ansiCyan"
+            },
+            "options": {
+                "cwd": "./BP",
+                "shell": {
+                    "executable": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+                    "args": ["-NoExit", "-Command", "Set-ExecutionPolicy Bypass -Scope Process"]
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                // "group": "my-group"
+            }
+        },
+        {
+            "label": "RP",
+            "type": "shell",
+            "command": "",
+            "icon": {
+                "id": "file-submodule",
+                "color": "terminal.ansiGreen"
+            },
+            "options": {
+                "cwd": "./RP",
+                "shell": {
+                    "executable": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+                    "args": ["-NoExit", "-Command", "Set-ExecutionPolicy Bypass -Scope Process"]
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                // "group": "my-group"
+            }
+        },
+        {
+            "label": "BP PV",
+            "type": "shell",
+            "command": "",
+            "icon": {
+                "id": "file-submodule",
+                "color": "terminal.ansiRed"
+            },
+            "options": {
+                "cwd": "./BP Preview",
+                "shell": {
+                    "executable": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+                    "args": ["-NoExit", "-Command", "Set-ExecutionPolicy Bypass -Scope Process"]
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                // "group": "my-group"
+            }
+        },
+        {
+            "label": "RP PV",
+            "type": "shell",
+            "command": "",
+            "icon": {
+                "id": "file-submodule",
+                "color": "terminal.ansiYellow"
+            },
+            "options": {
+                "cwd": "./RP Preview",
+                "shell": {
+                    "executable": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+                    "args": ["-NoExit", "-Command", "Set-ExecutionPolicy Bypass -Scope Process"]
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                // "group": "my-group"
+            }
+        },
+        {
+            "label": "Release Files",
+            "type": "shell",
+            "command": "",
+            "icon": {
+                "id": "tag",
+                "color": "terminal.ansiBlue"
+            },
+            "options": {
+                "cwd": "./Release Files",
+                "shell": {
+                    "executable": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+                    "args": ["-NoExit", "-Command", "Set-ExecutionPolicy Bypass -Scope Process"]
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                // "group": "my-group"
+            }
+        }
+    ]
+}

@@ -1,5 +1,26 @@
 import { command } from "modules/commands/classes/command";
 import type { command_formats_type_list } from "modules/commands/types/command_formats_type_list";
+/**
+ * Legacy command settings data.
+ *
+ * This is used for the {@link commandSettings} class.
+ */
+export interface LegacyCommandSettingsData {
+    type: "built-in" | "custom" | "unknown";
+    commandName: string;
+    customCommandId: string;
+    commandSettingsId: string;
+    enabled: boolean;
+    requiredTags: string[];
+    requiredPermissionLevel: string | number;
+    requiresOp: boolean;
+    settings_version: string;
+}
+/**
+ * Handles settings for commands.
+ *
+ * @deprecated Legacy class. Superceeded by {@link RegisteredCommandSettings}.
+ */
 export declare class commandSettings<T extends "built-in" | "custom" | "unknown" = "unknown"> {
     #private;
     type: T;
@@ -40,8 +61,8 @@ export declare class commandSettings<T extends "built-in" | "custom" | "unknown"
     };
     constructor(commandSettingsId: string, command?: command<T>);
     get parsed(): any;
-    get enabled(): any;
-    set enabled(enabled: any);
+    get enabled(): boolean;
+    set enabled(enabled: boolean);
     get requiredTags(): string[];
     set requiredTags(requiredTags: string[]);
     get requiredPermissionLevel(): string | number | undefined;
@@ -60,7 +81,7 @@ export declare class commandSettings<T extends "built-in" | "custom" | "unknown"
         requiredTags: string[];
         requiredPermissionLevel: string | number;
         requiresOp: boolean;
-        settings_version: any;
+        settings_version: string;
     } | Object): void;
     remove(): void;
 }

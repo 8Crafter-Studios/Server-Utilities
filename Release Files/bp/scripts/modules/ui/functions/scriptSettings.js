@@ -86,17 +86,17 @@ export async function scriptSettings(sourceEntitya) {
         } /*
 GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
             ${se}GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/
-        let [
+        let [generalHeader, 
         // General
-        defaultMinMSBetweenTickWaits, undoClipboardMode, 
+        defaultMinMSBetweenTickWaits, undoClipboardMode, generalDivider, refreshRatesHeader, 
         // Refresh Rates
         playerDataRefreshRate, 
         // protectedAreasRefreshRate,
-        bannedPlayersRefreshRate, 
+        bannedPlayersRefreshRate, refreshRatesDivider, protectedAreasZoneActionsHeader, 
         // Protected Areas Zone Actions
-        protectedAreasZoneActionsEnabled, protectedAreasZoneActionsInterval, protectedAreasZoneRefreshInterval, 
+        protectedAreasZoneActionsEnabled, protectedAreasZoneActionsInterval, protectedAreasZoneRefreshInterval, protectedAreasZoneActionsDivider, integrationsWithOtherAddOnsHeader, 
         // Integrations With Other Add-Ons
-        showEntityScaleNotFoundConsoleLog, showEntityScaleFoundConsoleLog, showEntityScaleNotFoundChatLog, showEntityScaleFoundChatLog, showBlueModsAnticheatNotFoundConsoleLog, showBlueModsAnticheatFoundConsoleLog, showBlueModsAnticheatNotFoundChatLog, showBlueModsAnticheatFoundChatLog, 
+        showEntityScaleNotFoundConsoleLog, showEntityScaleFoundConsoleLog, showEntityScaleNotFoundChatLog, showEntityScaleFoundChatLog, showBlueModsAnticheatNotFoundConsoleLog, showBlueModsAnticheatFoundConsoleLog, showBlueModsAnticheatNotFoundChatLog, showBlueModsAnticheatFoundChatLog, integrationsWithOtherAddOnsDivider, debuggingHeader, 
         // Debugging
         debugMode, artificialLagMS, allowWatchdogTerminationCrash, hideWatchdogTerminationCrashEnabledWarningsOnStartup, spreadPlayerInventoryDataSavesOverMultipleTicks,] = t.formValues;
         // General
@@ -137,7 +137,7 @@ GameTest.Test.prototype.spawnSimulatedPlayer({x: 0, y: 0, z: 0})*/ /*
         // Debugging
         if (config.system.debugMode &&
             !(config.system.artificialLagMS == artificialLagMS.toNumber())) {
-            config.system.artificialLagMS = Math.min(artificialLagMS.toNumber(), 10000);
+            config.system.artificialLagMS = Math.min(artificialLagMS.toNumber() ?? 0, 10000);
             config.system.allowWatchdogTerminationCrash =
                 allowWatchdogTerminationCrash;
             config.system.hideWatchdogTerminationCrashEnabledWarningsOnStartup =

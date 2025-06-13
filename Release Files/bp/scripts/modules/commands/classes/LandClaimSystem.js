@@ -3,6 +3,7 @@ import { doBoundingBoxesIntersect } from "modules/coordinates/functions/doBoundi
 import { LandClaim } from "./LandClaim";
 /**
  * This class is used for managing land claims.
+ *
  * @alpha
  * @deprecated This class is not functional yet.
  */

@@ -161,7 +161,7 @@ subscribedEvents.beforePlayerInteractWithBlock = world.beforeEvents.playerIntera
         event.cancel = true;
     }
     else {
-        const borderSettings = Object.fromEntries(Object.entries(config.worldBorder[dimensionse[dimensionsd.indexOf(event.block.dimension.id)]]));
+        const borderSettings = config.toJSON(config.worldBorder[dimensionse[dimensionsd.indexOf(event.block.dimension.id)]]);
         if (borderSettings.enabled && borderSettings.preventWorldInteractionOutsideBorder) {
             if (!event.player.hasTag("canBypassWorldBorderInteractionLimits") &&
                 (event.block.x >= borderSettings.to.x ||

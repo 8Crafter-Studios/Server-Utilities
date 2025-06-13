@@ -4,6 +4,6 @@ export declare function parseBlockMatcherType(matcher: string): {
         id: string;
         states: {
             [id: string]: string | number | boolean;
-        };
+        } | undefined;
     };
 };

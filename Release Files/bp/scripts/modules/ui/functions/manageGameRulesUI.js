@@ -58,7 +58,7 @@ export async function manageGameRulesUI(sourceEntitya) {
         if (t.canceled)
             return 1;
         try {
-            t.formValues.forEach((v, i) => {
+            t.formValues?.forEach((v, i) => {
                 if (ruleValues[ruleNames[i]] != v) {
                     ruleValues[ruleNames[i]] =
                         typeof ruleValues[ruleNames[i]] == "number" ? Number(v) : v;

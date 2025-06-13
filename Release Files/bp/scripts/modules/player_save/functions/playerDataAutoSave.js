@@ -79,7 +79,7 @@ export function stopPlayerDataAutoSave() {
             system.clearRun(repeatingIntervals.playerDataAutoSave);
         }
         catch { }
-        repeatingIntervals.playerDataAutoSave = null;
+        repeatingIntervals.playerDataAutoSave = undefined;
         globalThis.stopPlayerDataAutoSaveAsync = true;
         return 1;
     }

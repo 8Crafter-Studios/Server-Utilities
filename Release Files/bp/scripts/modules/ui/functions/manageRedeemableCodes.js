@@ -57,7 +57,7 @@ export async function manageRedeemableCodes(sourceEntitya) {
                 const code = codes[r.selection];
                 const codesb = codes.filter((c) => c !== code);
                 const item = code.getItem(sourceEntity.dimensionLocation);
-                switch (["loadItem", "delete", "back", "close"][(await showActions(sourceEntity, customFormUICodes.action.titles.formStyles.medium + "Redeemable Code Details", `${code.code}\nItem Type: ${item.typeId}`, [customFormUICodes.action.buttons.positions.main_only + "Load Item", "textures/ui/structure_block_load"], [customFormUICodes.action.buttons.positions.main_only + "Delete", "textures/ui/trash_default"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"])).selection]) {
+                switch (["loadItem", "delete", "back", "close"][(await showActions(sourceEntity, customFormUICodes.action.titles.formStyles.medium + "Redeemable Code Details", `${code.code}\nItem Type: ${item.typeId}`, [customFormUICodes.action.buttons.positions.main_only + "Load Item", "textures/ui/structure_block_load"], [customFormUICodes.action.buttons.positions.main_only + "Delete", "textures/ui/trash_default"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"])).selection ?? 2]) {
                     case "loadItem": {
                         sourceEntity.inventory.container.addItem(item);
                         return await manageRedeemableCodes(sourceEntity);
@@ -72,6 +72,8 @@ export async function manageRedeemableCodes(sourceEntitya) {
                         return await manageRedeemableCodes(sourceEntity);
                     case "close":
                         return 0;
+                    default:
+                        throw new Error("Invalid selection: " + r.selection);
                 }
             case "newCode": {
                 if (!sourceEntity.hasTag("admin")) {

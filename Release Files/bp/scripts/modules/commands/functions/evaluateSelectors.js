@@ -44,14 +44,14 @@ export function evaluateSelectors(selector, options) {
             .match(/^(@i\s*\[|@i\s+)/)) {
         return getEntityById(selector
             .trim()
-            .match(/^(?<=@i\s*\[((?:uu)?id=)?(?:")?)[\-\+]?\d(?=(?:")?\])/)[0]);
+            .match(/^(?<=@i\s*\[((?:uu)?id=)?(?:")?)[\-\+]?\d(?=(?:")?\])/)?.[0]);
     }
     else if ((options?.enableJ ?? false) == true &&
         !!selector
             .trimStart()
             .replaceAll("\\", "")
             .match(/^(@j\s*\[|@j\s+)/)) {
-        return eval(selector.trim().match(/^(?<=@j\s*\[)[\-\+]?\d(?=\])/)[0]);
+        return eval(selector.trim().match(/^(?<=@j\s*\[)[\-\+]?\d(?=\])/)?.[0]);
     }
 }
 //# sourceMappingURL=evaluateSelectors.js.map

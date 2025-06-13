@@ -139,14 +139,14 @@ export class ban {
         return world
             .getDynamicPropertyIds()
             .filter((s) => banType == "both"
-            ? (s.startsWith("ban:") ? ban.getBan(s).isValid : false) || (s.startsWith("banId:") ? ban.getBan(s).isValid : false)
+            ? (s.startsWith("ban:") ? ban.getBan(s)?.isValid : false) || (s.startsWith("banId:") ? ban.getBan(s)?.isValid : false)
             : banType == "name"
                 ? s.startsWith("ban:")
-                    ? ban.getBan(s).isValid
+                    ? ban.getBan(s)?.isValid
                     : false
                 : banType == "id"
                     ? s.startsWith("banId:")
-                        ? ban.getBan(s).isValid
+                        ? ban.getBan(s)?.isValid
                         : false
                     : undefined);
     }
@@ -154,14 +154,14 @@ export class ban {
         return world
             .getDynamicPropertyIds()
             .filter((s) => banType == "both"
-            ? (s.startsWith("ban:") ? ban.getBan(s).isExpired : false) || (s.startsWith("banId:") ? ban.getBan(s).isExpired : false)
+            ? (s.startsWith("ban:") ? ban.getBan(s)?.isExpired : false) || (s.startsWith("banId:") ? ban.getBan(s)?.isExpired : false)
             : banType == "name"
                 ? s.startsWith("ban:")
-                    ? ban.getBan(s).isExpired
+                    ? ban.getBan(s)?.isExpired
                     : false
                 : banType == "id"
                     ? s.startsWith("banId:")
-                        ? ban.getBan(s).isExpired
+                        ? ban.getBan(s)?.isExpired
                         : false
                     : undefined);
     } /*

@@ -7,34 +7,57 @@ import { HomeSystem } from "./HomeSystem";
 export class Home {
     /**
      * The location and dimension of the home.
+     *
+     * @type {DimensionLocation}
      */
     location;
     /**
      * The name of the home.
+     *
+     * @type {string}
      */
     name;
     /**
      * The ID of the owner of the home.
+     *
+     * @type {string}
      */
     ownerId;
     /**
      * The name of the owner of the home.
+     *
+     * @type {string | undefined}
      */
     ownerName;
     /**
      * The save ID of the home.
+     *
+     * @type {string}
      */
     saveId;
     /**
      * The version of the add-on that this home was saved with.
+     *
+     * @see {@link format_version}
+     *
+     * @type {string}
+     *
+     * @default format_version
      */
     format_version;
     /**
      * The format version the home system was on when this home was saved.
+     *
+     * @see {@link home_format_version}
+     *
+     * @type {string}
+     *
+     * @default home_format_version
      */
     home_format_version;
     /**
      * Creates an instance of the `Home` class.
+     *
      * @param {object} home The home to create.
      * @param {DimensionLocation} home.location The location and dimension of the home.
      * @param {string} home.name The name of the home.
@@ -58,6 +81,7 @@ export class Home {
     }
     /**
      * Returns the owner of the home if they are online, otherwise returns undefined.
+     *
      * @returns {Player | undefined} The owner of the home if they are online, otherwise returns undefined.
      */
     get owner() {
@@ -65,6 +89,7 @@ export class Home {
     }
     /**
      * Checks if the owner of the home is online.
+     *
      * @returns {boolean} True if the owner of the home is online, false otherwise.
      */
     get isOwnerOnline() {
@@ -72,6 +97,7 @@ export class Home {
     }
     /**
      * Checks if the home is saved.
+     *
      * @returns {boolean} True if the home is saved, false otherwise.
      */
     get isSaved() {
@@ -79,6 +105,7 @@ export class Home {
     }
     /**
      * Converts the home to a JSON object.
+     *
      * @returns {{ location: Vector3 & { dimension: string; }; name: string; ownerId: string; ownerName: string; format_version: string; home_format_version: string; }} The JSON object representing this home.
      */
     toJSON() {
@@ -95,6 +122,7 @@ export class Home {
     }
     /**
      * Saves the home.
+     *
      * @param {Partial<ReturnType<Home["toJSON"]>>} [otherDataToChange = {}] Additional data to add to the home.
      * @param {boolean} [keepOldFormatVersion = false] If set to true, the format version won't be set to the current version.
      */
@@ -115,6 +143,7 @@ export class Home {
     }
     /**
      * Gets the home with the given save ID.
+     *
      * @param {string} homeId The save ID of the home.
      * @returns {Home} The home with the given save ID.
      */

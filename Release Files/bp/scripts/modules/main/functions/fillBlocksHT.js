@@ -30,7 +30,7 @@ export function fillBlocksHT(center, radius, length, axis, dimension, block, blo
     let blockb = BlockPermutation.resolve(block, blockStates);
     if (replacemode) {
         mainArray
-            .filter((v) => !!v.getComponent("inventory"))
+            .filter((v) => v?.getComponent("inventory"))
             .forEach((v) => {
             clearContainer(v.getComponent("inventory").container);
         });
@@ -39,7 +39,7 @@ export function fillBlocksHT(center, radius, length, axis, dimension, block, blo
     if (!!!options?.matchingBlock) {
         mainArray.forEach((v) => {
             try {
-                v.setPermutation(blockb);
+                v?.setPermutation(blockb);
                 counter++;
             }
             catch { }
@@ -49,10 +49,10 @@ export function fillBlocksHT(center, radius, length, axis, dimension, block, blo
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         mainArray.forEach((v) => {
             if (!!options?.matchingBlockStates
-                ? BlockTypes.get(options?.matchingBlock) == v.type &&
+                ? BlockTypes.get(options?.matchingBlock) == v?.type &&
                     matchingblockb.getAllStates() ==
                         Object.fromEntries(Object.entries(Object.assign(v?.permutation?.getAllStates(), blockStates)).filter((v) => !!Object.entries(blockb.getAllStates()).find((s) => v[0] == s[0])))
-                : BlockTypes.get(options?.matchingBlock) == v.type) {
+                : BlockTypes.get(options?.matchingBlock) == v?.type) {
                 v.setPermutation(blockb);
                 counter++;
             }

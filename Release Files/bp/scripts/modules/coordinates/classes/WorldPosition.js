@@ -5,6 +5,11 @@ import { targetSelectorAllListC } from "modules/command_utilities/functions/targ
 import { anglesToDirectionVectorDeg } from "../functions/anglesToDirectionVectorDeg";
 import { coordinates } from "../functions/coordinates";
 import { facingPoint } from "../functions/facingPoint";
+/**
+ * A class that represents a location and rotation in the world, with optional dimension, entity, and block to be linked to it, and an options for where to send errors.
+ *
+ * @todo Add documentation.
+ */
 export class WorldPosition {
     x;
     y;
@@ -16,8 +21,11 @@ export class WorldPosition {
     block;
     sendErrorsTo;
     constructor(location, rotation, dimension, entity, block, sendErrorsTo) {
-        this.location = location;
-        this.rotation = rotation;
+        this.x = location.x;
+        this.y = location.y;
+        this.z = location.z;
+        this.rotx = rotation.x;
+        this.roty = rotation.y;
         if (dimension == undefined) { }
         else {
             this.dimension = world.getDimension(dimension?.typeId ?? dimension?.id ?? dimension);

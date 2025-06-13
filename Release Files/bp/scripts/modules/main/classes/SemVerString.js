@@ -31,17 +31,17 @@ export class SemVerString {
         this.pre_release_stage_internal =
             pre_release == ""
                 ? undefined
-                : pre_release.match(SemVerString.pre_release_regex).groups
-                    .pre_release_phase;
+                : pre_release?.match(SemVerString.pre_release_regex)?.groups
+                    ?.pre_release_phase;
         this.pre_release_version_internal =
             pre_release == ""
                 ? undefined
-                : pre_release.match(SemVerString.pre_release_regex).groups
-                    .pre_release_version;
+                : pre_release?.match(SemVerString.pre_release_regex)?.groups
+                    ?.pre_release_version;
         this.build = build == "" ? undefined : build;
     }
     get pre_release() {
-        return (this.pre_release_stage_internal + this.pre_release_version_internal);
+        return ((this.pre_release_stage_internal ?? "") + (this.pre_release_version_internal ?? ""));
     }
     set pre_release(pre_release) {
         if (!!!pre_release) {
@@ -55,16 +55,16 @@ export class SemVerString {
         this.pre_release_stage_internal =
             pre_release == ""
                 ? undefined
-                : pre_release.match(SemVerString.pre_release_regex).groups
-                    .pre_release_phase;
+                : pre_release?.match(SemVerString.pre_release_regex)?.groups
+                    ?.pre_release_phase;
         this.pre_release_version_internal =
             pre_release == ""
                 ? undefined
-                : pre_release.match(SemVerString.pre_release_regex).groups
-                    .pre_release_version;
+                : pre_release?.match(SemVerString.pre_release_regex)?.groups
+                    ?.pre_release_version;
     }
     get pre_release_stage() {
-        return this.pre_release_stage_internal;
+        return this.pre_release_stage_internal ?? "";
     }
     set pre_release_stage(pre_release_stage) {
         if (!!!pre_release_stage) {
@@ -79,7 +79,7 @@ export class SemVerString {
             pre_release_stage == "" ? undefined : pre_release_stage;
     }
     get pre_release_version() {
-        return this.pre_release_version_internal;
+        return this.pre_release_version_internal ?? "";
     }
     set pre_release_version(pre_release_version) {
         if (!!!pre_release_version) {
@@ -126,8 +126,8 @@ export class SemVerString {
         return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build);
     }
     static fromString(string) {
-        const json = string.match(SemVerString.semver_regex).groups;
-        return new SemVerString(Number(json.major), Number(json.minor), Number(json.patch), json.pre_release_stage + json.pre_release_version, json.build);
+        const json = string.match(SemVerString.semver_regex)?.groups;
+        return new SemVerString(Number(json?.major), Number(json?.minor), Number(json?.patch), (json?.pre_release_stage ?? "") + (json?.pre_release_version ?? "") === "" ? undefined : (json?.pre_release_stage ?? "") + (json?.pre_release_version ?? ""), json?.build);
     }
 }
 export function SemVerValidator(string) {

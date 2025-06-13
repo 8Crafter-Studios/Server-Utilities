@@ -40,7 +40,7 @@ export async function securitySettings(sourceEntity) {
                     }
                 }
             }
-            let form = new ActionFormData();
+            const form = new ActionFormData();
             form.title(customFormUICodes.action.titles.formStyles.gridMenu + "Security");
             form.button(customFormUICodes.action.buttons.positions.main_only + "View Players With Permissions", "textures/ui/permissions_op_crown");
             form.button(customFormUICodes.action.buttons.positions.main_only + "Manage Default Permissions", "textures/ui/icon_setting");
@@ -51,7 +51,7 @@ export async function securitySettings(sourceEntity) {
             form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
             const r = await form.forceShow(player);
             if (r.canceled)
-                return;
+                return 1;
             let response = r.selection;
             switch ([
                 "viewPlayersWithPermissions",
@@ -540,7 +540,7 @@ export async function securitySettings_playersWithPermissions_UltraSecurityMode(
             const r = await form.forceShow(player);
             if (r.canceled)
                 return 1;
-            switch (["anyPermissions"][r.selection] ??
+            switch (["anyPermissions", undefined][r.selection] ??
                 (Object.keys(permissionType)[r.selection - 1] !== undefined ? "permissionType" : undefined) ??
                 ["back", "close"][r.selection - 1 - Object.keys(permissionType).length]) {
                 case "anyPermissions":

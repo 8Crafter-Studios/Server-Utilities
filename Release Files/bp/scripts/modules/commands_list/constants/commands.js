@@ -871,6 +871,29 @@ export const commands = [
         type: "built-in",
         requiredTags: ["canUseChatCommands"],
         formatting_code: "§r§f",
+        commandName: "\\\\overlay",
+        escregexp: {
+            v: "^\\\\overlay$",
+        },
+        formats: [
+            {
+                format: "\\\\overlay",
+            },
+        ],
+        command_version: "1.0.0",
+        description: "",
+        category: ["system", "world", "server", "worldedit"],
+        commandSettingsId: "built-inCommandSettings:\\overlay",
+        deprecated: false,
+        functional: true,
+        hidden: false,
+        enabled: true,
+        ultraSecurityModeSecurityLevel: "WorldEdit",
+    },
+    {
+        type: "built-in",
+        requiredTags: ["canUseChatCommands"],
+        formatting_code: "§r§f",
         commandName: "\\\\paste",
         escregexp: {
             v: "^\\\\paste$",

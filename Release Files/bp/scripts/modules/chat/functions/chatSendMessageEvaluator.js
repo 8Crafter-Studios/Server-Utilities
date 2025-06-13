@@ -103,7 +103,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
     rank, ranksListWithDefault, displayName, name, nameb, namec, message, } = prePlayersOutput;
     const isPlaceholderPlayer = options?.isPlaceholderPlayer ?? !!!options?.player;
     const isPlaceholderTargetPlayer = options?.isPlaceholderTargetPlayer ?? !!!options?.targetPlayer;
-    const dimensionObject = dimensionsf[Object.entries(dimensionTypeDisplayFormatting).find((v) => v[1] === dimension)[0]];
+    const dimensionObject = dimensionsf[Object.entries(dimensionTypeDisplayFormatting).find((v) => v[1] === dimension)?.[0]];
     const player = options?.player ??
         {
             activeSlot: undefined,

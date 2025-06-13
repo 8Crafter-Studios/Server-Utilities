@@ -137,7 +137,7 @@ export interface SubscribedEventSavedData<EventTypeID extends SubscribedEventTyp
         /**
          * Additional metadata for the event subscription.
          */
-        [key: string]: string | number | boolean;
+        [key: string]: string | number | boolean | undefined;
     };
 }
 /**

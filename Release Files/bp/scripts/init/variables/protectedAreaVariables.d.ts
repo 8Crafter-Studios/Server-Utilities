@@ -596,50 +596,50 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults: Mu
     readonly icon_path: undefined;
     readonly chatSend: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
     };
     readonly effectAdd: {
         readonly enabled: true;
         readonly sourceEntityFilter: {
-            readonly includeTypes: [];
-            readonly excludeTypes: [];
-            readonly includeTags: [];
-            readonly excludeTags: [];
+            readonly includeTypes: readonly [];
+            readonly excludeTypes: readonly [];
+            readonly includeTags: readonly [];
+            readonly excludeTags: readonly [];
         };
         readonly effectFilter: {
-            readonly includeTypes: [];
-            readonly excludeTypes: [];
+            readonly includeTypes: readonly [];
+            readonly excludeTypes: readonly [];
             readonly minDuration: undefined;
             readonly maxDuration: undefined;
         };
     };
     readonly explosion: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
         readonly mask: BlockMask;
         readonly rawmask: "none";
         readonly mode: "exclude";
         readonly sourceEntityFilter: {
-            readonly includeTypes: [];
-            readonly excludeTypes: [];
-            readonly includeTags: [];
-            readonly excludeTags: [];
+            readonly includeTypes: readonly [];
+            readonly excludeTypes: readonly [];
+            readonly includeTags: readonly [];
+            readonly excludeTags: readonly [];
         };
     };
     readonly playerBreakBlock: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
         readonly mask: BlockMask;
         readonly rawmask: "none";
@@ -647,10 +647,10 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults: Mu
     };
     readonly playerInteractWithBlock: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
         readonly mask: BlockMask;
         readonly rawmask: "none";
@@ -659,23 +659,23 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults: Mu
     readonly playerInteractWithEntity: {
         readonly enabled: true;
         readonly targetEntityFilter: {
-            readonly includeTypes: [];
-            readonly excludeTypes: [];
-            readonly includeTags: [];
-            readonly excludeTags: [];
+            readonly includeTypes: readonly [];
+            readonly excludeTypes: readonly [];
+            readonly includeTags: readonly [];
+            readonly excludeTags: readonly [];
         };
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
     };
     readonly playerPlaceBlock: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
         readonly mask: BlockMask;
         readonly rawmask: "none";
@@ -683,18 +683,18 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults: Mu
     };
     readonly playerGameModeChange: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
     };
     readonly itemUse: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
     };
     readonly noPVPZone: {
@@ -702,7 +702,7 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults: Mu
     };
     readonly tagZone: {
         readonly enabled: true;
-        readonly tags: [];
+        readonly tags: readonly [];
         readonly removeOnExit: false;
         readonly playersOnly: true;
     };
@@ -716,50 +716,50 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSO
     readonly icon_path: undefined;
     readonly chatSend: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
     };
     readonly effectAdd: {
         readonly enabled: true;
         readonly sourceEntityFilter: {
-            readonly includeTypes: [];
-            readonly excludeTypes: [];
-            readonly includeTags: [];
-            readonly excludeTags: [];
+            readonly includeTypes: readonly [];
+            readonly excludeTypes: readonly [];
+            readonly includeTags: readonly [];
+            readonly excludeTags: readonly [];
         };
         readonly effectFilter: {
-            readonly includeTypes: [];
-            readonly excludeTypes: [];
+            readonly includeTypes: readonly [];
+            readonly excludeTypes: readonly [];
             readonly minDuration: undefined;
             readonly maxDuration: undefined;
         };
     };
     readonly explosion: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
         readonly mask: "none";
         readonly rawmask: undefined;
         readonly mode: "exclude";
         readonly sourceEntityFilter: {
-            readonly includeTypes: [];
-            readonly excludeTypes: [];
-            readonly includeTags: [];
-            readonly excludeTags: [];
+            readonly includeTypes: readonly [];
+            readonly excludeTypes: readonly [];
+            readonly includeTags: readonly [];
+            readonly excludeTags: readonly [];
         };
     };
     readonly playerBreakBlock: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
         readonly mask: "none";
         readonly rawmask: undefined;
@@ -767,10 +767,10 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSO
     };
     readonly playerInteractWithBlock: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
         readonly mask: "none";
         readonly rawmask: undefined;
@@ -779,23 +779,23 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSO
     readonly playerInteractWithEntity: {
         readonly enabled: true;
         readonly targetEntityFilter: {
-            readonly includeTypes: [];
-            readonly excludeTypes: [];
-            readonly includeTags: [];
-            readonly excludeTags: [];
+            readonly includeTypes: readonly [];
+            readonly excludeTypes: readonly [];
+            readonly includeTags: readonly [];
+            readonly excludeTags: readonly [];
         };
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
     };
     readonly playerPlaceBlock: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
         readonly mask: "none";
         readonly rawmask: undefined;
@@ -803,18 +803,18 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSO
     };
     readonly playerGameModeChange: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
     };
     readonly itemUse: {
         readonly enabled: true;
-        readonly allowedBypassTags: [];
+        readonly allowedBypassTags: readonly [];
         readonly heldItemFilters: {
             readonly mode: "exclude";
-            readonly items: [];
+            readonly items: readonly [];
         };
     };
     readonly noPVPZone: {
@@ -822,7 +822,7 @@ export declare const AdvancedProtectedAreaCategoryPropertyAllEnabledDefaults_JSO
     };
     readonly tagZone: {
         readonly enabled: true;
-        readonly tags: [];
+        readonly tags: readonly [];
         readonly removeOnExit: false;
         readonly playersOnly: true;
     };
@@ -842,7 +842,7 @@ export declare function convertAdvancedPropertedAreaCategoryToJSON(category: Adv
  */
 export interface ProtectedArea {
     id: string;
-    dimension: number;
+    dimension: 0 | 1 | 2;
     from: Vector3;
     to: Vector3;
     mode: 0 | 1;

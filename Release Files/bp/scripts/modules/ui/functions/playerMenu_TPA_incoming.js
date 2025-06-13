@@ -40,7 +40,7 @@ export async function playerMenu_TPA_incoming(sourceEntity) {
             switch ((!!requests[r.selection] ? "request" : undefined) ?? ["back", "close", "refresh"][r.selection - requests.length]) {
                 case "request":
                     const request = requests[r.selection];
-                    switch (["accept", "decline", "back", "close"][(await showActions(player, customFormUICodes.action.titles.formStyles.general + "Teleport Request Details", `From: ${request.player.name}`, [customFormUICodes.action.buttons.positions.main_only + "Accept Request", "textures/ui/realms_slot_check"], [customFormUICodes.action.buttons.positions.main_only + "Decline Request", "textures/ui/trash_default"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"])).selection]) {
+                    switch (["accept", "decline", "back", "close"][(await showActions(player, customFormUICodes.action.titles.formStyles.general + "Teleport Request Details", `From: ${request.player.name}`, [customFormUICodes.action.buttons.positions.main_only + "Accept Request", "textures/ui/realms_slot_check"], [customFormUICodes.action.buttons.positions.main_only + "Decline Request", "textures/ui/trash_default"], [customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left"], [customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout"])).selection ?? 2]) {
                         case "accept":
                             request.accept();
                             continue;
@@ -51,6 +51,8 @@ export async function playerMenu_TPA_incoming(sourceEntity) {
                             continue;
                         case "close":
                             return 0;
+                        default:
+                            throw new Error("Invalid selection: " + r.selection);
                     }
                 case "refresh":
                     continue;

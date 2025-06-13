@@ -145,7 +145,7 @@ function propToGetter(target, key, propertyDescriptor) {
     let z = undefined;
     Object.defineProperty(target, key, {
         get() {
-            return Object.getOwnPropertyDescriptor(target, key).value;
+            return Object.getOwnPropertyDescriptor(target, key)?.value;
         },
     });
 }

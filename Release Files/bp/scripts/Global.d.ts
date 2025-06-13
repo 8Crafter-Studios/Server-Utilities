@@ -92,7 +92,7 @@ declare global {
          * @template {any[]} T The type of the array to remove null values from.
          * @returns {T[number][]} The array without null values.
          */
-        function cullNull<T extends any[]>(array: T): T[number][];
+        function cullNull<T extends any[] | readonly any[]>(array: T): Exclude<T[number], null>[];
         /**
          * Removes all values from an array that are `undefined`.
          *
@@ -100,7 +100,7 @@ declare global {
          * @template {any[]} T The type of the array to remove undefined values from.
          * @returns {T[number][]} The array without undefined values.
          */
-        function cullUndefined<T extends any[]>(array: T): T[number][];
+        function cullUndefined<T extends any[] | readonly any[]>(array: T): Exclude<T[number], undefined>[];
         /**
          * Removes all values from an array that are `null` or `undefined`.
          *
@@ -108,7 +108,7 @@ declare global {
          * @template {any[]} T The type of the array to remove empty values from.
          * @returns {T[number][]} The array without empty values.
          */
-        function cullEmpty<T extends any[]>(array: T): T[number][];
+        function cullEmpty<T extends any[] | readonly any[]>(array: T): NonNullable<T[number]>[];
         /**
          * Tries to get the value of a callback function.
          *
@@ -120,7 +120,7 @@ declare global {
          * @template {any} T The type of the value returned by the callback function.
          * @returns {T} The value of the callback function, or `undefined` if the callback function threw an error.
          */
-        function tryget<T>(callbackfn: () => T): T;
+        function tryget<T>(callbackfn: () => T): T | undefined;
         /**
          * Runs a callback function and catches any errors that occur.
          *
@@ -144,20 +144,111 @@ declare global {
          * @template {unknown} FT The type of the value returned by the `finallycallbackfn` function.
          * @returns {TT | CT | FT | undefined} The result of the `finallycallbackfn` function, unless it does not return a value, in which case it will return the result of the `catchcallbackfn` function, or if there was no error, the result of the `trycallbackfn` function.
          */
-        function catchtry<TT extends unknown, CT extends unknown, FT extends unknown>(trycallbackfn: () => TT, catchcallbackfn?: (e: Error) => CT, finallycallbackfn?: (v: TT | ReturnType<typeof catchcallbackfn> | undefined) => FT): TT | CT | FT | undefined;
+        function catchtry<TT extends unknown, CT extends unknown, FT extends unknown>(trycallbackfn: () => TT, catchcallbackfn?: (e: Error) => CT, finallycallbackfn?: (v: TT | ReturnType<Exclude<typeof catchcallbackfn, undefined>> | undefined) => FT): TT | CT | FT | undefined;
         function send(message: (RawMessage | string)[] | RawMessage | string): void;
+        /**
+         * Sends a {@link String} stringified message in chat.
+         *
+         * @param {any} value The message to send, will be passed through the {@link String} function and then passed into {@link world.sendMessage}.
+         */
         function asend(value: any): void;
+        /**
+         * Sends a {@link JSONStringify} stringified message in chat.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSONStringify} function (the `keepUndefined` paramter will be set to true) and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         */
         function bsend(value: any, space?: string | number): void;
+        /**
+         * Sends a {@link JSON.stringify} stringified message in chat.
+         * @param {any} value The message to send, will be passed through the {@link JSON.stringify} function and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         */
         function csend(value: any, space?: string | number): void;
+        /**
+         * Sends a {@link JSONB.stringify} stringified message in chat, including functions, getters, and setters.
+         *
+         * This uses the following options: `{bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true}`.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSONB.stringify} function and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         */
         function dsend(value: any, space?: string | number): void;
+        /**
+         * Sends a {@link JSONB.stringify} stringified message in chat, without including functions, getters, or setters.
+         *
+         * This uses the following options: `{bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true}`.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSONB.stringify} function and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         */
         function esend(value: any, space?: string | number): void;
+        /**
+         * Sends a {@link JSONB.stringify} stringified message in chat, without including functions, getters, setters, or `undefined` values.
+         *
+         * This uses the following options: `{bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}`.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSONB.stringify} function and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         */
         function fsend(value: any, space?: string | number): void;
+        /**
+         * Sends a {@link JSONStringify} stringified message in chat, with the message colorized.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSONStringify} function (the `keepUndefined` paramter will be set to true), colorized with the {@link colorizeJSONString} function, and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         * @param {Parameters<typeof colorizeJSONString>[1]} [options] The options for the {@link colorizeJSONString} function, if not specified, the default options will be used.
+         */
         function bcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void;
+        /**
+         * Sends a {@link JSON.stringify} stringified message in chat, with the message colorized.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSON.stringify} function, colorized with the {@link colorizeJSONString} function, and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         * @param {Parameters<typeof colorizeJSONString>[1]} [options] The options for the {@link colorizeJSONString} function, if not specified, the default options will be used.
+         */
         function ccsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void;
+        /**
+         * Sends a {@link JSONB.stringify} stringified message in chat, including functions, getters, and setters, with the message colorized.
+         *
+         * This uses the following options: `{bigint: true, class: false, function: true, Infinity: true, get: true, NaN: true, NegativeInfinity: true, set: true, undefined: true}`.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSONB.stringify} function, colorized with the {@link colorizeJSONString} function, and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         * @param {Parameters<typeof colorizeJSONString>[1]} [options] The options for the {@link colorizeJSONString} function, if not specified, the default options will be used.
+         */
         function dcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void;
+        /**
+         * Sends a {@link JSONB.stringify} stringified message in chat, without including functions, getters, or setters, with the message colorized.
+         *
+         * This uses the following options: `{bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: true}`.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSONB.stringify} function, colorized with the {@link colorizeJSONString} function, and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         * @param {Parameters<typeof colorizeJSONString>[1]} [options] The options for the {@link colorizeJSONString} function, if not specified, the default options will be used.
+         */
         function ecsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void;
+        /**
+         * Sends a {@link JSONB.stringify} stringified message in chat, without including functions, getters, setters, or `undefined` values, with the message colorized.
+         *
+         * This uses the following options: `{bigint: true, class: false, function: false, Infinity: true, get: false, NaN: true, NegativeInfinity: true, set: false, undefined: false}`.
+         *
+         * @param {any} value The message to send, will be passed through the {@link JSONB.stringify} function, colorized with the {@link colorizeJSONString} function, and then passed into {@link world.sendMessage}.
+         * @param {string | number} [space] The spacing for the stringified JSON.
+         * @param {Parameters<typeof colorizeJSONString>[1]} [options] The options for the {@link colorizeJSONString} function, if not specified, the default options will be used.
+         */
         function fcsend(value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void;
-        function psend(player: Player | executeCommandPlayerW, value: string): void;
+        /**
+         * @remarks This function sends the value passed in as a message to a player.
+         * @param player The player to send the message to.
+         * @param value The value to stringify.
+         */
+        function psend(player: Player | executeCommandPlayerW, value: string | RawMessage | (string | RawMessage)[]): void;
+        /**
+         * @remarks This function sends a player a message containing a stringified version of the value passed in. It uses {@link String}.
+         * @param player The player to send the message to.
+         * @param value The value to stringify.
+         */
         function pasend(player: Player | executeCommandPlayerW, value: any): void;
         /**
          * @remarks This function sends a player a message containing a stringified version of the JSON value passed in. It uses {@link JSONStringify}.
@@ -234,6 +325,13 @@ declare global {
          * @param options The options for colorizing the JSON string.
          */
         function pfcsend(player: Player | executeCommandPlayerW, value: any, space?: string | number, options?: Parameters<typeof colorizeJSONString>[1]): void;
+        /**
+         * Sends a player an error message.
+         *
+         * @param {Player | executeCommandPlayerW} player The player to send the message to.
+         * @param {Error} error The error to send.
+         * @param {string} [prefix="§c"] The prefix for the error message. Defaults to `§c`.
+         */
         function perror(player: Player | executeCommandPlayerW, error: Error, prefix?: string): void;
         /**
          * An alias of {@link console.info}.
@@ -317,7 +415,18 @@ declare global {
             yield: T[];
             return: TReturn;
         }>;
+        /**
+         * Waits for a tick to pass.
+         *
+         * @returns {Promise<void>} A promise that resolves when a tick passes.
+         */
         function waitTick(): Promise<void>;
+        /**
+         * Waits for a set number of ticks to pass.
+         *
+         * @param {number} [ticks=1] The number of ticks to wait. Defaults to `1`.
+         * @returns {Promise<void>} A promise that resolves when the specified number of ticks have passed.
+         */
         function waitTicks(ticks?: number): Promise<void>;
         function twoWayModulo(number: number, modulo: number): number;
         function clamp24HoursTo12Hours(hours: number): number;
@@ -616,7 +725,7 @@ declare global {
          *         console.warn('Error: ' + e);
          *     }
          *
-         *     system.run(printEveryMinute);
+         *     srun(printEveryMinute);
          * }
          *
          * printEveryMinute();

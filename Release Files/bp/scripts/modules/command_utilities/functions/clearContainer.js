@@ -1,5 +1,5 @@
 export function clearContainer(container) {
-    for (let i = 0; i < container.size; i++) {
+    for (let i = 0; i < (container?.size ?? 0); i++) {
         container.setItem(i);
     }
 }

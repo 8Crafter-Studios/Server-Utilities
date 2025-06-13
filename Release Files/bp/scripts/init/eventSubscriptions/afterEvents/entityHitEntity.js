@@ -4,7 +4,7 @@ import { getPlayersWithTags } from "modules/commands/functions/getPlayersWithTag
 import { vTStr } from "modules/commands/functions/vTStr";
 subscribedEvents.afterEntityHitEntity =
     world.afterEvents.entityHitEntity.subscribe((event) => {
-        //if(event.damagingEntity.typeId=="minecraft:player"){if(event.damagingEntity.getComponent("inventory").container.getItem(event.damagingEntity.selectedSlotIndex).getLore().join(",").includes("Sweeping Edge")){event.damagingEntity.dimension.getEntities({location: event.damagingEntity.location, maxDistance: 2}).filter(v=>v.id!=event.damagingEntity.id).forEach(v=>v.applyDamage(3, {cause: EntityDamageCause.entityAttack, damagingEntity: event.damagingEntity}))}}
+        //if(event.damagingEntity.typeId=="minecraft:player"){if(event.damagingEntity.getComponent("inventory")?.container.getItem(event.damagingEntity.selectedSlotIndex).getLore().join(",").includes("Sweeping Edge")){event.damagingEntity.dimension.getEntities({location: event.damagingEntity.location, maxDistance: 2}).filter(v=>v.id!=event.damagingEntity.id).forEach(v=>v.applyDamage(3, {cause: EntityDamageCause.entityAttack, damagingEntity: event.damagingEntity}))}}
         try {
             eval(String(world.getDynamicProperty("evalAfterEvents:entityHitEntity")));
         }

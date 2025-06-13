@@ -32,7 +32,7 @@ export function startCheckingForBannedPlayers() {
                 const timeZone = config.system.timeZone;
                 let reason = b?.kickMessage;
                 try {
-                    reason = String(eval(b?.kickMessage
+                    reason = tryget(() => String(eval(b?.kickMessage
                         ?.replaceAll("{timeRemaining}", b.unbanDate === Infinity ? "Forever" : Date.now() > b.unbanDate ? "-" + moment().preciseDiff(moment(b.unbanDate)) : moment().preciseDiff(moment(b.unbanDate)) /* `${b?.timeRemaining.days}d, ${b?.timeRemaining.hours}h ${b?.timeRemaining.minutes}m ${b?.timeRemaining.seconds}s ${b?.timeRemaining.milliseconds}ms` */)
                         .replaceAll("{timeRemainingDays}", b.unbanDate === Infinity ? "Infinity" : String(b?.timeRemaining.days))
                         .replaceAll("{timeRemainingHours}", b.unbanDate === Infinity ? "Infinity" : String(b?.timeRemaining.hours))
@@ -45,7 +45,7 @@ export function startCheckingForBannedPlayers() {
                         .replaceAll("{banDate}", `${formatDateTime(new Date(b.banDate), timeZone)} UTC${(timeZone > 0 || Object.is(timeZone, 0) ? "+" : "") + timeZone}`)
                         .replaceAll("{unbanDate}", b.isPermanent ? "Never" : `${formatDateTime(new Date(b.unbanDate), timeZone)} UTC${(timeZone > 0 || Object.is(timeZone, 0) ? "+" : "") + timeZone}`)
                         .replaceAll("{type}", String(b?.type))
-                        .replaceAll("{timeRemainingRaw}", b.unbanDate === Infinity ? "Infinity" : String(b?.timeRemainingRaw))));
+                        .replaceAll("{timeRemainingRaw}", b.unbanDate === Infinity ? "Infinity" : String(b?.timeRemainingRaw)))));
                 }
                 catch (e) {
                     reason = b?.kickMessage
@@ -73,10 +73,11 @@ export function startCheckingForBannedPlayers() {
 }
 export function stopCheckingForBannedPlayers() {
     try {
-        system.clearRun(bannedPlayersCheckerIntervalID);
+        if (bannedPlayersCheckerIntervalID !== null)
+            system.clearRun(bannedPlayersCheckerIntervalID);
         bannedPlayersCheckerIntervalID = null;
         repeatingIntervals.bannedPlayersChecker =
-            bannedPlayersCheckerIntervalID;
+            bannedPlayersCheckerIntervalID ?? undefined;
         return 1;
     }
     catch {

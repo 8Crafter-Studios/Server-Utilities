@@ -7,5 +7,6 @@ export function selectWeightedElement(items, weightProp) {
             return item;
         }
     }
+    throw new Error("No item selected");
 }
 //# sourceMappingURL=selectWeightedElement.js.map

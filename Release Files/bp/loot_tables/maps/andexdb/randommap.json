@@ -1,0 +1,237 @@
+{
+	"pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "ancientcity"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fAncient City Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "bastionremnant"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fBastion Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "buriedtreasure"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "endcity"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fEnd City Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "fortress"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fFortress Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "mansion"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "mineshaft"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fMineshaft Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "monument"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "pillageroutpost"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fOutpost Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "ruinedportal"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fRuined Portal Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "ruins"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fOcean Ruins Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "shipwreck"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fShipwreck Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "stronghold"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fStronghold Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "temple"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fTemple Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "trail_ruins"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fTrail Ruins Explorer Map"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:map",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "exploration_map",
+                            "destination": "village"
+                        },
+                        {
+                            "function": "set_name",
+                            "name": "§r§fVillage Explorer Map"
+                        }
+                    ]
+                }
+            ]
+        }
+	]
+}

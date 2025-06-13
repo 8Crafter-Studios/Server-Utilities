@@ -130,7 +130,7 @@ export async function selectTexturePresetInCategory(sourceEntitya, category, pag
         .then(async (r) => {
         if (r.canceled)
             return 1;
-        switch (["search", "previous", "go", "next", "", ""][r.selection] ??
+        switch (["search", "previous", "go", "next", "", "", undefined][r.selection] ??
             (!!texturesB[r.selection - 6] ? "texture" : undefined) ??
             ["back", "close"][r.selection - texturesB.length - 6]) {
             case "search": {
@@ -156,6 +156,8 @@ export async function selectTexturePresetInCategory(sourceEntitya, category, pag
                     .textField(`Current Page: ${page + 1}\nPage # (Between 1 and ${numpages})`, "Page #")
                     .submitButton("Go To Page")
                     .forceShow(sourceEntity));
+                if (!rb || rb.canceled)
+                    return await selectTexturePresetInCategory(sourceEntity, category, page, search, textures);
                 return await selectTexturePresetInCategory(sourceEntity, category, Math.max(1, Math.min(numpages, rb.formValues?.[0]?.toNumber() ?? page + 1)) - 1, search, textures);
             }
             case "next":

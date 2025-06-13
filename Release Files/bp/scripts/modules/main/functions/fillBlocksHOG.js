@@ -16,12 +16,12 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
                 try {
                     if (!!v.dimension
                         .getBlock(v)
-                        .getComponent("inventory")) {
+                        ?.getComponent("inventory")) {
                         clearContainer(v.dimension
                             .getBlock(v)
-                            .getComponent("inventory").container);
+                            ?.getComponent("inventory")?.container);
                     }
-                    v.dimension.getBlock(v).setPermutation(blockb);
+                    v.dimension.getBlock(v)?.setPermutation(blockb);
                     counter++;
                 }
                 catch (e) {
@@ -39,7 +39,7 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
         else {
             system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v) => {
                 try {
-                    v.dimension.getBlock(v).setPermutation(blockb);
+                    v.dimension.getBlock(v)?.setPermutation(blockb);
                     counter++;
                 }
                 catch (e) {
@@ -61,15 +61,15 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
             system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v) => {
                 if (!!options?.matchingBlockStates
                     ? BlockTypes.get(options?.matchingBlock) ==
-                        v.dimension.getBlock(v).type &&
+                        v.dimension.getBlock(v)?.type &&
                         matchingblockb.getAllStates() ==
                             Object.fromEntries(Object.entries(Object.assign(v.dimension
                                 .getBlock(v)
                                 ?.permutation?.getAllStates(), blockStates)).filter((v) => !!Object.entries(blockb.getAllStates()).find((s) => v[0] == s[0])))
                     : BlockTypes.get(options?.matchingBlock) ==
-                        v.dimension.getBlock(v).type) {
+                        v.dimension.getBlock(v)?.type) {
                     try {
-                        v.dimension.getBlock(v).setPermutation(blockb);
+                        v.dimension.getBlock(v)?.setPermutation(blockb);
                         counter++;
                     }
                     catch (e) {
@@ -86,22 +86,22 @@ export async function fillBlocksHOG(center, radius, offset, dimension, block, bl
         }
         else {
             system.runJob(generateSolidOvoidBG(center, radius, offset, id, dimension, (v) => {
-                if (!!v.dimension.getBlock(v).getComponent("inventory")) {
+                if (!!v.dimension.getBlock(v)?.getComponent("inventory")) {
                     clearContainer(v.dimension
                         .getBlock(v)
-                        .getComponent("inventory").container);
+                        ?.getComponent("inventory")?.container);
                 }
                 if (!!options?.matchingBlockStates
                     ? BlockTypes.get(options?.matchingBlock) ==
-                        v.dimension.getBlock(v).type &&
+                        v.dimension.getBlock(v)?.type &&
                         matchingblockb.getAllStates() ==
                             Object.fromEntries(Object.entries(Object.assign(v.dimension
                                 .getBlock(v)
                                 ?.permutation?.getAllStates(), blockStates)).filter((v) => !!Object.entries(blockb.getAllStates()).find((s) => v[0] == s[0])))
                     : BlockTypes.get(options?.matchingBlock) ==
-                        v.dimension.getBlock(v).type) {
+                        v.dimension.getBlock(v)?.type) {
                     try {
-                        v.dimension.getBlock(v).setPermutation(blockb);
+                        v.dimension.getBlock(v)?.setPermutation(blockb);
                         counter++;
                     }
                     catch (e) {

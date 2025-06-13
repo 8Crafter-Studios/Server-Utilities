@@ -54,7 +54,7 @@ export declare function securitySettings_playersWithPermissions(sourceEntity: lo
 /**
  * @todo Convert this to the new manage players UI style.
  */
-export declare function securitySettings_playersWithPermissions_permission(sourceEntitya: Entity | executeCommandPlayerW | Player, permission: [permissionKey: keyof savedPlayer["playerPermissions"], permissionValue: any], pagen?: number, maxplayersperpage?: number, search?: {
+export declare function securitySettings_playersWithPermissions_permission(sourceEntitya: Entity | executeCommandPlayerW | Player, permission: [permissionKey: keyof NonNullable<savedPlayer["playerPermissions"]>, permissionValue: any], pagen?: number, maxplayersperpage?: number, search?: {
     value: string;
     caseSensitive?: boolean;
     searchLastOnlineDates?: boolean;

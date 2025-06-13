@@ -19,8 +19,8 @@ function extractCustomPatternTypes(str) {
                     mode = "sequence";
                 }
                 let type = match.trim();
-                let weight = null;
-                let states = null;
+                let weight = undefined;
+                let states = undefined;
                 // Extract chance if present
                 const weightMatch = type.match(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/);
                 if (!!weightMatch) {
@@ -76,7 +76,7 @@ function extractCustomPatternType(str) {
     const patternTypes = [];
     const regex = /(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/;
     const regexb = /([rs]:)?(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$)/g;
-    const matches = str.match(regex)[0].match(regexb);
+    const matches = str.match(regex)?.[0].match(regexb);
     let mode = "random";
     if (matches) {
         matches.forEach((match, index) => {
@@ -88,8 +88,8 @@ function extractCustomPatternType(str) {
                 mode = "sequence";
             }
             let type = match.trim();
-            let weight = null;
-            let states = null;
+            let weight = undefined;
+            let states = undefined;
             // Extract chance if present
             const weightMatch = type.match(/[%*]{1,2}(\d+)(?=[\s\n]*$|\[|\{)/);
             if (!!weightMatch) {
@@ -294,7 +294,7 @@ export class BlockPattern {
      * @returns {string | null} The raw block pattern, or null if no raw block pattern was found.
      */
     static extractRaw(str) {
-        return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)?.[0];
+        return str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)?.[0] ?? null;
     }
     /**
      * Extracts a block pattern from a string.
@@ -315,7 +315,7 @@ export class BlockPattern {
      */
     static extractWRaw(str, mode) {
         return {
-            raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)?.[0],
+            raw: str.match(/(?<=\s|^)([rs]:)?((?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?(?=[,\s]|$))(,(?:[\"\'])?(?:[a-zA-Z0-9_\-\.]+:)?[a-zA-Z0-9_\-\.]+(?:[\"\'])?(?:[%*]{1,2}\d+)?(?:[\[\{](?:[^\]\}]*)[\]\}])?)*/)?.[0] ?? null,
             parsed: new BlockPattern(...((v) => [v, mode ?? v.mode])(extractCustomPatternType(str))),
         };
     }

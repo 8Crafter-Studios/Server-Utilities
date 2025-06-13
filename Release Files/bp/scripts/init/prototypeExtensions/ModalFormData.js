@@ -3,12 +3,14 @@ import { ModalFormData } from "@minecraft/server-ui";
 Object.defineProperty(ModalFormData.prototype, "forceShow", {
     value: async function forceShow(player, timeout) {
         const timeoutTicks = system.currentTick + (timeout ?? 9999);
+        let r;
         while (system.currentTick <= timeoutTicks) {
-            const r = await this.show(player);
+            r = await this.show(player);
             if (r.cancelationReason != "UserBusy" || r.canceled == false) {
                 return r;
             }
         }
+        return r;
     },
     configurable: true,
     enumerable: true,

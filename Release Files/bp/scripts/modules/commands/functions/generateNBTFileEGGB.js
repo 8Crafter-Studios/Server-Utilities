@@ -16,7 +16,7 @@ export function* generateNBTFileEGGB(location, nbt) {
                         i % nbt.size[2],
                     ])), nbt.block_palette[b].name);
                     !!nbt.block_palette[b]?.states
-                        ? Object.entries(nbt.block_palette[b]?.states).forEach((p) => tryrun(() => location.dimension.setBlockPermutation(Vector3Utils.add(location, arryTV3([
+                        ? Object.entries(nbt.block_palette[b].states).forEach((p) => tryrun(() => location.dimension.setBlockPermutation(Vector3Utils.add(location, arryTV3([
                             Math.floor(i /
                                 (nbt.size[1] *
                                     nbt.size[2])) % nbt.size[0],

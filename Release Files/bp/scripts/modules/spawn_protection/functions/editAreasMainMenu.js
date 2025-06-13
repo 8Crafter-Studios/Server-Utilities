@@ -70,6 +70,7 @@ export async function editAreasMainMenu(sourceEntitya) {
         }
         catch (e) {
             console.error(e, e.stack);
+            return 0;
         }
     });
 }
