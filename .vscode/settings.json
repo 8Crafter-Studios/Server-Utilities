@@ -1,17 +1,15 @@
 {
-  "files.eol": "\r\n",
-  "problems.showCurrentInStatus": true,
-  "editor.suggest.showStatusBar": true,
-  "typescript.tsserver.maxTsServerMemory": 40000,
-  "editor.largeFileOptimizations": true/*,
+    "files.eol": "\r\n",
+    "problems.showCurrentInStatus": true,
+    "editor.suggest.showStatusBar": true,
+    "typescript.tsserver.maxTsServerMemory": 40000,
+    "editor.largeFileOptimizations": true /*,
   "files.exclude": {
     ".git/objects": true
   }*/,
-  "files.exclude": {
-    "**/.git": false
-  },
-  "java.project.referencedLibraries": [
-    "BP/json-20250107.jar"
-  ],
-  "workbench.editor.pinnedTabsOnSeparateRow": true
+    "files.exclude": {
+        "**/.git": false
+    },
+    "java.project.referencedLibraries": ["BP/json-20250107.jar"],
+    "workbench.editor.pinnedTabsOnSeparateRow": true
 }

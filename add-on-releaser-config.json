@@ -1,0 +1,87 @@
+{
+    "$schema": "https://raw.githubusercontent.com/8Crafter-Studios/Add-On-Releaser/refs/heads/main/8crafters-add-on-releaser-config.schema.json",
+    "cwd": "./",
+    "destination": "./Release Files",
+    "packs": [
+        {
+            "path": "./BP",
+            "release_name": "bp",
+            "modifications": [
+                {
+                    "type": "delete_folders",
+                    "targets": ["src", "node_modules", ".git", ".vscode", "depricated", ".VSCodeCounter", "src2"]
+                },
+                {
+                    "type": "delete_files",
+                    "targets": [".git", ".eslintrc", ".gitignore", ".gitmodules", ".hintrc", ".gitattributes", ".mcattributes", "desktop.ini", "package.json", "package-lock.json", "jsconfig.json", "tsconfig.json", "tsconfig.tsbuildinfo", "*.js", "*.java", "*.jar"]
+                },
+                {
+                    "type": "find_and_replace_in_file",
+                    "target": "manifest.json",
+                    "find": ",\n        {\n            \"module_name\": \"@minecraft/debug-utilities\", // DO NOT LEAVE THIS LINE OF CODE IN WHEN RELEASING IT, IF THIS IS ADDED TO A REALM WITH THIS, IT WILL BRICK THE ADD-ON'S UUID!\n            \"version\": \"1.0.0-beta\"\n        }",
+                    "regex": false,
+                    "replace": "/* ,\n        {\n            \"module_name\": \"@minecraft/debug-utilities\",\n            \"version\": \"1.0.0-beta\"\n        } */"
+                },
+                {
+                    "type": "find_and_replace_in_file",
+                    "target": "manifest.json",
+                    "find": "(\"uuid\": \"[-a-f0-9]+)[a-f0-9](\")",
+                    "regex": true,
+                    "replace": "$1a$2"
+                },
+                {
+                    "type": "find_and_replace_in_file",
+                    "target": "scripts/initializeMainGlobalVariables.*s",
+                    "find": "(current_format_version = \")[^\"]+(\";)",
+                    "regex": true,
+                    "replace": "$1${version}$2"
+                }
+            ]
+        },
+        {
+            "path": "./RP",
+            "release_name": "rp",
+            "modifications": [
+                {
+                    "type": "delete_folders",
+                    "targets": ["node_modules", ".git", ".vscode", "depricated", "blockbench_models"]
+                },
+                {
+                    "type": "delete_files",
+                    "targets": [".git", ".eslintrc", ".gitignore", ".gitmodules", ".hintrc", ".gitattributes", ".mcattributes", "desktop.ini", "package.json", "package-lock.json", "jsconfig.json", "tsconfig.json", "tsconfig.tsbuildinfo", "*.js", "*.java", "*.jar"]
+                }/* ,
+                {
+                    "type": "add_file",
+                    "source": "https://4kwallpapers.com/images/wallpapers/mclaren-750s-le-11520x6480-22733.jpeg",
+                    "destination": "too-big-image.jpeg"
+                } *//* ,
+                {
+                    "type": "add_folder",
+                    "source": "C:/Users/ander/AppData/Roaming/.minecraft_bedrock/installations/Main Release/packageData/minecraftWorlds",
+                    "destination": "minecraftWorlds"
+                } */,
+                {
+                    "type": "find_and_replace_in_file",
+                    "target": "texts/en_US.lang",
+                    "find": "(8crafterdebugsticksrp\\d?.version=)[^\\s\\n]+([\\s\\n])",
+                    "regex": true,
+                    "replace": "$1${version}$2"
+                },
+                {
+                    "type": "find_and_replace_in_file",
+                    "target": "ui/settings_screen.json",
+                    "find": "(\\(Version: )[^\\s]+( for)",
+                    "regex": true,
+                    "replace": "$1${version}$2"
+                }
+            ]
+        }
+    ],
+    "file_type": "mcaddon",
+    "file_name": "myaddon-v${version}",
+    "file_name_version": {
+        "format": "dashed",
+        "sourcePack": "53170125-3e79-4659-9bba-e49eb90b6ded"
+    },
+    "release_version_format": "tuple"
+}

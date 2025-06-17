@@ -14968,7 +14968,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname!, firstbl
                         includeLiquidBlocks: true,
                         includePassableBlocks: true,
                     })?.block?.location;
-                    if (!!!loc) {
+                    if (!loc) {
                         player.sendMessageB("§cError: You must be facing a block to use this command.");
                     }
                     else {
@@ -14986,7 +14986,7 @@ console.warn(JSONStringify({coordinatesa, coordinatesb, firstblockname!, firstbl
                         includeLiquidBlocks: true,
                         includePassableBlocks: true,
                     })?.block?.location;
-                    if (!!!loc) {
+                    if (!loc) {
                         player.sendMessageB("§cError: You must be facing a block to use this command.");
                     }
                     else {
@@ -15602,7 +15602,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             overlayArea(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -15689,7 +15689,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillArea(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -15774,7 +15774,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillArea(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -15859,7 +15859,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillArea(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -15944,7 +15944,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillHollow(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -16029,7 +16029,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillOutline(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -16120,7 +16120,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillHollow(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -16229,7 +16229,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillTunnel(center, radius, length, axis, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -16338,7 +16338,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillCylinder(center, radius, length, axis, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -16482,7 +16482,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillBlocksHFGB(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, { minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits }, args[1].c, 100).then((a) => {
@@ -16561,7 +16561,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillBlocksHFGB(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, { minMSBetweenYields: config.system.defaultMinMSBetweenTickWaits }, args[1].c, integrity).then((a) => {
@@ -16893,7 +16893,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillWalls(ca, cb, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -16973,7 +16973,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillSphere(center, radius - 0.5, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -17059,7 +17059,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillStretchedSphere(center, radius, stretch, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -17140,7 +17140,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillHollowSphere(center, radius - 0.5, thickness, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -17236,7 +17236,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             fillCone(coordinatesa, radius, height, dimensiona, (l, i) => {
                                                 const b = firstblockpattern.generateBlock(i);
-                                                return b.type == "random"
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                             }, {
@@ -17302,7 +17302,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             completeGeneratorB(generateMathExpression(expression, (l) => {
                                                 const b = firstblockpattern.generateBlock(l.count);
-                                                const t = b.type == "random"
+                                                const t = b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                                 dimensiona.setBlockPermutation(l, t);
@@ -17361,7 +17361,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             completeGeneratorB(generateMathExpression(expression, (l) => {
                                                 const b = firstblockpattern.generateBlock(l.count);
-                                                const t = b.type == "random"
+                                                const t = b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                                 dimensiona.setBlockPermutation(l, t);
@@ -17420,7 +17420,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                         try {
                                             completeGeneratorB(generateMathExpression(expression, (l) => {
                                                 const b = firstblockpattern.generateBlock(l.count);
-                                                const t = b.type == "random"
+                                                const t = b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
                                                 dimensiona.setBlockPermutation(l, t);
@@ -17830,7 +17830,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                     }
                                     else if (!(args[1]?.t ?? false)) {
                                         try {
-                                            if (await UndoClipboard.undoLastActionAsync(undefined, !(args[1]?.k ?? false)) === 0) {
+                                            if ((await UndoClipboard.undoLastActionAsync(undefined, !(args[1]?.k ?? false))) === 0) {
                                                 player.sendMessageB("§cNothing to undo.");
                                             }
                                             else {
@@ -17856,7 +17856,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                                 return a;
                                             })(), saveLocation.dimension);
                                             try {
-                                                if (await clipboard.undoAsync(undefined, undefined, !(args[1]?.k ?? false)) === 0) {
+                                                if ((await clipboard.undoAsync(undefined, undefined, !(args[1]?.k ?? false))) === 0) {
                                                     player.sendMessageB("§cNothing to undo.");
                                                 }
                                                 else {
@@ -17882,7 +17882,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                     }
                                     else if (!(args[1]?.t ?? false)) {
                                         try {
-                                            if (await clipboard.undoAsync(undefined, undefined, !(args[1]?.k ?? false)) == 0) {
+                                            if ((await clipboard.undoAsync(undefined, undefined, !(args[1]?.k ?? false))) == 0) {
                                                 player.sendMessageB("§cNothing to undo.");
                                             }
                                             else {
@@ -17906,7 +17906,7 @@ Total Time Spent Generating: ${result.totalTimeSpentGenerating}`);
                                                 return a;
                                             })(), saveLocation.dimension);
                                             try {
-                                                if (await clipboard.undoAsync(undefined, undefined, !(args[1]?.k ?? false)) == 0) {
+                                                if ((await clipboard.undoAsync(undefined, undefined, !(args[1]?.k ?? false))) == 0) {
                                                     player.sendMessageB("§cNothing to undo.");
                                                 }
                                                 else {
@@ -21163,1612 +21163,1027 @@ ${command.dp}\\idtfill <offsetx: float> <offsety: float> <offsetz: float> <integ
                 {
                     eventData.cancel = true;
                     let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string"]).args;
-                    if (player.getComponent("inventory").container.getItem(player.selectedSlotIndex).isStackable) {
+                    const slot = player.activeSlot;
+                    if (!slot.hasItem()) {
+                        player.sendMessageB("§cYou must be holding a non-stackable item to use this command.");
+                    }
+                    else if (slot.isStackable) {
                         player.sendMessageB("§cError: The held item is a stackable item.");
                     }
                     else {
-                        switch (args[2].toLowerCase()) {
-                            case "none":
-                                {
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "none");
-                                    if (!args[1].l) {
-                                        srun(() => player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setLore());
+                        srun(async () => {
+                            switch (args[2].toLowerCase()) {
+                                case "none":
+                                    {
+                                        slot.setDynamicProperty("brushtype", "none");
+                                        if (!args[1].l) {
+                                            slot.setLore();
+                                        }
+                                        player.sendMessageB(`Successfully unbound the brush from the currently held item.`);
                                     }
-                                    player.sendMessageB(`Successfully unbound the brush from the currently held item.`);
-                                }
-                                break;
-                            case "extinguish":
-                                {
-                                    let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bSelect Mode: ${player
-                                                .getComponent("inventory")
-                                                .container.getSlot(player.selectedSlotIndex)
-                                                .getDynamicProperty("selectmode")}`,
-                                            `§r§bBrush Type: §aExtinguish`,
-                                            `§r§bBrush Radius: ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}`,
-                                        ]));
+                                    break;
+                                case "extinguish":
+                                case "ex":
+                                    {
+                                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args;
+                                        slot.setDynamicProperty("brushtype", "extinguish");
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]);
+                                        if (!args[1].l) {
+                                            slot.setLore([
+                                                `§r§bSelect Mode: ${slot.getDynamicProperty("selectmode")}`,
+                                                `§r§bBrush Type: §aExtinguish`,
+                                                `§r§bBrush Radius: ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}`,
+                                            ]);
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to extinguish with a radius of ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to extinguish with a radius of ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}.`);
-                                }
-                                break;
-                            case "ex":
-                                {
-                                    let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "extinguish");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aExtinguish`,
-                                            `§r§bBrush Radius: ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}`,
-                                        ]));
+                                    break;
+                                case "remexp":
+                                case "remexpe":
+                                case "remexpne":
+                                    {
+                                        let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args;
+                                        slot.setDynamicProperty("brushtype", args[2].toLowerCase());
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]);
+                                        if (!args[1].l) {
+                                            slot.setLore([
+                                                `§r§bBrush Type: §aRemExp${args[2].toLowerCase() === "remexpne" ? "NE" : args[2].toLowerCase() === "remexpe" ? "E" : ""}`,
+                                                `§r§bBrush Radius: ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}`,
+                                            ]);
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to ${args[2].toLowerCase()} with a radius of ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to extinguish with a radius of ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}.`);
-                                }
-                                break;
-                            case "remexp":
-                                {
-                                    let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexp");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aRemExp`,
-                                            `§r§bBrush Radius: ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}`,
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to remexp with a radius of ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}.`);
-                                }
-                                break;
-                            case "remexpe":
-                                {
-                                    let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexpe");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aRemExpE`,
-                                            `§r§bBrush Radius: ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}`,
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to remexp with a radius of ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}.`);
-                                }
-                                break;
-                            case "remexpne":
-                                {
-                                    let args = evaluateParameters(switchTestB, ["presetText", "f-l", "string", "number"]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "remexpne");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aRemExpNE`,
-                                            `§r§bBrush Radius: ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}`,
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to remexp with a radius of ${isNaN(Number(args[3] ?? undefined)) ? 10 : args[3]}.`);
-                                }
-                                break;
-                            case "sphere":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "sphere");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[6] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[6].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[6].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aSphere`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[6] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[6].blocks
+                                    break;
+                                case "sphere":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "sphere");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[6] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[6].blocks));
+                                            slot.setDynamicProperty("masktype", args[6].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aSphere`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[6].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[6] != undefined ? [`§r§bBrush Mask Type: §a${args[6].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[6] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[6].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[6].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[6] != undefined ? [`§r§bBrush Mask Type: §a${args[6].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to sphere with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to sphere with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}.`);
-                                }
-                                break;
-                            case "cube":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "cube");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[6] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[6].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[6].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aCube`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[6] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[6].blocks
+                                    break;
+                                case "cube":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "cube");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[6] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[6].blocks));
+                                            slot.setDynamicProperty("masktype", args[6].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aCube`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[6].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[6] != undefined ? [`§r§bBrush Mask Type: §a${args[6].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[6] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[6].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[6].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[6] != undefined ? [`§r§bBrush Mask Type: §a${args[6].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to cube with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to cube with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}.`);
-                                }
-                                break;
-                            case "square":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "square");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[6] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[6].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[6].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aSquare`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[6] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[6].blocks
+                                    break;
+                                case "square":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "square");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[6] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[6].blocks));
+                                            slot.setDynamicProperty("masktype", args[6].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aSquare`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[6].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[6] != undefined ? [`§r§bBrush Mask Type: §a${args[6].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[6] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[6].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[6].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[6] != undefined ? [`§r§bBrush Mask Type: §a${args[6].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to square with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to square with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}.`);
-                                }
-                                break;
-                            case "splatter":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "splatter");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    //console.warn(JSON.stringify((args[4] as BlockPattern).blocks))
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aSplatter`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            `§r§bBrush Pattern: `,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "splatter":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "splatter");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        //console.warn(JSON.stringify((args[4] as BlockPattern).blocks))
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aSplatter`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                `§r§bBrush Pattern: `,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "splattercube":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "splattercube");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aSplatterCube`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "splattercube":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "splattercube");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aSplatterCube`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "splattersquare":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "splattersquare");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aSplatterSquare`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "splattersquare":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "splattersquare");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aSplatterSquare`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to splatter with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "splattersurface":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "splattersurface");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aSplatterSurface`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "splattersurface":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "splattersurface");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aSplatterSurface`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to splatter surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to splatter surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "splattercubesurface":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "splattercubesurface");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aSplatterCubeSurface`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "splattercubesurface":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "splattercubesurface");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aSplatterCubeSurface`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to splatter cube surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to splatter cube surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "splattersquaresurface":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "splattersquaresurface");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aSplatterSquareSurface`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "splattersquaresurface":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "splattersquaresurface");
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aSplatterSquareSurface`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to splatter square surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to splatter square surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "overlaysurface":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "overlaysurface");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aOverlaySurface`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "overlaysurface":
+                                case "overlaycubesurface":
+                                case "overlaysquaresurface":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-h",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        const shape = args[2].toLowerCase().slice(7, -7) || "sphere";
+                                        slot.setDynamicProperty("brushtype", "overlaysurface");
+                                        slot.setDynamicProperty("shape", shape);
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
+                                        slot.setDynamicProperty("patterntype", args[4].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aOverlaySurface`,
+                                                `§r§bShape: §a${shape}`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                ...[
+                                                    ...args[4].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[4].type}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to overlay surface with a shape of ${shape}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to overlay surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "overlaysquaresurface":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "overlaysquaresurface");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
+                                    break;
+                                case "flatten":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-rwa",
+                                            "string",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
+                                            player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
+                                            break;
+                                        }
+                                        slot.setDynamicProperty("brushtype", "flatten");
+                                        slot.setDynamicProperty("flattendirection", args[4].toLowerCase());
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        slot.setDynamicProperty("usereverseoffset", args[3].r);
+                                        slot.setDynamicProperty("wholemode", args[3].w);
+                                        slot.setDynamicProperty("moveair", args[3].a);
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aFlatten`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                `§r§bFlatten Direction: §a${args[4].toLowerCase()}`,
+                                                `§r§bUse Reverse Offset: ${args[3].r.toFormattedString()}`,
+                                                `§r§bWhole Mode: §c${args[3].w.toFormattedString()}`,
+                                                `§r§bMove Air: §c${args[3].a.toFormattedString()}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to flatten with a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
+                                    break;
+                                case "flattensquare":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-rwa",
+                                            "string",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
+                                            player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
+                                            break;
+                                        }
+                                        slot.setDynamicProperty("brushtype", "flattensquare");
+                                        slot.setDynamicProperty("flattendirection", args[4].toLowerCase());
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        slot.setDynamicProperty("usereverseoffset", args[3].r);
+                                        slot.setDynamicProperty("wholemode", args[3].w);
+                                        slot.setDynamicProperty("moveair", args[3].a);
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aFlattenSquare`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                `§r§bFlatten Direction: §a${args[4].toLowerCase()}`,
+                                                `§r§bUse Reverse Offset: ${args[3].r.toFormattedString()}`,
+                                                `§r§bWhole Mode: ${args[3].w.toFormattedString()}`,
+                                                `§r§bMove Air: ${args[3].a.toFormattedString()}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to flatten square with a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aOverlaySquareSurface`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "flattenfill":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-r",
+                                            "string",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
+                                            player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
+                                            break;
+                                        }
+                                        slot.setDynamicProperty("brushtype", "flattenfill");
+                                        slot.setDynamicProperty("flattendirection", args[4].toLowerCase());
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[5].blocks));
+                                        slot.setDynamicProperty("patterntype", args[5].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[8].blocks));
+                                            slot.setDynamicProperty("masktype", args[8].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        slot.setDynamicProperty("usereverseoffset", args[3].r);
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aFlattenFill`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]}`,
+                                                `§r§bFlatten Direction: §a${args[4].toLowerCase()}`,
+                                                `§r§bUse Reverse Offset: ${args[3].r.toFormattedString()}`,
+                                                ...[
+                                                    ...args[5].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[5].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[5].type}`,
+                                                ...(args[8] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[8].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[8].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[8] != undefined ? [`§r§bBrush Mask Type: §a${args[8].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to flatten fill with a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]}, and a decay level of ${isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to overlay square surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "overlaycubesurface":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-h",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "overlaycubesurface");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[4].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[4].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aOverlayCubeSurface`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...[
-                                                ...args[4].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[4].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[4].type}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "flattensquarefill":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-r",
+                                            "string",
+                                            "blockPattern",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
+                                            player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
+                                            break;
+                                        }
+                                        slot.setDynamicProperty("brushtype", "flattensquarefill");
+                                        slot.setDynamicProperty("flattendirection", args[4].toLowerCase());
+                                        slot.setDynamicProperty("pattern", JSON.stringify(args[5].blocks));
+                                        slot.setDynamicProperty("patterntype", args[5].type);
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[8].blocks));
+                                            slot.setDynamicProperty("masktype", args[8].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        slot.setDynamicProperty("usereverseoffset", args[3].r);
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aFlattenSquareFill`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]}`,
+                                                `§r§bFlatten Direction: §a${args[4].toLowerCase()}`,
+                                                `§r§bUse Reverse Offset: ${args[3].r.toFormattedString()}`,
+                                                ...[
+                                                    ...args[5].blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
                                                         .map((v) => `§r§d${v}`),
                                                     "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
+                                                ].slice(0, args[5].blocks.length <= 15 ? -1 : undefined),
+                                                `§r§bBrush Pattern Type: §a${args[5].type}`,
+                                                ...(args[8] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[8].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[8].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[8] != undefined ? [`§r§bBrush Mask Type: §a${args[8].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to flatten square fill with a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]}, and a decay level of ${isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]}.`);
                                     }
-                                    player.sendMessageB(`Successfully set brush type of the held item to overlay cube surface with a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]} and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "flatten":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-rw",
-                                        "string",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
-                                        player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
+                                    break;
+                                case "nudge":
+                                case "nudgecube":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            "f-t",
+                                            "string",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
+                                            player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
+                                            break;
+                                        }
+                                        const shape = args[2].toLowerCase().slice(5) || "sphere";
+                                        slot.setDynamicProperty("brushtype", "nudge");
+                                        slot.setDynamicProperty("shape", shape);
+                                        slot.setDynamicProperty("trailmode", args[3].t);
+                                        slot.setDynamicProperty("nudgedirection", args[4].toLowerCase());
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aNudge`,
+                                                `§r§bShape: §a${shape}`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                `§r§bNudge Direction: §a${args[4].toLowerCase()}`,
+                                                `§r§bTrail Mode: ${args[3].t.toFormattedString()}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to nudge with a shape of ${shape}, a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "flatten");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("flattendirection", args[4].toLowerCase());
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
+                                    break;
+                                case "copy":
+                                case "copycube":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-la",
+                                            "string",
+                                            "f-a",
+                                            {
+                                                type: "ignorableNamedParameter",
+                                                name: "clipboard",
+                                                valueType: "string",
+                                                key: "clipboard",
+                                            },
+                                            "placeholder",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        const shape = args[2].toLowerCase().slice(4) || "sphere";
+                                        slot.setDynamicProperty("brushtype", "copy");
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        slot.setDynamicProperty("copyair", args[3].a);
+                                        slot.setDynamicProperty("clipboard", args.clipboard ?? `player_WorldEdit_brush_${player.id}`);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aCopy`,
+                                                `§r§bClipboard: §a${args.clipboard ?? `player_WorldEdit_brush_${player.id}`}`,
+                                                `§r§bShape: §a${shape}`,
+                                                `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
+                                                `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
+                                                `§r§bCopy Air: ${args[3].a.toFormattedString()}`,
+                                                ...(args[7] != undefined
+                                                    ? [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7].blocks
+                                                            .map((v) => v.rawns)
+                                                            .slice(0, 15)
+                                                            .map((v) => `§r§d${v}`),
+                                                        "§r§d...",
+                                                    ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                    : []),
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to copy with a shape of ${shape}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
                                     }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("usereverseoffset", args[3].r);
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("wholemode", args[3].w);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aFlatten`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            `§r§bFlatten Direction: §a${args[4].toLowerCase()}`,
-                                            `§r§bUse Reverse Offset: ${args[3].r.toFormattedString()}`,
-                                            `§r§bWhole Mode: §c${args[3].w.toFormattedString()}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
+                                    break;
+                                case "paste":
+                                    {
+                                        let args = evaluateParameters(switchTestB, [
+                                            "presetText",
+                                            "f-l",
+                                            "string",
+                                            {
+                                                type: "ignorableNamedParameter",
+                                                name: "clipboard",
+                                                valueType: "string",
+                                                key: "clipboard",
+                                            },
+                                            "placeholder",
+                                            "placeholder",
+                                            "number",
+                                            "number",
+                                            "blockMask",
+                                        ]).args;
+                                        slot.setDynamicProperty("brushtype", "paste");
+                                        slot.setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
+                                        slot.setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
+                                        slot.setDynamicProperty("clipboard", args.clipboard ?? `player_WorldEdit_brush_${player.id}`);
+                                        if (args[7] != undefined) {
+                                            slot.setDynamicProperty("mask", JSON.stringify(args[7].blocks));
+                                            slot.setDynamicProperty("masktype", args[7].type);
+                                        }
+                                        else {
+                                            slot.setDynamicProperty("mask");
+                                            slot.setDynamicProperty("masktype");
+                                        }
+                                        if (!args[1].l) {
+                                            srun(() => slot.setLore([
+                                                `§r§bBrush Type: §aPaste`,
+                                                `§r§bClipboard: §a${args.clipboard ?? `player_WorldEdit_brush_${player.id}`}` /*
+                                                `§r§bBrush Radius: §c${
+                                                    isNaN(Number(args[5] ?? undefined))
+                                                        ? 3
+                                                        : args[5]
+                                                }`,
+                                                `§r§bBrush Decay: §c${
+                                                    isNaN(Number(args[6] ?? undefined))
+                                                        ? 0
+                                                        : args[6]
+                                                }`,
+                                                ...(args[7] != undefined ?
+                                                    [
+                                                        "§r§bBrush Mask: §d",
+                                                        ...args[7]!.blocks
                                                         .map((v) => v.rawns)
                                                         .slice(0, 15)
-                                                        .map((v) => `§r§d${v}`),
-                                                    "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
+                                                        .map(
+                                                            (v) =>
+                                                                `§r§d${v}`
+                                                        ),
+                                                        "§r§d..."
+                                                    ].slice(
+                                                        0,
+                                                        args[7]!.blocks.length <= 15
+                                                            ? -1
+                                                            : undefined
+                                                    )
                                                 : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to flatten with a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "flattensquare":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-rw",
-                                        "string",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
-                                        player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
-                                    }
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "flattensquare");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("flattendirection", args[4].toLowerCase());
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("usereverseoffset", args[3].r);
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("wholemode", args[3].w);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aFlattenSquare`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            `§r§bFlatten Direction: §a${args[4].toLowerCase()}`,
-                                            `§r§bUse Reverse Offset: ${args[3].r.toFormattedString()}`,
-                                            `§r§bWhole Mode: ${args[3].w.toFormattedString()}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
-                                                        .map((v) => v.rawns)
-                                                        .slice(0, 15)
-                                                        .map((v) => `§r§d${v}`),
-                                                    "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to flatten square with a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "flattenfill":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-r",
-                                        "string",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
-                                        player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
-                                    }
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "flattenfill");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("flattendirection", args[4].toLowerCase());
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[5].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[5].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[8].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[8].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("usereverseoffset", args[3].r);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aFlattenFill`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]}`,
-                                            `§r§bFlatten Direction: §a${args[4].toLowerCase()}`,
-                                            `§r§bUse Reverse Offset: ${args[3].r.toFormattedString()}`,
-                                            ...[
-                                                ...args[5].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[5].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[5].type}`,
-                                            ...(args[8] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[8].blocks
-                                                        .map((v) => v.rawns)
-                                                        .slice(0, 15)
-                                                        .map((v) => `§r§d${v}`),
-                                                    "§r§d...",
-                                                ].slice(0, args[8].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[8] != undefined ? [`§r§bBrush Mask Type: §a${args[8].type}`] : []),
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to flatten fill with a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]}, and a decay level of ${isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]}.`);
-                                }
-                                break;
-                            case "flattensquarefill":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-r",
-                                        "string",
-                                        "blockPattern",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
-                                        player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
-                                    }
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("brushtype", "flattensquarefill");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("flattendirection", args[4].toLowerCase());
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("pattern", JSON.stringify(args[5].blocks));
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("patterntype", args[5].type);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[8].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[8].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("usereverseoffset", args[3].r);
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aFlattenSquareFill`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]}`,
-                                            `§r§bFlatten Direction: §a${args[4].toLowerCase()}`,
-                                            `§r§bUse Reverse Offset: ${args[3].r.toFormattedString()}`,
-                                            ...[
-                                                ...args[5].blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map((v) => `§r§d${v}`),
-                                                "§r§d...",
-                                            ].slice(0, args[5].blocks.length <= 15 ? -1 : undefined),
-                                            `§r§bBrush Pattern Type: §a${args[5].type}`,
-                                            ...(args[8] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[8].blocks
-                                                        .map((v) => v.rawns)
-                                                        .slice(0, 15)
-                                                        .map((v) => `§r§d${v}`),
-                                                    "§r§d...",
-                                                ].slice(0, args[8].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[8] != undefined ? [`§r§bBrush Mask Type: §a${args[8].type}`] : []),
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to flatten square fill with a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[6] ?? undefined)) ? 3 : args[6]}, and a decay level of ${isNaN(Number(args[7] ?? undefined)) ? 0 : args[7]}.`);
-                                }
-                                break;
-                            case "nudge":
-                            case "nudgecube":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        "f-t",
-                                        "string",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    if (!["up", "down", "north", "east", "south", "west", "auto", "autor"].includes(args[4]?.toLowerCase())) {
-                                        player.sendError(`§cError: Unknown direction "${args[4]?.toLowerCase()}".`, true);
-                                    }
-                                    const shape = args[2].toLowerCase().slice(5) || "sphere";
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "nudge");
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("shape", shape);
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("trailmode", args[3].t);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("nudgedirection", args[4].toLowerCase());
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aNudge`,
-                                            `§r§bShape: §a${shape}`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            `§r§bNudge Direction: §a${args[4].toLowerCase()}`,
-                                            `§r§bTrail Mode: §a${args[3].t}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
-                                                        .map((v) => v.rawns)
-                                                        .slice(0, 15)
-                                                        .map((v) => `§r§d${v}`),
-                                                    "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to nudge with a shape of ${shape}, a direction of ${args[4]?.toLowerCase()}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "copy":
-                            case "copycube":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-la",
-                                        "string",
-                                        "f-a",
-                                        {
-                                            type: "ignorableNamedParameter",
-                                            name: "clipboard",
-                                            valueType: "string",
-                                            key: "clipboard",
-                                        },
-                                        "placeholder",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    const shape = args[2].toLowerCase().slice(5) || "sphere";
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "copy");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("copyair", args[3].a);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("clipboard", args.clipboard ?? `player_WorldEdit_brush_${player.id}`);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aCopy`,
-                                            `§r§bClipboard: §a${args.clipboard ?? `player_WorldEdit_brush_${player.id}`}`,
-                                            `§r§bShape: §a${shape}`,
-                                            `§r§bBrush Radius: §c${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}`,
-                                            `§r§bBrush Decay: §c${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}`,
-                                            ...(args[7] != undefined
-                                                ? [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7].blocks
-                                                        .map((v) => v.rawns)
-                                                        .slice(0, 15)
-                                                        .map((v) => `§r§d${v}`),
-                                                    "§r§d...",
-                                                ].slice(0, args[7].blocks.length <= 15 ? -1 : undefined)
-                                                : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${args[7].type}`] : []),
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to copy with a shape of ${shape}, a radius of ${isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]}, and a decay level of ${isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]}.`);
-                                }
-                                break;
-                            case "paste":
-                                {
-                                    let args = evaluateParameters(switchTestB, [
-                                        "presetText",
-                                        "f-l",
-                                        "string",
-                                        {
-                                            type: "ignorableNamedParameter",
-                                            name: "clipboard",
-                                            valueType: "string",
-                                            key: "clipboard",
-                                        },
-                                        "placeholder",
-                                        "placeholder",
-                                        "number",
-                                        "number",
-                                        "blockMask",
-                                    ]).args;
-                                    player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("brushtype", "paste");
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("decay", isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("radius", isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]);
-                                    player
-                                        .getComponent("inventory")
-                                        .container.getSlot(player.selectedSlotIndex)
-                                        .setDynamicProperty("clipboard", args.clipboard ?? `player_WorldEdit_brush_${player.id}`);
-                                    if (args[7] != undefined) {
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("mask", JSON.stringify(args[7].blocks));
-                                        player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setDynamicProperty("masktype", args[7].type);
-                                    }
-                                    else {
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("mask");
-                                        player.getComponent("inventory").container.getSlot(player.selectedSlotIndex).setDynamicProperty("masktype");
-                                    }
-                                    if (!args[1].l) {
-                                        srun(() => player
-                                            .getComponent("inventory")
-                                            .container.getSlot(player.selectedSlotIndex)
-                                            .setLore([
-                                            `§r§bBrush Type: §aPaste`,
-                                            `§r§bClipboard: §a${args.clipboard ?? `player_WorldEdit_brush_${player.id}`}` /*
-                                            `§r§bBrush Radius: §c${
-                                                isNaN(Number(args[5] ?? undefined))
-                                                    ? 3
-                                                    : args[5]
-                                            }`,
-                                            `§r§bBrush Decay: §c${
-                                                isNaN(Number(args[6] ?? undefined))
-                                                    ? 0
-                                                    : args[6]
-                                            }`,
-                                            ...(args[7] != undefined ?
-                                                [
-                                                    "§r§bBrush Mask: §d",
-                                                    ...args[7]!.blocks
-                                                    .map((v) => v.rawns)
-                                                    .slice(0, 15)
-                                                    .map(
-                                                        (v) =>
-                                                            `§r§d${v}`
-                                                    ),
-                                                    "§r§d..."
-                                                ].slice(
-                                                    0,
-                                                    args[7]!.blocks.length <= 15
-                                                        ? -1
-                                                        : undefined
-                                                )
-                                            : []),
-                                            ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${
-                                                args[7]!.type
-                                            }`] : []), */,
-                                        ]));
-                                    }
-                                    player.sendMessageB(`Successfully set brush type of the held item to paste.` /* with a radius of ${
+                                                ...(args[7] != undefined ? [`§r§bBrush Mask Type: §a${
+                                                    args[7]!.type
+                                                }`] : []), */,
+                                            ]));
+                                        }
+                                        player.sendMessageB(`Successfully set brush type of the held item to paste.` /* with a radius of ${
                                         isNaN(Number(args[5] ?? undefined)) ? 3 : args[5]
                                     } and a decay level of ${
                                         isNaN(Number(args[6] ?? undefined)) ? 0 : args[6]
                                     }.`*/);
-                                }
-                                break;
-                            default:
-                                {
-                                    player.sendError(`§cError: Unknown brush type "${args[2].toLowerCase()}".`, true);
-                                }
-                                break;
-                        }
+                                    }
+                                    break;
+                                default:
+                                    {
+                                        player.sendError(`§cError: Unknown brush type "${args[2].toLowerCase()}".`, true);
+                                    }
+                                    break;
+                            }
+                        });
                     }
                 }
                 break;

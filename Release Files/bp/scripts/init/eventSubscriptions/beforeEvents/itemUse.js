@@ -1,5 +1,5 @@
 import { Vector3Utils } from "@minecraft/math.js";
-import { world, system, BlockTypes, BlockPermutation, Structure, StructureSaveMode } from "@minecraft/server";
+import { world, system, BlockTypes, BlockPermutation, Structure, StructureSaveMode, Block, BlockType, } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { BlockPattern } from "modules/commands/classes/BlockPattern";
 import { vTStr } from "modules/commands/functions/vTStr";
@@ -7,8 +7,6 @@ import { dirmap } from "modules/coordinates/functions/dirmap";
 import { diroffsetothersmap } from "modules/coordinates/functions/diroffsetothersmap";
 import { roundVector3ToMiddleOfBlock } from "modules/coordinates/functions/roundVector3ToMiddleOfBlock";
 import { fillBlocksHB } from "modules/main/functions/fillBlocksHB";
-import { fillBlocksHFGB } from "modules/main/functions/fillBlocksHFGB";
-import { fillBlocksHSGB } from "modules/main/functions/fillBlocksHSGB";
 import { scriptEvalRunWindow } from "modules/ui/functions/scriptEvalRunWindow";
 import { editorStick } from "modules/ui/functions/editorStick";
 import { editorStickB } from "modules/ui/functions/editorStickB";
@@ -576,7 +574,7 @@ console.error(e, e.stack);
         // ...
         // Output: [ <TextField Input>, <Dropdown Input>, <Slider Input>, <Toggle Input> ]
     }
-    if (!!event.itemStack.getDynamicProperty("brushtype")) {
+    if (event.itemStack.getDynamicProperty("brushtype")) {
         if (securityVariables.ultraSecurityModeEnabled) {
             if (securityVariables.testPlayerForPermission(event.source, "andexdb.useWorldEdit") == false) {
                 event.source.sendMessage("§cYou do not have permission to use WorldEdit Brushes. You need the following permission to use this item: andexdb.useWorldEdit");
@@ -584,1110 +582,1177 @@ console.error(e, e.stack);
             }
         }
         try {
-            //console.warn("b")
-            srun(async () => {
-                try {
-                    const selectMode = String(event.itemStack.getDynamicProperty("selectmode") ?? "");
-                    switch (String(event.itemStack.getDynamicProperty("brushtype")).toLowerCase()) {
-                        case "sphere":
-                            {
-                                const loc = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                })?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillSphere(pos, radius, event.source.dimension, (l, i) => {
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
+            /**
+             * The selection mode of the brush.
+             *
+             * If the string includes `noliquid`, the brush will not select liquid blocks.
+             *
+             * If the string includes `nopassable`, the brush will not select passable blocks.
+             */
+            const selectMode = String(event.itemStack.getDynamicProperty("selectmode") ?? "");
+            /**
+             * The block the player is facing.
+             */
+            const loca = event.source.getBlockFromViewDirection({
+                includeLiquidBlocks: !selectMode.includes("noliquid"),
+                includePassableBlocks: !selectMode.includes("nopassable"),
+            });
+            if (!loca) {
+                event.source.sendMessage("§cError: You must be facing a block.");
+            }
+            else {
+                /**
+                 * The opposite of the face of the block the player is facing.
+                 */
+                const locb = dirreversemap(dirmap(loca.face));
+                /**
+                 * The location of the block the player is facing.
+                 */
+                const loc = loca.block.location;
+                srun(async () => {
+                    try {
+                        switch (String(event.itemStack.getDynamicProperty("brushtype")).toLowerCase()) {
+                            case "sphere":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
                                     }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "cube":
-                            {
-                                const loc = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                })?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillArea({
-                                            x: pos.x - radius,
-                                            y: pos.y - radius,
-                                            z: pos.z - radius,
-                                        }, {
-                                            x: pos.x + radius,
-                                            y: pos.y + radius,
-                                            z: pos.z + radius,
-                                        }, event.source.dimension, (l, i) => {
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "square":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirmap(loca.face);
-                                const loc = loca?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillArea(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => {
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "splatter":
-                            {
-                                const loc = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                })?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillSphere(pos, radius, event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "splattercube":
-                            {
-                                const loc = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                })?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillArea({
-                                            x: pos.x - radius,
-                                            y: pos.y - radius,
-                                            z: pos.z - radius,
-                                        }, {
-                                            x: pos.x + radius,
-                                            y: pos.y + radius,
-                                            z: pos.z + radius,
-                                        }, event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "splattersquare":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirmap(loca.face);
-                                const loc = loca?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillArea(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "splattersurface":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirmap(loca.face);
-                                const loc = loca?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillSphere(pos, radius, event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true) ||
-                                                !(tryget(() => l.dimension.getBlock(l)?.[locb]()?.isAir) ?? true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "overlaysurface":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirreversemap(dirmap(loca.face));
-                                const loc = loca?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillSphere(pos, radius, event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                !(tryget(() => l.dimension.getBlock(l)?.isAir) ?? false) ||
-                                                (tryget(() => l.dimension.getBlock(l)?.[locb]()?.isAir) ?? true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "flatten":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirreversemap(dirmap(loca.face));
-                                const loc = loca?.block?.location;
-                                let flattenDirection = (event.itemStack.getDynamicProperty("flattendirection") ?? "up");
-                                if (flattenDirection === "auto") {
-                                    flattenDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
-                                }
-                                else if (flattenDirection === "autor") {
-                                    flattenDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
-                                }
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const structureID = `andexdb:WorldEdit_brush_${getSuperUniqueID()}`;
-                                    try {
-                                        /**
-                                         * Whether or not to use reverse offset mode.
-                                         *
-                                         * @todo Make this work better, it is currently very buggy.
-                                         */
-                                        const useReverseOffset = Boolean(event.itemStack.getDynamicProperty("usereverseoffset") ?? false);
-                                        /**
-                                         * Whether or not to use whole mode.
-                                         *
-                                         * This makes the section that is moved extend to the edge of the selection on the side it is moving towards,
-                                         * this results in the parts in the selection not being replaced and instead moved to replace the parts outside
-                                         * of the selection instead.
-                                         */
-                                        const wholeMode = Boolean(event.itemStack.getDynamicProperty("wholemode") ?? false);
-                                        let offsetDistance = useReverseOffset ? radius : -radius;
-                                        const axis = flattenDirection === "up" || flattenDirection === "down"
-                                            ? "y"
-                                            : flattenDirection === "north" || flattenDirection === "south"
-                                                ? "z"
-                                                : "x";
-                                        const sign = flattenDirection === "up" || flattenDirection === "north" || flattenDirection === "west" ? 1 : -1;
-                                        for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
-                                            for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
-                                                if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
-                                                    continue;
-                                                for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
-                                                    const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
-                                                    if (distanceSquared > Math.pow(radius, 2)) {
-                                                        continue;
-                                                    }
-                                                    const currentDistance = { x, y, z }[axis] - pos[axis];
-                                                    if (useReverseOffset
-                                                        ? -sign * currentDistance > -sign * offsetDistance
-                                                        : sign * currentDistance > sign * offsetDistance) {
-                                                        const block = event.source.dimension.getBlock({ x, y, z });
-                                                        if (!block)
-                                                            continue;
-                                                        if ((block.isSolid ||
-                                                            (event.source.dimension.getBlock(Vector.clamp(Vector.add({ ...Vector.zero, [axis]: -sign }, { x, y, z }), {
-                                                                min: { y: event.source.dimension.heightRange.min },
-                                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                                            }))?.isAir &&
-                                                                !block.isAir)) &&
-                                                            (mask ? mask.testIfMatches(block) : true)) {
-                                                            offsetDistance = currentDistance;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        await fillSphere(pos, radius, event.source.dimension, (l) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                sign * (l[axis] - pos[axis]) !== sign * offsetDistance) {
-                                                return null;
-                                            }
-                                            const block = event.source.dimension.getBlock(l);
-                                            if (!block)
-                                                return null;
-                                            if (!(block.isSolid ||
-                                                (event.source.dimension.getBlock(Vector.clamp(Vector.add({ ...Vector.zero, [axis]: -sign }, l), {
-                                                    min: { y: event.source.dimension.heightRange.min },
-                                                    max: { y: event.source.dimension.heightRange.max - 1 },
-                                                }))?.isAir &&
-                                                    !block.isAir)) ||
-                                                !(mask ? mask.testIfMatches(block) : true)) {
-                                                return null;
-                                            }
-                                            const structure = world.structureManager.createFromWorld(structureID, event.source.dimension, Vector.add(l, { [axis]: wholeMode ? -sign * radius - offsetDistance : 0 }), Vector.clamp(Vector.add(l, { [axis]: sign * Math.abs(radius + (pos[axis] - l[axis])) }), {
-                                                min: { y: event.source.dimension.heightRange.min },
-                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                            }), {
-                                                includeBlocks: true,
-                                                includeEntities: false,
-                                                saveMode: StructureSaveMode.Memory,
-                                            });
-                                            world.structureManager.place(structure, event.source.dimension, Vector.clamp(Vector.add({ ...Vector.zero, [axis]: wholeMode ? -sign * (radius + 1) - offsetDistance : -sign }, l), {
-                                                min: { y: event.source.dimension.heightRange.min },
-                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                            }));
-                                            world.structureManager.delete(structure);
-                                            const blockToRemove = l.dimension.getBlock(Vector.clamp(Vector.add(l, { [axis]: sign * Math.abs(radius + (pos[axis] - l[axis])) }), {
-                                                min: { y: event.source.dimension.heightRange.min },
-                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                            }));
-                                            blockToRemove?.getComponent("inventory")?.container?.clearAll();
-                                            blockToRemove?.setType("minecraft:air");
-                                            return null;
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
                                         try {
-                                            world.structureManager.delete(structureID);
-                                        }
-                                        catch { }
-                                    }
-                                }
-                            }
-                            break;
-                        case "flattensquare":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirreversemap(dirmap(loca.face));
-                                const loc = loca?.block?.location;
-                                let flattenDirection = (event.itemStack.getDynamicProperty("flattendirection") ?? "up");
-                                if (flattenDirection === "auto") {
-                                    flattenDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
-                                }
-                                else if (flattenDirection === "autor") {
-                                    flattenDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
-                                }
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const structureID = `andexdb:WorldEdit_brush_${getSuperUniqueID()}`;
-                                    try {
-                                        /**
-                                         * Whether or not to use reverse offset mode.
-                                         *
-                                         * @todo Make this work better, it is currently very buggy.
-                                         */
-                                        const useReverseOffset = Boolean(event.itemStack.getDynamicProperty("usereverseoffset") ?? false);
-                                        /**
-                                         * Whether or not to use whole mode.
-                                         *
-                                         * This makes the section that is moved extend to the edge of the selection on the side it is moving towards,
-                                         * this results in the parts in the selection not being replaced and instead moved to replace the parts outside
-                                         * of the selection instead.
-                                         */
-                                        const wholeMode = Boolean(event.itemStack.getDynamicProperty("wholemode") ?? false);
-                                        let offsetDistance = useReverseOffset ? radius : -radius;
-                                        const axis = flattenDirection === "up" || flattenDirection === "down"
-                                            ? "y"
-                                            : flattenDirection === "north" || flattenDirection === "south"
-                                                ? "z"
-                                                : "x";
-                                        const sign = flattenDirection === "up" || flattenDirection === "north" || flattenDirection === "west" ? 1 : -1;
-                                        for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
-                                            for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
-                                                if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
-                                                    continue;
-                                                for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
-                                                    const currentDistance = { x, y, z }[axis] - pos[axis];
-                                                    if (useReverseOffset
-                                                        ? sign * currentDistance < sign * offsetDistance
-                                                        : sign * currentDistance > sign * offsetDistance) {
-                                                        const block = event.source.dimension.getBlock({ x, y, z });
-                                                        if (!block)
-                                                            continue;
-                                                        if ((block.isSolid ||
-                                                            (event.source.dimension.getBlock(Vector.clamp(Vector.add({ ...Vector.zero, [axis]: -sign }, { x, y, z }), {
-                                                                min: { y: event.source.dimension.heightRange.min },
-                                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                                            }))?.isAir &&
-                                                                !block.isAir)) &&
-                                                            (mask ? mask.testIfMatches(block) : true)) {
-                                                            offsetDistance = currentDistance;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        await fillArea(Vector.clamp({
-                                            x: pos.x - radius,
-                                            y: pos.y - radius,
-                                            z: pos.z - radius,
-                                        }, {
-                                            min: { y: event.source.dimension.heightRange.min },
-                                            max: { y: event.source.dimension.heightRange.max - 1 },
-                                        }), Vector.clamp({
-                                            x: pos.x + radius,
-                                            y: pos.y + radius,
-                                            z: pos.z + radius,
-                                        }, {
-                                            min: { y: event.source.dimension.heightRange.min },
-                                            max: { y: event.source.dimension.heightRange.max - 1 },
-                                        }), event.source.dimension, (l) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                sign * (l[axis] - pos[axis]) !== sign * offsetDistance) {
-                                                return null;
-                                            }
-                                            const block = event.source.dimension.getBlock(l);
-                                            if (!block)
-                                                return null;
-                                            if (!(block.isSolid ||
-                                                (event.source.dimension.getBlock(Vector.clamp(Vector.add({ ...Vector.zero, [axis]: -sign }, l), {
-                                                    min: { y: event.source.dimension.heightRange.min },
-                                                    max: { y: event.source.dimension.heightRange.max - 1 },
-                                                }))?.isAir &&
-                                                    !block.isAir)) ||
-                                                !(mask ? mask.testIfMatches(block) : true)) {
-                                                return null;
-                                            }
-                                            const structure = world.structureManager.createFromWorld(structureID, event.source.dimension, Vector.add(l, { [axis]: wholeMode ? -sign * radius - offsetDistance : 0 }), Vector.clamp(Vector.add(l, { [axis]: sign * Math.abs(radius + (pos[axis] - l[axis])) }), {
-                                                min: { y: event.source.dimension.heightRange.min },
-                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                            }), {
-                                                includeBlocks: true,
-                                                includeEntities: false,
-                                                saveMode: StructureSaveMode.Memory,
+                                            await fillSphere(pos, radius, event.source.dimension, (l, i) => {
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
                                             });
-                                            world.structureManager.place(structure, event.source.dimension, Vector.clamp(Vector.add({ ...Vector.zero, [axis]: wholeMode ? -sign * (radius + 1) - offsetDistance : -sign }, l), {
-                                                min: { y: event.source.dimension.heightRange.min },
-                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                            }));
-                                            world.structureManager.delete(structure);
-                                            const blockToRemove = l.dimension.getBlock(Vector.clamp(Vector.add(l, { [axis]: sign * Math.abs(radius + (pos[axis] - l[axis])) }), {
-                                                min: { y: event.source.dimension.heightRange.min },
-                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                            }));
-                                            blockToRemove?.getComponent("inventory")?.container?.clearAll();
-                                            blockToRemove?.setType("minecraft:air");
-                                            return null;
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
                                     }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
+                                }
+                                break;
+                            case "cube":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
                                         try {
-                                            world.structureManager.delete(structureID);
+                                            await fillArea({
+                                                x: pos.x - radius,
+                                                y: pos.y - radius,
+                                                z: pos.z - radius,
+                                            }, {
+                                                x: pos.x + radius,
+                                                y: pos.y + radius,
+                                                z: pos.z + radius,
+                                            }, event.source.dimension, (l, i) => {
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
                                         }
-                                        catch { }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        case "flattenfill":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirreversemap(dirmap(loca.face));
-                                const loc = loca?.block?.location;
-                                let flattenDirection = (event.itemStack.getDynamicProperty("flattendirection") ?? "up");
-                                if (flattenDirection === "auto") {
-                                    flattenDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
+                                break;
+                            case "square":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            await fillArea(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => {
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
+                                    }
                                 }
-                                else if (flattenDirection === "autor") {
-                                    flattenDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
-                                }
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        /**
-                                         * Whether or not to use reverse offset mode.
-                                         *
-                                         * @todo Make this work better, it is currently very buggy.
-                                         */
-                                        const useReverseOffset = Boolean(event.itemStack.getDynamicProperty("usereverseoffset") ?? false);
-                                        let offsetDistance = useReverseOffset ? radius : -radius;
-                                        const axis = flattenDirection === "up" || flattenDirection === "down"
-                                            ? "y"
-                                            : flattenDirection === "north" || flattenDirection === "south"
-                                                ? "z"
-                                                : "x";
-                                        const sign = flattenDirection === "up" || flattenDirection === "north" || flattenDirection === "west" ? 1 : -1;
-                                        for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
-                                            for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
-                                                if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
-                                                    continue;
-                                                for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
-                                                    const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
-                                                    if (distanceSquared > Math.pow(radius, 2)) {
-                                                        continue;
-                                                    }
-                                                    const currentDistance = { x, y, z }[axis] - pos[axis];
-                                                    if (useReverseOffset
-                                                        ? sign * currentDistance < sign * offsetDistance
-                                                        : sign * currentDistance > sign * offsetDistance) {
-                                                        const block = event.source.dimension.getBlock({ x, y, z });
-                                                        if (!block)
-                                                            continue;
-                                                        if (!block.isAir && (mask ? mask.testIfMatches(block) : true)) {
-                                                            offsetDistance = currentDistance;
-                                                        }
-                                                    }
+                                break;
+                            case "splatter":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            await fillSphere(pos, radius, event.source.dimension, (l, i) => {
+                                                if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
+                                                    (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true)) {
+                                                    return null;
                                                 }
-                                            }
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
                                         }
-                                        await fillSphere(pos, radius, event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                sign * (l[axis] - pos[axis]) !== sign * offsetDistance) {
-                                                return null;
-                                            }
-                                            const block = event.source.dimension.getBlock(l);
-                                            if (!block)
-                                                return null;
-                                            if (block.isAir || !(mask ? mask.testIfMatches(block) : true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        case "flattensquarefill":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirreversemap(dirmap(loca.face));
-                                const loc = loca?.block?.location;
-                                let flattenDirection = (event.itemStack.getDynamicProperty("flattendirection") ?? "up");
-                                if (flattenDirection === "auto") {
-                                    flattenDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
-                                }
-                                else if (flattenDirection === "autor") {
-                                    flattenDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
-                                }
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        /**
-                                         * Whether or not to use reverse offset mode.
-                                         *
-                                         * @todo Make this work better, it is currently very buggy.
-                                         */
-                                        const useReverseOffset = Boolean(event.itemStack.getDynamicProperty("usereverseoffset") ?? false);
-                                        let offsetDistance = useReverseOffset ? radius : -radius;
-                                        const axis = flattenDirection === "up" || flattenDirection === "down"
-                                            ? "y"
-                                            : flattenDirection === "north" || flattenDirection === "south"
-                                                ? "z"
-                                                : "x";
-                                        const sign = flattenDirection === "up" || flattenDirection === "north" || flattenDirection === "west" ? 1 : -1;
-                                        for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
-                                            for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
-                                                if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
-                                                    continue;
-                                                for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
-                                                    const currentDistance = { x, y, z }[axis] - pos[axis];
-                                                    if (useReverseOffset
-                                                        ? sign * currentDistance < sign * offsetDistance
-                                                        : sign * currentDistance > sign * offsetDistance) {
-                                                        const block = event.source.dimension.getBlock({ x, y, z });
-                                                        if (!block)
-                                                            continue;
-                                                        if (!block.isAir && (mask ? mask.testIfMatches(block) : true)) {
-                                                            offsetDistance = currentDistance;
-                                                        }
-                                                    }
+                                break;
+                            case "splattercube":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            await fillArea({
+                                                x: pos.x - radius,
+                                                y: pos.y - radius,
+                                                z: pos.z - radius,
+                                            }, {
+                                                x: pos.x + radius,
+                                                y: pos.y + radius,
+                                                z: pos.z + radius,
+                                            }, event.source.dimension, (l, i) => {
+                                                if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
+                                                    (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true)) {
+                                                    return null;
                                                 }
-                                            }
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
                                         }
-                                        await fillArea({
-                                            x: pos.x - radius,
-                                            y: pos.y - radius,
-                                            z: pos.z - radius,
-                                        }, {
-                                            x: pos.x + radius,
-                                            y: pos.y + radius,
-                                            z: pos.z + radius,
-                                        }, event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
-                                                sign * (l[axis] - pos[axis]) !== sign * offsetDistance) {
-                                                return null;
-                                            }
-                                            const block = event.source.dimension.getBlock(l);
-                                            if (!block)
-                                                return null;
-                                            if (block.isAir || !(mask ? mask.testIfMatches(block) : true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        case "nudge":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirreversemap(dirmap(loca.face));
-                                const loc = loca?.block?.location;
-                                let nudgeDirection = (event.itemStack.getDynamicProperty("nudgedirection") ?? "up");
-                                if (nudgeDirection === "auto") {
-                                    nudgeDirection = locb === "above" ? "up" : locb === "below" ? "down" : dirreversemap(locb);
+                                break;
+                            case "splattersquare":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            await fillArea(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => {
+                                                if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
+                                                    (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true)) {
+                                                    return null;
+                                                }
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
+                                    }
                                 }
-                                else if (nudgeDirection === "autor") {
-                                    nudgeDirection = locb === "above" ? "down" : locb === "below" ? "up" : locb;
+                                break;
+                            case "splattersurface":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            await fillSphere(pos, radius, event.source.dimension, (l, i) => {
+                                                if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
+                                                    (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true) ||
+                                                    !(tryget(() => l.dimension.getBlock(l)?.[locb]()?.isAir) ?? true)) {
+                                                    return null;
+                                                }
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
+                                    }
                                 }
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                /**
-                                 * The shape of the area to nudge.
-                                 */
-                                const shape = (event.itemStack.getDynamicProperty("shape") ?? "sphere");
-                                /**
-                                 * Whether or not to not erase the blocks left behind after copying the area over one block.
-                                 */
-                                const trailMode = Boolean(event.itemStack.getDynamicProperty("trailmode") ?? false);
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const structureID = `andexdb:WorldEdit_brush_${getSuperUniqueID()}`;
-                                    try {
-                                        const axis = nudgeDirection === "up" || nudgeDirection === "down"
-                                            ? "y"
-                                            : nudgeDirection === "north" || nudgeDirection === "south"
-                                                ? "z"
-                                                : "x";
-                                        const sign = nudgeDirection === "up" || nudgeDirection === "north" || nudgeDirection === "west" ? 1 : -1;
-                                        let msSinceLastTickWait = Date.now();
-                                        const minMSBetweenTickWaits = config.system.defaultMinMSBetweenTickWaits;
-                                        for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
-                                            for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
-                                                if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
-                                                    continue;
-                                                for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
-                                                    if (shape === "sphere") {
-                                                        const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
-                                                        if (distanceSquared > Math.pow(radius, 2)) {
-                                                            continue;
-                                                        }
-                                                    }
-                                                    if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, { x, y, z }) / radius) * (decay / 10)) {
+                                break;
+                            case "overlaysurface":
+                                {
+                                    /**
+                                     * The face of the block to overlay.
+                                     */
+                                    let targetFace = (event.itemStack.getDynamicProperty("targetface") ?? "auto");
+                                    if (targetFace === "auto") {
+                                        targetFace = locb === "above" ? "up" : locb === "below" ? "down" : locb;
+                                    }
+                                    else if (targetFace === "autor") {
+                                        targetFace = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
+                                    }
+                                    /**
+                                     * The radius of the area to overlay.
+                                     */
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    /**
+                                     * The decay of the area to overlay.
+                                     *
+                                     * This is how much the chance of placing a block is reduced per block away from the center.
+                                     */
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    /**
+                                     * The block pattern to place.
+                                     */
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    /**
+                                     * The block mask to use to filter which blocks should be overlayed.
+                                     */
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    /**
+                                     * The shape of the area to nudge.
+                                     *
+                                     * @todo Add square support.
+                                     */
+                                    const shape = (event.itemStack.getDynamicProperty("shape") ?? "sphere");
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        /**
+                                         * The position of the center of the area to overlay.
+                                         *
+                                         * This is the center of the location of the block the player is facing.
+                                         */
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        /**
+                                         * A list of all block types.
+                                         *
+                                         * This is used when the block pattern results in a block type of `random`.
+                                         */
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            /**
+                                             * The axis to overlay.
+                                             */
+                                            const axis = targetFace === "up" || targetFace === "down"
+                                                ? "y"
+                                                : targetFace === "north" || targetFace === "south"
+                                                    ? "z"
+                                                    : "x";
+                                            /**
+                                             * The direction to move on the axis.
+                                             */
+                                            const sign = targetFace === "down" || targetFace === "north" || targetFace === "west" ? 1 : -1;
+                                            /**
+                                             * The last time the generation was paused for a tick.
+                                             */
+                                            let msSinceLastTickWait = Date.now();
+                                            /**
+                                             * The minimum time between tick waits, in milliseconds.
+                                             */
+                                            const minMSBetweenTickWaits = config.system.defaultMinMSBetweenTickWaits;
+                                            /**
+                                             * The index of the block to place.
+                                             *
+                                             * This is used when the block pattern is in `sequence` mode.
+                                             */
+                                            let index = 0n;
+                                            for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
+                                                for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
+                                                    if (y < event.source.dimension.heightRange.min) {
+                                                        index += (event.source.dimension.heightRange.min - pos.y).floor().toBigInt();
                                                         continue;
                                                     }
-                                                    const block = event.source.dimension.getBlock({ x, y, z });
-                                                    if (!block)
-                                                        continue;
-                                                    if (!(mask ? mask.testIfMatches(block) : true)) {
+                                                    if (y >= event.source.dimension.heightRange.max) {
+                                                        index += (pos.y - event.source.dimension.heightRange.max).floor().toBigInt() + 1n;
                                                         continue;
                                                     }
-                                                    const structure = world.structureManager.createFromWorld(structureID, event.source.dimension, { x, y, z }, { x, y, z }, {
-                                                        includeBlocks: true,
-                                                        includeEntities: false,
-                                                        saveMode: StructureSaveMode.Memory,
-                                                    });
-                                                    if (trailMode) {
-                                                        for (let x = 0; x < structure.size.x; x++) {
-                                                            for (let y = 0; y < structure.size.y; y++) {
-                                                                for (let z = 0; z < structure.size.z; z++) {
-                                                                    if (structure.getBlockPermutation({ x, y, z })?.type.id === "minecraft:air") {
-                                                                        structure.setBlockPermutation({ x, y, z });
-                                                                    }
-                                                                }
+                                                    for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
+                                                        if (shape === "sphere") {
+                                                            const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
+                                                            if (distanceSquared > Math.pow(radius, 2)) {
+                                                                continue;
                                                             }
                                                         }
-                                                    }
-                                                    Array.from(removeAirFromStructure(structure));
-                                                    world.structureManager.place(structure, event.source.dimension, Vector.clamp(Vector.add({ x, y, z }, { [axis]: sign }), {
-                                                        min: { y: event.source.dimension.heightRange.min },
-                                                        max: { y: event.source.dimension.heightRange.max - 1 },
-                                                    }));
-                                                    world.structureManager.delete(structure);
-                                                    if (!trailMode) {
-                                                        block.getComponent("inventory")?.container?.clearAll();
-                                                        block.setType("minecraft:air");
-                                                    }
-                                                    if (Date.now() - msSinceLastTickWait >= minMSBetweenTickWaits) {
-                                                        await waitTick();
-                                                        msSinceLastTickWait = Date.now();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                        try {
-                                            world.structureManager.delete(structureID);
-                                        }
-                                        catch { }
-                                    }
-                                }
-                            }
-                            break;
-                        case "copy":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirreversemap(dirmap(loca.face));
-                                const loc = loca?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                const clipboardID = (event.itemStack.getDynamicProperty("clipboardID") ??
-                                    `player_WorldEdit_brush_${event.source.id}`);
-                                /**
-                                 * The shape of the area to copy.
-                                 */
-                                const shape = (event.itemStack.getDynamicProperty("shape") ?? "sphere");
-                                /**
-                                 * Whether or not to copy air.
-                                 */
-                                const copyAir = Boolean(event.itemStack.getDynamicProperty("copyair") ?? false);
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    try {
-                                        let msSinceLastTickWait = Date.now();
-                                        const minMSBetweenTickWaits = config.system.defaultMinMSBetweenTickWaits;
-                                        const clipboard = !clipboardID || clipboardID === "global" ? BlockClipboard.global : BlockClipboard.getClipboard(clipboardID);
-                                        clipboard.clear();
-                                        clipboard.copy(event.source.dimension, {
-                                            from: Vector.clamp({ x: pos.x - radius, y: pos.y - radius, z: pos.z - radius }, {
-                                                min: { y: event.source.dimension.heightRange.min },
-                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                            }),
-                                            to: Vector.clamp({ x: pos.x + radius, y: pos.y + radius, z: pos.z + radius }, {
-                                                min: { y: event.source.dimension.heightRange.min },
-                                                max: { y: event.source.dimension.heightRange.max - 1 },
-                                            }),
-                                        });
-                                        const size = clipboard.contentsSize;
-                                        const sizeLimits = clipboard.contentsSizeLimits;
-                                        for (let xI = 0; xI < Math.ceil(sizeLimits.x / size.x) * sizeLimits.x; xI++) {
-                                            for (let yI = 0; yI < Math.ceil(sizeLimits.y / size.y) * sizeLimits.y; yI++) {
-                                                for (let zI = 0; zI < Math.ceil(sizeLimits.z / size.z) * sizeLimits.z; zI++) {
-                                                    const structure = clipboard.getStructureAtIndices({
-                                                        x: xI,
-                                                        y: yI,
-                                                        z: zI,
-                                                    });
-                                                    if (!structure) {
+                                                        if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, { x, y, z }) / radius) * (decay / 10)) {
+                                                            continue;
+                                                        }
+                                                        /**
+                                                         * The block at the location of the block to place.
+                                                         */
+                                                        const block = event.source.dimension.getBlock({ x, y, z });
+                                                        if (!block || !block.isAir) {
+                                                            continue;
+                                                        }
+                                                        /**
+                                                         * The block at the location of the block to place's supporting block.
+                                                         */
+                                                        const supportingBlock = block[locb]();
+                                                        if (!supportingBlock || supportingBlock.isAir || !(mask ? mask.testIfMatches(supportingBlock) : true))
+                                                            continue;
+                                                        /**
+                                                         * The block pattern entry for the block to place.
+                                                         */
+                                                        const permutation = blockpattern.generateBlock(index);
+                                                        block.setPermutation(permutation.type === "random"
+                                                            ? BlockPermutation.resolve(blocktypes.randomElement().id)
+                                                            : BlockPermutation.resolve(permutation.type, permutation.states));
                                                         if (Date.now() - msSinceLastTickWait >= minMSBetweenTickWaits) {
                                                             await waitTick();
                                                             msSinceLastTickWait = Date.now();
                                                         }
-                                                        continue;
                                                     }
-                                                    for (let x = 0; x < structure.size.x; x++) {
-                                                        for (let y = 0; y < structure.size.y; y++) {
-                                                            for (let z = 0; z < structure.size.z; z++) {
-                                                                if (shape === "sphere") {
-                                                                    const distanceSquared = Math.pow(xI * size.x + x - size.x / 2, 2) +
-                                                                        Math.pow(yI * size.y + y - size.y / 2, 2) +
-                                                                        Math.pow(zI * size.z + z - size.z / 2, 2);
-                                                                    if (distanceSquared <= Math.pow(radius, 2) &&
-                                                                        Math.max(0.0001, Math.random()) >=
+                                                }
+                                            }
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
+                                    }
+                                }
+                                break;
+                            case "flatten":
+                                {
+                                    /**
+                                     * The face of the block to overlay.
+                                     */
+                                    let targetFace = (event.itemStack.getDynamicProperty("flattendirection") ?? "auto");
+                                    if (targetFace === "auto") {
+                                        targetFace = locb === "above" ? "up" : locb === "below" ? "down" : locb;
+                                    }
+                                    else if (targetFace === "autor") {
+                                        targetFace = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
+                                    }
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const structureID = `andexdb:WorldEdit_brush_${getSuperUniqueID()}`;
+                                        try {
+                                            /**
+                                             * Whether or not to use reverse offset mode.
+                                             *
+                                             * @todo Make this work better, it is currently very buggy.
+                                             */
+                                            const useReverseOffset = Boolean(event.itemStack.getDynamicProperty("usereverseoffset") ?? false);
+                                            /**
+                                             * Whether or not to use whole mode.
+                                             *
+                                             * This makes the section that is moved extend to the edge of the selection on the side it is moving towards,
+                                             * this results in the parts in the selection not being replaced and instead moved to replace the parts outside
+                                             * of the selection instead.
+                                             */
+                                            const wholeMode = Boolean(event.itemStack.getDynamicProperty("wholemode") ?? false);
+                                            /**
+                                             * Whether or not to move air.
+                                             *
+                                             * If false air blocks will be removed from the structures used to move the blocks.
+                                             */
+                                            const moveAir = Boolean(event.itemStack.getDynamicProperty("moveair") ?? false);
+                                            const axis = targetFace === "up" || targetFace === "down"
+                                                ? "y"
+                                                : targetFace === "north" || targetFace === "south"
+                                                    ? "z"
+                                                    : "x";
+                                            const sign = targetFace === "down" || targetFace === "north" || targetFace === "west" ? 1 : -1;
+                                            let offsetDistance = sign * (useReverseOffset ? radius : -radius);
+                                            for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
+                                                for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
+                                                    if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
+                                                        continue;
+                                                    for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
+                                                        const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
+                                                        if (distanceSquared > Math.pow(radius, 2)) {
+                                                            continue;
+                                                        }
+                                                        const currentDistance = { x, y, z }[axis] - pos[axis];
+                                                        if (useReverseOffset
+                                                            ? -sign * currentDistance > -sign * offsetDistance
+                                                            : sign * currentDistance > sign * offsetDistance) {
+                                                            const block = event.source.dimension.getBlock({ x, y, z });
+                                                            if (!block)
+                                                                continue;
+                                                            if ((block.isSolid ||
+                                                                (event.source.dimension.getBlock(Vector.clamp(Vector.add({ x, y, z }, { [axis]: -sign }), {
+                                                                    min: { y: event.source.dimension.heightRange.min },
+                                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                                }))?.isAir &&
+                                                                    !block.isAir)) &&
+                                                                (mask ? mask.testIfMatches(block) : true)) {
+                                                                offsetDistance = currentDistance;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            await fillSphere(pos, radius, event.source.dimension, (l) => {
+                                                if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
+                                                    l[axis] - pos[axis] !== offsetDistance) {
+                                                    return null;
+                                                }
+                                                const block = event.source.dimension.getBlock(l);
+                                                if (!block)
+                                                    return null;
+                                                if (!(block.isSolid ||
+                                                    (event.source.dimension.getBlock(Vector.clamp(Vector.add({ ...Vector.zero, [axis]: -sign }, l), {
+                                                        min: { y: event.source.dimension.heightRange.min },
+                                                        max: { y: event.source.dimension.heightRange.max - 1 },
+                                                    }))?.isAir &&
+                                                        !block.isAir)) ||
+                                                    !(mask ? mask.testIfMatches(block) : true)) {
+                                                    return null;
+                                                }
+                                                const pos1 = Vector.clamp(Vector.add(l, { [axis]: wholeMode ? -sign * radius - offsetDistance : 0 }), {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                });
+                                                const pos2 = Vector.clamp(Vector.add(l, { [axis]: sign * Math.abs(radius + (pos[axis] - l[axis])) }), {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                });
+                                                const min = {
+                                                    x: Math.min(pos1.x, pos2.x),
+                                                    y: Math.min(pos1.y, pos2.y),
+                                                    z: Math.min(pos1.z, pos2.z),
+                                                };
+                                                const structure = world.structureManager.createFromWorld(structureID, event.source.dimension, pos1, pos2, {
+                                                    includeBlocks: true,
+                                                    includeEntities: false,
+                                                    saveMode: StructureSaveMode.Memory,
+                                                });
+                                                if (!moveAir) {
+                                                    Array.from(removeAirFromStructure(structure));
+                                                }
+                                                world.structureManager.place(structure, event.source.dimension, Vector.clamp(Vector.add(min, { [axis]: -sign }), {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                }));
+                                                world.structureManager.delete(structure);
+                                                const blockToRemove = l.dimension.getBlock(Vector.clamp(Vector.add(min, { [axis]: sign * Math.abs(radius + (pos[axis] - l[axis])) }), {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                }));
+                                                blockToRemove?.getComponent("inventory")?.container?.clearAll();
+                                                blockToRemove?.setType("minecraft:air");
+                                                return null;
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                            try {
+                                                world.structureManager.delete(structureID);
+                                            }
+                                            catch { }
+                                        }
+                                    }
+                                }
+                                break;
+                            case "flattensquare":
+                                {
+                                    let flattenDirection = (event.itemStack.getDynamicProperty("flattendirection") ?? "auto");
+                                    if (flattenDirection === "auto") {
+                                        flattenDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
+                                    }
+                                    else if (flattenDirection === "autor") {
+                                        flattenDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
+                                    }
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const structureID = `andexdb:WorldEdit_brush_${getSuperUniqueID()}`;
+                                        try {
+                                            /**
+                                             * Whether or not to use reverse offset mode.
+                                             *
+                                             * @todo Make this work better, it is currently very buggy.
+                                             */
+                                            const useReverseOffset = Boolean(event.itemStack.getDynamicProperty("usereverseoffset") ?? false);
+                                            /**
+                                             * Whether or not to use whole mode.
+                                             *
+                                             * This makes the section that is moved extend to the edge of the selection on the side it is moving towards,
+                                             * this results in the parts in the selection not being replaced and instead moved to replace the parts outside
+                                             * of the selection instead.
+                                             */
+                                            const wholeMode = Boolean(event.itemStack.getDynamicProperty("wholemode") ?? false);
+                                            /**
+                                             * Whether or not to move air.
+                                             *
+                                             * If false air blocks will be removed from the structures used to move the blocks.
+                                             */
+                                            const moveAir = Boolean(event.itemStack.getDynamicProperty("moveair") ?? false);
+                                            const axis = flattenDirection === "up" || flattenDirection === "down"
+                                                ? "y"
+                                                : flattenDirection === "north" || flattenDirection === "south"
+                                                    ? "z"
+                                                    : "x";
+                                            const sign = flattenDirection === "down" || flattenDirection === "north" || flattenDirection === "west" ? 1 : -1;
+                                            let offsetDistance = sign * (useReverseOffset ? radius : -radius);
+                                            for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
+                                                for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
+                                                    if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
+                                                        continue;
+                                                    for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
+                                                        const currentDistance = { x, y, z }[axis] - pos[axis];
+                                                        if (useReverseOffset
+                                                            ? sign * currentDistance < sign * offsetDistance
+                                                            : sign * currentDistance > sign * offsetDistance) {
+                                                            const block = event.source.dimension.getBlock({ x, y, z });
+                                                            if (!block)
+                                                                continue;
+                                                            if ((block.isSolid ||
+                                                                (event.source.dimension.getBlock(Vector.clamp(Vector.add({ x, y, z }, { [axis]: -sign }), {
+                                                                    min: { y: event.source.dimension.heightRange.min },
+                                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                                }))?.isAir &&
+                                                                    !block.isAir)) &&
+                                                                (mask ? mask.testIfMatches(block) : true)) {
+                                                                offsetDistance = currentDistance;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            await fillArea(Vector.clamp({
+                                                x: pos.x - radius,
+                                                y: pos.y - radius,
+                                                z: pos.z - radius,
+                                            }, {
+                                                min: { y: event.source.dimension.heightRange.min },
+                                                max: { y: event.source.dimension.heightRange.max - 1 },
+                                            }), Vector.clamp({
+                                                x: pos.x + radius,
+                                                y: pos.y + radius,
+                                                z: pos.z + radius,
+                                            }, {
+                                                min: { y: event.source.dimension.heightRange.min },
+                                                max: { y: event.source.dimension.heightRange.max - 1 },
+                                            }), event.source.dimension, (l) => {
+                                                if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
+                                                    sign * (l[axis] - pos[axis]) !== sign * offsetDistance) {
+                                                    return null;
+                                                }
+                                                const block = event.source.dimension.getBlock(l);
+                                                if (!block)
+                                                    return null;
+                                                if (!(block.isSolid ||
+                                                    (event.source.dimension.getBlock(Vector.clamp(Vector.add({ ...Vector.zero, [axis]: -sign }, l), {
+                                                        min: { y: event.source.dimension.heightRange.min },
+                                                        max: { y: event.source.dimension.heightRange.max - 1 },
+                                                    }))?.isAir &&
+                                                        !block.isAir)) ||
+                                                    !(mask ? mask.testIfMatches(block) : true)) {
+                                                    return null;
+                                                }
+                                                const pos1 = Vector.clamp(Vector.add(l, { [axis]: wholeMode ? -sign * radius - offsetDistance : 0 }), {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                });
+                                                const pos2 = Vector.clamp(Vector.add(l, { [axis]: sign * Math.abs(radius + (pos[axis] - l[axis])) }), {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                });
+                                                const min = {
+                                                    x: Math.min(pos1.x, pos2.x),
+                                                    y: Math.min(pos1.y, pos2.y),
+                                                    z: Math.min(pos1.z, pos2.z),
+                                                };
+                                                const structure = world.structureManager.createFromWorld(structureID, event.source.dimension, pos1, pos2, {
+                                                    includeBlocks: true,
+                                                    includeEntities: false,
+                                                    saveMode: StructureSaveMode.Memory,
+                                                });
+                                                if (!moveAir) {
+                                                    Array.from(removeAirFromStructure(structure));
+                                                }
+                                                world.structureManager.place(structure, event.source.dimension, Vector.clamp(Vector.add(min, { [axis]: -sign }), {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                }));
+                                                world.structureManager.delete(structure);
+                                                const blockToRemove = l.dimension.getBlock(Vector.clamp(Vector.add(min, { [axis]: sign * Math.abs(radius + (pos[axis] - l[axis])) }), {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                }));
+                                                blockToRemove?.getComponent("inventory")?.container?.clearAll();
+                                                blockToRemove?.setType("minecraft:air");
+                                                return null;
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                            try {
+                                                world.structureManager.delete(structureID);
+                                            }
+                                            catch { }
+                                        }
+                                    }
+                                }
+                                break;
+                            case "flattenfill":
+                                {
+                                    let flattenDirection = (event.itemStack.getDynamicProperty("flattendirection") ?? "auto");
+                                    if (flattenDirection === "auto") {
+                                        flattenDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
+                                    }
+                                    else if (flattenDirection === "autor") {
+                                        flattenDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
+                                    }
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            /**
+                                             * Whether or not to use reverse offset mode.
+                                             *
+                                             * @todo Make this work better, it is currently very buggy.
+                                             */
+                                            const useReverseOffset = Boolean(event.itemStack.getDynamicProperty("usereverseoffset") ?? false);
+                                            let offsetDistance = useReverseOffset ? radius : -radius;
+                                            const axis = flattenDirection === "up" || flattenDirection === "down"
+                                                ? "y"
+                                                : flattenDirection === "north" || flattenDirection === "south"
+                                                    ? "z"
+                                                    : "x";
+                                            const sign = flattenDirection === "down" || flattenDirection === "north" || flattenDirection === "west" ? 1 : -1;
+                                            for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
+                                                for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
+                                                    if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
+                                                        continue;
+                                                    for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
+                                                        const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
+                                                        if (distanceSquared > Math.pow(radius, 2)) {
+                                                            continue;
+                                                        }
+                                                        const currentDistance = { x, y, z }[axis] - pos[axis];
+                                                        if (useReverseOffset
+                                                            ? sign * currentDistance < sign * offsetDistance
+                                                            : sign * currentDistance > sign * offsetDistance) {
+                                                            const block = event.source.dimension.getBlock({ x, y, z });
+                                                            if (!block)
+                                                                continue;
+                                                            if (!block.isAir && (mask ? mask.testIfMatches(block) : true)) {
+                                                                offsetDistance = currentDistance;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            await fillSphere(pos, radius, event.source.dimension, (l, i) => {
+                                                if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
+                                                    sign * (l[axis] - pos[axis]) !== sign * offsetDistance) {
+                                                    return null;
+                                                }
+                                                const block = event.source.dimension.getBlock(l);
+                                                if (!block)
+                                                    return null;
+                                                if (block.isAir || !(mask ? mask.testIfMatches(block) : true)) {
+                                                    return null;
+                                                }
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                            /* const player = event.source;
+                                            const b = modules.coords.chunkIndexToBoundingBoxXZ(player.chunkIndex);
+                                            const m = new modules.mcServer.MolangVariableMap();
+                                            m.setFloat("max_lifetime", 100);
+                                            [
+                                                [1, 0],
+                                                [0, 1],
+                                                [-1, 0],
+                                                [0, -1],
+                                            ].forEach(([x, z]) => {
+                                                m.setFloat("direction_x", x);
+                                                m.setFloat("direction_y", 0);
+                                                m.setFloat("direction_z", z);
+                                                player.spawnParticle(
+                                                    "andexdb:chunk_border_particle",
+                                                    {
+                                                        x: x === 0 ? (b.max.x + 1 + b.min.x) / 2 : x === 1 ? b.max.x + 1 : b.min.x,
+                                                        y: (b.max.y + b.min.y) / 2,
+                                                        z: z === 0 ? (b.max.z + 1 + b.min.z) / 2 : z === 1 ? b.max.z + 1 : b.min.z,
+                                                    },
+                                                    m
+                                                );
+                                                player.spawnParticle(
+                                                    "andexdb:chunk_border_particle",
+                                                    {
+                                                        x: x === 0 ? (b.max.x  + 1+ b.min.x) / 2 : x === 1 ? b.min.x : b.max.x + 1,
+                                                        y: (b.max.y + b.min.y) / 2,
+                                                        z: z === 0 ? (b.max.z + 1 + b.min.z) / 2 : z === 1 ? b.min.z : b.max.z + 1,
+                                                    },
+                                                    m
+                                                );
+                                            }); */
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
+                                    }
+                                }
+                                break;
+                            case "flattensquarefill":
+                                {
+                                    let flattenDirection = (event.itemStack.getDynamicProperty("flattendirection") ?? "auto");
+                                    if (flattenDirection === "auto") {
+                                        flattenDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
+                                    }
+                                    else if (flattenDirection === "autor") {
+                                        flattenDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
+                                    }
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            /**
+                                             * Whether or not to use reverse offset mode.
+                                             *
+                                             * @todo Make this work better, it is currently very buggy.
+                                             */
+                                            const useReverseOffset = Boolean(event.itemStack.getDynamicProperty("usereverseoffset") ?? false);
+                                            let offsetDistance = useReverseOffset ? radius : -radius;
+                                            const axis = flattenDirection === "up" || flattenDirection === "down"
+                                                ? "y"
+                                                : flattenDirection === "north" || flattenDirection === "south"
+                                                    ? "z"
+                                                    : "x";
+                                            const sign = flattenDirection === "down" || flattenDirection === "north" || flattenDirection === "west" ? 1 : -1;
+                                            for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
+                                                for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
+                                                    if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
+                                                        continue;
+                                                    for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
+                                                        const currentDistance = { x, y, z }[axis] - pos[axis];
+                                                        if (useReverseOffset
+                                                            ? sign * currentDistance < sign * offsetDistance
+                                                            : sign * currentDistance > sign * offsetDistance) {
+                                                            const block = event.source.dimension.getBlock({ x, y, z });
+                                                            if (!block)
+                                                                continue;
+                                                            if (!block.isAir && (mask ? mask.testIfMatches(block) : true)) {
+                                                                offsetDistance = currentDistance;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            await fillArea({
+                                                x: pos.x - radius,
+                                                y: pos.y - radius,
+                                                z: pos.z - radius,
+                                            }, {
+                                                x: pos.x + radius,
+                                                y: pos.y + radius,
+                                                z: pos.z + radius,
+                                            }, event.source.dimension, (l, i) => {
+                                                if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, l) / radius) * (decay / 10) ||
+                                                    sign * (l[axis] - pos[axis]) !== sign * offsetDistance) {
+                                                    return null;
+                                                }
+                                                const block = event.source.dimension.getBlock(l);
+                                                if (!block)
+                                                    return null;
+                                                if (block.isAir || !(mask ? mask.testIfMatches(block) : true)) {
+                                                    return null;
+                                                }
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
+                                                    ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                    : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
+                                    }
+                                }
+                                break;
+                            case "nudge":
+                                {
+                                    let nudgeDirection = (event.itemStack.getDynamicProperty("nudgedirection") ?? "auto");
+                                    if (nudgeDirection === "auto") {
+                                        nudgeDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
+                                    }
+                                    else if (nudgeDirection === "autor") {
+                                        nudgeDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
+                                    }
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    /**
+                                     * The shape of the area to nudge.
+                                     */
+                                    const shape = (event.itemStack.getDynamicProperty("shape") ?? "sphere");
+                                    /**
+                                     * Whether or not to not erase the blocks left behind after copying the area over one block.
+                                     */
+                                    const trailMode = Boolean(event.itemStack.getDynamicProperty("trailmode") ?? false);
+                                    {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const structureID = `andexdb:WorldEdit_brush_${getSuperUniqueID()}`;
+                                        try {
+                                            const axis = nudgeDirection === "up" || nudgeDirection === "down"
+                                                ? "y"
+                                                : nudgeDirection === "north" || nudgeDirection === "south"
+                                                    ? "z"
+                                                    : "x";
+                                            const sign = nudgeDirection === "down" || nudgeDirection === "north" || nudgeDirection === "west" ? 1 : -1;
+                                            let msSinceLastTickWait = Date.now();
+                                            const minMSBetweenTickWaits = config.system.defaultMinMSBetweenTickWaits;
+                                            for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
+                                                for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
+                                                    if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
+                                                        continue;
+                                                    for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
+                                                        if (shape === "sphere") {
+                                                            const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
+                                                            if (distanceSquared > Math.pow(radius, 2)) {
+                                                                continue;
+                                                            }
+                                                        }
+                                                        if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, { x, y, z }) / radius) * (decay / 10)) {
+                                                            continue;
+                                                        }
+                                                        const block = event.source.dimension.getBlock({ x, y, z });
+                                                        if (!block)
+                                                            continue;
+                                                        if (!(mask ? mask.testIfMatches(block) : true)) {
+                                                            continue;
+                                                        }
+                                                        const structure = world.structureManager.createFromWorld(structureID, event.source.dimension, { x, y, z }, { x, y, z }, {
+                                                            includeBlocks: true,
+                                                            includeEntities: false,
+                                                            saveMode: StructureSaveMode.Memory,
+                                                        });
+                                                        if (trailMode) {
+                                                            for (let x = 0; x < structure.size.x; x++) {
+                                                                for (let y = 0; y < structure.size.y; y++) {
+                                                                    for (let z = 0; z < structure.size.z; z++) {
+                                                                        if (structure.getBlockPermutation({ x, y, z })?.type.id === "minecraft:air") {
+                                                                            structure.setBlockPermutation({ x, y, z });
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        Array.from(removeAirFromStructure(structure));
+                                                        world.structureManager.place(structure, event.source.dimension, Vector.clamp(Vector.add({ x, y, z }, { [axis]: sign }), {
+                                                            min: { y: event.source.dimension.heightRange.min },
+                                                            max: { y: event.source.dimension.heightRange.max - 1 },
+                                                        }));
+                                                        world.structureManager.delete(structure);
+                                                        if (!trailMode) {
+                                                            block.getComponent("inventory")?.container?.clearAll();
+                                                            block.setType("minecraft:air");
+                                                        }
+                                                        if (Date.now() - msSinceLastTickWait >= minMSBetweenTickWaits) {
+                                                            await waitTick();
+                                                            msSinceLastTickWait = Date.now();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                            try {
+                                                world.structureManager.delete(structureID);
+                                            }
+                                            catch { }
+                                        }
+                                    }
+                                }
+                                break;
+                            case "copy":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    const clipboardID = (event.itemStack.getDynamicProperty("clipboardID") ??
+                                        `player_WorldEdit_brush_${event.source.id}`);
+                                    /**
+                                     * The shape of the area to copy.
+                                     */
+                                    const shape = (event.itemStack.getDynamicProperty("shape") ?? "sphere");
+                                    /**
+                                     * Whether or not to copy air.
+                                     */
+                                    const copyAir = Boolean(event.itemStack.getDynamicProperty("copyair") ?? false);
+                                    {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        try {
+                                            let msSinceLastTickWait = Date.now();
+                                            const minMSBetweenTickWaits = config.system.defaultMinMSBetweenTickWaits;
+                                            const clipboard = !clipboardID || clipboardID === "global" ? BlockClipboard.global : BlockClipboard.getClipboard(clipboardID);
+                                            clipboard.clear();
+                                            clipboard.copy(event.source.dimension, {
+                                                from: Vector.clamp({ x: pos.x - radius, y: pos.y - radius, z: pos.z - radius }, {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                }),
+                                                to: Vector.clamp({ x: pos.x + radius, y: pos.y + radius, z: pos.z + radius }, {
+                                                    min: { y: event.source.dimension.heightRange.min },
+                                                    max: { y: event.source.dimension.heightRange.max - 1 },
+                                                }),
+                                            });
+                                            const size = clipboard.contentsSize;
+                                            const sizeLimits = clipboard.contentsSizeLimits;
+                                            for (let xI = 0; xI < Math.ceil(sizeLimits.x / size.x) * sizeLimits.x; xI++) {
+                                                for (let yI = 0; yI < Math.ceil(sizeLimits.y / size.y) * sizeLimits.y; yI++) {
+                                                    for (let zI = 0; zI < Math.ceil(sizeLimits.z / size.z) * sizeLimits.z; zI++) {
+                                                        const structure = clipboard.getStructureAtIndices({
+                                                            x: xI,
+                                                            y: yI,
+                                                            z: zI,
+                                                        });
+                                                        if (!structure) {
+                                                            if (Date.now() - msSinceLastTickWait >= minMSBetweenTickWaits) {
+                                                                await waitTick();
+                                                                msSinceLastTickWait = Date.now();
+                                                            }
+                                                            continue;
+                                                        }
+                                                        for (let x = 0; x < structure.size.x; x++) {
+                                                            for (let y = 0; y < structure.size.y; y++) {
+                                                                for (let z = 0; z < structure.size.z; z++) {
+                                                                    if (shape === "sphere") {
+                                                                        const distanceSquared = Math.pow(xI * size.x + x - size.x / 2, 2) +
+                                                                            Math.pow(yI * size.y + y - size.y / 2, 2) +
+                                                                            Math.pow(zI * size.z + z - size.z / 2, 2);
+                                                                        if (distanceSquared <= Math.pow(radius, 2) &&
+                                                                            Math.max(0.0001, Math.random()) >=
+                                                                                (Vector.distance({ x: size.x / 2, y: size.y / 2, z: size.z / 2 }, { x: xI * size.x + x, y: yI * size.y + y, z: zI * size.z + z }) /
+                                                                                    radius) *
+                                                                                    (decay / 10) &&
+                                                                            (mask ? mask.testIfMatches(structure.getBlockPermutation({ x, y, z })) : true) &&
+                                                                            (copyAir || structure.getBlockPermutation({ x, y, z })?.type.id !== "minecraft:air")) {
+                                                                            continue;
+                                                                        }
+                                                                    }
+                                                                    else {
+                                                                        if (Math.max(0.0001, Math.random()) >=
                                                                             (Vector.distance({ x: size.x / 2, y: size.y / 2, z: size.z / 2 }, { x: xI * size.x + x, y: yI * size.y + y, z: zI * size.z + z }) /
                                                                                 radius) *
                                                                                 (decay / 10) &&
-                                                                        (mask ? mask.testIfMatches(structure.getBlockPermutation({ x, y, z })) : true) &&
-                                                                        (copyAir || structure.getBlockPermutation({ x, y, z })?.type.id !== "minecraft:air")) {
-                                                                        continue;
+                                                                            (mask ? mask.testIfMatches(structure.getBlockPermutation({ x, y, z })) : true) &&
+                                                                            (copyAir || structure.getBlockPermutation({ x, y, z })?.type.id !== "minecraft:air")) {
+                                                                            continue;
+                                                                        }
                                                                     }
-                                                                }
-                                                                else {
-                                                                    if (Math.max(0.0001, Math.random()) >=
-                                                                        (Vector.distance({ x: size.x / 2, y: size.y / 2, z: size.z / 2 }, { x: xI * size.x + x, y: yI * size.y + y, z: zI * size.z + z }) /
-                                                                            radius) *
-                                                                            (decay / 10) &&
-                                                                        (mask ? mask.testIfMatches(structure.getBlockPermutation({ x, y, z })) : true) &&
-                                                                        (copyAir || structure.getBlockPermutation({ x, y, z })?.type.id !== "minecraft:air")) {
-                                                                        continue;
+                                                                    structure.setBlockPermutation({ x, y, z });
+                                                                    if (Date.now() - msSinceLastTickWait >= minMSBetweenTickWaits) {
+                                                                        await waitTick();
+                                                                        msSinceLastTickWait = Date.now();
                                                                     }
-                                                                }
-                                                                structure.setBlockPermutation({ x, y, z });
-                                                                if (Date.now() - msSinceLastTickWait >= minMSBetweenTickWaits) {
-                                                                    await waitTick();
-                                                                    msSinceLastTickWait = Date.now();
                                                                 }
                                                             }
                                                         }
@@ -1695,22 +1760,15 @@ console.error(e, e.stack);
                                                 }
                                             }
                                         }
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        case "paste":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                }); /*
-                                const locb = dirreversemap(dirmap(loca.face)); */
-                                const loc = loca?.block?.location; /*
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                break;
+                            case "paste":
+                                {
+                                    /* const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
                                     ? 3
                                     : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
                                 const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
@@ -1723,248 +1781,214 @@ console.error(e, e.stack);
                                               String(event.itemStack.getDynamicProperty("masktype") ?? "include") as typeof BlockMask.prototype.type
                                           )
                                         : undefined; */
-                                const clipboardID = (event.itemStack.getDynamicProperty("clipboardID") ??
-                                    `player_WorldEdit_brush_${event.source.id}`);
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    try {
-                                        const clipboard = !clipboardID || clipboardID === "global" ? BlockClipboard.global : BlockClipboard.getClipboard(clipboardID);
-                                        clipboard.paste({
-                                            ...Vector.subtract(pos, Vector.scale(clipboard.contentsSize, 0.5)),
-                                            dimension: event.source.dimension,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
+                                    const clipboardID = (event.itemStack.getDynamicProperty("clipboardID") ??
+                                        `player_WorldEdit_brush_${event.source.id}`);
+                                    {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        try {
+                                            const clipboard = !clipboardID || clipboardID === "global" ? BlockClipboard.global : BlockClipboard.getClipboard(clipboardID);
+                                            clipboard.paste({
+                                                ...Vector.subtract(pos, Vector.scale(clipboard.contentsSize, 0.5)),
+                                                dimension: event.source.dimension,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        case "brokennudge":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirreversemap(dirmap(loca.face));
-                                const loc = loca?.block?.location;
-                                let nudgeDirection = (event.itemStack.getDynamicProperty("nudgedirection") ?? "up");
-                                if (nudgeDirection === "auto") {
-                                    nudgeDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
-                                }
-                                else if (nudgeDirection === "autor") {
-                                    nudgeDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
-                                }
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    const structureID = `andexdb:WorldEdit_brush_${getSuperUniqueID()}`;
-                                    try {
-                                        const axis = nudgeDirection === "up" || nudgeDirection === "down"
-                                            ? "y"
-                                            : nudgeDirection === "north" || nudgeDirection === "south"
-                                                ? "z"
-                                                : "x";
-                                        const sign = nudgeDirection === "up" || nudgeDirection === "north" || nudgeDirection === "west" ? 1 : -1;
-                                        let msSinceLastTickWait = Date.now();
-                                        const minMSBetweenTickWaits = config.system.defaultMinMSBetweenTickWaits;
-                                        for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
-                                            for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
-                                                if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
-                                                    continue;
-                                                for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
-                                                    const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
-                                                    if (distanceSquared > Math.pow(radius, 2)) {
+                                break;
+                            case "brokennudge":
+                                {
+                                    const loca = event.source.getBlockFromViewDirection({
+                                        includeLiquidBlocks: !selectMode.includes("noliquid"),
+                                        includePassableBlocks: !selectMode.includes("nopassable"),
+                                    });
+                                    const locb = dirreversemap(dirmap(loca.face));
+                                    const loc = loca?.block?.location;
+                                    let nudgeDirection = (event.itemStack.getDynamicProperty("nudgedirection") ?? "auto");
+                                    if (nudgeDirection === "auto") {
+                                        nudgeDirection = locb === "above" ? "up" : locb === "below" ? "down" : locb;
+                                    }
+                                    else if (nudgeDirection === "autor") {
+                                        nudgeDirection = locb === "above" ? "down" : locb === "below" ? "up" : dirreversemap(locb);
+                                    }
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        const structureID = `andexdb:WorldEdit_brush_${getSuperUniqueID()}`;
+                                        try {
+                                            const axis = nudgeDirection === "up" || nudgeDirection === "down"
+                                                ? "y"
+                                                : nudgeDirection === "north" || nudgeDirection === "south"
+                                                    ? "z"
+                                                    : "x";
+                                            const sign = nudgeDirection === "up" || nudgeDirection === "north" || nudgeDirection === "west" ? 1 : -1;
+                                            let msSinceLastTickWait = Date.now();
+                                            const minMSBetweenTickWaits = config.system.defaultMinMSBetweenTickWaits;
+                                            for (let x = axis === "x" ? pos.x + sign * radius : pos.x - radius; axis === "x" && sign === 1 ? x >= pos.x - radius : x <= pos.x + radius; x -= axis === "x" ? sign : -1) {
+                                                for (let y = axis === "y" ? pos.y + sign * radius : pos.y - radius; axis === "y" && sign === 1 ? y >= pos.y - radius : y <= pos.y + radius; y -= axis === "y" ? sign : -1) {
+                                                    if (y < event.source.dimension.heightRange.min || y >= event.source.dimension.heightRange.max)
                                                         continue;
-                                                    }
-                                                    if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, { x, y, z }) / radius) * (decay / 10)) {
-                                                        continue;
-                                                    }
-                                                    const block = event.source.dimension.getBlock({ x, y, z });
-                                                    if (!block)
-                                                        continue;
-                                                    if (!(mask ? mask.testIfMatches(block) : true)) {
-                                                        continue;
-                                                    }
-                                                    const structure = world.structureManager.createFromWorld(structureID, event.source.dimension, { x, y, z }, { x, y, z }, {
-                                                        includeBlocks: true,
-                                                        includeEntities: false,
-                                                        saveMode: StructureSaveMode.Memory,
-                                                    });
-                                                    world.structureManager.place(structure, event.source.dimension, Vector.clamp(Vector.add({ x, y, z }, { [axis]: -sign }), {
-                                                        min: { y: event.source.dimension.heightRange.min },
-                                                        max: { y: event.source.dimension.heightRange.max - 1 },
-                                                    }));
-                                                    world.structureManager.delete(structure);
-                                                    if (Math.pow((axis === "x" ? x + sign : x) - pos.x, 2) +
-                                                        Math.pow((axis === "y" ? y + sign : y) - pos.y, 2) +
-                                                        Math.pow((axis === "z" ? z + sign : z) - pos.z, 2) >
-                                                        Math.pow(radius, 2)) {
-                                                        block.setType("minecraft:air");
-                                                    }
-                                                    if (Date.now() - msSinceLastTickWait >= minMSBetweenTickWaits) {
-                                                        await waitTick();
-                                                        msSinceLastTickWait = Date.now();
+                                                    for (let z = axis === "z" ? pos.z + sign * radius : pos.z - radius; axis === "z" && sign === 1 ? z >= pos.z - radius : z <= pos.z + radius; z -= axis === "z" ? sign : -1) {
+                                                        const distanceSquared = Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2);
+                                                        if (distanceSquared > Math.pow(radius, 2)) {
+                                                            continue;
+                                                        }
+                                                        if (Math.max(0.0001, Math.random()) < (Vector.distance(pos, { x, y, z }) / radius) * (decay / 10)) {
+                                                            continue;
+                                                        }
+                                                        const block = event.source.dimension.getBlock({ x, y, z });
+                                                        if (!block)
+                                                            continue;
+                                                        if (!(mask ? mask.testIfMatches(block) : true)) {
+                                                            continue;
+                                                        }
+                                                        const structure = world.structureManager.createFromWorld(structureID, event.source.dimension, { x, y, z }, { x, y, z }, {
+                                                            includeBlocks: true,
+                                                            includeEntities: false,
+                                                            saveMode: StructureSaveMode.Memory,
+                                                        });
+                                                        world.structureManager.place(structure, event.source.dimension, Vector.clamp(Vector.add({ x, y, z }, { [axis]: -sign }), {
+                                                            min: { y: event.source.dimension.heightRange.min },
+                                                            max: { y: event.source.dimension.heightRange.max - 1 },
+                                                        }));
+                                                        world.structureManager.delete(structure);
+                                                        if (Math.pow((axis === "x" ? x + sign : x) - pos.x, 2) +
+                                                            Math.pow((axis === "y" ? y + sign : y) - pos.y, 2) +
+                                                            Math.pow((axis === "z" ? z + sign : z) - pos.z, 2) >
+                                                            Math.pow(radius, 2)) {
+                                                            block.setType("minecraft:air");
+                                                        }
+                                                        if (Date.now() - msSinceLastTickWait >= minMSBetweenTickWaits) {
+                                                            await waitTick();
+                                                            msSinceLastTickWait = Date.now();
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                        try {
-                                            world.structureManager.delete(structureID);
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                            try {
+                                                world.structureManager.delete(structureID);
+                                            }
+                                            catch { }
                                         }
-                                        catch { }
                                     }
                                 }
-                            }
-                            break;
-                        case "splattercubesurface":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirmap(loca.face);
-                                const loc = loca?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    //const cornerradius = Vector.distance(pos, {x: pos.x-radius, y: pos.y-radius, z: pos.z-radius})
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillArea({
-                                            x: pos.x - radius,
-                                            y: pos.y - radius,
-                                            z: pos.z - radius,
-                                        }, {
-                                            x: pos.x + radius,
-                                            y: pos.y + radius,
-                                            z: pos.z + radius,
-                                        }, event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10) ||
-                                                (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true) ||
-                                                !(tryget(() => l.dimension.getBlock(l)?.[locb]()?.isAir) ?? true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "random"
-                                                ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
-                                                : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
+                                break;
+                            case "splattercubesurface":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
                                     }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
-                                    }
-                                }
-                            }
-                            break;
-                        case "splattersquaresurface":
-                            {
-                                const loca = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                });
-                                const locb = dirmap(loca.face);
-                                const loc = loca?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
-                                    ? 3
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
-                                const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
-                                    ? 0
-                                    : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
-                                const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
-                                const mask = event.itemStack.getDynamicProperty("mask") != undefined
-                                    ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
-                                    : undefined;
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else if (!!!event.itemStack.getDynamicProperty("pattern")) {
-                                    event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
-                                }
-                                else {
-                                    const pos = roundVector3ToMiddleOfBlock(loc);
-                                    //const cornerradius = Vector.distance(pos, {x: pos.x-radius, y: pos.y-radius, z: pos.z-radius})
-                                    const blocktypes = BlockTypes.getAll();
-                                    //console.warn("a")
-                                    try {
-                                        await fillArea(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => {
-                                            if (Math.max(0.0001, Math.random()) < (Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10) ||
-                                                (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true) ||
-                                                !(tryget(() => l.dimension.getBlock(l)?.[locb]()?.isAir) ?? true)) {
-                                                return null;
-                                            }
-                                            const b = blockpattern.generateBlock(i);
-                                            return b.type == "null"
-                                                ? null
-                                                : b.type == "random"
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        //const cornerradius = Vector.distance(pos, {x: pos.x-radius, y: pos.y-radius, z: pos.z-radius})
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            await fillArea({
+                                                x: pos.x - radius,
+                                                y: pos.y - radius,
+                                                z: pos.z - radius,
+                                            }, {
+                                                x: pos.x + radius,
+                                                y: pos.y + radius,
+                                                z: pos.z + radius,
+                                            }, event.source.dimension, (l, i) => {
+                                                if (Math.max(0.0001, Math.random()) < (Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10) ||
+                                                    (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true) ||
+                                                    !(tryget(() => l.dimension.getBlock(l)?.[locb]()?.isAir) ?? true)) {
+                                                    return null;
+                                                }
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type === "random"
                                                     ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
                                                     : BlockPermutation.resolve(b.type, b.states);
-                                        }, {
-                                            blockMask: mask,
-                                            minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
-                                            replacemode: true,
-                                            integrity: 100,
-                                            liteMode: true,
-                                        });
-                                    }
-                                    catch (e) {
-                                        event.source.sendMessage("§c" + e + e.stack);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        case "extinguish":
-                            {
-                                const loc = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                })?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10))
-                                    ? 10
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
+                                break;
+                            case "splattersquaresurface":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 3))
+                                        ? 3
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 3);
+                                    const decay = isNaN(Number(event.itemStack.getDynamicProperty("decay") ?? 0))
+                                        ? 0
+                                        : Number(event.itemStack.getDynamicProperty("decay") ?? 0);
+                                    const blockpattern = new BlockPattern(JSON.parse(String(event.itemStack.getDynamicProperty("pattern"))), String(event.itemStack.getDynamicProperty("patterntype") ?? "random"));
+                                    const mask = event.itemStack.getDynamicProperty("mask") != undefined
+                                        ? new BlockMask(JSON.parse(String(event.itemStack.getDynamicProperty("mask"))), String(event.itemStack.getDynamicProperty("masktype") ?? "include"))
+                                        : undefined;
+                                    if (!event.itemStack.getDynamicProperty("pattern")) {
+                                        event.source.sendMessage("§cError: Pattern for sphere generation is not defined on the item's dynamic properties.");
+                                    }
+                                    else {
+                                        const pos = roundVector3ToMiddleOfBlock(loc);
+                                        //const cornerradius = Vector.distance(pos, {x: pos.x-radius, y: pos.y-radius, z: pos.z-radius})
+                                        const blocktypes = BlockTypes.getAll();
+                                        try {
+                                            await fillArea(Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), -radius)), Vector.add(pos, Vector.scale(diroffsetothersmap(loca.face), radius)), event.source.dimension, (l, i) => {
+                                                if (Math.max(0.0001, Math.random()) < (Math.min(radius, Vector.distance(pos, l)) / radius) * (decay / 10) ||
+                                                    (tryget(() => l.dimension.getBlock(l)?.isAir) ?? true) ||
+                                                    !(tryget(() => l.dimension.getBlock(l)?.[locb]()?.isAir) ?? true)) {
+                                                    return null;
+                                                }
+                                                const b = blockpattern.generateBlock(i);
+                                                return b.type == "null"
+                                                    ? null
+                                                    : b.type === "random"
+                                                        ? BlockPermutation.resolve(blocktypes[Math.floor(blocktypes.length * Math.random())].id)
+                                                        : BlockPermutation.resolve(b.type, b.states);
+                                            }, {
+                                                blockMask: mask,
+                                                minMSBetweenTickWaits: config.system.defaultMinMSBetweenTickWaits,
+                                                replacemode: true,
+                                                integrity: 100,
+                                                liteMode: true,
+                                            });
+                                        }
+                                        catch (e) {
+                                            event.source.sendMessage("§c" + e + e.stack);
+                                        }
+                                    }
                                 }
-                                else {
+                                break;
+                            case "extinguish":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10))
+                                        ? 10
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
                                     const pos = roundVector3ToMiddleOfBlock(loc);
                                     let froma = Vector3Utils.subtract(pos, {
                                         x: radius,
@@ -1990,22 +2014,12 @@ console.error(e, e.stack);
                                         event.source.sendMessage("§c" + e + e.stack);
                                     }
                                 }
-                            }
-                            break;
-                        case "remexp":
-                            {
-                                //console.warn("d")
-                                const loc = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                })?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10))
-                                    ? 10
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
+                                break;
+                            case "remexp":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10))
+                                        ? 10
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
                                     const pos = roundVector3ToMiddleOfBlock(loc);
                                     let froma = Vector3Utils.subtract(pos, {
                                         x: radius,
@@ -2066,78 +2080,68 @@ console.error(e, e.stack);
                                     }
                                     [
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:tnt",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:tnt_minecart",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:wither",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:wither_skull",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:wither_skull_dangerous",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:ender_dragon",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "projectile:tnt",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "andexsa:fire_tnt_arrow",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "andexsa:normal_fire_tnt_arrow",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "andexsa:normal_tnt_arrow",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "andexsa:tnt_arrow",
                                             maxDistance: radius,
                                         }),
                                     ].forEach((v) => v.remove());
                                 }
-                            }
-                            break;
-                        case "remexpne":
-                            {
-                                //console.warn("d")
-                                const loc = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                })?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10))
-                                    ? 10
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
+                                break;
+                            case "remexpne":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10))
+                                        ? 10
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
                                     const pos = roundVector3ToMiddleOfBlock(loc);
                                     let froma = Vector3Utils.subtract(pos, {
                                         x: radius,
@@ -2197,92 +2201,82 @@ console.error(e, e.stack);
                                             }
                                     }
                                 }
-                            }
-                            break;
-                        case "remexpentity":
-                            {
-                                //console.warn("d")
-                                const loc = event.source.getBlockFromViewDirection({
-                                    includeLiquidBlocks: !selectMode.includes("noliquid"),
-                                    includePassableBlocks: !selectMode.includes("nopassable"),
-                                })?.block?.location;
-                                const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10))
-                                    ? 10
-                                    : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
-                                if (!!!loc) {
-                                    event.source.sendMessage("§cError: You must be facing a block.");
-                                }
-                                else {
+                                break;
+                            case "remexpentity":
+                                {
+                                    const radius = isNaN(Number(event.itemStack.getDynamicProperty("radius") ?? 10))
+                                        ? 10
+                                        : Number(event.itemStack.getDynamicProperty("radius") ?? 10);
                                     const pos = roundVector3ToMiddleOfBlock(loc);
                                     [
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:tnt",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:tnt_minecart",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:wither",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:wither_skull",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:wither_skull_dangerous",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "minecraft:ender_dragon",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "projectile:tnt",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "andexsa:fire_tnt_arrow",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "andexsa:normal_fire_tnt_arrow",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "andexsa:normal_tnt_arrow",
                                             maxDistance: radius,
                                         }),
                                         ...event.source.dimension.getEntities({
-                                            location: event.source.location,
+                                            location: pos,
                                             type: "andexsa:tnt_arrow",
                                             maxDistance: radius,
                                         }),
                                     ].forEach((v) => v.remove());
                                 }
-                            }
-                            break;
-                        default:
-                            //console.warn("c")
-                            break;
+                                break;
+                            default:
+                                //console.warn("c")
+                                break;
+                        }
                     }
-                }
-                catch (e) {
-                    event.source.sendMessage("§c" + e + e.stack);
-                }
-            });
+                    catch (e) {
+                        event.source.sendMessage("§c" + e + e.stack);
+                    }
+                });
+            }
         }
         catch (e) {
             console.error(e, e.stack);
@@ -2303,7 +2297,7 @@ console.error(e, e.stack);
                 includeLiquidBlocks: !selectMode.includes("noliquid"),
                 includePassableBlocks: !selectMode.includes("nopassable"),
             })?.block?.location;
-            if (!!!loc) {
+            if (!loc) {
                 event.source.sendMessage("§cError: You must be facing a block.");
             }
             else {

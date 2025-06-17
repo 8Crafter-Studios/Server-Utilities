@@ -22,7 +22,7 @@ subscribedEvents.afterItemStartUseOn =
                     includeLiquidBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("noliquid"),
                     includePassableBlocks: !String(event.itemStack.getDynamicProperty("selectmode")).includes("nopassable"),
                 })?.block?.location;
-                if (!!!loc) {
+                if (!loc) {
                     event.source.sendMessage("§cError: You must be facing a block.");
                 }
                 else {
