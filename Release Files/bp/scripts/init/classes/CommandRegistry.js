@@ -4,7 +4,7 @@
  * @description This file contains types and classes related to the command registry. This is not functional yet. This will be completed in a future update.
  * @todo Finish the command registry system.
  */
-import { ChatSendBeforeEvent, Player } from "@minecraft/server";
+import { ChatSendBeforeEvent, Player, PlayerPermissionLevel } from "@minecraft/server";
 import { tfsb } from "init/functions/tfsb";
 import { commandSettings } from "modules/commands/classes/commandSettings";
 import { executeCommandPlayerW } from "modules/commands/classes/executeCommandPlayerW";
@@ -565,7 +565,7 @@ var exports;
                     return false;
                 }
                 if (this.settings?.requiresOp ?? false) {
-                    if (!(tryget(() => playerToTest.isOp()) ?? true)) {
+                    if (playerToTest.playerPermissionLevel !== PlayerPermissionLevel.Operator) {
                         return false;
                     }
                 }

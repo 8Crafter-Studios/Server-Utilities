@@ -117,7 +117,7 @@ export function playerController(sourceEntitya, message = "") {
         form.textField("Try Teleport Z Coordinate", "§4Z Coordinate", { defaultValue: String(playerList[playerTargetB].location.z) });
         form.toggle("Try Teleport - checkForBlocks", { defaultValue: false });
         form.toggle("Try Teleport - keepVelocity", { defaultValue: false });
-        form.toggle("Set Operator", { defaultValue: playerList[playerTargetB].isOp() });
+        // form.toggle("Set Operator", { defaultValue: playerList[playerTargetB]!.isOp() });
         form.toggle("Set Spawn Point", { defaultValue: false });
         form.textField("Spawn Dimension", "Spawn Dimension", { defaultValue: dimension });
         form.textField("Spawn X Coordinate", "Spawn X Coordinate", { defaultValue: spawnXPosition });
@@ -135,7 +135,9 @@ export function playerController(sourceEntitya, message = "") {
             .then((r) => {
             if (r.canceled)
                 return;
-            let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, setOp, setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug,] = r.formValues;
+            let [changeNameTag, multilineNameTag, nameTag, triggerEvent, addExperience, addLevels, selectedSlotIndex, scaleValue, isSneaking, clearVelocity, extinguishFire, kill, remove, setOnFire, setOnFireSeconds, setOnFireRemoveEffects, addEffect, effectToAdd, secondsOfEffect, effectAmplifier, effectShowEffectParticles, addTag, tagToAdd, removeEffect, effectToRemove, removeTag, tagToRemove, applyImpulse, velocityX, velocityY, velocityZ, applyKnockback, kockbackDirectionX, knockbackDirectionZ, knockbackHorizontalStrength, knockbackVerticalStrength, setRot, rotX, rotY, teleport, teleportDimension, teleportX, teleportY, teleportZ, teleportRotX, teleportRotY, teleportRotationType, teleportCheckForBlocks, teleportKeepVelocity, tryTeleport, tryTeleportDimension, tryTeleportX, tryTeleportY, tryTeleportZ, tryTeleportCheckForBlocks, tryTeleportKeepVelocity, 
+            // setOp,
+            setSpawnPoint, spawnDimension, spawnX, spawnY, spawnZ, setItemCooldown, itemCategory, tickDuration, sendMessage, messageToSend, openTheItemModificationFormAfterwards, resetLevel, debug,] = r.formValues;
             let newNameTag = String(nameTag);
             if (Boolean(multilineNameTag) == true) {
                 newNameTag = String(nameTag).split("\\\\newline").join("\n");
@@ -145,7 +147,7 @@ export function playerController(sourceEntitya, message = "") {
         scale.value = Number(scaleValue);*/ /**/
             if (Boolean(changeNameTag) == true) {
                 try {
-                    playerList[playerTargetB].setOp(Boolean(setOp));
+                    // playerList[playerTargetB]!.setOp(Boolean(setOp));
                 }
                 catch (e) {
                     console.error(e, e.stack);

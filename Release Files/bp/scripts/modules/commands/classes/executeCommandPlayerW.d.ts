@@ -1,4 +1,5 @@
-import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, InputInfo, type EntityComponentReturnType, GraphicsMode } from "@minecraft/server";
+import type { PlayerPermissionLevel } from "@minecraft/server";
+import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, InputInfo, type EntityComponentReturnType, GraphicsMode, CommandPermissionLevel } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -144,6 +145,9 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     get graphicsMode(): GraphicsMode;
     get isValid(): boolean;
     get localizationKey(): string;
+    get commandPermissionLevel(): CommandPermissionLevel;
+    get playerPermissionLevel(): PlayerPermissionLevel;
+    get target(): Entity | undefined;
     addEffect(effectType: string | EffectType, duration: number, options?: EntityEffectOptions): import("@minecraft/server").Effect | undefined;
     addExperience(amount: number): number;
     getRotation(): Vector2;
@@ -154,7 +158,6 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     getItemCooldown(itemCategory: string): number;
     getSpawnPoint(): DimensionLocation;
     getTotalXp(): number;
-    isOp(): boolean;
     lookAt(targetLocation: Vector3): void | undefined;
     playMusic(trackId: string, musicOptions?: MusicOptions): void | undefined;
     playSound(soundId: string, soundOptions?: PlayerSoundOptions): void | undefined;
@@ -163,7 +166,6 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     resetLevel(): never;
     sendMessage(message: string | RawMessage | (string | RawMessage)[]): void | undefined;
     setGameMode(gameMode?: GameMode | number): void | undefined;
-    setOp(isOp: boolean): void | undefined;
     setSpawnPoint(spawnPoint?: DimensionLocation): void | undefined;
     spawnParticle(effectName: string, location: Vector3, molangVariables?: MolangVariableMap): void | undefined;
     startItemCooldown(itemCategory: string, tickDuration: number): void | undefined;
@@ -212,6 +214,8 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     setPropertyOverrideForEntity(targetEntity: Entity, identifier: string, value: boolean | number | string): void | undefined;
     removePropertyOverrideForEntity(targetEntity: Entity, identifier: string): void | undefined;
     clearPropertyOverridesForEntity(targetEntity: Entity): void | undefined;
+    stopSound(soundId: string): void;
+    stopAllSounds(): void;
     saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
     getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
     deleteStringFromDynamicProperties(propertyName: string): void;

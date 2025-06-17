@@ -13,11 +13,11 @@ export var mainGlobalVariables;
     /**
      * The version of the add-on.
      */
-    mainGlobalVariables.current_format_version = "1.37.1";
+    mainGlobalVariables.current_format_version = "1.38.0";
     /**
      * The version of Minecraft Bedrock Edition supported by the add-on.
      */
-    mainGlobalVariables.current_supported_minecraft_version = "1.21.8x";
+    mainGlobalVariables.current_supported_minecraft_version = "1.21.9x";
     /**
      * The tick that the `initializeMainGlobalVariables` script was run.
      */

@@ -1,4 +1,4 @@
-import { ChatSendBeforeEvent, MemoryTier, world } from "@minecraft/server";
+import { ChatSendBeforeEvent, MemoryTier, PlayerPermissionLevel, world } from "@minecraft/server";
 import { LinkedServerShopCommands } from "ExtraFeatures/server_shop";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { srun } from "init/functions/srun";
@@ -251,7 +251,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     else if (newMessage.includes("${r}") &&
         (securityVariables.ultraSecurityModeEnabled
             ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useCommandsRunningEscapeSequence"])
-            : player.isOp() == true || player.playerPermissions.canUseCommands)) {
+            : player.playerPermissionLevel === PlayerPermissionLevel.Operator || player.playerPermissions.canUseCommands)) {
         newMessage = newMessage.replace("${r}", "");
         eventData.cancel = true;
         srun(() => player.runCommand(newMessage));
@@ -290,7 +290,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     else if (newMessage.includes("${run}") &&
         (securityVariables.ultraSecurityModeEnabled
             ? securityVariables.testPlayerForPermission(player, permissionType["andexdb.useCommandsRunningEscapeSequence"])
-            : player.isOp() == true || player.playerPermissions.canUseCommands)) {
+            : player.playerPermissionLevel === PlayerPermissionLevel.Operator || player.playerPermissions.canUseCommands)) {
         newMessage = newMessage.replace("${run}", "");
         eventData.cancel = true;
         srun(() => player.runCommand(newMessage));
@@ -304,7 +304,7 @@ export function chatMessage(eventData, bypassChatInputRequests = false) {
     returnBeforeChatCommandsOrChatSend) {
         return;
     }
-    /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.isOp() == true)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/ if (world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != undefined &&
+    /*if(!((eventData.message.includes("${scripteval}") && (player.getDynamicProperty("canUseScriptEval") == true))||(eventData.message.includes("${run}") && ((player.playerPermissionLevel === PlayerPermissionLevel.Operator)||(player.getDynamicProperty("canUseCommands") == true)))||(eventData.message.startsWith("\\")))){world.getDimension("overworld").runCommand("/playsound note.harp.ui @a ~~~ 1 0.75 1"); }*/ if (world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != undefined &&
         world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") != "") {
         String(world.getDynamicProperty("andexdbSettings:validChatCommandPrefixes") ?? "")
             .split(", ")

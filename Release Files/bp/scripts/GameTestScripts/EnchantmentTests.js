@@ -37,7 +37,7 @@ GameTest.register("EnchantmentTests", "spectator_with_frostwalker_doesnt_freeze_
     })
         .thenIdle(10)
         .thenExecute(() => {
-        player.setGameMode(GameMode.creative);
+        player.setGameMode(GameMode.Creative);
         player.stopMoving();
     })
         .thenExecuteAfter(ticksPerSecond, () => {

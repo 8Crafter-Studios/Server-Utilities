@@ -1,4 +1,4 @@
-import { Player, Dimension, Block, Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, EffectType, GameMode, MolangVariableMap, InputInfo, GraphicsMode, } from "@minecraft/server";
+import { Player, Dimension, Block, Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, EffectType, GameMode, MolangVariableMap, InputInfo, GraphicsMode, CommandPermissionLevel, } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -443,6 +443,16 @@ export class executeCommandPlayerW {
     get localizationKey() {
         return this.player?.localizationKey;
     }
+    get commandPermissionLevel() {
+        return this.player?.commandPermissionLevel;
+    }
+    ;
+    get playerPermissionLevel() {
+        return this.player?.playerPermissionLevel;
+    }
+    get target() {
+        return this.player?.target;
+    }
     addEffect(effectType, duration, options) {
         return this.player?.addEffect(effectType, duration, options);
     }
@@ -472,10 +482,10 @@ export class executeCommandPlayerW {
     }
     getTotalXp() {
         return this.player?.getTotalXp();
-    }
+    } /*
     isOp() {
-        return this.player?.isOp();
-    }
+        return this.player?.isOp()!;
+    } */
     lookAt(targetLocation) {
         return this.player?.lookAt(targetLocation);
     }
@@ -499,10 +509,10 @@ export class executeCommandPlayerW {
     }
     setGameMode(gameMode) {
         return this.player?.setGameMode(gameMode);
-    }
-    setOp(isOp) {
+    } /*
+    setOp(isOp: boolean) {
         return this.player?.setOp(isOp);
-    }
+    } */
     setSpawnPoint(spawnPoint) {
         return this.player?.setSpawnPoint(spawnPoint);
     }
@@ -641,6 +651,12 @@ export class executeCommandPlayerW {
     }
     clearPropertyOverridesForEntity(targetEntity) {
         return this.player?.clearPropertyOverridesForEntity(targetEntity);
+    }
+    stopSound(soundId) {
+        return this.player?.stopSound(soundId);
+    }
+    stopAllSounds() {
+        return this.player?.stopAllSounds();
     }
     saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) {
         saveStringToEntityDynamicProperties(this.player, string, propertyName, clearOldProperties, chunkSize);

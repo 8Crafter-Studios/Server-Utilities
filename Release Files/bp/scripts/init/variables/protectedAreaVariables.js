@@ -684,7 +684,7 @@ export class ProtectedAreaTester {
                                             ? prop.heldItemFilters.items.some((item) => data.player.heldItem?.typeId === (ItemTypes.get(item)?.id ?? item))
                                             : !prop.heldItemFilters.items.some((item) => data.player.heldItem?.typeId === (ItemTypes.get(item)?.id ?? item))
                                         : true) &&
-                                    prop.mask.testIfMatches(data.permutationBeingPlaced, prop.mode);
+                                    prop.mask.testIfMatches(data.permutationToPlace, prop.mode);
                             break;
                         }
                         case "playerBreakBlock": {
