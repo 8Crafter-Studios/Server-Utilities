@@ -527,7 +527,7 @@ globalThis.modules = modulesMap;
  */
 // export const gt = globalThis;
 // import "Main";
-import { UndoClipboard } from "modules/coordinates/classes/UndoClipboard";
+import { UndoClipboard } from "modules/coordinates/classes/undoClipboard";
 globalThis.scriptStartTick = system.currentTick;
 world.setDynamicProperty("format_version", format_version);
 system.runTimeout(() => UndoClipboard.cullItemsMissingStructure(), 50);

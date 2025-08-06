@@ -60,7 +60,10 @@ export async function moderationMenu_quickTransfer(sourceEntity) {
                     if (rb.formValues[1]?.toNumber() < 0 || rb.formValues[1]?.toNumber() > 65535) {
                         throw new TypeError("Port must be between 0 and 65535 (inclusive).");
                     }
-                    transferPlayer(target, rb.formValues[0], rb.formValues[1].toNumber());
+                    transferPlayer(target, {
+                        hostname: rb.formValues[0],
+                        port: rb.formValues[1].toNumber(),
+                    });
                     return 1;
                 }
                 case "back":

@@ -51,7 +51,11 @@ export function chatSendMessageEvaluator_prePlayers(message, displayName, option
             nameFormatting +
             (!!nameGradientMode ? evaluateChatColorType(displayName.value ?? "", nameGradientMode) : displayName.value ?? "") +
             (options?.playerPersonalSettings?.nameDisplaySuffix ?? config.chatRanks.nameDisplaySuffix);
-    let nameb = displayName.hidden ? "" : !!nameGradientMode ? evaluateChatColorType(displayName.value ?? "", nameGradientMode) : displayName.value ?? "";
+    let nameb = displayName.hidden
+        ? ""
+        : !!nameGradientMode
+            ? evaluateChatColorType(displayName.value ?? "", nameGradientMode)
+            : displayName.value ?? "";
     name.length != 0 ? (name += options?.playerPersonalSettings?.chatNameAndMessageSeparator ?? config.chatRanks.chatNameAndMessageSeparator) : undefined; /*
         let rankMode = 0
         for (let index in player.getTags()) {
@@ -119,6 +123,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
                 fade: () => undefined,
                 setCamera: () => undefined,
                 setDefaultCamera: () => undefined,
+                setFov: () => undefined,
                 isValid: false,
             },
             chunkIndex: undefined,
@@ -355,6 +360,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
                 fade: () => undefined,
                 setCamera: () => undefined,
                 setDefaultCamera: () => undefined,
+                setFov: () => undefined,
                 isValid: false,
             },
             chunkIndex: undefined,

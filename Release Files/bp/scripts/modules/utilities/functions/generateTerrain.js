@@ -1513,15 +1513,15 @@ export function getBlockTypeV2(pos, localMaxHeight, baseHeight, biome, noise, he
         case "minecraft:flower_forest":
         case "minecraft:sunflower_plains":
         case "minecraft:river": {
-            const n = noise.noise3D(((pos.x + offset.x) / 100) * scale.x, ((pos.y + offset.y) / 100) * scale.y, ((pos.z + offset.z) / 100) * scale.z);
+            const n = noise.noise3D(((pos.x + offset.x) / 2) * scale.x, ((pos.y + offset.y) / 2) * scale.y, ((pos.z + offset.z) / 2) * scale.z);
             if (pos.y <= -60) {
                 return "bedrock";
             }
-            else if (pos.y <= -16) {
+            else if (pos.y <= 0) {
                 return "deepslate";
             }
-            else if (pos.y > -16 && pos.y < 0) {
-                return n > 0 ? "deepslate" : "stone";
+            else if (pos.y > 0 && pos.y < 8) {
+                return n - (pos.y - 4) / 4 > 0 ? "deepslate" : "stone";
             }
             else if (pos.y < localMaxHeight - 5) {
                 return "stone";
@@ -1541,10 +1541,10 @@ export function getBlockTypeV2(pos, localMaxHeight, baseHeight, biome, noise, he
             if (pos.y <= -60) {
                 return "bedrock";
             }
-            else if (pos.y <= -16) {
+            else if (pos.y <= 0) {
                 return "deepslate";
             }
-            else if (pos.y > -16 && pos.y < 0) {
+            else if (pos.y > 0 && pos.y < 8) {
                 return n > 0 ? "deepslate" : "stone";
             }
             else if (pos.y < localMaxHeight - (Math.abs(n) > 0.8 ? 4 : 3)) {

@@ -41,7 +41,7 @@ import { command } from "modules/commands/classes/command";
 import { disconnectingPlayers } from "modules/commands/constants/disconnectingPlayers";
 import { AreaBackups } from "modules/coordinates/classes/AreaBackups";
 import { BlockClipboard, GlobalBlockClipboard } from "modules/coordinates/classes/BlockClipboard";
-import { UndoClipboard } from "modules/coordinates/classes/UndoClipboard";
+import { UndoClipboard } from "modules/coordinates/classes/undoClipboard";
 import { WorldPosition } from "modules/coordinates/classes/WorldPosition";
 import { caretNotationC } from "modules/coordinates/functions/caretNotationC";
 import { chunkIndexToBoundingBox } from "modules/coordinates/functions/chunkIndexToBoundingBox";
