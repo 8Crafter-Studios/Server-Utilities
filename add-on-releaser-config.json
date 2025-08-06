@@ -1,5 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/8Crafter-Studios/Add-On-Releaser/refs/heads/main/8crafters-add-on-releaser-config.schema.json",
+    // "$schema": "https://raw.githubusercontent.com/8Crafter-Studios/Add-On-Releaser/refs/heads/main/8crafters-add-on-releaser-config.schema.json",
     "cwd": "./",
     "destination": "./Release Files",
     "packs": [
@@ -77,7 +77,7 @@
             ]
         }
     ],
-    "file_type": "mcaddon",
+    "file_type": "mcpack",
     "file_name": "myaddon-v${version}",
     "file_name_version": {
         "format": "dashed",
