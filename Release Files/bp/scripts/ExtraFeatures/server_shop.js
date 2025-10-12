@@ -504,8 +504,7 @@ export class ServerShop {
                                     : "§c"}{itemStack.getComponent("durability")?.maxDurability-itemStack.getComponent("durability")?.damage}/${itemStack.getComponent("durability")?.maxDurability}`
                             : ""}${itemStack.hasComponent("potion")
                             ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion")?.potionEffectType.id}
-§r§bPotion Liquid Type: §9${itemStack.getComponent("potion")?.potionLiquidType.id}
-§r§bPotion Modifier Type: §e${itemStack.getComponent("potion")?.potionModifierType.id}`
+§r§bPotion Delivery Type: §e${itemStack.getComponent("potion")?.potionDeliveryType.id}`
                             : ""}
 §r§bEnchantments: ${itemStack.hasComponent("enchantable")
                             ? itemStack.getComponent("enchantable")?.getEnchantments().length == 0

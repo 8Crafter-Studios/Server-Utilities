@@ -1,1 +1,1 @@
-export * from "@minecraft/vanilla-data";
+export * from "@minecraft/vanilla-data.js";

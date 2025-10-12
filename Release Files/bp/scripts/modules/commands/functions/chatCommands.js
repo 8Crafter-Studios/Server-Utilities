@@ -2134,8 +2134,7 @@ ${command.dp}item slot <slot: int> enchantment <mode: {list}|{clear}>`);
                                                 : ""}${item.hasComponent("potion")
                                                 ? ((d) => `
 potionEffectType: ${d.potionEffectType.id}
-potionLiquidType: ${d.potionLiquidType.id}
-potionModifierType: ${d.potionModifierType.id}`)(item.getComponent("potion"))
+potionDeliveryType: ${d.potionDeliveryType.id}`)(item.getComponent("potion"))
                                                 : ""}`));
                                         }
                                         break;
@@ -2574,8 +2573,7 @@ potionModifierType: ${d.potionModifierType.id}`)(item.getComponent("potion"))
                                                         : ""}${item.hasComponent("potion")
                                                         ? ((d) => `
 potionEffectType: ${d.potionEffectType.id}
-potionLiquidType: ${d.potionLiquidType.id}
-potionModifierType: ${d.potionModifierType.id}`)(item.getComponent("potion"))
+potionDeliveryType: ${d.potionDeliveryType.id}`)(item.getComponent("potion"))
                                                         : ""}`));
                                                 }
                                                 break;

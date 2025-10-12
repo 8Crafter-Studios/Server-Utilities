@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 import GameTestExtensions from "./GameTestExtensions.js";
 import * as GameTest from "@minecraft/server-gametest";
-import { Block, BlockFluidContainerComponent, BlockPistonState, BlockRecordPlayerComponent, Direction, Entity, EntityDamageCause, EntityInventoryComponent, FluidContainer, FluidType, ItemStack, ItemType, ItemTypes, Player, PotionEffectType, world, } from "@minecraft/server";
+import { Block, BlockFluidContainerComponent, BlockPistonState, BlockRecordPlayerComponent, Direction, Entity, EntityDamageCause, EntityInventoryComponent, FluidContainer, FluidType, ItemStack, ItemType, ItemTypes, Player, PotionEffectType, Potions, world, } from "@minecraft/server";
 import * as mcMath from "@minecraft/math.js";
+import { MinecraftPotionDeliveryTypes, MinecraftPotionEffectTypes } from "@minecraft/vanilla-data.js";
 GameTest.register("APITests", "on_entity_created", (test) => {
     const entitySpawnCallback = world.afterEvents.entitySpawn.subscribe((entity) => {
         if (entity) {
@@ -954,7 +955,7 @@ GameTest.register("APITests", "cauldron_nocrash", (test) => {
     test.setFluidContainer(loc, FluidType.Potion);
     let cauldron = block.getComponent("fluid_container");
     cauldron.fillLevel = 2;
-    const poisonPotion = ItemStack.createPotion({ effect: "poison", liquid: "splash" });
+    const poisonPotion = Potions.resolve(MinecraftPotionEffectTypes.Poison, MinecraftPotionDeliveryTypes.ThrownSplash);
     cauldron.setPotion(poisonPotion); //this line crashes the title
     test.succeed();
 })

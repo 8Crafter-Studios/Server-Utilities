@@ -505,8 +505,7 @@ ${item.itemDetails.enchantments instanceof Array
                             itemStack.getComponent("durability")?.damage}/${itemStack.getComponent("durability")?.maxDurability}`
                         : ""}${itemStack.hasComponent("potion")
                         ? `\n§r§bPotion Effect Type: §d${itemStack.getComponent("potion")?.potionEffectType.id}
-§r§bPotion Liquid Type: §9${itemStack.getComponent("potion")?.potionLiquidType.id}
-§r§bPotion Modifier Type: §e${itemStack.getComponent("potion")?.potionModifierType.id}`
+§r§bPotion Delivery Type: §e${itemStack.getComponent("potion")?.potionDeliveryType.id}`
                         : ""}
 §r§bEnchantments: ${item.itemDetails.enchantments instanceof Array
                         ? "\n§d[" + item.itemDetails.enchantments.map((v) => v.type.id + " " + v.level.toRomanNumerals()).join("\n") + "\n]"

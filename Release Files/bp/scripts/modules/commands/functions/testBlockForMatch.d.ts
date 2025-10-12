@@ -1,5 +1,5 @@
 import { Block } from "@minecraft/server";
-import type { MinecraftBlockTypes } from "@minecraft/vanilla-data";
+import type { MinecraftBlockTypes } from "@minecraft/vanilla-data.js";
 /**
  * The ID of the block, a name of a property of the block, or a string of true or false.
  *

@@ -2412,6 +2412,120 @@ export class Events_WorldAfterEvents {
             },
         };
     }
+    get packSettingChange() {
+        return {
+            /**
+             * Creates a new event subscription.
+             *
+             * @remarks
+             * This function can't be called in read-only mode.
+             *
+             * This function can be called in early-execution mode.
+             *
+             * @throws {TypeError} If the event callback is an empty string.
+             * @throws {TypeError} If the event callback is not a string.
+             * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+             */
+            subscribe(callback) {
+                if (callback === "")
+                    throw new TypeError("Event subscription callback cannot be empty.");
+                if (typeof callback !== "string")
+                    throw new TypeError("Event subscription callback must be a string.");
+                if (eval("typeof (" + callback + ")") !== "function") {
+                    throw new TypeError("Event subscription callback is a string but is not a valid stringified JavaScript function.");
+                }
+                const subscription = Events.registerSubscription({
+                    code: callback,
+                    eventType: "world.afterEvents.packSettingChange",
+                    saveID: `EventSubscription:${getSuperUniqueID()}`,
+                });
+                return subscription;
+            },
+            /**
+             * Deletes the provided event subscription.
+             *
+             * @remarks
+             * This function can't be called in read-only mode.
+             *
+             * This function can be called in early-execution mode.
+             *
+             * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+             * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.packSettingChange` event.
+             */
+            unsubscribe(subscription) {
+                if (!(subscription instanceof SubscribedEvent))
+                    throw new TypeError("Subscription must be an instance of SubscribedEvent.");
+                if (subscription.eventType !== "world.afterEvents.packSettingChange")
+                    throw new ReferenceError("Subscription must be for the world.afterEvents.packSettingChange event.");
+                subscription.delete();
+            },
+            /**
+             * Gets all event subscriptions to this event type.
+             *
+             * @returns {SubscribedEvent<"world.afterEvents.packSettingChange">[]} The event subscriptions.
+             */
+            getAll() {
+                return Events.loadedEvents.world.afterEvents.packSettingChange.filter(() => true);
+            },
+        };
+    }
+    get playerSwingStart() {
+        return {
+            /**
+             * Creates a new event subscription.
+             *
+             * @remarks
+             * This function can't be called in read-only mode.
+             *
+             * This function can be called in early-execution mode.
+             *
+             * @throws {TypeError} If the event callback is an empty string.
+             * @throws {TypeError} If the event callback is not a string.
+             * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+             */
+            subscribe(callback) {
+                if (callback === "")
+                    throw new TypeError("Event subscription callback cannot be empty.");
+                if (typeof callback !== "string")
+                    throw new TypeError("Event subscription callback must be a string.");
+                if (eval("typeof (" + callback + ")") !== "function") {
+                    throw new TypeError("Event subscription callback is a string but is not a valid stringified JavaScript function.");
+                }
+                const subscription = Events.registerSubscription({
+                    code: callback,
+                    eventType: "world.afterEvents.playerSwingStart",
+                    saveID: `EventSubscription:${getSuperUniqueID()}`,
+                });
+                return subscription;
+            },
+            /**
+             * Deletes the provided event subscription.
+             *
+             * @remarks
+             * This function can't be called in read-only mode.
+             *
+             * This function can be called in early-execution mode.
+             *
+             * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+             * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.playerSwingStart` event.
+             */
+            unsubscribe(subscription) {
+                if (!(subscription instanceof SubscribedEvent))
+                    throw new TypeError("Subscription must be an instance of SubscribedEvent.");
+                if (subscription.eventType !== "world.afterEvents.playerSwingStart")
+                    throw new ReferenceError("Subscription must be for the world.afterEvents.playerSwingStart event.");
+                subscription.delete();
+            },
+            /**
+             * Gets all event subscriptions to this event type.
+             *
+             * @returns {SubscribedEvent<"world.afterEvents.playerSwingStart">[]} The event subscriptions.
+             */
+            getAll() {
+                return Events.loadedEvents.world.afterEvents.playerSwingStart.filter(() => true);
+            },
+        };
+    }
     get pistonActivate() {
         return {
             /**

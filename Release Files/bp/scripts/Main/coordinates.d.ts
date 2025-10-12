@@ -5,24 +5,8 @@ export interface ILocalTeleport {
     surge_3: number;
 }
 export declare const LocalTeleportFunctions: {
-    norm: ({ x, y, z }: Vector3, s: number) => {
-        x: number;
-        y: number;
-        z: number;
-    };
-    xa: ({ x, y, z }: Vector3, s: number) => {
-        x: number;
-        y: number;
-        z: number;
-    };
-    ya: ({ x, y, z }: Vector3, s: number) => {
-        x: number;
-        y: number;
-        z: number;
-    };
-    za: (a: Vector3, s: number) => {
-        x: number;
-        y: number;
-        z: number;
-    };
+    norm: ({ x, y, z }: Vector3, s: number) => Vector3;
+    xa: ({ x, y, z }: Vector3, s: number) => Vector3;
+    ya: ({ x, y, z }: Vector3, s: number) => Vector3;
+    za: (a: Vector3, s: number) => Vector3;
 };

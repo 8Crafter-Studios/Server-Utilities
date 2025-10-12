@@ -446,7 +446,6 @@ export class executeCommandPlayerW {
     get commandPermissionLevel() {
         return this.player?.commandPermissionLevel;
     }
-    ;
     get playerPermissionLevel() {
         return this.player?.playerPermissionLevel;
     }
@@ -657,6 +656,12 @@ export class executeCommandPlayerW {
     }
     stopAllSounds() {
         return this.player?.stopAllSounds();
+    }
+    getAllBlocksStandingOn(options) {
+        return this.player?.getAllBlocksStandingOn(options);
+    }
+    getBlockStandingOn(options) {
+        return this.player?.getBlockStandingOn(options);
     }
     saveStringToDynamicProperties(string, propertyName, clearOldProperties = true, chunkSize = 32760) {
         saveStringToEntityDynamicProperties(this.player, string, propertyName, clearOldProperties, chunkSize);

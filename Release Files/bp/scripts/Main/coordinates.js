@@ -2,6 +2,8 @@ import {} from "@minecraft/server";
 export const LocalTeleportFunctions = {
     norm: ({ x, y, z }, s) => {
         const l = Math.hypot(x, y, z);
+        if (l === 0)
+            return { x: 0, y: 0, z: 0 }; // or throw an error
         return {
             x: s * (x / l),
             y: s * (y / l),
@@ -19,6 +21,10 @@ export const LocalTeleportFunctions = {
     },
     ya: ({ x, y, z }, s) => {
         const m = Math.hypot(x, z);
+        if (m === 0) {
+            // Direction is vertical; choose a default horizontal axis
+            return { x: 0, y: 0, z: 0 }; // or maybe { x: 1, y: 0, z: 0 } normalized to s
+        }
         const a = {
             x: (x / m) * -y,
             y: m,
@@ -52,21 +58,21 @@ export const LocalTeleportFunctions = {
 /*
 
 Entity.prototype.localTeleport = function (localTeleport: ILocalTeleport) {
-   const { sway_1, heave_2, surge_3 } = localTeleport
-   const { location } = this
-   const viewDirection = this.getViewDirection()
+    const { sway_1, heave_2, surge_3 } = localTeleport
+    const { location } = this
+    const viewDirection = this.getViewDirection()
 
-   const xx = LocalTeleportFunctions.xa(viewDirection, sway_1)
-   const yy = LocalTeleportFunctions.ya(viewDirection, heave_2)
-   const zz = LocalTeleportFunctions.za(viewDirection, surge_3)
+    const xx = LocalTeleportFunctions.xa(viewDirection, sway_1)
+    const yy = LocalTeleportFunctions.ya(viewDirection, heave_2)
+    const zz = LocalTeleportFunctions.za(viewDirection, surge_3)
 
-   const newPosition = {
-           x: location.x + xx.x + yy.x + zz.x,
-           y: location.y + xx.y + yy.y + zz.y,
-           z: location.z + xx.z + yy.z + zz.z
-   }
+    const newPosition = {
+            x: location.x + xx.x + yy.x + zz.x,
+            y: location.y + xx.y + yy.y + zz.y,
+            z: location.z + xx.z + yy.z + zz.z
+    }
 
-   this.teleport(newPosition)
+    this.teleport(newPosition)
 }*/
 /*
 Math.asin*/

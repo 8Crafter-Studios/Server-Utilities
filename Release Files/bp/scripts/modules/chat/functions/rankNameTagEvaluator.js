@@ -1,4 +1,4 @@
-import { ButtonState, GameMode, InputMode, PlatformType, Player } from "@minecraft/server";
+import { ButtonState, CommandPermissionLevel, GameMode, GraphicsMode, InputMode, PlatformType, Player, PlayerPermissionLevel } from "@minecraft/server";
 import "init/classes/config";
 import { patternColors } from "modules/chat/constants/patternColors";
 import { patternColorsMap } from "modules/chat/constants/patternColorsMap";
@@ -75,6 +75,7 @@ export function rankNameTagEvaluator_players(prePlayersOutput, options) {
                 clear: () => undefined,
                 fade: () => undefined,
                 setCamera: () => undefined,
+                setCameraWithEase: () => undefined,
                 setDefaultCamera: () => undefined,
                 setFov: () => undefined,
                 isValid: false,
@@ -129,6 +130,17 @@ export function rankNameTagEvaluator_players(prePlayersOutput, options) {
             getEffects: () => [],
             getEntitiesFromViewDirection: () => [],
             getGameMode: () => GameMode.Survival,
+            getBlockStandingOn: () => undefined,
+            getAllBlocksStandingOn: () => [],
+            clearPropertyOverridesForEntity: () => undefined,
+            commandPermissionLevel: CommandPermissionLevel.Any,
+            graphicsMode: GraphicsMode.Fancy,
+            localizationKey: "",
+            playerPermissionLevel: PlayerPermissionLevel.Member,
+            removePropertyOverrideForEntity: () => undefined,
+            setPropertyOverrideForEntity: () => undefined,
+            stopAllSounds: () => undefined,
+            stopSound: () => undefined,
             getHeadLocation: () => ({
                 x: 0,
                 y: 0,

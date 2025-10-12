@@ -1,4 +1,4 @@
-import type { PlayerPermissionLevel } from "@minecraft/server";
+import type { GetBlocksStandingOnOptions, PlayerPermissionLevel } from "@minecraft/server";
 import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, InputInfo, type EntityComponentReturnType, GraphicsMode, CommandPermissionLevel } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
@@ -216,6 +216,8 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     clearPropertyOverridesForEntity(targetEntity: Entity): void | undefined;
     stopSound(soundId: string): void;
     stopAllSounds(): void;
+    getAllBlocksStandingOn(options?: GetBlocksStandingOnOptions): Block[];
+    getBlockStandingOn(options?: GetBlocksStandingOnOptions): Block | undefined;
     saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
     getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
     deleteStringFromDynamicProperties(propertyName: string): void;
