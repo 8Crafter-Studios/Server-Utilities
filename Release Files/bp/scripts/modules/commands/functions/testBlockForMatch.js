@@ -31,7 +31,9 @@ export function testBlockForMatch(block, masks) {
             return true;
         }
         return (masks.map((v) => v.id).includes(block.typeId) &&
-            !!masks.filter(v => v.id !== "false" && v.id !== undefined).find((matches) => testForObjectExtension(block.permutation.getAllStates() ?? {}, Object.fromEntries(Object.entries(matches.states ?? {}).filter((v) => !!Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find((s) => v[0] == s[0]))))));
+            !!masks
+                .filter((v) => v.id !== "false" && v.id !== undefined)
+                .find((matches) => testForObjectExtension(block.permutation.getAllStates() ?? {}, Object.fromEntries(Object.entries(matches.states ?? {}).filter((v) => !!Object.entries(BlockPermutation.resolve(block.typeId).getAllStates()).find((s) => v[0] == s[0]))))));
     }
     else {
         if (masks.id == "isAir") {

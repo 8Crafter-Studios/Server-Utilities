@@ -63,7 +63,7 @@ export interface EventsSavedData {
  *
  * @template {SubscribedEventSignalUnion} Event The event signal type.
  */
-export type SubscribableEventParameterTypeMap<Event extends SubscribedEventSignalUnion> = Parameters<Event["subscribe"]>[0];
+export type SubscribableEventParameterTypeMap<Event extends SubscribedEventSignalUnion> = Parameters<Parameters<Event["subscribe"]>[0]>[0];
 /**
  * The data for an event subscription.
  *
@@ -4082,6 +4082,12 @@ declare namespace exports {
          * @throws {TypeError} If the loaded event subscriptions list for the event type is not an array.
          */
         constructor(data: SubscribedEventSavedData<EventTypeID>, isSaved?: boolean);
+        /**
+         * The initialized callback function for the event subscription.
+         *
+         * @type {((arg0: SubscribableEventParameterTypeMap<EventSignal>) => void) | undefined}
+         */
+        get initializedCallback(): ((arg0: SubscribableEventParameterTypeMap<EventSignal>) => void) | undefined;
         /**
          * Initializes the event subscription.
          *

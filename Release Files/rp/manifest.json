@@ -1,25 +1,25 @@
 {
     "format_version": 2,
     "header": {
-        "description": "v1.40.2 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.11x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
-        "name": "v1.40.2 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.11x)",
+        "description": "v1.40.3 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.11x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
+        "name": "v1.40.3 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.11x)",
         "uuid": "5869846f-2019-4442-8e81-d3a75c5e003a",
-        "version": [1, 40, 2],
+        "version": [1, 40, 3],
         "min_engine_version": [1, 21, 110]
     },
     "capabilities": ["pbr"],
     "modules": [
         {
-            "description": "v1.40.2 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.11x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
+            "description": "v1.40.3 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.11x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
             "type": "resources",
             "uuid": "3e4e2982-a23c-47ad-9256-ebc97345a37a",
-            "version": [1, 40, 2]
+            "version": [1, 40, 3]
         }
     ],
     "dependencies": [
         {
             "uuid": "53170125-3e79-4659-9bba-e49eb90b6dea",
-            "version": [1, 40, 2]
+            "version": [1, 40, 3]
         }
     ],
     "metadata": {

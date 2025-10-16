@@ -5421,6 +5421,14 @@ var exports;
             this.#eventTypeLoadedEventsReference = loadedEventsOfTypeRef;
         }
         /**
+         * The initialized callback function for the event subscription.
+         *
+         * @type {((arg0: SubscribableEventParameterTypeMap<EventSignal>) => void) | undefined}
+         */
+        get initializedCallback() {
+            return this.#initializedCallback;
+        }
+        /**
          * Initializes the event subscription.
          *
          * This method subscribes the subscription to the actual event.
@@ -5588,4 +5596,21 @@ Object.defineProperties(globalThis, {
 });
 // Load and initialize the saved events.
 exports.Events.load(true, false);
+// Trigger the worldLoad after even if it was registered too late.
+if (globalThis.initializeTick !== -1 &&
+    exports.Events?.loadedEvents?.world?.afterEvents?.worldLoad &&
+    exports.Events.loadedEvents.world.afterEvents.worldLoad.length > 0) {
+    exports.Events.loadedEvents.world.afterEvents.worldLoad.forEach((event) => {
+        event.initializedCallback?.({});
+    });
+}
+// world.setDynamicProperty(
+//     "evalAfterEvents:worldLoad",
+//     `system.runTimeout(() => {
+//     if (globalThis.modules.semver.gt(globalThis.format_version, "1.40.2")) return world.setDynamicProperty("evalAfterEvents:worldLoad");
+//     globalThis.Events.loadedEvents.world.afterEvents.worldLoad.forEach((event) => {
+//         event.initializedCallback?.({});
+//     });
+// }, 5);`
+// );
 //# sourceMappingURL=events.js.map
