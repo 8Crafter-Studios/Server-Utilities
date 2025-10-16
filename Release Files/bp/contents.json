@@ -343,6 +343,96 @@
          "path" : "json-20250107.jar"
       },
       {
+         "path" : "loot_tables/maps/andexdb/ancientcity.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/bastionremnant.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/blank.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/buriedtreasure.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/endcity.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/fortress.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/jungle_temple.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/mansion.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/mapdatavalue7.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/mineshaft.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/monument.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/pillageroutpost.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/randommap.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/ruinedportal.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/ruins.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/shipwreck.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/stronghold.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/swamp_hut.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/temple.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/trail_ruins.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/trial_chambers.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/unknown.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/village.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/village_desert.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/village_jungle.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/village_plains.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/village_savanna.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/village_snowy.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/village_swamp.json"
+      },
+      {
+         "path" : "loot_tables/maps/andexdb/village_taiga.json"
+      },
+      {
          "path" : "manifest.json"
       },
       {
@@ -409,9 +499,6 @@
          "path" : "node_modules/@minecraft/common/tsconfig.json"
       },
       {
-         "path" : "node_modules/@minecraft/debug-utilities/.eslintrc.json"
-      },
-      {
          "path" : "node_modules/@minecraft/debug-utilities/README.md"
       },
       {
@@ -421,91 +508,88 @@
          "path" : "node_modules/@minecraft/debug-utilities/package.json"
       },
       {
-         "path" : "node_modules/@minecraft/debug-utilities/tsconfig.json"
+         "path" : "node_modules/@minecraft/math.js/README.md"
       },
       {
-         "path" : "node_modules/@minecraft/math/README.md"
+         "path" : "node_modules/@minecraft/math.js/api-report/math.api.md"
       },
       {
-         "path" : "node_modules/@minecraft/math/api-report/math.api.md"
+         "path" : "node_modules/@minecraft/math.js/dist/minecraft-math.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/math/dist/minecraft-math.d.ts"
+         "path" : "node_modules/@minecraft/math.js/dist/minecraft-math.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/dist/minecraft-math.js"
+         "path" : "node_modules/@minecraft/math.js/dist/minecraft-math.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/dist/minecraft-math.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/general/clamp.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/general/clamp.js"
+         "path" : "node_modules/@minecraft/math.js/lib/general/clamp.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/general/clamp.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/general/index.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/general/index.js"
+         "path" : "node_modules/@minecraft/math.js/lib/general/index.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/general/index.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/index.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/index.js"
+         "path" : "node_modules/@minecraft/math.js/lib/index.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/index.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/index.test.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/index.test.js"
+         "path" : "node_modules/@minecraft/math.js/lib/index.test.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/index.test.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/tsdoc-metadata.json"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/tsdoc-metadata.json"
+         "path" : "node_modules/@minecraft/math.js/lib/types/math-beta.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/types/math-beta.d.ts"
+         "path" : "node_modules/@minecraft/math.js/lib/types/math-public.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/types/math-public.d.ts"
+         "path" : "node_modules/@minecraft/math.js/lib/types/math.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/types/math.d.ts"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/coreHelpers.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/coreHelpers.js"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/coreHelpers.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/coreHelpers.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/coreHelpers.test.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/coreHelpers.test.js"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/coreHelpers.test.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/coreHelpers.test.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/index.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/index.js"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/index.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/index.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/vectorWrapper.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/vectorWrapper.js"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/vectorWrapper.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/vectorWrapper.js.map"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/vectorWrapper.test.js"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/vectorWrapper.test.js"
+         "path" : "node_modules/@minecraft/math.js/lib/vector3/vectorWrapper.test.js.map"
       },
       {
-         "path" : "node_modules/@minecraft/math/lib/vector3/vectorWrapper.test.js.map"
-      },
-      {
-         "path" : "node_modules/@minecraft/math/package.json"
+         "path" : "node_modules/@minecraft/math.js/package.json"
       },
       {
          "path" : "node_modules/@minecraft/server-admin/README.md"
@@ -517,28 +601,13 @@
          "path" : "node_modules/@minecraft/server-admin/package.json"
       },
       {
-         "path" : "node_modules/@minecraft/server-editor/.eslintrc.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-editor/README.md"
       },
       {
          "path" : "node_modules/@minecraft/server-editor/index.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/server-editor/node_modules/@minecraft/server/README.md"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-editor/node_modules/@minecraft/server/index.d.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-editor/node_modules/@minecraft/server/package.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-editor/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-editor/tsconfig.json"
       },
       {
          "path" : "node_modules/@minecraft/server-gametest/README.md"
@@ -550,37 +619,13 @@
          "path" : "node_modules/@minecraft/server-gametest/package.json"
       },
       {
-         "path" : "node_modules/@minecraft/server-net/.eslintrc.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-net/README.md"
       },
       {
          "path" : "node_modules/@minecraft/server-net/index.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/.eslintrc.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/README.md"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/index.d.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/tests.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/node_modules/@minecraft/server-admin/tsconfig.json"
-      },
-      {
          "path" : "node_modules/@minecraft/server-net/package.json"
-      },
-      {
-         "path" : "node_modules/@minecraft/server-net/tsconfig.json"
       },
       {
          "path" : "node_modules/@minecraft/server-ui/README.md"
@@ -601,55 +646,52 @@
          "path" : "node_modules/@minecraft/server/package.json"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/README.md"
+         "path" : "node_modules/@minecraft/vanilla-data.js/README.md"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/index.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/index.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/index.js"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/index.js"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-biome.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-biome.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-block.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-block.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-cameraPresets.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-cameraPresets.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-cooldownCategory.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-cooldownCategory.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-dimension.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-dimension.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-effect.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-effect.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-enchantment.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-enchantment.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-entity.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-entity.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-feature.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-feature.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-item.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-item.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-potionEffect.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-potionDelivery.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-potionLiquid.d.ts"
+         "path" : "node_modules/@minecraft/vanilla-data.js/lib/mojang-potionEffect.d.ts"
       },
       {
-         "path" : "node_modules/@minecraft/vanilla-data/lib/mojang-potionModifier.d.ts"
-      },
-      {
-         "path" : "node_modules/@minecraft/vanilla-data/package.json"
+         "path" : "node_modules/@minecraft/vanilla-data.js/package.json"
       },
       {
          "path" : "node_modules/@types/semver/LICENSE"
@@ -3896,6 +3938,15 @@
       },
       {
          "path" : "node_modules/mcbe-ipc/dist/proto.js"
+      },
+      {
+         "path" : "node_modules/mcbe-ipc/node_modules/@minecraft/server/README.md"
+      },
+      {
+         "path" : "node_modules/mcbe-ipc/node_modules/@minecraft/server/index.d.ts"
+      },
+      {
+         "path" : "node_modules/mcbe-ipc/node_modules/@minecraft/server/package.json"
       },
       {
          "path" : "node_modules/mcbe-ipc/package.json"
@@ -13246,6 +13297,15 @@
          "path" : "scripts/ironFireSword.ts"
       },
       {
+         "path" : "scripts/memoryDifferenceTest.d.ts"
+      },
+      {
+         "path" : "scripts/memoryDifferenceTest.js"
+      },
+      {
+         "path" : "scripts/memoryDifferenceTest.js.map"
+      },
+      {
          "path" : "scripts/modules/ban/classes/ban.d.ts"
       },
       {
@@ -13415,6 +13475,15 @@
       },
       {
          "path" : "scripts/modules/block_generation_utilities/functions/fillWalls.js.map"
+      },
+      {
+         "path" : "scripts/modules/block_generation_utilities/functions/overlayArea.d.ts"
+      },
+      {
+         "path" : "scripts/modules/block_generation_utilities/functions/overlayArea.js"
+      },
+      {
+         "path" : "scripts/modules/block_generation_utilities/functions/overlayArea.js.map"
       },
       {
          "path" : "scripts/modules/chat/constants/currentlyRequestedChatInput.d.ts"
@@ -15170,6 +15239,15 @@
       },
       {
          "path" : "scripts/modules/coordinates/functions/diroffsetothersmap.js.map"
+      },
+      {
+         "path" : "scripts/modules/coordinates/functions/dirreversemap.d.ts"
+      },
+      {
+         "path" : "scripts/modules/coordinates/functions/dirreversemap.js"
+      },
+      {
+         "path" : "scripts/modules/coordinates/functions/dirreversemap.js.map"
       },
       {
          "path" : "scripts/modules/coordinates/functions/doBoundingBoxesIntersect.d.ts"
@@ -18433,6 +18511,15 @@
          "path" : "scripts/preInit/eventSubscriptions/beforeEvents/startup.js.map"
       },
       {
+         "path" : "scripts/pvp.d.ts"
+      },
+      {
+         "path" : "scripts/pvp.js"
+      },
+      {
+         "path" : "scripts/pvp.js.map"
+      },
+      {
          "path" : "scripts/security/ultraSecurityModeUtils.d.ts"
       },
       {
@@ -19228,6 +19315,9 @@
          "path" : "src/modules/block_generation_utilities/functions/fillWalls.ts"
       },
       {
+         "path" : "src/modules/block_generation_utilities/functions/overlayArea.ts"
+      },
+      {
          "path" : "src/modules/chat/constants/currentlyRequestedChatInput.ts"
       },
       {
@@ -19811,6 +19901,9 @@
       },
       {
          "path" : "src/modules/coordinates/functions/diroffsetothersmap.ts"
+      },
+      {
+         "path" : "src/modules/coordinates/functions/dirreversemap.ts"
       },
       {
          "path" : "src/modules/coordinates/functions/doBoundingBoxesIntersect.ts"

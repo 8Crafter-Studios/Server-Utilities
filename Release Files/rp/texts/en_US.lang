@@ -2,8 +2,8 @@ warning.please_accept_resource_packs_when_you_join_this_realm=
 warningWARNING.please_accept_resource_packs_when_you_join_this_realm=\0
 
 ## Version
-8crafterdebugsticksrp.version=1.40.1
-8crafterdebugsticksrp2.version=1.40.1
+8crafterdebugsticksrp.version=1.40.2
+8crafterdebugsticksrp2.version=1.40.2
 
 ## Item Group Names
 andexdb:itemGroup.name.debug_sticks=Debug Sticks
