@@ -21,6 +21,7 @@
         {
             "type": "minecraft-js",
             "request": "attach",
+            // Minecraft full release Server Utilities public.
             "name": "Attach to MCFR",
             "mode": "connect",
             "localRoot": "${workspaceFolder}/BP/src",
@@ -33,6 +34,7 @@
         {
             "type": "minecraft-js",
             "request": "attach",
+            // Minecraft full release Server Utilities public.
             "name": "Wait for MCFR Debug Connections",
             "mode": "listen",
             "localRoot": "${workspaceFolder}/BP/src",
@@ -45,6 +47,33 @@
         {
             "type": "minecraft-js",
             "request": "attach",
+            // Minecraft full release Server Utilities Editor Edition dev.
+            "name": "Attach to MCFREE",
+            "mode": "connect",
+            "localRoot": "${workspaceFolder}/BP/src",
+            "generatedSourceRoot": "${workspaceFolder}/BP/scripts",
+            "sourceMapRoot": "${workspaceFolder}/BP/scripts",
+            "host": "108.175.12.25",
+            "port": 19144,
+            "targetModuleUuid": "88edb087-e8c5-4a88-9ed4-ccdf2f6cd728",
+        },
+        {
+            "type": "minecraft-js",
+            "request": "attach",
+            // Minecraft full release Server Utilities Editor Edition dev.
+            "name": "Wait for MCFREE Debug Connections",
+            "mode": "listen",
+            "localRoot": "${workspaceFolder}/BP/src",
+            "generatedSourceRoot": "${workspaceFolder}/BP/scripts",
+            "sourceMapRoot": "${workspaceFolder}/BP/scripts",
+            "host": "localhost",
+            "port": 19144,
+            "targetModuleUuid": "88edb087-e8c5-4a88-9ed4-ccdf2f6cd728"
+        },
+        {
+            "type": "minecraft-js",
+            "request": "attach",
+            // Minecraft preview Server Utilities public.
             "name": "Attach to MCPV",
             "localRoot": "${workspaceFolder}/BP Preview/src",
             "generatedSourceRoot": "${workspaceFolder}/BP Preview/scripts",
@@ -56,6 +85,7 @@
         {
             "type": "minecraft-js",
             "request": "attach",
+            // Minecraft preview Server Utilities public.
             "name": "Wait for MCPV Debug Connections",
             "mode": "listen",
             "localRoot": "${workspaceFolder}/BP Preview/src",

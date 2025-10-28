@@ -1,10 +1,13 @@
 {
-  "type": "module",
-  "dependencies": {
-    "adm-zip": "^0.5.16",
-    "copy-paste": "^1.5.3",
-    "json5": "^2.2.3",
-    "progress": "^2.0.3",
-    "prompt-sync": "^4.2.0"
-  }
+    "type": "module",
+    "scripts": {
+        "generateEditorEditionSymlinks": "node \"BP Editor Edition/generateFolderSymlinks.ts\" && node \"RP Editor Edition/generateFolderSymlinks.ts\""
+    },
+    "dependencies": {
+        "adm-zip": "^0.5.16",
+        "copy-paste": "^1.5.3",
+        "json5": "^2.2.3",
+        "progress": "^2.0.3",
+        "prompt-sync": "^4.2.0"
+    }
 }

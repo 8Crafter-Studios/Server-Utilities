@@ -2,3 +2,4 @@ diagnostic.disable.minecraft.manifest.version.invalid=true
 diagnostic.disable.behaviorpack.item.components.texture_not_found=true
 diagnostic.disable.minecraft.format.path.length=true
 diagnostic.disable.behaviorpack.entity.duplicate_id=true
+education.enable=true

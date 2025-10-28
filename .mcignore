@@ -21,5 +21,9 @@ RP Editor Edition/sounds/
 RP Editor Edition/texts/
 RP Editor Edition/textures/
 RP Editor Edition/ui/
-BP Editor Edition/contents.json
-RP Editor Edition/contents.json
+BP/depricated/
+BP/deprecated/
+RP/depricated/
+RP/deprecated/
+Release Files/
+*/.git/
