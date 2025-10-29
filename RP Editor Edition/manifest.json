@@ -1,25 +1,25 @@
 {
     "format_version": 2,
     "header": {
-        "description": "v1.41.0+BUILD.1 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.12x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
-        "name": "v1.41.0+BUILD.1 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.12x)",
+        "description": "v1.41.0+BUILD.2 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.12x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
+        "name": "v1.41.0+BUILD.2 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.12x)",
         "uuid": "de9147f9-1fb2-4c68-911c-5f0f9e69074d",
-        "version": "1.41.0+BUILD.1",
+        "version": "1.41.0+BUILD.2",
         "min_engine_version": [1, 21, 120]
     },
     "capabilities": ["pbr"],
     "modules": [
         {
-            "description": "v1.41.0+BUILD.1 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.12x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
+            "description": "v1.41.0+BUILD.2 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks RP by 8Crafter. (for minecraft bedrock edition 1.21.12x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
             "type": "resources",
             "uuid": "244bc024-ae8a-48ae-ae7f-4f443e23b640",
-            "version": "1.41.0+BUILD.1"
+            "version": "1.41.0+BUILD.2"
         }
     ],
     "dependencies": [
         {
             "uuid": "80bf4eb3-95ab-4444-8a53-d0a8ac6d7597",
-            "version": "1.41.0+BUILD.1"
+            "version": "1.41.0+BUILD.2"
         }
     ],
     "metadata": {
