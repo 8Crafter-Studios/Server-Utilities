@@ -1,33 +1,33 @@
 {
     "format_version": 2,
     "header": {
-        "description": "v1.41.0+BUILD.3 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.21.12x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
-        "name": "v1.41.0+BUILD.3 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.21.12x)",
+        "description": "v1.41.0+BUILD.4 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.21.12x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
+        "name": "v1.41.0+BUILD.4 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.21.12x)",
         "uuid": "80bf4eb3-95ab-4444-8a53-d0a8ac6d7597",
-        "version": "1.41.0+BUILD.3",
+        "version": "1.41.0+BUILD.4",
         "min_engine_version": [1, 21, 120]
     },
     "capabilities": ["script_eval", "editorExtension"],
     "modules": [
         {
-            "description": "v1.41.0+BUILD.3 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.21.12x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
+            "description": "v1.41.0+BUILD.4 (§eEditor Edition§r) 8Crafter's Server Utilities & Debug Sticks BP by 8Crafter. (for minecraft bedrock edition 1.21.12x)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
             "type": "data",
             "uuid": "b1c8578a-7f24-46ee-9e6b-be9cba27875d",
-            "version": "1.41.0+BUILD.3"
+            "version": "1.41.0+BUILD.4"
         },
         {
             "description": "System scripts && Vanilla gameplay tests 4 (0.4.0-alpha)\n§bhttps://www.8crafter.com\n§chttps://youtube.com/@8crafter",
             "type": "script",
             "language": "javascript",
             "uuid": "88edb087-e8c5-4a88-9ed4-ccdf2f6cd728",
-            "version": "1.41.0+BUILD.3",
+            "version": "1.41.0+BUILD.4",
             "entry": "scripts/init.js"
         }
     ],
     "dependencies": [
         {
             "uuid": "de9147f9-1fb2-4c68-911c-5f0f9e69074d",
-            "version": "1.41.0+BUILD.3"
+            "version": "1.41.0+BUILD.4"
         },
         {
             "module_name": "@minecraft/server",
