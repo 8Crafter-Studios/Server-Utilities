@@ -1571,12 +1571,14 @@ declare namespace exports {
          * Resets the specified subsection of the config, or the entire config if no subsection is specified.
          * @param subsection The subsection of the config to reset. If not specified, the entire config will be reset.
          *
-         * @example Reset the `config.worldBorder.overworld` section of the config:
+         * @example
+         * Reset the `config.worldBorder.overworld` section of the config:
          * ```ts
          * config.reset(config.worldBorder.overworld);
          * ```
          *
-         * @example Reset the entire config:
+         * @example
+         * Reset the entire config:
          * ```ts
          * config.reset();
          * ```
@@ -1586,7 +1588,8 @@ declare namespace exports {
          * Applies the specified settings to the config.
          * @param {FilterKey<DeepPartial<typeof config>, ["prototype", "reset", "applySettings", "toJSON"]>} settings The settings to apply to the config, as a partial of the JSONified version of the config.
          *
-         * @example Apply settings to the config:
+         * @example
+         * Apply settings to the config:
          * ```ts
          * config.applySettings({
          *     worldBorder: {

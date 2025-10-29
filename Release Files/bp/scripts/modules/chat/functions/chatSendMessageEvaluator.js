@@ -121,6 +121,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
             camera: {
                 clear: () => undefined,
                 fade: () => undefined,
+                playAnimation: () => undefined,
                 setCamera: () => undefined,
                 setCameraWithEase: () => undefined,
                 setDefaultCamera: () => undefined,
@@ -356,6 +357,9 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
                 z: 0,
             },
             z: 0,
+            getAABB: () => undefined,
+            getControlScheme: () => undefined,
+            setControlScheme: () => undefined,
         };
     const targetPlayer = options?.targetPlayer ??
         {
@@ -370,6 +374,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
             camera: {
                 clear: () => undefined,
                 fade: () => undefined,
+                playAnimation: () => undefined,
                 setCamera: () => undefined,
                 setCameraWithEase: () => undefined,
                 setDefaultCamera: () => undefined,
@@ -605,6 +610,9 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
                 z: 0,
             },
             z: 0,
+            getAABB: () => undefined,
+            getControlScheme: () => undefined,
+            setControlScheme: () => undefined,
         };
     const p = targetPlayer;
     let messageTimeStampEnabled = options?.messageTimeStampEnabled ||

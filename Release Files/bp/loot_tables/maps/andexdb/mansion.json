@@ -1,5 +1,5 @@
 {
-	"pools": [
+    "pools": [
         {
             "rolls": 1,
             "entries": [
@@ -10,11 +10,12 @@
                     "functions": [
                         {
                             "function": "exploration_map",
+                            // Fully supported (tested). (last tested in 1.21.113)
                             "destination": "mansion"
                         }
                     ]
                 }
             ]
         }
-	]
+    ]
 }

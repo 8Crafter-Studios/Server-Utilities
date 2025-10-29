@@ -1,5 +1,5 @@
 {
-	"pools": [
+    "pools": [
         {
             "rolls": 1,
             "entries": [
@@ -10,11 +10,12 @@
                     "functions": [
                         {
                             "function": "exploration_map",
+                            // This isn't actually supported, it acts the same as "unknown". (last tested in 1.21.113)
                             "destination": "blank"
                         }
                     ]
                 }
             ]
         }
-	]
+    ]
 }

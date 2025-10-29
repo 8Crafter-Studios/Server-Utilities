@@ -1,13 +1,13 @@
 {
-"format_version": "1.17",
-"minecraft:recipe_smithing_transform": {
-    "description": {
-        "identifier": "andexdb:10minecraft:acacia_log"
-    },
-    "tags": ["smithing_table"],
-    "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 10},
-    "base": "andexdb:smithing_table_enchanted_book",
+    "format_version": "1.17",
+    "minecraft:recipe_smithing_transform": {
+        "description": {
+            "identifier": "andexdb:10minecraft:acacia_log"
+        },
+        "tags": ["smithing_table"],
+        "template": { "item": "andexdb:enchantment_transfer_smithing_template", "data": 10 },
+        "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": {"item": "minecraft:acacia_log"}
+        "result": { "item": "minecraft:acacia_log" }
     }
 }

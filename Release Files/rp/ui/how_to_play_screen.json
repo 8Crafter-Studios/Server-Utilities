@@ -967,7 +967,7 @@
         "controls": [
             {
                 "paragraph_1@how_to_play_common.paragraph": {
-                    "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.11x §c(ex. §a1.21.110§c or §a1.21.111§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
+                    "$text": "§cTHIS VERSION OF THIS ADD-ON WILL ONLY WORK FOR MINECRAFT §a1.21.12x §c(ex. §a1.21.120§c or §a1.21.121§c). \nIf you are on a different version of minecraft, please update this pack to the correct version for the version of Minecraft that you are playing on. \n§eThis add-on breaks every medium-sized update (ex. 1.21.0, 1.21.20, 1.21.30, or 1.21.40) and must be updated whenever that happens. \n§bYour data will be preserved when updating the pack to a newer version. "
                 }
             },
             {
@@ -985,7 +985,7 @@
             },
             {
                 "paragraph_2_all_required_experimental_toggles@how_to_play_common.paragraph": {
-                    "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \n  ∙ Upcoming Creator Features\n  ∙ Beta APIs\n  ∙ Creator Cameras: New Third Person Presets\n  ∙ Creator Cameras: Focus Target Camera"
+                    "$text": "When setting up the add-on you must first make sure that you have the following experimental toggles enabled: \n  ∙ Upcoming Creator Features\n  ∙ Beta APIs\n  ∙ Experimental Camera Creator Features"
                 }
             },
             {

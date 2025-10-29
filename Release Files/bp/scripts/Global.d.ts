@@ -366,17 +366,19 @@ declare global {
         function breakpoint(): void;
         /**
          * Better Version of JSON.parse() that is able to read undefined, NaN, Infinity, and -Infinity values.
-         * @param {string} text A valid JSON string (with undefined, NaN, Infinity, and -Infinity values allowed).
-         * @param {boolean} keepUndefined Whether or not to include undefined variables when parsing, defaults to true.
-         * @returns {any} The parsed JSON data.
+         *
+         * @param text A valid JSON string (with undefined, NaN, Infinity, and -Infinity values allowed).
+         * @param keepUndefined Whether or not to include undefined variables when parsing, defaults to true.
+         * @returns The parsed JSON data.
          */
         function JSONParseOld(text: string, keepUndefined?: boolean): any;
         /**
          * Better Version of JSON.stringify() that is able to save undefined, NaN, Infinity, and -Infinity values.
-         * @param {any} value A JavaScript value, usually an object or array, to be converted (with undefined, NaN, Infinity, and -Infinity values allowed).
-         * @param {boolean} keepUndefined Whether or not to include undefined variables when stringifying, defaults to false.
-         * @param {string|number} space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
-         * @returns {any} The JSON string.
+         *
+         * @param value A JavaScript value, usually an object or array, to be converted (with undefined, NaN, Infinity, and -Infinity values allowed).
+         * @param keepUndefined Whether or not to include undefined variables when stringifying, defaults to false.
+         * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
+         * @returns The JSON string.
          */
         function JSONStringifyOld(value: any, keepUndefined?: boolean, space?: string | number): string;
         function JSONParse(JSONString: string, keepUndefined?: boolean): any;
@@ -389,10 +391,10 @@ declare global {
          * @template T - The type of the yielded values.
          * @template TReturn - The type of the return value.
          * @template TNext - The type of the next value.
-         * @param {Generator<T, TReturn, TNext>} g - The generator function to complete.
-         * @param {number} [maxTimePerTick=1500] - The maximum time (in milliseconds) to spend on each tick before yielding control back to the system.
-         * @param {boolean | number | string | Function} [whileConditions=true] - The condition to continue running the generator. Can be a boolean, number, string, or function.
-         * @returns {Promise<{ yield: T; return: TReturn }>} A promise that resolves with the final yielded value and the return value of the generator.
+         * @param g - The generator function to complete.
+         * @param maxTimePerTick - The maximum time (in milliseconds) to spend on each tick before yielding control back to the system. Defaults to 1500.
+         * @param whileConditions - The condition to continue running the generator. Can be a boolean, number, string, or function. Defaults to `true`.
+         * @returns A promise that resolves with the final yielded value and the return value of the generator.
          */
         function completeGenerator<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick?: number, whileConditions?: boolean | number | string | Function): Promise<{
             yield: T;
@@ -404,12 +406,10 @@ declare global {
          * @template T - The type of values yielded by the generator.
          * @template TReturn - The type of the return value of the generator.
          * @template TNext - The type of the value that can be passed to the generator's `next` method.
-         *
-         * @param {Generator<T, TReturn, TNext>} g - The generator function to complete.
-         * @param {number} [maxTimePerTick=1500] - The maximum time (in milliseconds) to spend on each tick before yielding control back to the system.
-         * @param {boolean} [whileConditions=true] - A condition to keep the generator running.
-         *
-         * @returns {Promise<{ yield: T[]; return: TReturn }>} A promise that resolves with an object containing the yielded values and the return value of the generator.
+         * @param g - The generator function to complete.
+         * @param maxTimePerTick - The maximum time (in milliseconds) to spend on each tick before yielding control back to the system.
+         * @param whileConditions - A condition to keep the generator running.
+         * @returns A promise that resolves with an object containing the yielded values and the return value of the generator.
          */
         function completeGeneratorB<T, TReturn, TNext>(g: Generator<T, TReturn, TNext>, maxTimePerTick?: number, whileConditions?: boolean): Promise<{
             yield: T[];
@@ -418,16 +418,34 @@ declare global {
         /**
          * Waits for a tick to pass.
          *
-         * @returns {Promise<void>} A promise that resolves when a tick passes.
+         * @returns A promise that resolves when a tick passes.
          */
         function waitTick(): Promise<void>;
         /**
          * Waits for a set number of ticks to pass.
          *
-         * @param {number} [ticks=1] The number of ticks to wait. Defaults to `1`.
-         * @returns {Promise<void>} A promise that resolves when the specified number of ticks have passed.
+         * @param ticks The number of ticks to wait. Defaults to `1`.
+         * @returns A promise that resolves when the specified number of ticks have passed.
          */
         function waitTicks(ticks?: number): Promise<void>;
+        /**
+         * Applies a modulo but forces the result to be positive.
+         *
+         * @param number The number to apply the modulo to.
+         * @param modulo The modulo to apply.
+         * @returns The result of the modulo.
+         *
+         * @example
+         * ```typescript
+         * twoWayModulo(-5, 10); // 5
+         * twoWayModulo(5, 10); // 5
+         * twoWayModulo(15, 10); // 5
+         * twoWayModulo(7, 10); // 7
+         * twoWayModulo(-7, 10); // 3
+         * twoWayModulo(17, 10); // 7
+         * twoWayModulo(-17, 10); // 3
+         * ```
+         */
         function twoWayModulo(number: number, modulo: number): number;
         function clamp24HoursTo12Hours(hours: number): number;
         /**
@@ -458,6 +476,10 @@ declare global {
      * @ignore
      */
     class globalThis {
+        /**
+         * Whether this is the editor edition of the add-on.
+         */
+        static readonly isEditorEdition: boolean;
         /**
          * @remarks Maps the dimension IDs to lowercase names of the dimensions types that all include "The" before the dimension name.
          * @property overworld: the overworld
@@ -711,7 +733,8 @@ declare global {
          * @returns
          * An opaque identifier that can be used with the `clearRun`
          * function to cancel the execution of this run.
-         * @example trapTick.ts
+         * @example
+         * trapTick.ts
          * ```typescript
          * import { system, world } from '@minecraft/server';
          *

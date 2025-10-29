@@ -15,7 +15,8 @@
  * @returns
  * An opaque identifier that can be used with the `clearRun`
  * function to cancel the execution of this run.
- * @example trapTick.ts
+ * @example
+ * trapTick.ts
  * ```typescript
  * import { system, world } from '@minecraft/server';
  *

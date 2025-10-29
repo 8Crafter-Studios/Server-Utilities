@@ -8,9 +8,7 @@ import { system, world } from "@minecraft/server";
 import * as GameTest from "@minecraft/server-gametest";
 import * as mcServer from "@minecraft/server";
 import * as mcServerUi from "@minecraft/server-ui";
-import * as mcServerAdmin from "@minecraft/server-admin"; /*
-import * as mcServerNet from "@minecraft/server-net";*/ /*
-import * as mcDebugUtilities from "@minecraft/debug-utilities";*/
+import * as mcServerAdmin from "@minecraft/server-admin";
 import * as mcCommon from "@minecraft/common";
 import * as mcVanillaData from "@minecraft/vanilla-data.js";
 import "initializeMainGlobalVariables";
@@ -126,6 +124,30 @@ import * as playershop from "ExtraFeatures/player_shop";
 import * as moneysystem from "ExtraFeatures/money";
 import * as structuremappings from "Assets/constants/structure_mappings";
 import * as transformrecipes from "Assets/constants/transformrecipes";
+var mcDebugUtilities;
+try {
+    mcDebugUtilities = await import("@minecraft/debug-utilities");
+}
+catch { }
+var mcDiagnostics;
+try {
+    mcDiagnostics = await import("@minecraft/diagnostics");
+}
+catch { }
+var mcServerNet;
+try {
+    mcServerNet = await import("@minecraft/server-net");
+}
+catch { }
+var mcServerEditor;
+var mcServerEditorBindings;
+var mcServerEditorPrivateBindings;
+try {
+    mcServerEditor = await import("@minecraft/server-editor");
+    mcServerEditorBindings = await import("@minecraft/server-editor-bindings");
+    mcServerEditorPrivateBindings = await import("@minecraft/server-editor-private-bindings");
+}
+catch { }
 // import * as errors from "legacyModuleAliases/errors";
 const main = await moduleImportsConfig.import("main");
 const coords = await moduleImportsConfig.import("coordinates");
@@ -195,24 +217,57 @@ const modulesMap = {
     /**
      * The `@minecraft/server-net` module.
      *
+     * Note: This is only available when on a dedicated server and `@minecraft/server-net` is added into the `manifest.json`.
+     *
      * @see {@link https://www.npmjs.com/package/@minecraft/server-net}
      * @namespace
      */
-    // mcServerNet,
+    mcServerNet,
     /**
      * The `@minecraft/debug-utilities` module.
+     *
+     * Note: This is only available when on a world (not a realm or dedicated server) and `@minecraft/debug-utilities` is added into the `manifest.json`.
      *
      * @see {@link https://www.npmjs.com/package/@minecraft/debug-utilities}
      * @namespace
      */
-    // mcDebugUtilities,
+    mcDebugUtilities,
     /**
      * The `@minecraft/diagnostics` module.
+     *
+     * Note: This is only available when on a dedicated server and `@minecraft/diagnostics` is added into the `manifest.json`.
      *
      * @see {@link https://www.npmjs.com/package/@minecraft/diagnostics}
      * @namespace
      */
-    // mcDiagnostics,
+    mcDiagnostics,
+    /**
+     * The `@minecraft/server-editor` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor}
+     * @namespace
+     */
+    mcServerEditor,
+    /**
+     * The `@minecraft/server-editor-bindings` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor-bindings}
+     * @namespace
+     */
+    mcServerEditorBindings,
+    /**
+     * The `@minecraft/server-editor-private-bindings` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor-private-bindings}
+     * @namespace
+     */
+    mcServerEditorPrivateBindings,
     /**
      * The `@minecraft/common` module.
      *
@@ -374,24 +429,57 @@ const modulesMap = {
     /**
      * The `@minecraft/server-net` module.
      *
+     * Note: This is only available when on a dedicated server and `@minecraft/server-net` is added into the `manifest.json`.
+     *
      * @see {@link https://www.npmjs.com/package/@minecraft/server-net}
      * @namespace
      */
-    // ["@minecraft/server-net"]: mcServerNet
+    ["@minecraft/server-net"]: mcServerNet,
     /**
      * The `@minecraft/debug-utilities` module.
+     *
+     * Note: This is only available when on a world (not a realm or dedicated server) and `@minecraft/debug-utilities` is added into the `manifest.json`.
      *
      * @see {@link https://www.npmjs.com/package/@minecraft/debug-utilities}
      * @namespace
      */
-    // ["@minecraft/debug-utilities"]: mcDebugUtilities
+    ["@minecraft/debug-utilities"]: mcDebugUtilities,
     /**
      * The `@minecraft/diagnostics` module.
+     *
+     * Note: This is only available when on a dedicated server and `@minecraft/diagnostics` is added into the `manifest.json`.
      *
      * @see {@link https://www.npmjs.com/package/@minecraft/diagnostics}
      * @namespace
      */
-    // ["@minecraft/diagnostics"]: mcDiagnostics
+    ["@minecraft/diagnostics"]: mcDiagnostics,
+    /**
+     * The `@minecraft/server-editor` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor}
+     * @namespace
+     */
+    ["@minecraft/server-editor"]: mcServerEditor,
+    /**
+     * The `@minecraft/server-editor-bindings` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor-bindings}
+     * @namespace
+     */
+    ["@minecraft/server-editor-bindings"]: mcServerEditorBindings,
+    /**
+     * The `@minecraft/server-editor-private-bindings` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor-private-bindings}
+     * @namespace
+     */
+    ["@minecraft/server-editor-private-bindings"]: mcServerEditorPrivateBindings,
     /**
      * The `@minecraft/vanilla-data` module.
      * @see {@link https://www.npmjs.com/package/@minecraft/vanilla-data}

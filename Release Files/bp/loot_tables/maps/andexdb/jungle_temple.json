@@ -1,5 +1,5 @@
 {
-	"pools": [
+    "pools": [
         {
             "rolls": 1,
             "entries": [
@@ -10,15 +10,16 @@
                     "functions": [
                         {
                             "function": "exploration_map",
+                            // Fully supported (tested). (last tested in 1.21.113)
                             "destination": "jungle_temple"
-                        },
+                        } /* , // A custom name is not necessary anymore.
                         {
                             "function": "set_name",
                             "name": "§r§fJungle Temple Explorer Map"
-                        }
+                        } */
                     ]
                 }
             ]
         }
-	]
+    ]
 }

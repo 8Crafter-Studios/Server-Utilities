@@ -1,11 +1,7 @@
 {
-   "andexdb:ifill_command_placeholder_block" : {
-      "sound" : "stone",
-      "textures" : "gray_outline_block_texture"
-   },
-  "format_version": [
-    1,
-    1,
-    0
-  ]
+    "andexdb:ifill_command_placeholder_block": {
+        "sound": "stone",
+        "textures": "gray_outline_block_texture"
+    },
+    "format_version": [1, 1, 0]
 }

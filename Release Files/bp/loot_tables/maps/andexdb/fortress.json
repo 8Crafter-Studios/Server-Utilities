@@ -1,5 +1,5 @@
 {
-	"pools": [
+    "pools": [
         {
             "rolls": 1,
             "entries": [
@@ -10,15 +10,17 @@
                     "functions": [
                         {
                             "function": "exploration_map",
+                            // This isn't actually supported, it acts the same as "unknown", even though the docs say it is supported. (last tested in 1.21.113)
                             "destination": "fortress"
                         },
                         {
                             "function": "set_name",
+                            // The custom name is necessary as it isn't actually supported yet.
                             "name": "§r§fFortress Explorer Map"
                         }
                     ]
                 }
             ]
         }
-	]
+    ]
 }

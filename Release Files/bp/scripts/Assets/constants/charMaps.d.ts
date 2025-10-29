@@ -113,6 +113,7 @@ export declare const default8Codes: Readonly<{
     Y: "0059";
     Z: "005a";
     "[": "005b";
+    "\\": "005c";
     "]": "005d";
     "^": "005e";
     _: "005f";

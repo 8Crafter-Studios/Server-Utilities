@@ -1,5 +1,4 @@
-import type { GetBlocksStandingOnOptions, PlayerPermissionLevel } from "@minecraft/server";
-import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, InputInfo, type EntityComponentReturnType, GraphicsMode, CommandPermissionLevel } from "@minecraft/server";
+import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, type EntityComponentReturnType, GraphicsMode, CommandPermissionLevel, type ControlScheme, type AABB, type GetBlocksStandingOnOptions, type PlayerPermissionLevel } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -128,7 +127,7 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     set nameTag(nameTag: string);
     get inputPermissions(): import("@minecraft/server").PlayerInputPermissions;
     get clientSystemInfo(): import("@minecraft/server").ClientSystemInfo;
-    get inputInfo(): InputInfo;
+    get inputInfo(): import("@minecraft/server").InputInfo;
     /**
      * @beta
      * @remarks
@@ -221,4 +220,7 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     saveStringToDynamicProperties(string: string, propertyName: string, clearOldProperties?: boolean, chunkSize?: number | bigint): void;
     getStringFromDynamicProperties(propertyName: string, zeroLengthPlaceholder?: string): string;
     deleteStringFromDynamicProperties(propertyName: string): void;
+    getAABB(): AABB;
+    getControlScheme(): ControlScheme;
+    setControlScheme(controlScheme?: ControlScheme): void;
 }

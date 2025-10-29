@@ -1,13 +1,13 @@
 {
-"format_version": "1.17",
-"minecraft:recipe_smithing_transform": {
-    "description": {
-        "identifier": "andexdb:6minecraft:acacia_fence"
-    },
-    "tags": ["smithing_table"],
-    "template": {"item": "andexdb:enchantment_transfer_smithing_template", "data": 6},
-    "base": "andexdb:smithing_table_enchanted_book",
+    "format_version": "1.17",
+    "minecraft:recipe_smithing_transform": {
+        "description": {
+            "identifier": "andexdb:6minecraft:acacia_fence"
+        },
+        "tags": ["smithing_table"],
+        "template": { "item": "andexdb:enchantment_transfer_smithing_template", "data": 6 },
+        "base": "andexdb:smithing_table_enchanted_book",
         "addition": "minecraft:netherite_ingot",
-        "result": {"item": "minecraft:acacia_fence"}
+        "result": { "item": "minecraft:acacia_fence" }
     }
 }

@@ -231,6 +231,7 @@ try {
 catch (e) {
     console.error(e, e.stack);
 }
+import("@minecraft/server-editor").then(() => import("./editorExtension/index"), () => { });
 /**
  * ```ts
 node -e "const fs=require('fs');

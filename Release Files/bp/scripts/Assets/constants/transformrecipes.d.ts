@@ -37,6 +37,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:acacia_sapling";
 }, {
+    readonly id: "minecraft:acacia_shelf";
+}, {
     readonly id: "minecraft:acacia_sign";
 }, {
     readonly id: "minecraft:acacia_slab";
@@ -149,6 +151,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:bamboo_sapling";
 }, {
+    readonly id: "minecraft:bamboo_shelf";
+}, {
     readonly id: "minecraft:bamboo_sign";
 }, {
     readonly id: "minecraft:bamboo_slab";
@@ -223,6 +227,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:birch_sapling";
 }, {
+    readonly id: "minecraft:birch_shelf";
+}, {
     readonly id: "minecraft:birch_sign";
 }, {
     readonly id: "minecraft:birch_slab";
@@ -252,6 +258,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:black_dye";
 }, {
     readonly id: "minecraft:black_glazed_terracotta";
+}, {
+    readonly id: "minecraft:black_harness";
 }, {
     readonly id: "minecraft:black_shulker_box";
 }, {
@@ -299,7 +307,11 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:blue_dye";
 }, {
+    readonly id: "minecraft:blue_egg";
+}, {
     readonly id: "minecraft:blue_glazed_terracotta";
+}, {
+    readonly id: "minecraft:blue_harness";
 }, {
     readonly id: "minecraft:blue_ice";
 }, {
@@ -314,6 +326,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:blue_terracotta";
 }, {
     readonly id: "minecraft:blue_wool";
+}, {
+    readonly id: "minecraft:board";
 }, {
     readonly id: "minecraft:boat";
 }, {
@@ -383,7 +397,11 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:brown_dye";
 }, {
+    readonly id: "minecraft:brown_egg";
+}, {
     readonly id: "minecraft:brown_glazed_terracotta";
+}, {
+    readonly id: "minecraft:brown_harness";
 }, {
     readonly id: "minecraft:brown_mushroom";
 }, {
@@ -419,7 +437,11 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:burn_pottery_sherd";
 }, {
+    readonly id: "minecraft:bush";
+}, {
     readonly id: "minecraft:cactus";
+}, {
+    readonly id: "minecraft:cactus_flower";
 }, {
     readonly id: "minecraft:cake";
 }, {
@@ -461,8 +483,6 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:cave_vines_head_with_berries";
 }, {
-    readonly id: "minecraft:chain";
-}, {
     readonly id: "minecraft:chain_command_block";
 }, {
     readonly id: "minecraft:chainmail_boots";
@@ -472,6 +492,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:chainmail_helmet";
 }, {
     readonly id: "minecraft:chainmail_leggings";
+}, {
+    readonly id: "minecraft:chalkboard";
 }, {
     readonly id: "minecraft:charcoal";
 }, {
@@ -504,6 +526,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:cherry_pressure_plate";
 }, {
     readonly id: "minecraft:cherry_sapling";
+}, {
+    readonly id: "minecraft:cherry_shelf";
 }, {
     readonly id: "minecraft:cherry_sign";
 }, {
@@ -545,6 +569,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:chiseled_red_sandstone";
 }, {
+    readonly id: "minecraft:chiseled_resin_bricks";
+}, {
     readonly id: "minecraft:chiseled_sandstone";
 }, {
     readonly id: "minecraft:chiseled_stone_bricks";
@@ -566,6 +592,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:client_request_placeholder_block";
 }, {
     readonly id: "minecraft:clock";
+}, {
+    readonly id: "minecraft:closed_eyeblossom";
 }, {
     readonly id: "minecraft:coal";
 }, {
@@ -653,17 +681,53 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:cookie";
 }, {
+    readonly id: "minecraft:copper_axe";
+}, {
+    readonly id: "minecraft:copper_bars";
+}, {
     readonly id: "minecraft:copper_block";
+}, {
+    readonly id: "minecraft:copper_boots";
 }, {
     readonly id: "minecraft:copper_bulb";
 }, {
+    readonly id: "minecraft:copper_chain";
+}, {
+    readonly id: "minecraft:copper_chest";
+}, {
+    readonly id: "minecraft:copper_chestplate";
+}, {
     readonly id: "minecraft:copper_door";
+}, {
+    readonly id: "minecraft:copper_golem_spawn_egg";
+}, {
+    readonly id: "minecraft:copper_golem_statue";
 }, {
     readonly id: "minecraft:copper_grate";
 }, {
+    readonly id: "minecraft:copper_helmet";
+}, {
+    readonly id: "minecraft:copper_hoe";
+}, {
+    readonly id: "minecraft:copper_horse_armor";
+}, {
     readonly id: "minecraft:copper_ingot";
 }, {
+    readonly id: "minecraft:copper_lantern";
+}, {
+    readonly id: "minecraft:copper_leggings";
+}, {
+    readonly id: "minecraft:copper_nugget";
+}, {
     readonly id: "minecraft:copper_ore";
+}, {
+    readonly id: "minecraft:copper_pickaxe";
+}, {
+    readonly id: "minecraft:copper_shovel";
+}, {
+    readonly id: "minecraft:copper_sword";
+}, {
+    readonly id: "minecraft:copper_torch";
 }, {
     readonly id: "minecraft:copper_trapdoor";
 }, {
@@ -692,6 +756,10 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:crafter";
 }, {
     readonly id: "minecraft:crafting_table";
+}, {
+    readonly id: "minecraft:creaking_heart";
+}, {
+    readonly id: "minecraft:creaking_spawn_egg";
 }, {
     readonly id: "minecraft:creeper_banner_pattern";
 }, {
@@ -722,6 +790,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:crimson_pressure_plate";
 }, {
     readonly id: "minecraft:crimson_roots";
+}, {
+    readonly id: "minecraft:crimson_shelf";
 }, {
     readonly id: "minecraft:crimson_sign";
 }, {
@@ -775,6 +845,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:cyan_glazed_terracotta";
 }, {
+    readonly id: "minecraft:cyan_harness";
+}, {
     readonly id: "minecraft:cyan_shulker_box";
 }, {
     readonly id: "minecraft:cyan_stained_glass";
@@ -816,6 +888,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:dark_oak_pressure_plate";
 }, {
     readonly id: "minecraft:dark_oak_sapling";
+}, {
+    readonly id: "minecraft:dark_oak_shelf";
 }, {
     readonly id: "minecraft:dark_oak_sign";
 }, {
@@ -1000,6 +1074,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:dragon_egg";
 }, {
     readonly id: "minecraft:dragon_head";
+}, {
+    readonly id: "minecraft:dried_ghast";
 }, {
     readonly id: "minecraft:dried_kelp";
 }, {
@@ -1321,11 +1397,21 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:exposed_copper";
 }, {
+    readonly id: "minecraft:exposed_copper_bars";
+}, {
     readonly id: "minecraft:exposed_copper_bulb";
+}, {
+    readonly id: "minecraft:exposed_copper_chain";
+}, {
+    readonly id: "minecraft:exposed_copper_chest";
 }, {
     readonly id: "minecraft:exposed_copper_door";
 }, {
+    readonly id: "minecraft:exposed_copper_golem_statue";
+}, {
     readonly id: "minecraft:exposed_copper_grate";
+}, {
+    readonly id: "minecraft:exposed_copper_lantern";
 }, {
     readonly id: "minecraft:exposed_copper_trapdoor";
 }, {
@@ -1336,6 +1422,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:exposed_cut_copper_stairs";
 }, {
     readonly id: "minecraft:exposed_double_cut_copper_slab";
+}, {
+    readonly id: "minecraft:exposed_lightning_rod";
 }, {
     readonly id: "minecraft:eye_armor_trim_smithing_template";
 }, {
@@ -1366,6 +1454,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:fire_coral_fan";
 }, {
     readonly id: "minecraft:fire_coral_wall_fan";
+}, {
+    readonly id: "minecraft:firefly_bush";
 }, {
     readonly id: "minecraft:firework_rocket";
 }, {
@@ -1513,6 +1603,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:gray_glazed_terracotta";
 }, {
+    readonly id: "minecraft:gray_harness";
+}, {
     readonly id: "minecraft:gray_shulker_box";
 }, {
     readonly id: "minecraft:gray_stained_glass";
@@ -1539,6 +1631,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:green_glazed_terracotta";
 }, {
+    readonly id: "minecraft:green_harness";
+}, {
     readonly id: "minecraft:green_shulker_box";
 }, {
     readonly id: "minecraft:green_stained_glass";
@@ -1560,6 +1654,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:guster_pottery_sherd";
 }, {
     readonly id: "minecraft:hanging_roots";
+}, {
+    readonly id: "minecraft:happy_ghast_spawn_egg";
 }, {
     readonly id: "minecraft:hard_black_stained_glass";
 }, {
@@ -1711,6 +1807,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:iron_boots";
 }, {
+    readonly id: "minecraft:iron_chain";
+}, {
     readonly id: "minecraft:iron_chestplate";
 }, {
     readonly id: "minecraft:iron_door";
@@ -1756,8 +1854,6 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:item.campfire";
 }, {
     readonly id: "minecraft:item.cauldron";
-}, {
-    readonly id: "minecraft:item.chain";
 }, {
     readonly id: "minecraft:item.crimson_door";
 }, {
@@ -1825,6 +1921,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:jungle_sapling";
 }, {
+    readonly id: "minecraft:jungle_shelf";
+}, {
     readonly id: "minecraft:jungle_sign";
 }, {
     readonly id: "minecraft:jungle_slab";
@@ -1862,6 +1960,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:lava_bucket";
 }, {
     readonly id: "minecraft:lead";
+}, {
+    readonly id: "minecraft:leaf_litter";
 }, {
     readonly id: "minecraft:leather";
 }, {
@@ -1933,6 +2033,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:light_blue_glazed_terracotta";
 }, {
+    readonly id: "minecraft:light_blue_harness";
+}, {
     readonly id: "minecraft:light_blue_shulker_box";
 }, {
     readonly id: "minecraft:light_blue_stained_glass";
@@ -1956,6 +2058,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:light_gray_concrete_powder";
 }, {
     readonly id: "minecraft:light_gray_dye";
+}, {
+    readonly id: "minecraft:light_gray_harness";
 }, {
     readonly id: "minecraft:light_gray_shulker_box";
 }, {
@@ -1990,6 +2094,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:lime_dye";
 }, {
     readonly id: "minecraft:lime_glazed_terracotta";
+}, {
+    readonly id: "minecraft:lime_harness";
 }, {
     readonly id: "minecraft:lime_shulker_box";
 }, {
@@ -2047,6 +2153,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:magenta_glazed_terracotta";
 }, {
+    readonly id: "minecraft:magenta_harness";
+}, {
     readonly id: "minecraft:magenta_shulker_box";
 }, {
     readonly id: "minecraft:magenta_stained_glass";
@@ -2090,6 +2198,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:mangrove_propagule";
 }, {
     readonly id: "minecraft:mangrove_roots";
+}, {
+    readonly id: "minecraft:mangrove_shelf";
 }, {
     readonly id: "minecraft:mangrove_sign";
 }, {
@@ -2199,6 +2309,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:music_disc_far";
 }, {
+    readonly id: "minecraft:music_disc_lava_chicken";
+}, {
     readonly id: "minecraft:music_disc_mall";
 }, {
     readonly id: "minecraft:music_disc_mellohi";
@@ -2214,6 +2326,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:music_disc_stal";
 }, {
     readonly id: "minecraft:music_disc_strad";
+}, {
+    readonly id: "minecraft:music_disc_tears";
 }, {
     readonly id: "minecraft:music_disc_wait";
 }, {
@@ -2309,6 +2423,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:oak_sapling";
 }, {
+    readonly id: "minecraft:oak_shelf";
+}, {
     readonly id: "minecraft:oak_sign";
 }, {
     readonly id: "minecraft:oak_slab";
@@ -2329,6 +2445,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:ominous_trial_key";
 }, {
+    readonly id: "minecraft:open_eyeblossom";
+}, {
     readonly id: "minecraft:orange_bundle";
 }, {
     readonly id: "minecraft:orange_candle";
@@ -2344,6 +2462,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:orange_dye";
 }, {
     readonly id: "minecraft:orange_glazed_terracotta";
+}, {
+    readonly id: "minecraft:orange_harness";
 }, {
     readonly id: "minecraft:orange_shulker_box";
 }, {
@@ -2363,11 +2483,21 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:oxidized_copper";
 }, {
+    readonly id: "minecraft:oxidized_copper_bars";
+}, {
     readonly id: "minecraft:oxidized_copper_bulb";
+}, {
+    readonly id: "minecraft:oxidized_copper_chain";
+}, {
+    readonly id: "minecraft:oxidized_copper_chest";
 }, {
     readonly id: "minecraft:oxidized_copper_door";
 }, {
+    readonly id: "minecraft:oxidized_copper_golem_statue";
+}, {
     readonly id: "minecraft:oxidized_copper_grate";
+}, {
+    readonly id: "minecraft:oxidized_copper_lantern";
 }, {
     readonly id: "minecraft:oxidized_copper_trapdoor";
 }, {
@@ -2379,11 +2509,61 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:oxidized_double_cut_copper_slab";
 }, {
+    readonly id: "minecraft:oxidized_lightning_rod";
+}, {
     readonly id: "minecraft:packed_ice";
 }, {
     readonly id: "minecraft:packed_mud";
 }, {
     readonly id: "minecraft:painting";
+}, {
+    readonly id: "minecraft:pale_hanging_moss";
+}, {
+    readonly id: "minecraft:pale_moss_block";
+}, {
+    readonly id: "minecraft:pale_moss_carpet";
+}, {
+    readonly id: "minecraft:pale_oak_boat";
+}, {
+    readonly id: "minecraft:pale_oak_button";
+}, {
+    readonly id: "minecraft:pale_oak_chest_boat";
+}, {
+    readonly id: "minecraft:pale_oak_door";
+}, {
+    readonly id: "minecraft:pale_oak_double_slab";
+}, {
+    readonly id: "minecraft:pale_oak_fence";
+}, {
+    readonly id: "minecraft:pale_oak_fence_gate";
+}, {
+    readonly id: "minecraft:pale_oak_hanging_sign";
+}, {
+    readonly id: "minecraft:pale_oak_leaves";
+}, {
+    readonly id: "minecraft:pale_oak_log";
+}, {
+    readonly id: "minecraft:pale_oak_planks";
+}, {
+    readonly id: "minecraft:pale_oak_pressure_plate";
+}, {
+    readonly id: "minecraft:pale_oak_sapling";
+}, {
+    readonly id: "minecraft:pale_oak_shelf";
+}, {
+    readonly id: "minecraft:pale_oak_sign";
+}, {
+    readonly id: "minecraft:pale_oak_slab";
+}, {
+    readonly id: "minecraft:pale_oak_stairs";
+}, {
+    readonly id: "minecraft:pale_oak_standing_sign";
+}, {
+    readonly id: "minecraft:pale_oak_trapdoor";
+}, {
+    readonly id: "minecraft:pale_oak_wall_sign";
+}, {
+    readonly id: "minecraft:pale_oak_wood";
 }, {
     readonly id: "minecraft:panda_spawn_egg";
 }, {
@@ -2430,6 +2610,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:pink_dye";
 }, {
     readonly id: "minecraft:pink_glazed_terracotta";
+}, {
+    readonly id: "minecraft:pink_harness";
 }, {
     readonly id: "minecraft:pink_petals";
 }, {
@@ -2615,6 +2797,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:purple_glazed_terracotta";
 }, {
+    readonly id: "minecraft:purple_harness";
+}, {
     readonly id: "minecraft:purple_shulker_box";
 }, {
     readonly id: "minecraft:purple_stained_glass";
@@ -2701,6 +2885,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:red_glazed_terracotta";
 }, {
+    readonly id: "minecraft:red_harness";
+}, {
     readonly id: "minecraft:red_mushroom";
 }, {
     readonly id: "minecraft:red_mushroom_block";
@@ -2758,6 +2944,22 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:repeating_command_block";
 }, {
     readonly id: "minecraft:reserved6";
+}, {
+    readonly id: "minecraft:resin_block";
+}, {
+    readonly id: "minecraft:resin_brick";
+}, {
+    readonly id: "minecraft:resin_brick_double_slab";
+}, {
+    readonly id: "minecraft:resin_brick_slab";
+}, {
+    readonly id: "minecraft:resin_brick_stairs";
+}, {
+    readonly id: "minecraft:resin_brick_wall";
+}, {
+    readonly id: "minecraft:resin_bricks";
+}, {
+    readonly id: "minecraft:resin_clump";
 }, {
     readonly id: "minecraft:respawn_anchor";
 }, {
@@ -2822,6 +3024,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:shelter_pottery_sherd";
 }, {
     readonly id: "minecraft:shield";
+}, {
+    readonly id: "minecraft:short_dry_grass";
 }, {
     readonly id: "minecraft:short_grass";
 }, {
@@ -2967,6 +3171,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:spruce_sapling";
 }, {
+    readonly id: "minecraft:spruce_shelf";
+}, {
     readonly id: "minecraft:spruce_sign";
 }, {
     readonly id: "minecraft:spruce_slab";
@@ -3083,6 +3289,10 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:stripped_oak_wood";
 }, {
+    readonly id: "minecraft:stripped_pale_oak_log";
+}, {
+    readonly id: "minecraft:stripped_pale_oak_wood";
+}, {
     readonly id: "minecraft:stripped_spruce_log";
 }, {
     readonly id: "minecraft:stripped_spruce_wood";
@@ -3114,6 +3324,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:tadpole_bucket";
 }, {
     readonly id: "minecraft:tadpole_spawn_egg";
+}, {
+    readonly id: "minecraft:tall_dry_grass";
 }, {
     readonly id: "minecraft:tall_grass";
 }, {
@@ -3263,6 +3475,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:warped_roots";
 }, {
+    readonly id: "minecraft:warped_shelf";
+}, {
     readonly id: "minecraft:warped_sign";
 }, {
     readonly id: "minecraft:warped_slab";
@@ -3289,11 +3503,21 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:waxed_copper";
 }, {
+    readonly id: "minecraft:waxed_copper_bars";
+}, {
     readonly id: "minecraft:waxed_copper_bulb";
+}, {
+    readonly id: "minecraft:waxed_copper_chain";
+}, {
+    readonly id: "minecraft:waxed_copper_chest";
 }, {
     readonly id: "minecraft:waxed_copper_door";
 }, {
+    readonly id: "minecraft:waxed_copper_golem_statue";
+}, {
     readonly id: "minecraft:waxed_copper_grate";
+}, {
+    readonly id: "minecraft:waxed_copper_lantern";
 }, {
     readonly id: "minecraft:waxed_copper_trapdoor";
 }, {
@@ -3309,11 +3533,21 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:waxed_exposed_copper";
 }, {
+    readonly id: "minecraft:waxed_exposed_copper_bars";
+}, {
     readonly id: "minecraft:waxed_exposed_copper_bulb";
+}, {
+    readonly id: "minecraft:waxed_exposed_copper_chain";
+}, {
+    readonly id: "minecraft:waxed_exposed_copper_chest";
 }, {
     readonly id: "minecraft:waxed_exposed_copper_door";
 }, {
+    readonly id: "minecraft:waxed_exposed_copper_golem_statue";
+}, {
     readonly id: "minecraft:waxed_exposed_copper_grate";
+}, {
+    readonly id: "minecraft:waxed_exposed_copper_lantern";
 }, {
     readonly id: "minecraft:waxed_exposed_copper_trapdoor";
 }, {
@@ -3325,15 +3559,29 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:waxed_exposed_double_cut_copper_slab";
 }, {
+    readonly id: "minecraft:waxed_exposed_lightning_rod";
+}, {
+    readonly id: "minecraft:waxed_lightning_rod";
+}, {
     readonly id: "minecraft:waxed_oxidized_chiseled_copper";
 }, {
     readonly id: "minecraft:waxed_oxidized_copper";
 }, {
+    readonly id: "minecraft:waxed_oxidized_copper_bars";
+}, {
     readonly id: "minecraft:waxed_oxidized_copper_bulb";
+}, {
+    readonly id: "minecraft:waxed_oxidized_copper_chain";
+}, {
+    readonly id: "minecraft:waxed_oxidized_copper_chest";
 }, {
     readonly id: "minecraft:waxed_oxidized_copper_door";
 }, {
+    readonly id: "minecraft:waxed_oxidized_copper_golem_statue";
+}, {
     readonly id: "minecraft:waxed_oxidized_copper_grate";
+}, {
+    readonly id: "minecraft:waxed_oxidized_copper_lantern";
 }, {
     readonly id: "minecraft:waxed_oxidized_copper_trapdoor";
 }, {
@@ -3345,15 +3593,27 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:waxed_oxidized_double_cut_copper_slab";
 }, {
+    readonly id: "minecraft:waxed_oxidized_lightning_rod";
+}, {
     readonly id: "minecraft:waxed_weathered_chiseled_copper";
 }, {
     readonly id: "minecraft:waxed_weathered_copper";
 }, {
+    readonly id: "minecraft:waxed_weathered_copper_bars";
+}, {
     readonly id: "minecraft:waxed_weathered_copper_bulb";
+}, {
+    readonly id: "minecraft:waxed_weathered_copper_chain";
+}, {
+    readonly id: "minecraft:waxed_weathered_copper_chest";
 }, {
     readonly id: "minecraft:waxed_weathered_copper_door";
 }, {
+    readonly id: "minecraft:waxed_weathered_copper_golem_statue";
+}, {
     readonly id: "minecraft:waxed_weathered_copper_grate";
+}, {
+    readonly id: "minecraft:waxed_weathered_copper_lantern";
 }, {
     readonly id: "minecraft:waxed_weathered_copper_trapdoor";
 }, {
@@ -3365,17 +3625,29 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:waxed_weathered_double_cut_copper_slab";
 }, {
+    readonly id: "minecraft:waxed_weathered_lightning_rod";
+}, {
     readonly id: "minecraft:wayfinder_armor_trim_smithing_template";
 }, {
     readonly id: "minecraft:weathered_chiseled_copper";
 }, {
     readonly id: "minecraft:weathered_copper";
 }, {
+    readonly id: "minecraft:weathered_copper_bars";
+}, {
     readonly id: "minecraft:weathered_copper_bulb";
+}, {
+    readonly id: "minecraft:weathered_copper_chain";
+}, {
+    readonly id: "minecraft:weathered_copper_chest";
 }, {
     readonly id: "minecraft:weathered_copper_door";
 }, {
+    readonly id: "minecraft:weathered_copper_golem_statue";
+}, {
     readonly id: "minecraft:weathered_copper_grate";
+}, {
+    readonly id: "minecraft:weathered_copper_lantern";
 }, {
     readonly id: "minecraft:weathered_copper_trapdoor";
 }, {
@@ -3386,6 +3658,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:weathered_cut_copper_stairs";
 }, {
     readonly id: "minecraft:weathered_double_cut_copper_slab";
+}, {
+    readonly id: "minecraft:weathered_lightning_rod";
 }, {
     readonly id: "minecraft:web";
 }, {
@@ -3413,6 +3687,8 @@ export declare const listoftransformrecipes: readonly [{
 }, {
     readonly id: "minecraft:white_glazed_terracotta";
 }, {
+    readonly id: "minecraft:white_harness";
+}, {
     readonly id: "minecraft:white_shulker_box";
 }, {
     readonly id: "minecraft:white_stained_glass";
@@ -3426,6 +3702,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:white_wool";
 }, {
     readonly id: "minecraft:wild_armor_trim_smithing_template";
+}, {
+    readonly id: "minecraft:wildflowers";
 }, {
     readonly id: "minecraft:wind_charge";
 }, {
@@ -3484,6 +3762,8 @@ export declare const listoftransformrecipes: readonly [{
     readonly id: "minecraft:yellow_dye";
 }, {
     readonly id: "minecraft:yellow_glazed_terracotta";
+}, {
+    readonly id: "minecraft:yellow_harness";
 }, {
     readonly id: "minecraft:yellow_shulker_box";
 }, {

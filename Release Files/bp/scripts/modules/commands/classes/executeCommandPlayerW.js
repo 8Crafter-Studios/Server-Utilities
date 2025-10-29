@@ -1,4 +1,4 @@
-import { Player, Dimension, Block, Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, EffectType, GameMode, MolangVariableMap, InputInfo, GraphicsMode, CommandPermissionLevel, } from "@minecraft/server";
+import { Player, Dimension, Block, Entity, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, EquipmentSlot, ContainerSlot, EffectType, GameMode, MolangVariableMap, GraphicsMode, CommandPermissionLevel, } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -671,6 +671,15 @@ export class executeCommandPlayerW {
     }
     deleteStringFromDynamicProperties(propertyName) {
         deleteStringFromEntityDynamicProperties(this.player, propertyName);
+    }
+    getAABB() {
+        return this.player?.getAABB();
+    }
+    getControlScheme() {
+        return this.player?.getControlScheme();
+    }
+    setControlScheme(controlScheme) {
+        this.player?.setControlScheme(controlScheme);
     }
 }
 //# sourceMappingURL=executeCommandPlayerW.js.map

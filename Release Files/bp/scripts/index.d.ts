@@ -65,21 +65,57 @@ declare const modulesMap: {
     /**
      * The `@minecraft/server-net` module.
      *
+     * Note: This is only available when on a dedicated server and `@minecraft/server-net` is added into the `manifest.json`.
+     *
      * @see {@link https://www.npmjs.com/package/@minecraft/server-net}
      * @namespace
      */
+    mcServerNet: typeof import("@minecraft/server-net") | undefined;
     /**
      * The `@minecraft/debug-utilities` module.
+     *
+     * Note: This is only available when on a world (not a realm or dedicated server) and `@minecraft/debug-utilities` is added into the `manifest.json`.
      *
      * @see {@link https://www.npmjs.com/package/@minecraft/debug-utilities}
      * @namespace
      */
+    mcDebugUtilities: typeof import("@minecraft/debug-utilities") | undefined;
     /**
      * The `@minecraft/diagnostics` module.
+     *
+     * Note: This is only available when on a dedicated server and `@minecraft/diagnostics` is added into the `manifest.json`.
      *
      * @see {@link https://www.npmjs.com/package/@minecraft/diagnostics}
      * @namespace
      */
+    mcDiagnostics: typeof import("@minecraft/diagnostics") | undefined;
+    /**
+     * The `@minecraft/server-editor` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor}
+     * @namespace
+     */
+    mcServerEditor: typeof import("@minecraft/server-editor") | undefined;
+    /**
+     * The `@minecraft/server-editor-bindings` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor-bindings}
+     * @namespace
+     */
+    mcServerEditorBindings: typeof import("@minecraft/server-editor-bindings") | undefined;
+    /**
+     * The `@minecraft/server-editor-private-bindings` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor-private-bindings}
+     * @namespace
+     */
+    mcServerEditorPrivateBindings: typeof import("@minecraft/server-editor-private-bindings") | undefined;
     /**
      * The `@minecraft/common` module.
      *
@@ -241,21 +277,57 @@ declare const modulesMap: {
     /**
      * The `@minecraft/server-net` module.
      *
+     * Note: This is only available when on a dedicated server and `@minecraft/server-net` is added into the `manifest.json`.
+     *
      * @see {@link https://www.npmjs.com/package/@minecraft/server-net}
      * @namespace
      */
+    "@minecraft/server-net": typeof import("@minecraft/server-net") | undefined;
     /**
      * The `@minecraft/debug-utilities` module.
+     *
+     * Note: This is only available when on a world (not a realm or dedicated server) and `@minecraft/debug-utilities` is added into the `manifest.json`.
      *
      * @see {@link https://www.npmjs.com/package/@minecraft/debug-utilities}
      * @namespace
      */
+    "@minecraft/debug-utilities": typeof import("@minecraft/debug-utilities") | undefined;
     /**
      * The `@minecraft/diagnostics` module.
+     *
+     * Note: This is only available when on a dedicated server and `@minecraft/diagnostics` is added into the `manifest.json`.
      *
      * @see {@link https://www.npmjs.com/package/@minecraft/diagnostics}
      * @namespace
      */
+    "@minecraft/diagnostics": typeof import("@minecraft/diagnostics") | undefined;
+    /**
+     * The `@minecraft/server-editor` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor}
+     * @namespace
+     */
+    "@minecraft/server-editor": typeof import("@minecraft/server-editor") | undefined;
+    /**
+     * The `@minecraft/server-editor-bindings` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor-bindings}
+     * @namespace
+     */
+    "@minecraft/server-editor-bindings": typeof import("@minecraft/server-editor-bindings") | undefined;
+    /**
+     * The `@minecraft/server-editor-private-bindings` module.
+     *
+     * Note: This is only available when in [editor mode](https://minecraft.wiki/w/Bedrock_Editor) and `@minecraft/server-editor` is added into the `manifest.json`.
+     *
+     * @see {@link https://www.npmjs.com/package/@minecraft/server-editor-private-bindings}
+     * @namespace
+     */
+    "@minecraft/server-editor-private-bindings": typeof import("@minecraft/server-editor-private-bindings") | undefined;
     /**
      * The `@minecraft/vanilla-data` module.
      * @see {@link https://www.npmjs.com/package/@minecraft/vanilla-data}

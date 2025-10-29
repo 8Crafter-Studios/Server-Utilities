@@ -10,7 +10,8 @@
  * @throws
  * Throws if the given dynamic property identifier is not
  * defined.
- * @example incrementDynamicProperty.ts
+ * @example
+ * incrementDynamicProperty.ts
  * ```typescript
  * import { world, DimensionLocation } from "@minecraft/server";
  *
@@ -34,7 +35,8 @@
  *   world.setDynamicProperty("samplelibrary:number", number + 1);
  * }
  * ```
- * @example incrementDynamicPropertyInJsonBlob.ts
+ * @example
+ * incrementDynamicPropertyInJsonBlob.ts
  * ```typescript
  * import { world, DimensionLocation } from "@minecraft/server";
  *
@@ -91,7 +93,8 @@ declare global {
      * @throws
      * Throws if the given dynamic property identifier is not
      * defined.
-     * @example incrementDynamicProperty.ts
+     * @example
+     * incrementDynamicProperty.ts
      * ```typescript
      * import { world, DimensionLocation } from "@minecraft/server";
      *
@@ -115,7 +118,8 @@ declare global {
      *   world.setDynamicProperty("samplelibrary:number", number + 1);
      * }
      * ```
-     * @example incrementDynamicPropertyInJsonBlob.ts
+     * @example
+     * incrementDynamicPropertyInJsonBlob.ts
      * ```typescript
      * import { world, DimensionLocation } from "@minecraft/server";
      *

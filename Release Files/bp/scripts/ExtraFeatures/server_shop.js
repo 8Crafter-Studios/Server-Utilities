@@ -1004,7 +1004,7 @@ export class ServerShopManager {
             .then(async (r) => {
             if (r.canceled)
                 return 1;
-            switch ((!!shopsList[r.selection] ? "shop" : undefined) ?? ["newShop", "back", "close", "refresh"][r.selection]) {
+            switch ((!!shopsList[r.selection] ? "shop" : undefined) ?? ["newShop", "back", "close", "refresh"][r.selection - shopsList.length]) {
                 case "newShop":
                     if ((await ServerShopManager.addServerShop(sourceEntity)) === 1) {
                         return await ServerShopManager.manageServerShops(sourceEntity);

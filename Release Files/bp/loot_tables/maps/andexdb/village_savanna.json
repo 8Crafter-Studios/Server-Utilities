@@ -1,5 +1,5 @@
 {
-	"pools": [
+    "pools": [
         {
             "rolls": 1,
             "entries": [
@@ -10,15 +10,12 @@
                     "functions": [
                         {
                             "function": "exploration_map",
+                            // Fully supported (tested). (last tested in 1.21.113)
                             "destination": "village_savanna"
-                        },
-                        {
-                            "function": "set_name",
-                            "name": "§r§fSavanna Village Explorer Map"
                         }
                     ]
                 }
             ]
         }
-	]
+    ]
 }

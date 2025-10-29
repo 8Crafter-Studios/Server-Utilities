@@ -1,5 +1,5 @@
 {
-	"pools": [
+    "pools": [
         {
             "rolls": 1,
             "entries": [
@@ -10,6 +10,7 @@
                     "functions": [
                         {
                             "function": "exploration_map",
+                            // This isn't actually supported, it is meant to be used to make an invalid explorer map. (last tested in 1.21.113)
                             "destination": "unknown"
                         },
                         {
@@ -20,5 +21,5 @@
                 }
             ]
         }
-	]
+    ]
 }
