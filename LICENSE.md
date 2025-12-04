@@ -1,5 +1,5 @@
 # You are NOT ALLOWED to:
-  - Provide direct download links to my add-on, you may only share my work.ink link.
+  - Provide direct download links to my add-on, you may only share my links.
   - Provide your own links to my add-on.
   - Redistribute the source code of my add-on. 
   - Use any part of my code in your own add-on.
