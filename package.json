@@ -3,9 +3,12 @@
     "scripts": {
         "generateEditorEditionSymlinks": "node \"BP Editor Edition/generateFolderSymlinks.ts\" && node \"RP Editor Edition/generateFolderSymlinks.ts\""
     },
-    "dependencies": {
+    "devDependencies": {
+        "@types/adm-zip": "^0.5.7",
+        "@types/copy-paste": "^2.1.0",
+        "@types/progress": "^2.0.7",
         "adm-zip": "^0.5.16",
-        "copy-paste": "^1.5.3",
+        "copy-paste": "^2.2.0",
         "json5": "^2.2.3",
         "progress": "^2.0.3",
         "prompt-sync": "^4.2.0"

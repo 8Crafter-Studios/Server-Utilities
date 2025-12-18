@@ -1,2 +1,20 @@
 # Auto detect text files and perform LF normalization
-* text=auto
+*          text=auto
+
+/Release*Files/bp/** -linguist-detectable linguist-vendored
+/Release*Files/bppreview/** -linguist-detectable linguist-vendored
+/Release*Files/rp/** -linguist-detectable linguist-vendored
+/Release*Files/rppreview/** -linguist-detectable linguist-vendored
+/Release*Files/comparison*folder/** -linguist-detectable linguist-vendored
+/Release*Files/previews/bp/** -linguist-detectable linguist-vendored
+/Release*Files/previews/rp/** -linguist-detectable linguist-vendored
+/Release*Files/release_candidates/bp/** -linguist-detectable linguist-vendored
+/Release*Files/release_candidates/rp/** -linguist-detectable linguist-vendored
+
+/shelved_features_code/** -linguist-detectable
+
+*.mcaddon  binary
+*.mcpack   binary
+
+/Release*Files/testdebugsticksandscreens.v.1.0.0*-*Copy.mcaddon/** -linguist-detectable linguist-vendored
+/performaceTestScriptEvalScripts.js -linguist-detectable
