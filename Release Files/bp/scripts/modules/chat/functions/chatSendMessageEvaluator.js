@@ -119,6 +119,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
             applyImpulse: () => undefined,
             applyKnockback: () => undefined,
             camera: {
+                attachToEntity: () => undefined,
                 clear: () => undefined,
                 fade: () => undefined,
                 playAnimation: () => undefined,
@@ -372,6 +373,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
             applyImpulse: () => undefined,
             applyKnockback: () => undefined,
             camera: {
+                attachToEntity: () => undefined,
                 clear: () => undefined,
                 fade: () => undefined,
                 playAnimation: () => undefined,

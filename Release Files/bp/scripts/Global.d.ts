@@ -16,10 +16,16 @@ declare global {
         __defineSetter__<P extends string>(prop: P, func: (val: any) => void): undefined;
         __lookupGetter__<P extends keyof this>(prop: P): (() => this[P]) | undefined;
         __lookupSetter__<P extends keyof this>(prop: P): ((val: this[P]) => this[P]) | undefined;
-        get __proto__(): Object;
+        get __proto__(): Object | null;
         set __proto__(prototype: Object | null);
     }
     interface ObjectConstructor {
+        /**
+         * Get class name
+         *
+         * @param value
+         */
+        __getClass(value?: any): string;
         /**
          * Gets the own property descriptor of the specified object.
          * An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
@@ -619,11 +625,7 @@ declare global {
          * 2: "minecraft:the_end"
          * ```
          */
-        static readonly dimensionsd: [
-            "minecraft:overworld",
-            "minecraft:nether",
-            "minecraft:the_end"
-        ];
+        static readonly dimensionsd: ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"];
         /**
          * @remarks An array containing all of the non-namespaced dimension IDs.
          * ```typescript
@@ -811,6 +813,14 @@ declare global {
          * This property was discovered by 8Crafter.
          */
         readonly fileName: string;
+    }
+    interface String {
+        /**
+         * Quotes the string
+         *
+         * @param value
+         */
+        __quote(): string;
     }
 }
 declare module "@minecraft/server" {

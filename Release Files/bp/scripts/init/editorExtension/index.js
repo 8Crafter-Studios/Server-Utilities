@@ -1,7 +1,82 @@
 import { BlockVolume } from "@minecraft/server";
-import { ActionTypes, registerEditorExtension, ButtonPropertyItemVariant, RelativeVolumeListBlockVolume, ThemeSettingsColorKey, CoreMenuType, EditorInputContext, KeyboardKey, InputModifier, } from "@minecraft/server-editor";
+import { ActionTypes, registerEditorExtension, ButtonVariant, RelativeVolumeListBlockVolume, ThemeSettingsColorKey, CoreMenuType, EditorInputContext, KeyboardKey, InputModifier, } from "@minecraft/server-editor";
 import {} from "@minecraft/server-editor-bindings";
 import {} from "@minecraft/server-editor-private-bindings";
+//#vignore Testing
+// const player: Player = undefined!;
+// const { DebugLine, debugDrawer, DebugText } = await import("@minecraft/debug-utilities");
+// const dt1 = new DebugText(player.dimensionLocation, "Test +X");
+// dt1.color = { red: 1, green: 0, blue: 1 };
+// debugDrawer.addShape(dt1);
+// const dist = 3;
+// const lines = [
+//     [
+//         { x: 0, y: 0, z: 0 },
+//         { x: dist, y: 0, z: 0 },
+//         { red: 1, green: 0, blue: 0 },
+//     ],
+//     [
+//         { x: 0, y: dist, z: 0 },
+//         { x: dist, y: dist, z: 0 },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+//     [
+//         { x: 0, y: 0, z: 0 },
+//         { x: 0, y: dist, z: 0 },
+//         { red: 0, green: 1, blue: 0 },
+//     ],
+//     [
+//         { x: dist, y: 0, z: 0 },
+//         { x: dist, y: dist, z: 0 },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+//     [
+//         { x: 0, y: 0, z: dist },
+//         { x: dist, y: 0, z: dist },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+//     [
+//         { x: 0, y: dist, z: dist },
+//         { x: dist, y: dist, z: dist },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+//     [
+//         { x: 0, y: 0, z: dist },
+//         { x: 0, y: dist, z: dist },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+//     [
+//         { x: dist, y: 0, z: dist },
+//         { x: dist, y: dist, z: dist },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+//     [
+//         { x: 0, y: 0, z: 0 },
+//         { x: 0, y: 0, z: dist },
+//         { red: 0, green: 0.5, blue: 1 },
+//     ],
+//     [
+//         { x: dist, y: 0, z: 0 },
+//         { x: dist, y: 0, z: dist },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+//     [
+//         { x: 0, y: dist, z: 0 },
+//         { x: 0, y: dist, z: dist },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+//     [
+//         { x: dist, y: dist, z: 0 },
+//         { x: dist, y: dist, z: dist },
+//         { red: 1, green: 1, blue: 1 },
+//     ],
+// ];
+// lines.forEach((line) => {
+//     const l = new DebugLine({ ...Vector.add(player.location, line[0]), dimension: player.dimension }, Vector.add(player.location, line[1]));
+//     l.color = line[2];
+//     debugDrawer.addShape(l);
+// });
+//#endvignore Testing
 // if (modules.mcDebugUtilities) {let shapeA = new modules.mcDebugUtilities.DebugSphere(players.Andexter8?.location); shapeA.color = {red: 0, green: 1, blue: 255}; shapeA.scale = 1; modules.mcDebugUtilities?.debugDrawer.addShape(shapeA);}
 const serverUtilitiesThemeID = "andexdb:editor:theme:8CrafterServerUtilitiesTheme";
 registerEditorExtension("8CrafterServerUtilities", function SUEditorExtensionActivation(uiSession) {
@@ -52,7 +127,7 @@ registerEditorExtension("8CrafterServerUtilities", function SUEditorExtensionAct
     });
     scriptEvalOverlayPane.contentPane.addButton(() => {
         eval(scriptEvalScriptContents);
-    }, { variant: ButtonPropertyItemVariant.Confirmation, title: "Execute" });
+    }, { variant: ButtonVariant.Confirmation, title: "Execute" });
     uiSession.log.debug(`Initializing ${uiSession.extensionContext.extensionInfo.name} extension`);
     console.log(uiSession.extensionContext.exportManager.getGameVersion());
     uiSession.menuBar.getMenu(CoreMenuType.Edit).then((menu) => {

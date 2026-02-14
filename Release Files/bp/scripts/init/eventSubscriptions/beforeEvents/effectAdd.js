@@ -12,7 +12,7 @@ subscribedEvents.beforeEffectAdd = world.beforeEvents.effectAdd.subscribe((event
             }
         });
     }
-    if (new ProtectedAreaTester("effectAdd").testIsInArea(event, event.entity.location, event.entity.dimension)) {
+    if (event.entity.isValid && new ProtectedAreaTester("effectAdd").testIsInArea(event, event.entity.location, event.entity.dimension)) {
         event.cancel = true;
         return;
     }
