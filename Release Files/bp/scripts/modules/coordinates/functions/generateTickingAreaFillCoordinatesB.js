@@ -1,4 +1,4 @@
-import { CompoundBlockVolume, Dimension, BlockVolume } from "@minecraft/server";
+import { Dimension, BlockVolume } from "@minecraft/server";
 import { vTStr } from "modules/commands/functions/vTStr";
 export function generateTickingAreaFillCoordinatesB(area, dimension, spawnEntityCallback = (l, e, i) => {
     try {

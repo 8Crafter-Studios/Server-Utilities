@@ -1,7 +1,8 @@
-import { Dimension, BlockVolume, CompoundBlockVolume, BlockPermutation, Block } from "@minecraft/server";
+import { Dimension, BlockVolume, BlockPermutation, Block } from "@minecraft/server";
 import { clearAllContainerBlocks } from "modules/main/functions/clearAllContainerBlocks";
 import { fillBlocksB } from "modules/main/functions/fillBlocksB";
 import { scanForContainerBlocks } from "modules/main/functions/scanForContainerBlocks";
+import { CompoundBlockVolume } from "CompoundBlockVolumePolyfill";
 /**
  * @deprecated Legacy function. Superceeded by {@link fillBlocksHHG}.
  */
@@ -14,9 +15,7 @@ export function fillBlocksHH(from, to, dimension, block, blockStates, options, p
         volume: new BlockVolume(from, { x: to.x, y: from.y, z: to.z }),
         action: 0,
     });
-    if (new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().x >
-        2 &&
-        new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().z > 2) {
+    if (new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().x > 2 && new BlockVolume(from, { x: to.x, y: from.y, z: to.z }).getSpan().z > 2) {
         CBVA.pushVolume({
             volume: new BlockVolume({
                 x: from.x + (from.x > to.x ? -1 : 1),
@@ -82,20 +81,15 @@ export function fillBlocksHH(from, to, dimension, block, blockStates, options, p
         let matchingblockb = BlockPermutation.resolve(options?.matchingBlock, options?.matchingBlockStates);
         mainArray.forEach((v) => {
             try {
-                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ??
-                    "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock
-                    ? "replace " + (options?.matchingBlock ?? "")
-                    : ""} ${!!options?.matchingBlockStates
-                    ? "[" +
+                counter += dimension.runCommand(`fill ${v.from.x} ${v.from.y} ${v.from.z} ${v.to.x} ${v.to.y} ${v.to.z} ${placeholderid ?? "andexdb:ifill_command_placeholder_block"} ${!!options?.matchingBlock ? "replace " + (options?.matchingBlock ?? "") : ""} ${!!options?.matchingBlockStates ?
+                    "[" +
                         Object.entries(options?.matchingBlockStates)
                             .map((v) => '"' +
                             v[0] +
                             '"' +
                             "=" +
-                            (typeof v[1] == "string"
-                                ? '"' + v[1] + '"'
-                                : typeof v[1] == "number"
-                                    ? String(v[1])
+                            (typeof v[1] == "string" ? '"' + v[1] + '"'
+                                : typeof v[1] == "number" ? String(v[1])
                                     : String(v[1])))
                             .join(",") +
                         "]"

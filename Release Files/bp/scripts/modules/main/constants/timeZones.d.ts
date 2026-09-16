@@ -1,1 +1,1 @@
-export declare const timeZones: (string[] | number[])[];
+export declare const timeZones: (number[] | string[])[];

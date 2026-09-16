@@ -83,7 +83,7 @@ export async function managePlayers_managePlayer(sourceEntity, targetPlayer) {
             switch (cullUndefined([
                 "showData",
                 "checkInventory",
-                copyInventoryToChestIsAvailable ? "copyInventoryToChest" : undefined,
+                "copyInventoryToChest",
                 "manageBans",
                 "mute",
                 "editMoney",

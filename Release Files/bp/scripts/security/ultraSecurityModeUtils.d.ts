@@ -861,7 +861,7 @@ export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor(pl
  * @param {Player} player The player who is editing the security level overrides.
  * @returns {Promise<-423 | -403 | 1 | 0>} A promise that resolves with `-423` if Ultra Security Mode is disabled, `-403` if the player is not the owner, `1` if the previous menu should be reopened, and `0` if the previous menu should be closed.
  */
-export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_categories(player: Player): Promise<1 | 0 | -403 | -423>;
+export declare function commandsUltraSecurityModeSecurityLevelOverridesEditor_categories(player: Player): Promise<0 | 1 | -403 | -423>;
 /**
  * Opens the command category security level overrides editor for the player.
  *

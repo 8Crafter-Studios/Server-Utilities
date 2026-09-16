@@ -366,6 +366,72 @@ export declare abstract class Events_World {
  */
 export declare class Events_WorldBeforeEvents implements ReplaceTypeOfKey<WorldBeforeEvents, keyof WorldBeforeEvents, any> {
     constructor();
+    get entityTamed(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.beforeEvents.entityTamed">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.beforeEvents.entityTamed` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.beforeEvents.entityTamed">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.beforeEvents.entityTamed">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.beforeEvents.entityTamed">[];
+    };
+    get worldClockOnRestart(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.beforeEvents.worldClockOnRestart">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.beforeEvents.worldClockOnRestart` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.beforeEvents.worldClockOnRestart">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.beforeEvents.worldClockOnRestart">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.beforeEvents.worldClockOnRestart">[];
+    };
     /**
      * @beta
      * @remarks
@@ -906,6 +972,501 @@ export declare class Events_WorldBeforeEvents implements ReplaceTypeOfKey<WorldB
  * @implements {ReplaceTypeOfKey<WorldAfterEvents, keyof WorldAfterEvents, any>}
  */
 export declare class Events_WorldAfterEvents implements ReplaceTypeOfKey<WorldAfterEvents, keyof WorldAfterEvents, any> {
+    get blockContainerClosed(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.blockContainerClosed">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.blockContainerClosed` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.blockContainerClosed">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.blockContainerClosed">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.blockContainerClosed">[];
+    };
+    get blockContainerOpened(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.blockContainerOpened">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.blockContainerOpened` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.blockContainerOpened">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.blockContainerOpened">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.blockContainerOpened">[];
+    };
+    get entityContainerClosed(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.entityContainerClosed">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.entityContainerClosed` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.entityContainerClosed">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.entityContainerClosed">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.entityContainerClosed">[];
+    };
+    get entityContainerOpened(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.entityContainerOpened">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.entityContainerOpened` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.entityContainerOpened">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.entityContainerOpened">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.entityContainerOpened">[];
+    };
+    get entityStartSneaking(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.entityStartSneaking">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.entityStartSneaking` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.entityStartSneaking">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.entityStartSneaking">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.entityStartSneaking">[];
+    };
+    get entityStopSneaking(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.entityStopSneaking">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.entityStopSneaking` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.entityStopSneaking">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.entityStopSneaking">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.entityStopSneaking">[];
+    };
+    get entityTamed(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.entityTamed">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.entityTamed` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.entityTamed">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.entityTamed">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.entityTamed">[];
+    };
+    get entityUpgrade(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.entityUpgrade">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.entityUpgrade` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.entityUpgrade">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.entityUpgrade">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.entityUpgrade">[];
+    };
+    get playerCancelBreakingBlock(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.playerCancelBreakingBlock">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.playerCancelBreakingBlock` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.playerCancelBreakingBlock">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.playerCancelBreakingBlock">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.playerCancelBreakingBlock">[];
+    };
+    get playerStartBreakingBlock(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.playerStartBreakingBlock">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.playerStartBreakingBlock` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.playerStartBreakingBlock">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.playerStartBreakingBlock">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.playerStartBreakingBlock">[];
+    };
+    get soundCompleted(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.soundCompleted">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.soundCompleted` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.soundCompleted">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.soundCompleted">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.soundCompleted">[];
+    };
+    get worldClockOnPaused(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.worldClockOnPaused">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.worldClockOnPaused` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.worldClockOnPaused">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.worldClockOnPaused">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.worldClockOnPaused">[];
+    };
+    get worldClockOnResumed(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.worldClockOnResumed">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.worldClockOnResumed` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.worldClockOnResumed">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.worldClockOnResumed">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.worldClockOnResumed">[];
+    };
+    get worldClockOnTimeMarker(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.worldClockOnTimeMarker">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.worldClockOnTimeMarker` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.worldClockOnTimeMarker">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.worldClockOnTimeMarker">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.worldClockOnTimeMarker">[];
+    };
+    get worldClockOnTimeModified(): {
+        /**
+         * Creates a new event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the event callback is an empty string.
+         * @throws {TypeError} If the event callback is not a string.
+         * @throws {TypeError} If the event callback is not a valid stringified JavaScript function.
+         */
+        subscribe(callback: string): SubscribedEvent<"world.afterEvents.worldClockOnTimeModified">;
+        /**
+         * Deletes the provided event subscription.
+         *
+         * @remarks
+         * This function can't be called in read-only mode.
+         *
+         * This function can be called in early-execution mode.
+         *
+         * @throws {TypeError} If the subscription is not an instance of SubscribedEvent.
+         * @throws {ReferenceError} If the subscription is not for the `world.afterEvents.worldClockOnTimeModified` event.
+         */
+        unsubscribe(subscription: SubscribedEvent<"world.afterEvents.worldClockOnTimeModified">): void;
+        /**
+         * Gets all event subscriptions to this event type.
+         *
+         * @returns {SubscribedEvent<"world.afterEvents.worldClockOnTimeModified">[]} The event subscriptions.
+         */
+        getAll(): SubscribedEvent<"world.afterEvents.worldClockOnTimeModified">[];
+    };
     get blockExplode(): {
         /**
          * Creates a new event subscription.

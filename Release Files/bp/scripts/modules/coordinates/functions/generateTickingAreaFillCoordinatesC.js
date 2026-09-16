@@ -1,4 +1,4 @@
-import { CompoundBlockVolume, Dimension, Entity, system } from "@minecraft/server";
+import { Dimension, Entity, system } from "@minecraft/server";
 import { vTStr } from "modules/commands/functions/vTStr";
 import { generateTickingAreaFillCoordinates } from "./generateTickingAreaFillCoordinates";
 import { getDistance } from "./getDistance";
@@ -6,10 +6,7 @@ export async function generateTickingAreaFillCoordinatesC(center, area, dimensio
     try {
         let name = `generateTickingAreaFillCoordinates${Date.now()}EntityTickingArea${i}`;
         l.dimension.runCommand(`summon andexdb:tickingarea_6 ${name} ${vTStr(l)}`);
-        e.push(l.dimension
-            .getEntitiesAtBlockLocation(l)
-            .find((v) => v.typeId == "andexdb:tickingarea_6" &&
-            v.nameTag == name));
+        e.push(l.dimension.getEntitiesAtBlockLocation(l).find((v) => v.typeId == "andexdb:tickingarea_6" && v.nameTag == name));
     }
     catch (e) {
         console.warn(e, e.stack);

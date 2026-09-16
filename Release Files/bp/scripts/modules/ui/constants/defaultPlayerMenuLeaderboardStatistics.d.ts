@@ -7,7 +7,7 @@ export declare const defaultPlayerMenuLeaderboardStatistics: [{
     readonly statsListDisplayName: "Money";
     readonly valueType: "bigint";
     readonly getterFunction: (player: import("../../player_save/classes/savedPlayer").savedPlayer) => string | undefined;
-    readonly sorter: (a: string, b: string) => 1 | -1 | 0;
+    readonly sorter: (a: string, b: string) => 0 | 1 | -1;
     readonly displayOptions: {
         readonly currencyPrefix: string;
         readonly addCommaSeparators: boolean;

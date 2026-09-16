@@ -1,5 +1,7 @@
 /**
  * An array of objects representing number suffixes and their corresponding thresholds.
+ *
+ * @copyright 2025 8Crafter <8crafteryt@gmail.com>. All Rights Reserved.
  */
 export declare const numberFormatter_compact_map: readonly [{
     readonly suffix: "Mn";
@@ -317,6 +319,8 @@ export declare const numberFormatter_compact_map: readonly [{
 /**
  * Formats a number into a compact string representation.
  *
+ * @copyright 2025 8Crafter <8crafteryt@gmail.com>. All Rights Reserved.
+ *
  * @param {string | number | bigint | boolean} number The number to format.
  * @param {boolean | string} isMoneyOrCurrecyPrefix If true, adds a dollar sign prefix. If a string, uses it as the prefix.
  * @param {object} compressedDigitsNumDecimalsOptions Options for decimal places.
@@ -355,6 +359,8 @@ export declare function numberFormatter_compact(number: string | number | bigint
 }, decimalPlaces?: number, precision?: number): string;
 /**
  * Options for `compressedDigitsNumDecimalsOptions` parameter of the {@link numberFormatter_compact} and {@link numberFormatter_compact_lite} functions.
+ *
+ * @copyright 2025 8Crafter <8crafteryt@gmail.com>. All Rights Reserved.
  */
 export interface NumberFormatterCompactCompressedDigitsNumDecimalsOptions {
     /**
@@ -381,6 +387,8 @@ export interface NumberFormatterCompactCompressedDigitsNumDecimalsOptions {
  *
  * This is a lightweight version of the {@link numberFormatter_compact} function, which does not use a {@link Decimal} instance.
  *
+ * @copyright 2025 8Crafter <8crafteryt@gmail.com>. All Rights Reserved.
+ *
  * @param {string | number | bigint | boolean} number The number to format.
  * @param {boolean | string} isMoneyOrCurrecyPrefix If true, adds a dollar sign prefix. If a string, uses it as the prefix.
  * @param {NumberFormatterCompactCompressedDigitsNumDecimalsOptions} compressedDigitsNumDecimalsOptions Options for decimal places.
@@ -400,6 +408,8 @@ export interface NumberFormatterCompactCompressedDigitsNumDecimalsOptions {
 export declare function numberFormatter_compact_lite(number: string | number | bigint | boolean, isMoneyOrCurrecyPrefix: boolean | string, compressedDigitsNumDecimalsOptions?: NumberFormatterCompactCompressedDigitsNumDecimalsOptions, decimalPlaces?: number): string;
 /**
  * Options for the {@link numberFormatter} function.
+ *
+ * @copyright 2025 8Crafter <8crafteryt@gmail.com>. All Rights Reserved.
  */
 export interface NumberFormatterOptions {
     /**
@@ -418,6 +428,8 @@ export interface NumberFormatterOptions {
 }
 /**
  * Formats a number into a string representation with optional currency prefix and comma separators.
+ *
+ * @copyright 2025 8Crafter <8crafteryt@gmail.com>. All Rights Reserved.
  *
  * @param {string | number | bigint | boolean} number The number to format.
  * @param {NumberFormatterOptions} [options] Options for formatting.

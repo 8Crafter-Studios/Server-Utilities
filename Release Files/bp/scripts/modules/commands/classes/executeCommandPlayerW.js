@@ -11,6 +11,10 @@ import { getChunkIndexD } from "modules/coordinates/functions/getChunkIndexD";
 import { deleteStringFromEntityDynamicProperties } from "modules/utilities/functions/deleteStringFromEntityDynamicProperties";
 import { getStringFromEntityDynamicProperties } from "modules/utilities/functions/getStringFromEntityDynamicProperties";
 import { saveStringToEntityDynamicProperties } from "modules/utilities/functions/saveStringToEntityDynamicProperties";
+{
+    // This is to show an error when executeCommandPlayerW has a property that is read-only when it is not read-only on Player.
+    const _PropsThatNeedSetters = {};
+}
 /**
  * Represents a player to be used for the `\execute` command without the `name` and `id` properties.
  */
@@ -36,10 +40,10 @@ export class executeCommandPlayerW {
             this.rotation = player.rotation;
             this.player = (player.entity ?? player.block);
             this.sendErrorsTo =
-                sendErrorsTo === null || Number.isNaN(sendErrorsTo)
-                    ? null
-                    : sendErrorsTo ??
-                        (player.entity instanceof Player ? player.entity : console);
+                sendErrorsTo === null || Number.isNaN(sendErrorsTo) ?
+                    null
+                    : (sendErrorsTo ??
+                        (player.entity instanceof Player ? player.entity : console));
             this.block = player.block;
             this.isFromWorldPosition = true;
             this.fromPlayerWorldPosition = player.entity instanceof Player;
@@ -53,9 +57,9 @@ export class executeCommandPlayerW {
         else if (player instanceof Entity) {
             this.player = player;
             this.sendErrorsTo =
-                sendErrorsTo === null || Number.isNaN(sendErrorsTo)
-                    ? null
-                    : sendErrorsTo ?? (player instanceof Player ? player : console);
+                sendErrorsTo === null || Number.isNaN(sendErrorsTo) ?
+                    null
+                    : (sendErrorsTo ?? (player instanceof Player ? player : console));
             this.modifiedlocation = player.location;
             this.modifieddimension = player.dimension;
             this.rotation = player.getRotation();
@@ -68,8 +72,8 @@ export class executeCommandPlayerW {
             this.raw = player;
         }
         else {
-            throw new TypeError(`Unsupported type ${JSON.stringify(typeof player == "object"
-                ? (tryget(() => player?.constructor) ?? {
+            throw new TypeError(`Unsupported type ${JSON.stringify(typeof player == "object" ?
+                (tryget(() => player?.constructor) ?? {
                     name: typeof player,
                 }).name
                 : typeof player)} passed into parameter [0]. `);
@@ -121,47 +125,33 @@ export class executeCommandPlayerW {
             }
             else {
                 if (sest instanceof Player) {
-                    sest.sendMessage(typeof error == "string"
-                        ? error
-                        : "rawtext" in error
-                            ? error
-                            : typeof error == "object"
-                                ? tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error)
+                    sest.sendMessage(typeof error == "string" ? error
+                        : "rawtext" in error ? error
+                            : typeof error == "object" ? (tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error))
                                 : String(error));
                 }
                 else if (sest instanceof Array) {
                     sest.forEach((v) => {
                         if (v instanceof Player) {
-                            v.sendMessage(typeof error == "string"
-                                ? error
-                                : "rawtext" in error
-                                    ? error
-                                    : typeof error == "object"
-                                        ? tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error)
+                            v.sendMessage(typeof error == "string" ? error
+                                : "rawtext" in error ? error
+                                    : typeof error == "object" ? (tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error))
                                         : String(error));
                         }
                         else if ("warn" in v) {
-                            v.error(typeof error == "string"
-                                ? error
-                                : "rawtext" in error
-                                    ? error
-                                    : error instanceof Array
-                                        ? error
-                                        : typeof error == "object"
-                                            ? tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error)
+                            v.error(typeof error == "string" ? error
+                                : "rawtext" in error ? error
+                                    : error instanceof Array ? error
+                                        : typeof error == "object" ? (tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error))
                                             : String(error));
                         }
                     });
                 }
                 else if ("warn" in sest) {
-                    sest.error(typeof error == "string"
-                        ? error
-                        : "rawtext" in error
-                            ? error
-                            : error instanceof Array
-                                ? error
-                                : typeof error == "object"
-                                    ? tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error)
+                    sest.error(typeof error == "string" ? error
+                        : "rawtext" in error ? error
+                            : error instanceof Array ? error
+                                : typeof error == "object" ? (tryget(() => JSONStringify(error)) ?? tryget(() => JSON.stringify(error)) ?? String(error))
                                     : String(error));
                 }
                 else if (typeof sest == "function") {
@@ -446,11 +436,71 @@ export class executeCommandPlayerW {
     get commandPermissionLevel() {
         return this.player?.commandPermissionLevel;
     }
+    set commandPermissionLevel(value) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.commandPermissionLevel::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
+        this.player.commandPermissionLevel = value;
+    }
     get playerPermissionLevel() {
         return this.player?.playerPermissionLevel;
     }
     get target() {
         return this.player?.target;
+    }
+    get chatDisplayName() {
+        return this.player?.chatDisplayName;
+    }
+    get chatMessagePrefix() {
+        return this.player?.chatMessagePrefix;
+    }
+    set chatMessagePrefix(value) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.chatMessagePrefix::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
+        this.player.chatMessagePrefix = value;
+    }
+    get chatNamePrefix() {
+        return this.player?.chatNamePrefix;
+    }
+    set chatNamePrefix(value) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.chatNamePrefix::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
+        this.player.chatNamePrefix = value;
+    }
+    get chatNameSuffix() {
+        return this.player?.chatNameSuffix;
+    }
+    set chatNameSuffix(value) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.chatNameSuffix::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
+        this.player.chatNameSuffix = value;
+    }
+    get locatorBar() {
+        return this.player?.locatorBar;
+    }
+    // get playfabId(): string {
+    //     return this.player?.playfabId!;
+    // }
+    get persistentId() {
+        return this.player?.persistentId;
+    }
+    get fogSettings() {
+        return this.player?.fogSettings;
+    }
+    get nameplateDepthTested() {
+        return this.player?.nameplateDepthTested;
+    }
+    set nameplateDepthTested(value) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.nameplateDepthTested::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
+        this.player.nameplateDepthTested = value;
+    }
+    get nameplateRenderDistance() {
+        return this.player?.nameplateRenderDistance;
+    }
+    set nameplateRenderDistance(value) {
+        if (!this.player)
+            throw new ReferenceError("[[executeCommandPlayerW.prototype.nameplateRenderDistance::set]] This setter cannot be used when the executeCommandPlayerW instance does not have a linked player.");
+        this.player.nameplateRenderDistance = value;
     }
     addEffect(effectType, duration, options) {
         return this.player?.addEffect(effectType, duration, options);
@@ -478,6 +528,9 @@ export class executeCommandPlayerW {
     }
     getSpawnPoint() {
         return this.player?.getSpawnPoint();
+    }
+    getSplitScreenSlot() {
+        return this.player?.getSplitScreenSlot();
     }
     getTotalXp() {
         return this.player?.getTotalXp();
@@ -680,6 +733,12 @@ export class executeCommandPlayerW {
     }
     setControlScheme(controlScheme) {
         this.player?.setControlScheme(controlScheme);
+    }
+    getPing() {
+        return this.player?.getPing();
+    }
+    addItem(itemStack) {
+        return this.player?.addItem(itemStack);
     }
 }
 //# sourceMappingURL=executeCommandPlayerW.js.map

@@ -50,7 +50,7 @@ The default is Custom(Simple).`);
         if (r.canceled) {
             return 1;
         }
-        switch ((!!rankModesArray[r.selection] ? "style" : undefined) ?? ["back", "close"][r.selection]) {
+        switch ((!!rankModesArray[r.selection] ? "style" : undefined) ?? ["back", "close"][r.selection - rankModesArray.length]) {
             case "style":
                 config.chatRanks.rankMode = Object.entries(rankModes).find((m) => m[1] === rankModesArray[r.selection])?.[0];
                 return 1;

@@ -76,6 +76,7 @@ export function rankNameTagEvaluator_players(prePlayersOutput, options) {
             applyImpulse: () => undefined,
             applyKnockback: () => undefined,
             camera: {
+                addShake: () => undefined,
                 attachToEntity: () => undefined,
                 clear: () => undefined,
                 fade: () => undefined,
@@ -84,6 +85,7 @@ export function rankNameTagEvaluator_players(prePlayersOutput, options) {
                 setCameraWithEase: () => undefined,
                 setDefaultCamera: () => undefined,
                 setFov: () => undefined,
+                stopShaking: () => undefined,
                 isValid: false,
             },
             chunkIndex: undefined,
@@ -93,6 +95,7 @@ export function rankNameTagEvaluator_players(prePlayersOutput, options) {
                 maxRenderDistance: -1,
                 memoryTier: 0,
                 platformType: PlatformType.Desktop,
+                locale: "en_US",
             },
             cursorInventory: undefined,
             dimension: overworld,

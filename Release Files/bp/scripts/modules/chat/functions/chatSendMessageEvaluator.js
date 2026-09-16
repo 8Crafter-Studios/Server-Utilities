@@ -27,7 +27,9 @@ export function chatSendMessageEvaluator_prePlayers(message, displayName, option
     if (separatorFormatting == "") {
         separatorFormatting = options?.playerPersonalSettings?.defaultSeparatorFormatting ?? config.chatRanks.defaultSeparatorFormatting;
     }
-    const ranksListWithDefault = (options?.ranks ?? []).length > 0 ? options?.ranks : config.chatRanks.defaultRank !== "" ? [config.chatRanks.defaultRank] : [];
+    const ranksListWithDefault = (options?.ranks ?? []).length > 0 ? options?.ranks
+        : config.chatRanks.defaultRank !== "" ? [config.chatRanks.defaultRank]
+            : [];
     let rank = "";
     switch (config.chatRanks.rankEvaluatorMode_chat) {
         case "default":
@@ -45,17 +47,13 @@ export function chatSendMessageEvaluator_prePlayers(message, displayName, option
                         (options?.playerPersonalSettings?.rankDisplaySuffix ?? config.chatRanks.rankDisplaySuffix));
             break;
     }
-    let name = displayName.hidden
-        ? ""
-        : (options?.playerPersonalSettings?.nameDisplayPrefix ?? config.chatRanks.nameDisplayPrefix) +
-            nameFormatting +
-            (!!nameGradientMode ? evaluateChatColorType(displayName.value ?? "", nameGradientMode) : displayName.value ?? "") +
-            (options?.playerPersonalSettings?.nameDisplaySuffix ?? config.chatRanks.nameDisplaySuffix);
-    let nameb = displayName.hidden
-        ? ""
-        : !!nameGradientMode
-            ? evaluateChatColorType(displayName.value ?? "", nameGradientMode)
-            : displayName.value ?? "";
+    let name = displayName.hidden ? "" : ((options?.playerPersonalSettings?.nameDisplayPrefix ?? config.chatRanks.nameDisplayPrefix) +
+        nameFormatting +
+        (!!nameGradientMode ? evaluateChatColorType(displayName.value ?? "", nameGradientMode) : (displayName.value ?? "")) +
+        (options?.playerPersonalSettings?.nameDisplaySuffix ?? config.chatRanks.nameDisplaySuffix));
+    let nameb = displayName.hidden ? ""
+        : !!nameGradientMode ? evaluateChatColorType(displayName.value ?? "", nameGradientMode)
+            : (displayName.value ?? "");
     name.length != 0 ? (name += options?.playerPersonalSettings?.chatNameAndMessageSeparator ?? config.chatRanks.chatNameAndMessageSeparator) : undefined; /*
         let rankMode = 0
         for (let index in player.getTags()) {
@@ -119,6 +117,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
             applyImpulse: () => undefined,
             applyKnockback: () => undefined,
             camera: {
+                addShake: () => undefined,
                 attachToEntity: () => undefined,
                 clear: () => undefined,
                 fade: () => undefined,
@@ -127,6 +126,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
                 setCameraWithEase: () => undefined,
                 setDefaultCamera: () => undefined,
                 setFov: () => undefined,
+                stopShaking: () => undefined,
                 isValid: false,
             },
             chunkIndex: undefined,
@@ -136,6 +136,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
                 maxRenderDistance: -1,
                 memoryTier: 0,
                 platformType: PlatformType.Desktop,
+                locale: "en_US",
             },
             cursorInventory: undefined,
             dimension: overworld,
@@ -373,6 +374,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
             applyImpulse: () => undefined,
             applyKnockback: () => undefined,
             camera: {
+                addShake: () => undefined,
                 attachToEntity: () => undefined,
                 clear: () => undefined,
                 fade: () => undefined,
@@ -381,6 +383,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
                 setCameraWithEase: () => undefined,
                 setDefaultCamera: () => undefined,
                 setFov: () => undefined,
+                stopShaking: () => undefined,
                 isValid: false,
             },
             chunkIndex: undefined,
@@ -390,6 +393,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
                 maxRenderDistance: -1,
                 memoryTier: 0,
                 platformType: PlatformType.Desktop,
+                locale: "en_US",
             },
             cursorInventory: undefined,
             dimension: dimensionObject,
@@ -623,8 +627,8 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
             !options?.playerPersonalSettings?.hideChatDisplayTimeStamp &&
             !options?.targetPlayerSettings?.hideChatDisplayTimeStamps);
     let timestampenabled = messageTimeStampEnabled;
-    let timestamp = messageTimeStampEnabled
-        ? formatTime(new Date((options?.time ?? Date.now()) + (options?.targetPlayerSettings?.timeZone ?? config.system.timeZone) * 3600000))
+    let timestamp = messageTimeStampEnabled ?
+        formatTime(new Date((options?.time ?? Date.now()) + (options?.targetPlayerSettings?.timeZone ?? config.system.timeZone) * 3600000))
         : "";
     let messageOutput = "";
     if (config.chatRanks.rankMode === "custom_simple") {
@@ -663,7 +667,7 @@ export function chatSendMessageEvaluator_players(prePlayersOutput, options) {
     }
     else if (config.chatRanks.rankMode === "style_4") {
         rank = ranksListWithDefault.map((t) => "[§r" + t + "§r§7]").join(" ");
-        messageOutput = `§r§7${showDimension ? `[${dimension}§r] ` : ""}${timestamp != "" ? `[${timestamp}]` : ""}${rank != "" ? ` ${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}§l ${separatorFormatting}>§r§l §r${messageFormatting}${message}`;
+        messageOutput = `§r§7${showDimension ? `[${dimension}§r] ` : ""}${timestamp != "" ? `[${timestamp}] ` : ""}${rank != "" ? `${rank}` : ""}§r§7${name != "" ? ` ${nameFormatting}${nameb}§r§7` : ""}§l ${separatorFormatting}>§r§l §r${messageFormatting}${message}`;
     }
     else if (config.chatRanks.rankMode === "style_5") {
         rank = "[§r" + ranksListWithDefault.join("§r,") + "§r]";
@@ -1335,8 +1339,8 @@ export function chatSend_getDisplayNameFromPlayer(player, options) {
     };
 }
 export function chatSend_generatePartialPlayerTypeForChatSendEvaluationFunctions(player) {
-    return player instanceof Player
-        ? {
+    return player instanceof Player ?
+        {
             name: player.name,
             nameTag: player.nameTag,
             tags: player.getTags(),

@@ -94,6 +94,21 @@
         "max_delay": 20,
         "min_delay": 10
     },
+    "record.tears.music": {
+        "event_name": "record.tears.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.lava_chicken.music": {
+        "event_name": "record.lava_chicken.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
+    "record.bounce.music": {
+        "event_name": "record.bounce.music",
+        "max_delay": 20,
+        "min_delay": 10
+    },
     "music.game.all.random": {
         "event_name": "music.game.all.random",
         "max_delay": 20,

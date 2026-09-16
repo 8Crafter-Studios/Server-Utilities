@@ -13,9 +13,9 @@ export async function playerMenu_homes(sourceEntitya) {
     const sourceEntity = sourceEntitya instanceof executeCommandPlayerW ? sourceEntitya.player : sourceEntitya;
     if (!(sourceEntity instanceof Player)) {
         throw new TypeError("Invalid Player. Expected an instance of the Player class, or an instance of the executeCommandPlayerW class with a Player linked to it, but instead got " +
-            (typeof sourceEntity == "object"
-                ? sourceEntity === null
-                    ? "object[null]"
+            (typeof sourceEntity == "object" ?
+                sourceEntity === null ?
+                    "object[null]"
                     : "object[" + (sourceEntity.constructor.name ?? "unknown") + "]"
                 : typeof sourceEntity) +
             ".");
@@ -28,7 +28,9 @@ export async function playerMenu_homes(sourceEntitya) {
             return 0;
         }
     }
-    const canBypassTeleportCooldowns = securityVariables.ultraSecurityModeEnabled ? securityVariables.testPlayerForPermission(sourceEntity, "andexdb.bypassTeleportCooldowns") : sourceEntity.hasTag("admin");
+    const canBypassTeleportCooldowns = securityVariables.ultraSecurityModeEnabled ?
+        securityVariables.testPlayerForPermission(sourceEntity, "andexdb.bypassTeleportCooldowns")
+        : sourceEntity.hasTag("admin");
     let form = new ActionFormData();
     form.title(customFormUICodes.action.titles.formStyles.medium + "Homes");
     const homes = HomeSystem.getHomesForPlayer(sourceEntity.id);
@@ -71,12 +73,14 @@ export async function playerMenu_homes(sourceEntitya) {
                             }
                         }
                         // Check for PVP cooldown before starting the teleport countdown.
-                        if (Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
+                        if (Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 >
+                            Date.now()) {
                             sourceEntity.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                             return 0;
                         }
                         // Check for teleport cooldown before starting the teleport countdown.
-                        if (Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
+                        if (Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 >
+                            Date.now()) {
                             sourceEntity.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                             return 0;
                         }
@@ -92,18 +96,20 @@ export async function playerMenu_homes(sourceEntitya) {
                                 successful = false;
                                 break;
                             }
-                            ;
                             sourceEntity.sendMessage("§bTeleporting in " + (standStillTime - i));
                             await waitTicks(20);
                         }
                         // Check for PVP cooldown again after ending the teleport countdown.
-                        if (!canBypassTeleportCooldowns && Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 > Date.now()) {
+                        if (!canBypassTeleportCooldowns &&
+                            Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 >
+                                Date.now()) {
                             sourceEntity.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(sourceEntity.getDynamicProperty("lastHurtByPlayerTime") ?? 0) + config.teleportSystems.pvpCooldownToTeleport * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on PVP cooldown.`);
                             successful = false;
                             return 0;
                         }
                         // Check for teleport cooldown again after ending the teleport countdown.
-                        if (!canBypassTeleportCooldowns && Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
+                        if (!canBypassTeleportCooldowns &&
+                            Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 > Date.now()) {
                             sourceEntity.sendMessage(`§cSorry but you have to wait another ${Math.round((Number(sourceEntity.getDynamicProperty("lastTeleportTime") ?? 0) + config.teleportSystems.teleportCooldown * 1000 - Date.now()) / 1000)} seconds before you can teleport again because you are still on cooldown.`);
                             return 0;
                         }
@@ -151,11 +157,17 @@ export async function playerMenu_homes(sourceEntitya) {
                     }
                 }
                 const location = sourceEntity.dimensionLocation;
-                const r = await new ModalFormData().title(customFormUICodes.modal.titles.formStyles.medium + "New Home").label(`Location: ${vTStr(location)}\nDimension: ${dimensionTypeDisplayFormattingD[location.dimension.id]}`).divider().textField("Please enter the name for your new home below.", "Home Name").submitButton("Create Home").forceShow(sourceEntity);
+                const r = await new ModalFormData()
+                    .title(customFormUICodes.modal.titles.formStyles.medium + "New Home")
+                    .label(`Location: ${vTStr(location)}\nDimension: ${dimensionTypeDisplayFormattingD[location.dimension.id]}`)
+                    .divider()
+                    .textField("Please enter the name for your new home below.", "Home Name")
+                    .submitButton("Create Home")
+                    .forceShow(sourceEntity);
                 if (r.canceled) {
                     return await playerMenu_homes(sourceEntity);
                 }
-                if (r.formValues?.[0] === "") {
+                if (r.formValues?.[2] === "") {
                     if ((await showMessage(sourceEntity, "Error", `§cPlease specify a name for the home.`, "Back", "Close")).selection === 0) {
                         return await playerMenu_homes(sourceEntity);
                     }
@@ -163,7 +175,7 @@ export async function playerMenu_homes(sourceEntitya) {
                         return 0;
                     }
                 }
-                if (!!HomeSystem.getHomesForPlayer(sourceEntity).find((h) => h.name == r.formValues?.[0])) {
+                if (!!HomeSystem.getHomesForPlayer(sourceEntity).find((h) => h.name == r.formValues?.[2])) {
                     if ((await showMessage(sourceEntity, "Error", `§cYou already have a home with this name. Please delete the home and create it again if you want to change its location.`, "Back", "Close")).selection === 0) {
                         return await playerMenu_homes(sourceEntity);
                     }
@@ -173,9 +185,9 @@ export async function playerMenu_homes(sourceEntitya) {
                 }
                 new Home({
                     location: Object.assign(sourceEntity.location, { dimension: sourceEntity.dimension }),
-                    name: r.formValues?.[0],
+                    name: r.formValues?.[2],
                     owner: sourceEntity,
-                    saveId: "home:" + sourceEntity.id + ":" + r.formValues?.[0],
+                    saveId: "home:" + sourceEntity.id + ":" + r.formValues?.[2],
                 }).save();
                 return await playerMenu_homes(sourceEntity);
             }

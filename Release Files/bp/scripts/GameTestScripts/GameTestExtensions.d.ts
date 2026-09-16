@@ -5,8 +5,8 @@ export default class GameTestExtensions {
     makeAboutToDrown(entity: any): void;
     assertBlockProperty(propertyName: any, value: any, BlockLocationIterator: any): void;
     giveItem(player: any, itemType: any, amount: any, slot: any): void;
-    getVineDirection(direction: any): 1 | 0 | 2 | 3 | undefined;
-    getMultiFaceDirection(direction: any): 1 | 0 | 2 | 3 | 4 | 5 | undefined;
+    getVineDirection(direction: any): 0 | 1 | 2 | 3 | undefined;
+    getMultiFaceDirection(direction: any): 0 | 1 | 2 | 3 | 4 | 5 | undefined;
     rotateVolume(volume: any): any;
     rotateAngle(angle: any): any;
 }

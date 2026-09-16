@@ -1,4 +1,4 @@
-import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, type EntityComponentReturnType, GraphicsMode, CommandPermissionLevel, type ControlScheme, type AABB, type GetBlocksStandingOnOptions, type PlayerPermissionLevel } from "@minecraft/server";
+import { Player, type Vector3, Dimension, type Vector2, Block, Entity, type RawMessage, EntityInventoryComponent, EntityEquippableComponent, PlayerCursorInventoryComponent, ItemStack, ContainerSlot, type VectorYZ, type VectorXZ, EffectType, type EntityEffectOptions, type MusicOptions, type PlayerSoundOptions, GameMode, type DimensionLocation, MolangVariableMap, type EntityApplyDamageByProjectileOptions, type EntityApplyDamageOptions, type BlockRaycastOptions, type EntityComponentTypeMap, type BlockComponentTypeMap, type EntityRaycastOptions, type EntityQueryOptions, type PlayAnimationOptions, type TeleportOptions, type EntityComponentReturnType, GraphicsMode, CommandPermissionLevel, type ControlScheme, type AABB, type GetBlocksStandingOnOptions, type PlayerPermissionLevel, type LocatorBar, type PlayerSplitScreenSlot, type FogSettings } from "@minecraft/server";
 import { MoneySystem } from "ExtraFeatures/money";
 import { PlayerNotifications } from "init/classes/PlayerNotifications";
 import { PlayerPermissions } from "init/classes/PlayerPermissions";
@@ -145,8 +145,23 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     get isValid(): boolean;
     get localizationKey(): string;
     get commandPermissionLevel(): CommandPermissionLevel;
+    set commandPermissionLevel(value: CommandPermissionLevel);
     get playerPermissionLevel(): PlayerPermissionLevel;
     get target(): Entity | undefined;
+    get chatDisplayName(): string;
+    get chatMessagePrefix(): string;
+    set chatMessagePrefix(value: string);
+    get chatNamePrefix(): string;
+    set chatNamePrefix(value: string);
+    get chatNameSuffix(): string;
+    set chatNameSuffix(value: string);
+    get locatorBar(): LocatorBar;
+    get persistentId(): string;
+    get fogSettings(): FogSettings;
+    get nameplateDepthTested(): boolean;
+    set nameplateDepthTested(value: boolean);
+    get nameplateRenderDistance(): number;
+    set nameplateRenderDistance(value: number);
     addEffect(effectType: string | EffectType, duration: number, options?: EntityEffectOptions): import("@minecraft/server").Effect | undefined;
     addExperience(amount: number): number;
     getRotation(): Vector2;
@@ -156,10 +171,11 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     getGameMode(): GameMode;
     getItemCooldown(itemCategory: string): number;
     getSpawnPoint(): DimensionLocation;
+    getSplitScreenSlot(): PlayerSplitScreenSlot | undefined;
     getTotalXp(): number;
     lookAt(targetLocation: Vector3): void | undefined;
     playMusic(trackId: string, musicOptions?: MusicOptions): void | undefined;
-    playSound(soundId: string, soundOptions?: PlayerSoundOptions): void | undefined;
+    playSound(soundId: string, soundOptions?: PlayerSoundOptions): import("@minecraft/server").SoundInstance;
     postClientMessage(id: string, value: string): void | undefined;
     queueMusic(trackId: string, musicOptions?: MusicOptions): void | undefined;
     resetLevel(): never;
@@ -223,4 +239,6 @@ export declare class executeCommandPlayerW implements Omit<Player, "name" | "id"
     getAABB(): AABB;
     getControlScheme(): ControlScheme;
     setControlScheme(controlScheme?: ControlScheme): void;
+    getPing(): number;
+    addItem(itemStack: ItemStack): ItemStack | undefined;
 }

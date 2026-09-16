@@ -140,7 +140,7 @@ export declare class ServerShop {
      * @param item
      * @returns
      */
-    sellItem(player: Player, item: SellableShopItem): Promise<1 | 0 | undefined>;
+    sellItem(player: Player, item: SellableShopItem): Promise<0 | 1 | undefined>;
     /**
      * @todo Make an async function with return type of Promise<0|1>.
      * @see {@link PlayerShop.openPublicShopsSelector}

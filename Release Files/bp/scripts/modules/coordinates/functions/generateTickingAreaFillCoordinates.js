@@ -1,4 +1,4 @@
-import { CompoundBlockVolume, Dimension, BlockVolume } from "@minecraft/server";
+import { Dimension, BlockVolume } from "@minecraft/server";
 export function generateTickingAreaFillCoordinates(area, dimension) {
     const locations = [];
     //${se}let b = new CompoundBlockVolume(); b.pushVolume({volume: new BlockVolume(Vector.one, Vector.multiply(Vector.one, 20)), action: 0}); bsend(b.getBlockLocationIterator()?.next()?.value);

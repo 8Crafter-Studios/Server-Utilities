@@ -1,4 +1,4 @@
-import { CompoundBlockVolume } from "@minecraft/server";
+import { CompoundBlockVolume } from "CompoundBlockVolumePolyfill";
 export function convertToCompoundBlockVolume(selection) {
     let compoundFullBlockVolumes = new CompoundBlockVolume({
         x: 0,

@@ -172,6 +172,33 @@
                 }
             ]
         },
+        "record.tears.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/tears",
+                    "is3D": false
+                }
+            ]
+        },
+        "record.lava_chicken.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/lava_chicken",
+                    "is3D": false
+                }
+            ]
+        },
+        "record.bounce.music": {
+            "category": "music",
+            "sounds": [
+                {
+                    "name": "sounds/music/game/records/bounce",
+                    "is3D": false
+                }
+            ]
+        },
         "music.game.featherfall": {
             "category": "music",
             "sounds": [
@@ -1161,6 +1188,18 @@
                 },
                 {
                     "name": "sounds/music/game/records/creator_music_box",
+                    "is3D": false
+                },
+                {
+                    "name": "sounds/music/game/records/tears",
+                    "is3D": false
+                },
+                {
+                    "name": "sounds/music/game/records/lava_chicken",
+                    "is3D": false
+                },
+                {
+                    "name": "sounds/music/game/records/bounce",
                     "is3D": false
                 }
             ]
